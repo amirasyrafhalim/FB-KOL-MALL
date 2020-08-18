@@ -2,52 +2,92 @@
   <v-container id="pages__login" class="fill-height" fluid>
     <v-layout>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="4">
-          <v-card class="elevation-1 pa-3">
+        <v-col cols="12" sm="6" md="5">
+          <v-card class="elevation-1 pa-3 radius secondary" >
             <alert-form-error :error-message="errorMessage" />
-            <v-card-text>
+            <v-card-text >
               <div class="layout column align-center">
                 <h1 class="flex text-center mt-4 mb-2 primary--text">
-                  {{ $store.state.appName }}
+                  <v-img icon class="pl-1">
+                    <img
+                      :src="require('~/assets/Img/logo.png')"
+                      width="auto"
+                      height="50"
+                      contain
+                      class="mt-5"
+                    />
+                  </v-img>
                 </h1>
-                <h4 class="flex text-xs-center">{{ $t("label.welcome") }}</h4>
+                <h2
+                  class="flex text-xs-center font-weight-black black--text text-h2 mt-5 mb-5"
+                >
+                  {{ $t("label.welcome") }}
+                </h2>
               </div>
               <v-form>
-                <v-text-field
-                  append-icon="mdi-mail"
+                <v-btn
+                  color="#3b5998"
+                  block
+                  dark
+                  large
+                  @click="loginWithFacebook"
+                  class="mt-5"
+                >
+                   <img width="auto" height="25px" class="pr-5" src="../assets/Img/facebook.png"/>{{ $t("label.loginWithFacebook") }}
+                </v-btn>
+                <v-btn block  @click="loginWithGoogle" class="mt-5"  large outlined>
+                 <img width="auto" height="25px" class="pr-5" src="../assets/Img/google.png"/>{{ $t("label.loginWithGoogle") }}
+                </v-btn>
+                <v-row align="center" justify="center" class="mt-10 mb-10">
+                  <h4 class="subtitle font-weight-bold black--text text-center" :href="localePath('')">
+                    Dont't have an account?  
+                  </h4>
+                  <a href="#" class=" text-h4 ">
+                   Sign Up now
+                  </a>
+                </v-row>
+                 <v-text-field
                   type="email"
                   :label="$t('label.email')"
                   :error-messages="formErrors ? formErrors.email : ''"
-                  v-model="formModel.email"
+                  single-line
+                  flat
+                  solo
+                  aria-autocomplete="on"
+                  hide-details
+                  class="mb-2"
                 ></v-text-field>
                 <v-text-field
                   type="password"
-                  append-icon="mdi-lock"
                   :label="$t('label.password')"
                   :error-messages="formErrors ? formErrors.password : ''"
-                  v-model="formModel.password"
+                   single-line
+                  flat
+                  solo
+                   aria-autocomplete="on"
+                   hide-details
+                  class="mb-2"
                 ></v-text-field>
               </v-form>
             </v-card-text>
             <v-card-actions class="flex-column text-right">
-              <v-btn color="primary" block @click="login">
-                {{ $t("label.login") }}
+              <v-btn class="default-button text-white" block @click="login" large>
+                <h4 class="text-white text-h3">{{ $t("label.login") }}</h4>
               </v-btn>
-              <a :href="localePath('forgotPassword')" class="caption text-right mt-2"> Forgot Password? </a>
+              <a
+                :href="localePath('forgotPassword')"
+                class="caption text-right mt-5"
+              >
+               <h3> Forgot Password?</h3>
+              </a>
               <div class="login-option__divider">
                 <div class="login-option__divider--wrapper">
                   <v-divider />
                 </div>
-                <p class="mb-0 px-6">{{ $t("label.or") }}</p>
                 <div class="login-option__divider--wrapper">
                   <v-divider />
                 </div>
               </div>
-
-              <v-btn color="#3b5998" block dark @click="loginWithFacebook">
-                <v-icon left>mdi-facebook</v-icon>
-                {{ $t("label.loginWithFacebook") }}
-              </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -122,5 +162,8 @@ export default {
   .login-option__divider--wrapper {
     flex: 1 1 auto;
   }
+}
+.radius {
+  border-radius: 25px!important;
 }
 </style>
