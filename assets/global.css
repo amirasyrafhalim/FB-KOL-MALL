@@ -1,0 +1,29 @@
+.text-black {
+    color: #000000;
+}
+.text-white {
+    color: #ffffff;
+}
+.text-grey {
+    color: #666666;
+}
+.bg-light-grey{
+    color: #000000!important;
+}
+.bg-white{
+    background-color: #ffffff;
+}
+.default-button {
+  background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
+    0% no-repeat padding-box;
+  border-radius: 10px;
+  opacity: 1;
+}
+.bg-gradient{
+    background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
+    0% no-repeat padding-box;
+}
+.radio-button-color{
+    color: #643CD1;
+}
+

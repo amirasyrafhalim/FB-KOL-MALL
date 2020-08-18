@@ -1,5 +1,5 @@
 export default {
   google: {
-    families: ['Nunito:400,700,900&display=swap']
+    families: ['Montserrat:400,700,900&display=swap']
   }
 }
