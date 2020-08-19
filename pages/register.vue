@@ -1,8 +1,8 @@
 <template>
-  <v-container id="pages__register" class="fill-height" fluid>
-    <v-layout>
+  <v-container id="pages__register" class="fill-height background" fluid>
+    <v-layout justify-center >
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="5" md="5">
+        <v-col cols="12" sm="8" md="6">
           <v-card class="elevation-1 pa-3 border-radius-box secondary">
             <alert-form-error :error-message="errorMessage" />
             <v-card-text>
@@ -52,6 +52,21 @@
               </div>
 
               <v-form>
+                  <v-text-field
+                  text--primary
+                  font-weigth-black
+                  hide-details
+                  class="my-2"
+                  text-grey
+                  single-line
+                  solo
+                  flat
+                  dense
+                  type="text"
+                  :label="$t('label.name')"
+                  :error-messages="formErrors ? formErrors.email : ''"
+                  v-model="formModel.name"
+                ></v-text-field>
                 <v-text-field
                   text--primary
                   font-weigth-black
@@ -89,7 +104,7 @@
                   type="password"
                   :label="$t('label.confirmPassword')"
                   :error-messages="formErrors ? formErrors.password : ''"
-                  v-model="formModel.password"
+                  v-model="formModel.password_confirmation"
                 ></v-text-field>
                 <v-text-field
                   hide-details
@@ -98,27 +113,23 @@
                   solo
                   flat
                   dense
-                  type="email"
+                  type="text"
                   :label="$t('label.referalCode')"
                   :error-messages="formErrors ? formErrors.email : ''"
-                  v-model="formModel.email"
+                  v-model="formModel.referrer_code"
                 ></v-text-field>
               </v-form>
             </v-card-text>
             <v-card-actions class="flex-column text-right">
-              <v-btn class="default-button white--text" block @click="login">
+              <v-btn class="default-button white--text" block @click="signUp">
                 {{ $t("label.signUp") }}
               </v-btn>
               <v-checkbox
-              hide-details
-                v-model="checkbox"
+                v-model="agree_checkbox"
                 :rules="[v => !!v || 'You must agree to continue!']"
                 required
                 label="I agree with KOL Mall Terms and Condition"
               ></v-checkbox>
-              <!-- <a href="#">
-                   {{ 'Terms and Condition' }}
-              </a> -->
               <a
                 :href="localePath('forgotPassword')"
                 class="caption text-right mt-2"
@@ -148,10 +159,13 @@ export default {
   asyncData() {
     return {
       formModel: {
-        type: 0,
+        name: "",
         email: "",
-        password: ""
-      }
+        password: "",
+        password_confirmation: "",
+        referrer_code: ""
+      },
+      agree_checkbox: false
     };
   },
   beforeCreate() {
@@ -160,29 +174,35 @@ export default {
     }
   },
   methods: {
-    async login() {
+    loginWithGoogle() {
+        this.$store.commit("setOverlay", true);
+        console.log('login with google');
+    },
+    async signUp() {
       this.$store.commit("setOverlay", true);
+      console.log(this.formModel);
 
-      try {
-        await this.$auth.loginWith("local", {
-          data: this.formModel
-        });
-        this.clearPreviousError();
-        this.$router.push("/");
-      } catch (err) {
-        this.handleApiErrors(err);
-      } finally {
-        this.$store.commit("setOverlay", false);
-      }
+    //   try {
+    //     await this.$auth.loginWith("local", {
+    //       data: this.formModel
+    //     });
+    //     this.clearPreviousError();
+    //     this.$router.push("/");
+    //   } catch (err) {
+    //     this.handleApiErrors(err);
+    //   } finally {
+    //     this.$store.commit("setOverlay", false);
+    //   }
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
+      console.log('login with facebook');
 
-      try {
-        await this.$auth.loginWith("facebook");
-      } catch (err) {
-        console.log(err);
-      }
+    //   try {
+    //     await this.$auth.loginWith("facebook");
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
     }
   }
 };
@@ -197,16 +217,16 @@ export default {
   margin: 15px 0;
 }
 
-h5:before, 
-        h5:after { 
-            content: ""; 
-            flex: 1 1; 
-            border-bottom: 2px solid lightgray; 
-            margin: auto; 
-            padding: 0 20px;
-        } 
-         h5 { 
-            display: flex; 
-            flex-direction: row; 
-        }
+h5:before,
+h5:after {
+  content: "";
+  flex: 1 1;
+  border-bottom: 2px solid lightgray;
+  margin: auto;
+  padding: 0 20px;
+}
+h5 {
+  display: flex;
+  flex-direction: row;
+}
 </style>

@@ -1,7 +1,6 @@
 <template>
   <v-app class="layouts__login">
-    <div
-      class="background">
+    <div>
     <v-content>
       <nuxt />
     </v-content>
@@ -30,9 +29,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.background {
-  width: 100%;
-  height: 100%;
-  background: url('../assets/img/bg.png') center center/cover;
-}
+
 </style>
