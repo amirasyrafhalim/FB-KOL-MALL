@@ -35,4 +35,5 @@ export default {
   height: 100%;
   background: url('../assets/img/bg.png') center center/cover;
 }
+
 </style>
