@@ -1,12 +1,11 @@
 <template>
   <v-app class="layouts__login">
     <div
-      class="background-overlay"
-      :style="{ backgroundColor: backgroundColor }"
-    ></div>
+      class="background">
     <v-content>
       <nuxt />
     </v-content>
+    </div>
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
@@ -22,9 +21,7 @@ export default {
     NotificationMessage
   },
   computed: {
-    backgroundColor() {
-      return process.env.THEME_PRIMARY;
-    },
+ 
     overlay() {
       return this.$store.state.overlay;
     }
@@ -33,11 +30,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.background-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+.background {
   width: 100%;
-  height: 50%;
+  height: 100%;
+  background: url('../assets/img/bg.png') center center/cover;
 }
 </style>
