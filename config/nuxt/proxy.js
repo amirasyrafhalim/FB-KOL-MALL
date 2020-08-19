@@ -1,12 +1,12 @@
 require("dotenv").config();
 
 export default {
-  "/api": {
+  "/v1": {
     target: process.env.API_URL,
     pathRewrite: {
-      "^/api": "/api"
+      "^/v1": "/v1"
     }
   }
 };
 
-// export default ["http://joyrewards-api.local.com/api/v1"];
+// export default ["http://kolstore-api.test/v1"];

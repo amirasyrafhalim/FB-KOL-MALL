@@ -1,6 +1,6 @@
 <template>
   <v-app class="layouts__login">
-    <div>
+    <div class="background">
     <v-content>
       <nuxt />
     </v-content>

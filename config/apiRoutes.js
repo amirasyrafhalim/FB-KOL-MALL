@@ -1,6 +1,7 @@
 export default {
   auth: {
-    login: "/api/v1/auth/login",
+    register: "/v1/register",
+    login: "/v1/oauth/token",
     logout: "/api/v1/auth/logout",
     user: "/api/v1/auth/user"
   },

@@ -1,6 +1,6 @@
 <template>
   <v-container id="pages__register" class="fill-height background" fluid>
-    <v-layout justify-center >
+    <v-layout justify-center>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="6">
           <v-card class="elevation-1 pa-3 border-radius-box secondary">
@@ -45,14 +45,14 @@
                   />{{ $t("label.loginWithGoogle") }}
                 </v-btn>
               </div>
-              <div class="login-option__divider">
+              <div class="login-option__divider mt-2">
                 <div class="login-option__divider--wrapper"></div>
                 <h5 class="mb-0 py-2 text-center">{{ $t("label.or") }}</h5>
                 <div class="login-option__divider--wrapper"></div>
               </div>
 
               <v-form>
-                  <v-text-field
+                <v-text-field
                   text--primary
                   font-weigth-black
                   hide-details
@@ -121,18 +121,32 @@
               </v-form>
             </v-card-text>
             <v-card-actions class="flex-column text-right">
-              <v-btn class="default-button white--text" block @click="signUp">
+              <v-btn class="default-button white--text mb-2" block @click="signUp">
                 {{ $t("label.signUp") }}
               </v-btn>
+
+              <v-row align="center" justify="center">
+                <h4 class="subtitle font-weight-bold black--text text-center">
+                  Already have an account?
+                </h4>
+                <a
+                  :href="localePath('login')"
+                  class=" text-h4 pl-1 "
+                  style="text-decoration:none;"
+                >
+                  Sign In
+                </a>
+              </v-row>
+
               <v-checkbox
                 v-model="agree_checkbox"
                 :rules="[v => !!v || 'You must agree to continue!']"
                 required
-                label="I agree with KOL Mall Terms and Condition"
+                label="I agree with KOL Store Terms and Condition"
               ></v-checkbox>
               <a
                 :href="localePath('forgotPassword')"
-                class="caption text-right mt-2"
+                class="caption text-right"
               >
                 Forgot Password?
               </a>
@@ -175,34 +189,33 @@ export default {
   },
   methods: {
     loginWithGoogle() {
-        this.$store.commit("setOverlay", true);
-        console.log('login with google');
+      this.$store.commit("setOverlay", true);
+      console.log("login with google");
     },
     async signUp() {
       this.$store.commit("setOverlay", true);
-      console.log(this.formModel);
-
-    //   try {
-    //     await this.$auth.loginWith("local", {
-    //       data: this.formModel
-    //     });
-    //     this.clearPreviousError();
-    //     this.$router.push("/");
-    //   } catch (err) {
-    //     this.handleApiErrors(err);
-    //   } finally {
-    //     this.$store.commit("setOverlay", false);
-    //   }
+        try {
+          var a = await this.$api.auth.register(this.formModel)
+          console.log('response', a)
+        //   this.handleApiSuccess(err);
+   
+          this.clearPreviousError();
+        //   this.$router.push("/");
+        } catch (err) {
+          this.handleApiErrors(err);
+        } finally {
+          this.$store.commit("setOverlay", false);
+        }
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
-      console.log('login with facebook');
+      console.log("login with facebook");
 
-    //   try {
-    //     await this.$auth.loginWith("facebook");
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
+      //   try {
+      //     await this.$auth.loginWith("facebook");
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
     }
   }
 };
