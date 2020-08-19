@@ -1,22 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-
-.v-application{
-    font-family: 'Montserrat' !important;
+.background {
+  width: 100%;
+  height: 100%;
+  background: url("../assets/img/bg.png") center center/cover;
 }
 .text-black {
-    color: #000000;
+  color: #000000;
 }
 .text-white {
-    color: #ffffff;
+  color: #ffffff;
 }
 .text-grey {
-    color: #666666;
+  color: #666666;
 }
-.bg-light-grey{
-    color: #000000!important;
+.bg-light-grey {
+  color: #000000 !important;
 }
-.bg-white{
-    background-color: #ffffff;
+.bg-white {
+  background-color: #ffffff;
 }
 .default-button {
   background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
@@ -24,14 +24,14 @@
   border-radius: 10px;
   opacity: 1;
 }
-.bg-gradient{
-    background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
+.bg-gradient {
+  background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
     0% no-repeat padding-box;
 }
-.radio-button-color{
-    color: #643CD1;
+.radio-button-color {
+  color: #643cd1;
 }
 .border-radius-box {
-    border-radius: 25px!important;
+  border-radius: 25px !important;
 }
 

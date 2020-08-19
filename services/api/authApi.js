@@ -1,8 +1,14 @@
 import BaseApi from "./baseApi";
+import { apiRoutes } from "@/config";
 
 export default class AuthApi extends BaseApi {
   constructor(axios, helper) {
     super(axios, helper, "auth");
+  }
+
+  register(payload) {
+    console.log(this.module)
+    return this.axios.$post(apiRoutes[this.module].register, payload);
   }
 
   getUser(searchQuery) {
