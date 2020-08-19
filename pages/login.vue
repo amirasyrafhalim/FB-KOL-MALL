@@ -2,12 +2,12 @@
   <v-container id="pages__login" class="fill-height" fluid>
     <v-layout>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="6" md="5">
+        <v-col cols="12" sm="3" md="5">
           <v-card class="elevation-1 pa-3 radius secondary">
             <alert-form-error :error-message="errorMessage" />
             <v-card-text>
               <div class="layout column align-center">
-                <h1 class="flex text-center mt-4 mb-2 primary--text">
+                <h1 class="flex text-center mt-2 mb-2 primary--text">
                   <v-img icon class="pl-1">
                     <img
                       :src="require('~/assets/Img/logo.png')"
@@ -19,7 +19,7 @@
                   </v-img>
                 </h1>
                 <h2
-                  class="flex text-xs-center font-weight-black black--text text-h2 mt-5 mb-5"
+                  class="flex text-xs-center black--text text-h2 mt-5 mb-5"
                 >
                   {{ $t("label.welcome") }}
                 </h2>
@@ -35,7 +35,7 @@
                 >
                   <img
                     width="auto"
-                    height="25px"
+                    height="22px"
                     class="pr-5"
                     src="../assets/Img/facebook.png"
                   />{{ $t("label.loginWithFacebook") }}
@@ -49,7 +49,7 @@
                 >
                   <img
                     width="auto"
-                    height="25px"
+                    height="20px"
                     class="pr-5"
                     src="../assets/Img/google.png"
                   />{{ $t("label.loginWithGoogle") }}
@@ -69,6 +69,7 @@
                   type="email"
                   :label="$t('label.email')"
                   :error-messages="formErrors ? formErrors.email : ''"
+                   v-model="formModel.email"
                   single-line
                   flat
                   solo
@@ -80,6 +81,7 @@
                   type="password"
                   :label="$t('label.password')"
                   :error-messages="formErrors ? formErrors.password : ''"
+                  v-model="formModel.password"
                   single-line
                   flat
                   solo
@@ -100,7 +102,7 @@
               </v-btn>
               <a
                 :href="localePath('forgotPassword')"
-                class="caption text-right mt-5 "
+                class="caption text-right mt-5"
                 style="text-decoration:none;"
                 
               >
