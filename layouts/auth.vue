@@ -20,7 +20,6 @@ export default {
     NotificationMessage
   },
   computed: {
- 
     overlay() {
       return this.$store.state.overlay;
     }
