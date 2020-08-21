@@ -18,6 +18,7 @@ export default {
         },
         logout: { url: apiRoutes.auth.logout, method: "post" },
         user: { url: apiRoutes.auth.user, method: "get", propertyName: "data" }
+        
       }
     },
     facebook: {

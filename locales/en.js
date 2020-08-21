@@ -130,7 +130,15 @@ export default {
     minPrice: "Min. price",
     maxPrice: "Max. price",
     welcome: "Welcome Back!",
-    yes: "Yes"
+    yes: "Yes",
+    referral: "Referral Code",
+    review: "Just a little about your company.",
+    next: "Next",
+    size: "What is your business size? (Monthly revenue)",
+    retail: "Do you have any retail store?",
+    website: "Do you have any website for your store? (URL)",
+    kindProduct: " What kind of product do you sell / plan to sell?",
+    rewards: "Get more rewards!"
   },
   menuTitle: {
     buyer: "Buyer",
