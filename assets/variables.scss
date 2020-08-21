@@ -8,5 +8,9 @@
 $main-font: "Montserrat";
 
 .v-application{
+    font-family: $main-font!important;
+}
+
+body{
     font-family: $main-font;
 }

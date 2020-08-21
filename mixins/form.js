@@ -15,7 +15,7 @@ export default {
     handleApiSuccess(res, redirectRoute) {
       this.clearPreviousError();
       this.$store.dispatch("showSnackbar", {
-        text: res.data.message || res.status_message || this.$t("message.successSubmit"),
+        text: res.message || this.$t("message.successSubmit"),
         color: "success",
       });
       if (redirectRoute) {
@@ -28,12 +28,12 @@ export default {
       let resBody = err.response;
       let code = resBody.status;
       let errMessage =
-        resBody && resBody.data && resBody.data.status_message
-          ? resBody.data.status_message
+        resBody && resBody.message
+          ? resBody.message
           : null;
 
       if (code == 422) {
-        let errors = resBody.data.errors;
+        let errors = resBody.errors;
         this.errorMessage = this.$t("message.invalidInput");
         this.formErrors = errors;
       } else if (code == 400) {

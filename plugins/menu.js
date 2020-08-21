@@ -2,38 +2,33 @@ export default ({ app }, inject) => {
   const menu = {
     admin: [
       {
-        icon: "mdi-view-dashboard",
         text: app.i18n.t("menuTitle.dashboard"),
         path: "/"
       },
       {
-        icon: "mdi-briefcase-account",
-        text: app.i18n.t("menuTitle.facebookPage"),
+        text: app.i18n.t("menuTitle.page"),
         path: "facebook_page"
       },
       {
-        icon: "mdi-order-bool-descending",
-        text: app.i18n.t("pageTitle.order.details"),
-        path: "orders"
-      },
-      {
-        icon: "mdi-hexagon-multiple",
         text: app.i18n.t("menuTitle.product"),
         path: "products"
       },
       {
-        icon: "mdi-calendar-star",
         text: app.i18n.t("menuTitle.campaign"),
         path: "campaigns" 
       },
       {
-        icon: "mdi-account-supervisor",
-        text: app.i18n.t("menuTitle.buyer"),
+        text: app.i18n.t("menuTitle.order"),
+        path: "orders"
+      },
+      
+      
+      {
+        text: app.i18n.t("menuTitle.analytic"),
         path: "buyers"
       },
       {
-        icon: "mdi-account-supervisor",
-        text: app.i18n.t("menuTitle.user"),
+        text: app.i18n.t("menuTitle.customer"),
         path: "users"
       }
     ],

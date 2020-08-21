@@ -14,7 +14,7 @@ export default {
         login: {
           url: apiRoutes.auth.login,
           method: "post",
-          propertyName: "data.access_token"
+          propertyName: "access_token"
         },
         logout: { url: apiRoutes.auth.logout, method: "post" },
         user: { url: apiRoutes.auth.user, method: "get", propertyName: "data" }

@@ -93,7 +93,9 @@ export default {
     reject: "Reject",
     reset: "Reset",
     remarks: "Remarks",
+    referral: "Referral Code",
     referalCode: "Referal Code (Optional)",
+    reward: "Get more rewards!",
     role: "Role",
     rules: "Rules",
     save: "Save",
@@ -134,13 +136,15 @@ export default {
     buyer: "Buyer",
     campaign: "Campaign",
     dashboard: "Dashboard",
-    facebookPage: "Facebook Page",
+    page: "Page",
     merchant: "Merchant",
     merchantShippings: "Merchant Shipping",
-    order: "View Order",
+    order: "Order",
     orderSummary: "Order Summary",
     product: "Product",
-    user: "User"
+    user: "User",
+    analytic: "Analytic",
+    customer: "Customer"
   },
   message: {
     confirmDelete: "Are you sure you want to delete this record?",
