@@ -1,3 +1,6 @@
+.v-application{
+  font-family: "Montserrat"!important;
+}
 .background {
   width: 100%;
   height: 100%;
@@ -12,6 +15,15 @@
 .text-grey {
   color: #666666;
 }
+.text-magenta {
+  color: #B63097;
+}
+.text-blue {
+  color: #4930B6;
+}
+.text-light-blue {
+  color: #3054B6
+}
 .bg-light-grey {
   color: #000000 !important;
 }
@@ -24,14 +36,28 @@
   border-radius: 10px;
   opacity: 1;
 }
-.bg-gradient {
+/* .bg-gradient {
   background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
     0% no-repeat padding-box;
-}
+} */
 .radio-button-color {
   color: #643cd1;
 }
 .border-radius-box {
   border-radius: 25px !important;
+}
+.border-radius-button {
+  border-radius: 10px !important;
+}
+.background-gradient {
+  width: 100%;
+  height: 100%;
+  background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
+    0% no-repeat padding-box;
+  position:fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+   bottom:0;
 }
 

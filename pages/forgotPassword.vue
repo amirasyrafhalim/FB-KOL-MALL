@@ -1,5 +1,5 @@
 <template>
-  <v-container id="forgotPassword__login" class="fill-height background-forgot-password" fluid >
+  <v-container id="forgotPassword__login" class="fill-height background-gradient" fluid >
     <v-layout>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
@@ -79,15 +79,5 @@ export default {
 };
 </script>
 <style scoped>
-.background-forgot-password {
-  width: 100%;
-  height: 100%;
-  background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
-    0% no-repeat padding-box;
-  position:fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-   bottom:0;
-}
+
 </style>

@@ -195,12 +195,9 @@ export default {
     async signUp() {
       this.$store.commit("setOverlay", true);
         try {
-          var a = await this.$api.auth.register(this.formModel)
-          console.log('response', a)
-        //   this.handleApiSuccess(err);
-   
-          this.clearPreviousError();
-        //   this.$router.push("/");
+          var res = await this.$api.auth.register(this.formModel)
+    
+          this.handleApiSuccess(res, 'login');
         } catch (err) {
           this.handleApiErrors(err);
         } finally {

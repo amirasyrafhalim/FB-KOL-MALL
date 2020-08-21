@@ -2,9 +2,8 @@ export default {
   auth: {
     register: "/v1/register",
     login: "/v1/oauth/token",
-    logout: "/api/v1/auth/logout",
+    logout: "/v1/auth/logout",
     user: "/v1/me"
-
   },
   enums: {
     campaignStatus: "/api/v1/enums/campaignStatus",
