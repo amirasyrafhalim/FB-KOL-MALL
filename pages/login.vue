@@ -19,7 +19,7 @@
                   </v-img>
                 </h1>
                 <h2
-                  class="flex text-xs-center black--text text-h2 mt-5 mb-5"
+                  class="flex text-xs-center black--text mt-5 mb-5"
                 >
                   {{ $t("label.welcome") }}
                 </h2>
@@ -61,7 +61,7 @@
                   >
                     Dont't have an account?
                   </h4>
-                  <a href="#" class=" text-h4 pl-1 " style="text-decoration:none;">
+                  <a :href="localePath('register')" class=" pl-1 " style="text-decoration:none;">
                     Sign Up Now
                   </a>
                 </v-row>
@@ -69,7 +69,7 @@
                   type="email"
                   :label="$t('label.email')"
                   :error-messages="formErrors ? formErrors.email : ''"
-                   v-model="formModel.email"
+                   v-model="formModel.username"
                   single-line
                   flat
                   solo
@@ -98,7 +98,7 @@
                 @click="login"
                 large
               >
-                <h4 class="text-white text-h3">{{ $t("label.login") }}</h4>
+                <h4 class="text-white">{{ $t("label.login") }}</h4>
               </v-btn>
               <a
                 :href="localePath('forgotPassword')"
@@ -139,9 +139,12 @@ export default {
   asyncData() {
     return {
       formModel: {
-        type: 0,
-        email: "",
-        password: ""
+       "grant_type": "password",
+        "client_id": process.env.CLIENT_ID,
+        "client_secret": process.env.CLIENT_SECRET,
+        "username": "",
+        "password":  "",
+        "scope": "*"
       }
     };
   },
@@ -151,17 +154,22 @@ export default {
     }
   },
   methods: {
+    loginWithGoogle(){
+
+    },
     async login() {
+      // console.log(this.formModel)
       this.$store.commit("setOverlay", true);
 
       try {
-        await this.$auth.loginWith("local", {
+        var a = await this.$auth.loginWith("local", {
           data: this.formModel
         });
-        this.clearPreviousError();
-        this.$router.push("/");
+        // this.clearPreviousError();
+        this.$router.push("/referralCode");
       } catch (err) {
-        this.handleApiErrors(err);
+        console.log(err)
+        // this.handleApiErrors(err);
       } finally {
         this.$store.commit("setOverlay", false);
       }
