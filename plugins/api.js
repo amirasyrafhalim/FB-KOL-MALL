@@ -15,6 +15,7 @@ import AuthApi from "@/services/api/authApi";
 import UserApi from "@/services/api/userApi";
 import PasswordApi from "@/services/api/passwordApi";
 import EmailApi from "../services/api/emailApi";
+import CategoryApi from "../services/api/categoryApi";
 
 export default ({ $axios, app }, inject) => {
   const api = {
@@ -34,7 +35,8 @@ export default ({ $axios, app }, inject) => {
     facebook: new FacebookApi($axios, app.$helper),
     buyerOrders: new BuyerOrderApi($axios, app.$helper),
     password: new PasswordApi($axios, app.$helper),
-    email: new EmailApi($axios, app.$helper)
+    email: new EmailApi($axios, app.$helper),
+    categories: new CategoryApi($axios, app.$helper)
   };
 
   inject("api", api);

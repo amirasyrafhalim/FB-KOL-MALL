@@ -9,7 +9,7 @@ const facebookGraphVersion = process.env.FACEBOOK_GRAPH_VERSION;
 export default {
   resetOnError: true,
   strategies: {
-    local: {
+    local: { 
       endpoints: {
         login: {
           url: apiRoutes.auth.login,
@@ -23,7 +23,7 @@ export default {
     },
     facebook: {
       client_id: facebookAppId,
-      authorization_endpoint: `https://facebook.com/${facebookGraphVersion}/dialog/oauth`,
+      authorization_endpoint: 'https://localhost/kolstore-api/public/v1/auth/fb-redirect',
       userinfo_endpoint: false,
       scope: ["email","pages_show_list"],
       redirect_uri: `${appUrl}/login`

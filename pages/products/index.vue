@@ -1,10 +1,21 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div id="pages__product">
     <form-search :module-name="moduleName" />
+    <v-row class="justify-space-between">
+      <v-col class="font-weight-bold">
+        {{ $t("pageTitle.product.total") }}
+      </v-col>
+      <v-col class="text-right">
+        <v-btn
+          color="primary"
+          class="text-right border-radius-button text-capitalize small-button"
+          :to="localePath({ name: 'products-create' })"
+        >
+          {{ $t("pageTitle.product.add") }}
+        </v-btn>
+      </v-col>
+    </v-row>
 
-    <v-btn color="primary" class="float-right" :to="localePath({ name: 'products-create' })">
-     {{$t('pageTitle.product.add')}}
-    </v-btn>
     <v-data-table
       :headers="headers"
       :items="records"
@@ -13,25 +24,32 @@
       class="elevation-1"
       hide-default-footer
     >
-      <template v-slot:item.image="{ item }">
+      <template v-slot:[`item.image`]="{ item }">
         <v-avatar size="50px" tile>
-          <v-img :src="item.image || '/default_avatar.png'"></v-img>
+          <v-img :src=" '/upload-image.png'"></v-img>
         </v-avatar>
       </template>
-
-      <template v-slot:top>
-        <data-table-top :title="$t('menuTitle.product')" />
+     
+      <template v-slot:[`item.category`]="{ item }">
+        <span v-for="(category, i) in item.category" :key="i">{{category.name}}</span>
       </template>
-      <template v-slot:item.actions="{ item }">
+
+       <template v-slot:[`item.status`]="{ item }">
+         
+        <span>{{item.status.description}}</span>
+      </template>
+
+      <template v-slot:[`item.actions`]="{ item }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              color="primary"
-              small
+            x-small
+              class="px-0"
+              text
               v-on="on"
               :to="localePath({ name: 'products-id', params: { id: item.id } })"
             >
-             <span>{{ $t("label.view") }}</span>
+              <img src="view.png" />
             </v-btn>
           </template>
           <span>{{ $t("label.view") }}</span>
@@ -40,8 +58,9 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              color="secondary"
-              small
+             x-small
+              class="px-0"
+              text
               v-on="on"
               :to="
                 localePath({
@@ -50,7 +69,7 @@
                 })
               "
             >
-              <span>{{ $t("label.edit") }}</span>
+              <img src="edit.png" />
             </v-btn>
           </template>
           <span>{{ $t("label.edit") }}</span>
@@ -58,8 +77,15 @@
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" @click="deleteItem(item.id)" color="error" small>
-              <span>{{ $t("label.delete") }}</span>
+            <v-btn
+             x-small
+              v-on="on"
+              class="px-0"
+              @click="deleteItem(item.id)"
+              text
+              color="transparent"
+            >
+              <img src="deletepurple.png" />
             </v-btn>
           </template>
           <span>{{ $t("label.delete") }}</span>
@@ -98,16 +124,17 @@ export default {
     return {
       moduleName: "products",
       headers: [
-        { text: app.i18n.t("label.name"), value: "name" },
-        { text: app.i18n.t("label.merchantId"), value: "merchant_id" },
-        { text: app.i18n.t("label.description"), value: "description" },
         { text: app.i18n.t("label.image"), value: "image" },
-        { text: app.i18n.t("label.status"), value: "status_description" },
+        { text: app.i18n.t("label.name"), value: "name" },
+        { text: app.i18n.t("label.category"), value: "category" },
+        
+
+        { text: app.i18n.t("label.status"), value: "status" },
         {
           text: app.i18n.t("label.actions"),
           value: "actions"
         }
-      ],
+      ]
     };
   },
   computed: {
@@ -115,8 +142,7 @@ export default {
       return this.$store.state[this.moduleName].records;
     }
   },
-  created() {
-  }
+  created() {}
   // methods: {
 };
 </script>

@@ -26,14 +26,16 @@ export default {
       console.log(err)
       this.clearPreviousError();
       let resBody = err.response;
-      let code = resBody.status;
+      console.log(resBody)
+      let code = resBody.data.http_code;
       let errMessage =
         resBody && resBody.message
           ? resBody.message
           : null;
 
       if (code == 422) {
-        let errors = resBody.errors;
+        let errors = resBody.data.errors;
+        console.log(errors)
         this.errorMessage = this.$t("message.invalidInput");
         this.formErrors = errors;
       } else if (code == 400) {

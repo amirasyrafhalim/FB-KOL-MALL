@@ -15,6 +15,7 @@ export default {
     campaignId: "Campaign Id",
     campaignName: "Campaign Name",
     cancel: "Cancel",
+    category: "Category",
     chargeByWeight: "Charge By Weight",
     city: "City",
     code: "Code",
@@ -86,7 +87,7 @@ export default {
     phoneNo: "Phone No",
     postcode: "Postcode",
     price: "Price",
-    product: "Products",
+    productName: "Product Name",
     products: "Products",
     quantity: "Quantity",
     quantityError: "Enter quantity in number",
@@ -195,7 +196,8 @@ export default {
     product: {
       add: "Add Product",
       detail: "Product Details",
-      edit: "Edit Product"
+      edit: "Edit Product",
+      total: "Total Product"
     },
     user: {
       add: "Add User",

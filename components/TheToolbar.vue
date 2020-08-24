@@ -1,21 +1,24 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-app-bar
-    color="primary"
-    :clipped-left="$vuetify.breakpoint.lgAndUp"
-    app
-    dark
-  >
-    <v-app-bar-nav-icon @click.stop="$store.commit('toggleDrawer')" />
-    <v-toolbar-title style="width: 500px" class="ml-0 pl-4">
-      <span class="hidden-sm-and-down">{{ appName }}</span>
-    </v-toolbar-title>
+  <v-app-bar color="white" clipped-left flat dense max-height="8%!important">
+    <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="$store.commit('toggleDrawer')" />
+    
     <v-spacer />
 
     <v-menu offset-y transition="scale-transition">
       <template v-slot:activator="{ on }">
         <v-btn icon large v-on="on">
           <v-avatar size="32px" item>
-            <img :src="(currentUser && currentUser.avatar) || '/default_avatar.png'" :alt="logoAlt" />
+            <img
+              :src="
+                (currentUser && currentUser.avatar) || '/default_avatar.png'
+              "
+              :alt="logoAlt"
+            />
+          </v-avatar>
+        </v-btn>
+        <v-btn icon large >
+          <v-avatar size="32px" item>
+            <img src="@/assets/Img/noti@2x.png" :alt="logoAlt" />
           </v-avatar>
         </v-btn>
       </template>

@@ -3,7 +3,7 @@
     <v-toolbar-title>{{ title }}</v-toolbar-title>
     <v-divider class="mx-4" inset vertical></v-divider>
     <slot>
-      <v-spacer/></v-spacer>
+      <v-spacer/>
     </slot>
   </v-toolbar>
 </template>

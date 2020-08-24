@@ -2,18 +2,19 @@
    <div>
       <v-container grid-list-xl fluid>
          <v-row wrap>
-            <v-col lg12>
-               <v-toolbar color="primary" dark flat dense>
-                  <v-toolbar-title class="subheading">
+            <v-col lg12 class="border border-radius-box">
+               <v-toolbar color="white" dark flat dense>
+                  <v-toolbar-title class="subheading black--text font-weight-bold">
                      {{ $t("pageTitle.product.detail") }}
                   </v-toolbar-title>
                   <v-spacer></v-spacer>
                </v-toolbar>
                <v-divider></v-divider>
-               <v-card text>
+               <!-- <v-card text> -->
+                
                   <v-container>
                      <v-row>
-                        <v-col cols="3" class="py-0">
+                        <v-col cols="2" class="py-0">
                            <v-subheader>{{ $t('label.image') }}</v-subheader>
                         </v-col>
                         <v-col cols="9" class="py-0">
@@ -27,15 +28,15 @@
                      </v-row>
 
                      <v-row>
-                        <v-col cols="3" class="py-0">
-                           <v-subheader>{{ $t('label.userName') }}</v-subheader>
+                        <v-col cols="2" class="py-0">
+                           <v-subheader>{{ $t('label.productName') }}</v-subheader>
                         </v-col>
                         <v-col cols="9" class="py-0">
                            <v-card-text>{{ record.name | "-" }}</v-card-text>
                         </v-col>
                      </v-row>
                      <v-row>
-                        <v-col cols="3" class="py-0">
+                        <v-col cols="2" class="py-0">
                            <v-subheader>{{ $t('label.description') }}</v-subheader>
                         </v-col>
                         <v-col cols="9" class="py-0">
@@ -43,11 +44,11 @@
                         </v-col>
                      </v-row>
                      <v-row>
-                        <v-col cols="3" class="py-0">
+                        <v-col cols="2" class="py-0">
                            <v-subheader>{{ $t('label.status') }}</v-subheader>
                         </v-col>
                         <v-col cols="9" class="py-0">
-                           <v-card-text>{{ record.status_description | "-" }}</v-card-text>
+                           <v-card-text>{{ record.status && record.status.description | "-" }}</v-card-text>
                         </v-col>
                      </v-row>
          
@@ -59,7 +60,7 @@
                         </v-col>
                      </v-row>
                   </v-container>
-               </v-card>
+               <!-- </v-card> -->
             </v-col>
          </v-row>
       </v-container>

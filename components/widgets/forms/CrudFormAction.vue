@@ -1,16 +1,16 @@
 <template>
   <div class="mt-3">
+     <v-btn :disabled="loading" :to="localePath(backPath)" class="mr-3 w-30">
+      {{ $t("label.back") }}
+    </v-btn>
     <v-btn
-      color="primary"
-      class="mr-3"
+      class="mr-3 w-30 bg-gradient white--text"
       :loading="loading"
       @click="$emit('submit')"
     >
-      {{ $t("label.submit") }}
+      {{ $t("label.save") }}
     </v-btn>
-    <v-btn :disabled="loading" :to="localePath(backPath)" class="mr-3">
-      {{ $t("label.back") }}
-    </v-btn>
+   
   </div>
 </template>
 

@@ -11,6 +11,10 @@ export default class AuthApi extends BaseApi {
     return this.axios.$post(apiRoutes[this.module].register, payload);
   }
 
+  loginFB(payload){
+    return this.axios.$post(apiRoutes[this.module].loginFB, payload);
+  }
+
   getUser(searchQuery) {
     let url = apiRoutes.auth.user;
     if (searchQuery) {

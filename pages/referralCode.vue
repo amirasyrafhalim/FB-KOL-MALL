@@ -93,6 +93,9 @@ export default {
     }
   },
   methods: {
+    submit(){
+      
+    }
   }
 };
 </script>

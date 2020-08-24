@@ -14,6 +14,7 @@
                   {{ $t("label.joinUs") }}
                 </h2>
               </div>
+              {{formErrors.name}}
               <div>
                 <v-btn
                   color="#3b5998"
@@ -55,7 +56,6 @@
                 <v-text-field
                   text--primary
                   font-weigth-black
-                  hide-details
                   class="my-2"
                   text-grey
                   single-line
@@ -64,13 +64,12 @@
                   dense
                   type="text"
                   :label="$t('label.name')"
-                  :error-messages="formErrors ? formErrors.email : ''"
+                  :error-messages="formErrors ? formErrors.name : ''"
                   v-model="formModel.name"
                 ></v-text-field>
                 <v-text-field
                   text--primary
                   font-weigth-black
-                  hide-details
                   class="my-2"
                   text-grey
                   single-line
@@ -83,7 +82,6 @@
                   v-model="formModel.email"
                 ></v-text-field>
                 <v-text-field
-                  hide-details
                   class="my-2"
                   single-line
                   solo
@@ -95,7 +93,6 @@
                   v-model="formModel.password"
                 ></v-text-field>
                 <v-text-field
-                  hide-details
                   class="my-2"
                   single-line
                   solo
@@ -107,7 +104,6 @@
                   v-model="formModel.password_confirmation"
                 ></v-text-field>
                 <v-text-field
-                  hide-details
                   class="my-2"
                   single-line
                   solo
@@ -115,7 +111,6 @@
                   dense
                   type="text"
                   :label="$t('label.referalCode')"
-                  :error-messages="formErrors ? formErrors.email : ''"
                   v-model="formModel.referrer_code"
                 ></v-text-field>
               </v-form>
@@ -199,6 +194,7 @@ export default {
     
           this.handleApiSuccess(res, 'login');
         } catch (err) {
+          console.log(err);
           this.handleApiErrors(err);
         } finally {
           this.$store.commit("setOverlay", false);
