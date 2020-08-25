@@ -47,6 +47,10 @@ export default {
     getDetail: "/v1/merchants/detail",
     getOneOrUpdateOrDelete: "/v1/merchants/{id}"
   },
+  merchantPages: {
+    getAllOrCreate: "/v1/merchant-pages",
+    getOneOrUpdateOrDelete: "/v1/merchant-pages/{id}"
+  },
   merchantPageTokens: {
     getAllOrCreate: "/v1/merchantPageTokens",
     getOneOrUpdateOrDelete: "/v1/merchantPageTokens/{id}",

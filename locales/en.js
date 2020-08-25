@@ -21,6 +21,7 @@ export default {
     code: "Code",
     complete: "Completed",
     confirmPassword: "Confirm Password",
+    connectWithFacebook: "Conenct with Facebook",
     continue: "Continue",
     country: "Country",
     courierName: "Courier Name",
@@ -48,6 +49,7 @@ export default {
     facebookId: "Facebook Id",
     facebookToken: "Facebook Token",
     gender: "Gender",
+    id: "ID",
     image: "Image",
     inactive: "Inactive",
     invoiceNo: "Invoice No",
@@ -179,6 +181,7 @@ export default {
       edit: "Edit Company"
     },
     facebookPage: {
+      title: "Page Shop",
       add: "Add Facebook Page",
       detail: "Facebook Page Details",
       edit: "Edit Facebook Page"
