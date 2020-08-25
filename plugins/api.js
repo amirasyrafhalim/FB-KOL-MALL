@@ -7,6 +7,7 @@ import DropdownApi from "../services/api/dropdownApi";
 import EnumApi from "@/services/api/enumApi";
 import FacebookApi from "../services/api/facebookApi";
 import MerchantApi from "../services/api/merchantApi";
+import MerchantPageApi from "../services/api/merchantPageApi";
 import MerchantPageTokenApi from "../services/api/merchantPageTokenApi";
 import MerchantShippingApi from "../services/api/merchantShippingApi";
 import OrderApi from "../services/api/orderApi";
@@ -27,6 +28,7 @@ export default ({ $axios, app }, inject) => {
     auth: new AuthApi($axios, app.$helper),
     user: new UserApi($axios, app.$helper),
     merchants: new MerchantApi($axios, app.$helper),
+    merchantPages: new MerchantPageApi($axios, app.$helper),
     merchantPageTokens: new MerchantPageTokenApi($axios, app.$helper),
     merchantShippings: new MerchantShippingApi($axios, app.$helper),
     products: new ProductApi($axios, app.$helper),

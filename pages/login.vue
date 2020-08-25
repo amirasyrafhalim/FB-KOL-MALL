@@ -159,12 +159,12 @@ export default {
 
    if(this.$route.query.token){
      this.$store.commit('setToken', this.$route.query.token);
-     this.loginFB();
+     this.signUpFB();
    }
     
   },
   methods: {
-    async loginFB(){
+    async signUpFB(){
        try {
       var auth = this.$store.state.auth;
       const { data } = await this.$api.auth.loginFB({token: this.$route.query.token})

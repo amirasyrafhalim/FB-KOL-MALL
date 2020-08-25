@@ -7,7 +7,7 @@ export default ({ app }, inject) => {
       },
       {
         text: app.i18n.t("menuTitle.page"),
-        path: "facebook_page"
+        path: "facebookPage"
       },
       {
         text: app.i18n.t("menuTitle.product"),
