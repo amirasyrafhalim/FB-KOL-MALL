@@ -112,8 +112,8 @@ export default {
       }
     };
   },
-
-   async next() {
+  methods: {
+     async next() {
       // console.log(this.formModel)
       // this.$store.commit("setOverlay", true);
 
@@ -136,7 +136,6 @@ export default {
       this.$store.commit("setOverlay", true);
     }
   },
-  methods: {
   }
 };
 </script>

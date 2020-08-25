@@ -30,8 +30,8 @@ export default {
     setPagination(state, pagination) {
       state.pagination.currentPage = pagination.current_page;
       state.pagination.lastPage = pagination.last_page;
-      state.pagination.perPage = pagination.page_size;
-      state.pagination.total = pagination.total_record;
+      state.pagination.perPage = pagination.per_page;
+      state.pagination.total = pagination.total;
     },
     resetPagination(state) {
       state.pagination.currentPage = 1;
@@ -48,11 +48,12 @@ export default {
           this.$helper.stringifyParams(params)
         );
         commit("setSearchModel", params);
-        commit("setRecords", res.data.records);
-        commit("setPagination", res.data.pagination);
+        commit("setRecords", res.data);
+        commit("setPagination", res.meta);
       } catch (err) {
-        let resBody = err.response;
-        let errMessage = resBody.data.status_message;
+        let resBody = err;
+        console.log(resBody)
+        let errMessage = resBody
         dispatch(
           "showSnackbar",
           {

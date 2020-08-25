@@ -3,7 +3,7 @@
     <the-sidebar />
     <the-toolbar />
     <v-content>
-      <v-container fluid>
+      <v-container fluid class="pa-10">
         <nuxt />
       </v-container>
     </v-content>

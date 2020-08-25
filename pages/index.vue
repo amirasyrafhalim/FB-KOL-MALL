@@ -1,16 +1,8 @@
 <template>
-  <div class="my-5">
-    <v-row class="d-flex justify-end">
-       <v-col cols="auto" class="my-auto">
-        <img src="@/assets/img/noti@2x.png" />
-      </v-col>
-      <v-col cols="auto">
-        <img src="@/assets/img/company-dp@2x.png" />
-      </v-col>
-    </v-row>
+  <div>
     <v-row class="no-gutters mb-4">
       <v-col cols="auto">
-        <h4 class="mb-4">Total Pages</h4>
+        <h4 class="mb-4 button">Total Pages</h4>
         <v-card
           class=" d-inline-block dashboard-card ma-2"
           outlined
@@ -187,7 +179,9 @@
 </template>
 
 <script>
+
 export default {
+ 
   asyncData() {
     return {
       user: [],

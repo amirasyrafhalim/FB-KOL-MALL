@@ -4,13 +4,13 @@
     v-model="drawer"
     :clipped="$vuetify.breakpoint.lgAndUp"
     app
-    flat
+
   >
-  <div class="pt-10 pb-7 text-center">
-    <img src="logo-black.png"  width="auto" cover />
+  <div class="py-10 text-center">
+    <img src="logo-white.png"  width="auto" />
   </div>
   
-    <v-list rounded nav class="pr-0" active-class="blue--text">
+    <v-list rounded nav class="pr-0 pt-0" active-class="blue--text">
       <template v-for="item in items" active-class="blue--text">
         <v-list-group
           v-if="item.children"
@@ -94,5 +94,8 @@ export default {
 }
 .v-list-item__content {
     padding: 12px 32px;
+}
+.theme--light.v-list-item--active:hover::before, .theme--light.v-list-item--active::before {
+    opacity: 0!important;
 }
 </style>

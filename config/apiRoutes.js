@@ -2,89 +2,94 @@ export default {
   auth: {
     register: "/v1/register",
     login: "/v1/oauth/token",
+    loginFB: "/v1/auth/login",
     logout: "/v1/auth/logout",
     user: "/v1/me"
   },
   enums: {
-    campaignStatus: "/api/v1/enums/campaignStatus",
-    campaignPackageStatus: "/api/v1/enums/campaignPackageStatus",
-    merchantStatus: "/api/v1/enums/merchantStatus",
-    productStatus: "/api/v1/enums/productStatus",
-    userStatus: "/api/v1/enums/userStatus",
-    userVerifyStatus: "/api/v1/enums/userVerifyStatus",
-    deliveryMethod: "/api/v1/enums/deliveryMethod",
-    paymentStatus: "/api/v1/enums/paymentStatus",
-    deliveryStatus: "/api/v1/enums/deliveryStatus",
-    userRole: "/api/v1/enums/userRole"
+    campaignStatus: "/v1/enums/campaignStatus",
+    campaignPackageStatus: "/v1/enums/campaignPackageStatus",
+    merchantStatus: "/v1/enums/merchantStatus",
+    productStatus: "/v1/enums/productStatus",
+    userStatus: "/v1/enums/userStatus",
+    userVerifyStatus: "/v1/enums/userVerifyStatus",
+    deliveryMethod: "/v1/enums/deliveryMethod",
+    paymentStatus: "/v1/enums/paymentStatus",
+    deliveryStatus: "/v1/enums/deliveryStatus",
+    userRole: "/v1/enums/userRole"
   },
   campaigns: {
-    getAllOrCreate: "/api/v1/campaigns",
-    getOneOrUpdateOrDelete: "/api/v1/campaigns/{id}",
-    getSummary: "/api/v1/campaigns/orderSummary",
-    streamEnd: "/api/v1/campaigns/streamEnd/{id}",
-    streamPause: "/api/v1/campaigns/streamPause/{id}",
-    streamStart: "/api/v1/campaigns/streamStart/{id}",
-    orderCount: "/api/v1/campaigns/orderCount/{id}",
-    orderLog: "/api/v1/campaigns/orderLog/{id}",
-    streamRefresh: "/api/v1/campaigns/streamRefresh/{id}"
+    getAllOrCreate: "/v1/campaigns",
+    getOneOrUpdateOrDelete: "/v1/campaigns/{id}",
+    getSummary: "/v1/campaigns/orderSummary",
+    streamEnd: "/v1/campaigns/streamEnd/{id}",
+    streamPause: "/v1/campaigns/streamPause/{id}",
+    streamStart: "/v1/campaigns/streamStart/{id}",
+    orderCount: "/v1/campaigns/orderCount/{id}",
+    orderLog: "/v1/campaigns/orderLog/{id}",
+    streamRefresh: "/v1/campaigns/streamRefresh/{id}"
+  },
+  categories: {
+    getAllOrCreate: "/v1/categories",
+    getOneOrUpdateOrDelete: "/v1/campaigns/{id}",
   },
   campaignPackages: {
-    getAllOrCreate: "/api/v1/campaigns/{campaignId}/campaignPackages",
-    getOneOrUpdateOrDelete: "/api/v1/campaigns/{campaignId}/campaignPackages/{id}"
+    getAllOrCreate: "/v1/campaigns/{campaignId}/campaignPackages",
+    getOneOrUpdateOrDelete: "/v1/campaigns/{campaignId}/campaignPackages/{id}"
   },
 
   campaignShippings: {
-    getAllOrCreate: "/api/v1/campaigns/{campaignId}/campaignShippings",
-    getOneOrUpdateOrDelete: "/api/v1/campaigns/{campaignId}/campaignShippings/{id}"
+    getAllOrCreate: "/v1/campaigns/{campaignId}/campaignShippings",
+    getOneOrUpdateOrDelete: "/v1/campaigns/{campaignId}/campaignShippings/{id}"
   },
   merchants: {
-    getAllOrCreate: "/api/v1/merchants",
-    getDetail: "/api/v1/merchants/detail",
-    getOneOrUpdateOrDelete: "/api/v1/merchants/{id}"
+    getAllOrCreate: "/v1/merchants",
+    getDetail: "/v1/merchants/detail",
+    getOneOrUpdateOrDelete: "/v1/merchants/{id}"
   },
   merchantPageTokens: {
-    getAllOrCreate: "/api/v1/merchantPageTokens",
-    getOneOrUpdateOrDelete: "/api/v1/merchantPageTokens/{id}",
-    debugPageToken: "/api/v1/merchantPageTokens/{id}/debugMerchantPageToken"
+    getAllOrCreate: "/v1/merchantPageTokens",
+    getOneOrUpdateOrDelete: "/v1/merchantPageTokens/{id}",
+    debugPageToken: "/v1/merchantPageTokens/{id}/debugMerchantPageToken"
   },
   products: {
-    getAllOrCreate: "/api/v1/products",
-    getOneOrUpdateOrDelete: "/api/v1/products/{id}"
+    getAllOrCreate: "/v1/products",
+    getOneOrUpdateOrDelete: "/v1/products/{id}"
   },
   merchantShippings: {
-    getAllOrCreate: "/api/v1/merchantShippings",
-    getOneOrUpdateOrDelete: "/api/v1/merchantShippings/{id}"
+    getAllOrCreate: "/v1/merchantShippings",
+    getOneOrUpdateOrDelete: "/v1/merchantShippings/{id}"
   },
   dropdown: {
-    getAllCountry: "/api/v1/dropdown/country",
-    getAllPostcode: "/api/v1/dropdown/postcode",
-    getAllState: "/api/v1/dropdown/state"
+    getAllCountry: "/v1/dropdown/country",
+    getAllPostcode: "/v1/dropdown/postcode",
+    getAllState: "/v1/dropdown/state"
   },
   buyers: {
-    getAllOrCreate: "/api/v1/buyers",
-    getOneOrUpdateOrDelete: "/api/v1/buyers/{id}"
+    getAllOrCreate: "/v1/buyers",
+    getOneOrUpdateOrDelete: "/v1/buyers/{id}"
   },
   orders: {
-    getAllOrCreate: "/api/v1/orders",
-    getOneOrUpdateOrDelete: "/api/v1/orders/{id}",
-    updateDelivery: "/api/v1/orders/{id}/updateDelivery",
-    updatePickup: "/api/v1/orders/{id}/updatePickup"
+    getAllOrCreate: "/v1/orders",
+    getOneOrUpdateOrDelete: "/v1/orders/{id}",
+    updateDelivery: "/v1/orders/{id}/updateDelivery",
+    updatePickup: "/v1/orders/{id}/updatePickup"
   },
   facebook: {
-    video: "/api/v1/facebook/addVideo"
+    video: "/v1/facebook/addVideo"
   },
   buyerOrders: {
-    addBuyerOrder: "/api/v1/buyerOrder"
+    addBuyerOrder: "/v1/buyerOrder"
   },
   password: {
-    resetPassword: "/api/v1/password/reset",
-    newPassword: "/api/v1/password/update"
+    resetPassword: "/v1/password/reset",
+    newPassword: "/v1/password/update"
   },
   user: {
-    getAllOrCreate: "/api/v1/users",
-    getOneOrUpdateOrDelete: "/api/v1/users/{id}"
+    getAllOrCreate: "/v1/users",
+    getOneOrUpdateOrDelete: "/v1/users/{id}"
   },
   email: {
-    verifiedEmail: "/api/v1/email/verify"
+    verifiedEmail: "/v1/email/verify"
   },
 };

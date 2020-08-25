@@ -30,7 +30,7 @@
                   block
                   dark
                   large
-                  @click="loginWithFacebook"
+                  @click="loginWithFacebook()"
                   class="mt-5"
                 >
                   <img
@@ -128,6 +128,7 @@
 import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 
 import formMixin from "@/mixins/form";
+import { apiRoutes } from "@/config";
 
 export default {
   auth: "guest",
@@ -153,35 +154,60 @@ export default {
       this.$store.commit("setOverlay", true);
     }
   },
+  created(){
+    console.log(this.$route.query.token)
+
+   if(this.$route.query.token){
+     this.$store.commit('setToken', this.$route.query.token);
+     this.loginFB();
+   }
+    
+  },
   methods: {
+    async loginFB(){
+       try {
+      var auth = this.$store.state.auth;
+      const { data } = await this.$api.auth.loginFB({token: this.$route.query.token})
+      console.log('data', data)
+      this.$auth.setToken("local", "Bearer " + data.token);
+      this.$auth.setStrategy("local");
+      this.$store.commit("setOverlay", false);
+      await this.$auth.fetchUser();
+      
+      this.$router.push("/referralCode");
+    } catch (err) {
+      console.log(err);
+    }
+    },
     loginWithGoogle(){
 
     },
     async login() {
-      // console.log(this.formModel)
       this.$store.commit("setOverlay", true);
 
       try {
         var a = await this.$auth.loginWith("local", {
           data: this.formModel
         });
-        // this.clearPreviousError();
         this.$router.push("/referralCode");
       } catch (err) {
         console.log(err)
-        // this.handleApiErrors(err);
       } finally {
         this.$store.commit("setOverlay", false);
       }
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
+       window.location.href = "https://localhost/kolstore-api/public/v1/auth/fb-redirect";
 
-      try {
-        await this.$auth.loginWith("facebook");
-      } catch (err) {
-        console.log(err);
-      }
+      
+
+       
+      // try {
+      
+      // } catch (err) {
+      //   console.log(err);
+      // }
     }
   }
 };

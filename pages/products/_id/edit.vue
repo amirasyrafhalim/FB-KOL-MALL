@@ -1,16 +1,20 @@
 <template>
-   <v-card id="pages__products-create">
-      <v-toolbar color="primary" dark flat dense>
-         <v-toolbar-title class="subheading">
+   <!-- <v-card id="pages__products-create"> -->
+     <div>
+         <v-toolbar color="white" dark flat dense>
+         <v-toolbar-title class="subheading font-weight-bold black--text" >
             {{ $t("pageTitle.product.edit") }}
          </v-toolbar-title>
          <v-spacer></v-spacer>
       </v-toolbar>
       <v-divider></v-divider>
-      <v-card-text>
-         <form-basic :record="record" />
-      </v-card-text>
-   </v-card>
+       <form-basic :record="record" />
+     </div>
+      
+      <!-- <v-card-text> -->
+        
+      <!-- </v-card-text> -->
+   <!-- </v-card> -->
 </template>
 
 <script>

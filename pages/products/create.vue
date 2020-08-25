@@ -1,16 +1,14 @@
 <template>
-   <v-card id="pages__product-create">
-      <v-toolbar color="primary" dark flat dense>
-         <v-toolbar-title class="subheading">
+   <div id="pages__product-create">
+      <v-toolbar color="white" dark flat dense>
+         <v-toolbar-title class="black--text font-weight-bold">
             {{ $t("pageTitle.product.add") }}
          </v-toolbar-title>
          <v-spacer></v-spacer>
       </v-toolbar>
       <v-divider></v-divider>
-      <v-card-text>
          <form-basic/>
-      </v-card-text>
-   </v-card>
+   </div>
 </template>
 
 <script>
@@ -22,5 +20,7 @@
 </script>
 
 <style scoped>
-
+hr {
+    overflow: hidden!important;
+}
 </style>

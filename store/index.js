@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 export const state = () => ({
+  token: null,
   appName: process.env.APP_NAME,
   drawer: true,
   overlay: false,
@@ -50,6 +51,9 @@ export const mutations = {
     state.snackbar.text = data.text;
     state.snackbar.color = data.color;
   },
+  setToken(state, data){
+    state.token = data
+  }
 };
 
 export const actions = {
