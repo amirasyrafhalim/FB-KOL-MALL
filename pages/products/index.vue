@@ -26,7 +26,7 @@
     >
       <template v-slot:[`item.image`]="{ item }">
         <v-avatar size="50px" tile>
-          <v-img :src=" '/upload-image.png'"></v-img>
+          <v-img :src=" item.image || '/upload-image.png'"></v-img>
         </v-avatar>
       </template>
      

@@ -174,6 +174,7 @@ export default {
       this.$store.commit("setOverlay", false);
       await this.$auth.fetchUser();
       
+      this.$router.push("/referralCode");
     } catch (err) {
       console.log(err);
     }

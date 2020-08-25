@@ -157,8 +157,7 @@ export default {
       
         this.formModel.status = this.formModel.status == true ? 1 : 0;
 
-        console.log(this.isCreate)
-        console.log('id', this.record.id)
+      
       try {
         let res = this.isCreate
           ? await this.$api.products.create(this.formModel)
