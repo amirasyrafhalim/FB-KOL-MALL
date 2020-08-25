@@ -8,23 +8,67 @@
     >
       {{ $t("pageTitle.campaign.add") }}
     </v-btn>
+
     <v-data-table
       :headers="headers"
       :items="records.slice().reverse()"
       :loading="isFetching"
       :items-per-page="pagination.perPage"
-      class="elevation-1"
-      hide-default-footer
+      hide-default-footer=""
     >
       <template v-slot:top>
         <data-table-top :title="$t('menuTitle.campaign')" />
       </template>
-
-      <template v-slot:item.actions="{ item }">
+      <template class v-slot:[`item.status`]="{ item }">
+        <span>{{ item.status.description }}</span>
+      </template>
+      <template class v-slot:[`item.actions`]="{ item }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="ma-2"
+              x-small
+              class="px-0"
+              text
+              v-on="on"
+              :to="
+                localePath({
+                  name: 'campaigns-id-addPackage',
+                  params: { id: item.id }
+                })
+              "
+            >
+              <v-icon color="purple darken-4">mdi-pencil-plus</v-icon>
+            </v-btn>
+          </template>
+          <span>Add Package</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              x-small
+              class="px-0"
+              text
+              v-on="on"
+              :to="
+                localePath({
+                  name: 'campaigns-id-addPackage',
+                  params: { id: item.id }
+                })
+              "
+            >
+              <img :src="require('~/assets/Img/view.png')" />
+            </v-btn>
+          </template>
+          <span>{{ $t("label.view") }}</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              x-small
+              class="px-0"
+              text
               v-on="on"
               :to="
                 localePath({
@@ -32,10 +76,8 @@
                   params: { id: item.id }
                 })
               "
-              color="secondary"
-              small
             >
-              {{ $t("label.edit") }}
+              <img :src="require('~/assets/Img/edit.png')" />
             </v-btn>
           </template>
           <span>{{ $t("label.edit") }}</span>
@@ -44,52 +86,14 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="ma-2"
+              x-small
               v-on="on"
-              :to="
-                localePath({
-                  name: 'campaigns-id-liveConsole',
-                  params: { id: item.id }
-                })
-              "
-              color="blue darken-1"
-              small
-            >
-              <span class="white--text">{{ $t("label.facebook") }} </span>
-            </v-btn>
-          </template>
-          <span>{{ $t("label.facebook") }}</span>
-        </v-tooltip>
-
-        <!-- <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-               v-on="on"
-               :to="
-                localePath({
-                  name: 'campaigns-id-summary',
-                  params: { id: item.id }
-                })
-              "
-               color="info"
-               small
-            >
-              <span class="black--text">{{ $t("label.summary") }}</span>
-            </v-btn>
-          </template>
-          <span>{{ $t("label.summary") }}</span>
-        </v-tooltip> -->
-
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              :hidden="hidden"
-              v-on="on"
+              class="px-0"
               @click="deleteItem(item.id)"
-              color="error"
-              small
+              text
+              color="transparent"
             >
-              {{ $t("label.delete") }}
+              <img :src="require('~/assets/Img/deletepurple.png')" />
             </v-btn>
           </template>
           <span>{{ $t("label.delete") }}</span>
@@ -127,37 +131,41 @@ export default {
     return {
       moduleName: "campaigns",
       headers: [
-        { text: app.i18n.t("label.name"), value: "name" },
-        { text: app.i18n.t("label.merchantName"), value: "merchant_name" },
-        { text: app.i18n.t("label.streamId"), value: "stream_id" },
-        { text: app.i18n.t("label.streamStartAt"), value: "stream_start_at" },
-        { text: app.i18n.t("label.streamEndAt"), value: "stream_end_at" },
+        { text: app.i18n.t("label.campaignName"), value: "name" },
+        { text: app.i18n.t("label.streamId"), value: "video_id" },
+        { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
         {
           text: app.i18n.t("label.status"),
-          value: "status_description",
+          value: "status",
           align: "center"
         },
         { text: app.i18n.t("label.actions"), value: "actions", align: "center" }
       ],
       hidden: false
+      // records: [
+      //   // {id:1,
+      //   //   name: "test"
+
+      // ]
     };
   },
   created() {
-    this.fetchMerchant();
+    // this.fetchMerchant();
     // this.hidden = this.$store.getters.isAdmin ? true : false;
   },
   computed: {
-    merchant() {
-      return this.$store.state.merchants.records;
-    },
+    // merchant() {
+    //   return this.$store.state.merchants.records;
+    //   console.log(this.$store.state.merchants.records)
+    // },
     records() {
-      return this.$store.state[this.moduleName].records;;
+      return this.$store.state[this.moduleName].records;
     }
   },
   methods: {
-    async fetchMerchant() {
-      await this.$store.dispatch("merchants/fetchItems");
-    }
+    // async fetchMerchant() {
+    //   await this.$store.dispatch("merchants/fetchItems");
+    // }
   }
 };
 </script>
