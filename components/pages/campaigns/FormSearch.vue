@@ -2,22 +2,17 @@
   <v-card class="components__merchants-form-search mb-5">
     <v-card-text class="pt-0">
       <v-row>
-        <v-col sm="6" md="4">
-          <v-text-field
-            :label="$t('label.name')"
-            v-model="formModel.name"
-            hide-details
-          >
-          </v-text-field>
-        </v-col>
-        <v-col sm="6" md="4">
+        <v-col sm="2" md="2">
           <v-text-field
             :label="$t('label.streamId')"
             v-model="formModel.stream_id"
             hide-details
+            elevation="20"
+            solo
+            dense
           ></v-text-field>
         </v-col>
-        <v-col sm="6" md="4">
+        <v-col sm="2" md="2">
           <v-select
             :items="statusEnums"
             :label="$t('label.status')"
@@ -26,11 +21,24 @@
             hide-details
             v-model="formModel.status"
             clearable
+            elevation="20"
+            solo
+            dense
           ></v-select>
         </v-col>
+        <v-col sm="2" md="2">
+          <v-text-field
+            :label="$t('label.name')"
+            v-model="formModel.name"
+            hide-details
+            elevation="20"
+            solo
+            dense
+          >
+          </v-text-field>
+        </v-col>
+         <search-form-action v-on:search="search()" v-on:reset="reset()" />
       </v-row>
-
-      <search-form-action v-on:search="search()" v-on:reset="reset()" />
     </v-card-text>
   </v-card>
 </template>
@@ -58,21 +66,25 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
-      routeName: "campaignStatus",
-      stateKey: "statusEnums"
-    });
+    // this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
+    //   routeName: "campaignStatus",
+    //   stateKey: "statusEnums"
+    // });
   },
   methods: {
-     async search() {
-        await this.$store.dispatch(this.moduleName + "/fetchItems",  {...this.formModel});
-        await this.$store.dispatch(this.moduleName + "/resetPagination");
-      },
-       reset() {
-        this.$helper.clearSearchForm( this.formModel);
-        this.$store.dispatch(this.moduleName + "/fetchItems",  {...this.formModel});
-        this.$store.dispatch(this.moduleName + "/resetPagination");
-      }
+    async search() {
+      await this.$store.dispatch(this.moduleName + "/fetchItems", {
+        ...this.formModel
+      });
+      await this.$store.dispatch(this.moduleName + "/resetPagination");
+    },
+    reset() {
+      this.$helper.clearSearchForm(this.formModel);
+      this.$store.dispatch(this.moduleName + "/fetchItems", {
+        ...this.formModel
+      });
+      this.$store.dispatch(this.moduleName + "/resetPagination");
+    }
   }
 };
 </script>
