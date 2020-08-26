@@ -57,7 +57,7 @@
                 })
               "
             >
-              <img :src="require('~/assets/Img/view.png')" />
+              <img src="/view.png" />
             </v-btn>
           </template>
           <span>{{ $t("label.view") }}</span>
@@ -77,7 +77,7 @@
                 })
               "
             >
-              <img :src="require('~/assets/Img/edit.png')" />
+              <img src="/edit.png" />
             </v-btn>
           </template>
           <span>{{ $t("label.edit") }}</span>
@@ -93,7 +93,7 @@
               text
               color="transparent"
             >
-              <img :src="require('~/assets/Img/deletepurple.png')" />
+              <img src="/deletepurple.png" />
             </v-btn>
           </template>
           <span>{{ $t("label.delete") }}</span>

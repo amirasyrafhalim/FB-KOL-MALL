@@ -40,22 +40,22 @@ export const actions = {
     } finally {
       commit("setIsFetching", false);
     }
+  },
+  async fetchDetail({ commit, dispatch, state }) {
+    try {
+      let res = await this.$api[state.moduleName].getDetail();
+      commit("setRecord", res.data);
+    } catch (err) {
+      let resBody = err.response;
+      let errMessage = resBody.data.status_message;
+      dispatch(
+        "showSnackbar",
+        {
+          text: errMessage || this.app.i18n.t("message.notFound"),
+          color: "error"
+        },
+        { root: true }
+      );
+    }
   }
-  // async fetchDetail({ commit, dispatch, state }) {
-  //   try {
-  //     let res = await this.$api[state.moduleName].getDetail();
-  //     commit("setRecord", res.data);
-  //   } catch (err) {
-  //     let resBody = err.response;
-  //     let errMessage = resBody.data.status_message;
-  //     dispatch(
-  //       "showSnackbar",
-  //       {
-  //         text: errMessage || this.app.i18n.t("message.notFound"),
-  //         color: "error"
-  //       },
-  //       { root: true }
-  //     );
-  //   }
-  // }
 };
