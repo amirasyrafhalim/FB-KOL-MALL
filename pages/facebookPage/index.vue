@@ -19,7 +19,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col v-if="!merchantPage">
+        <v-col v-if="merchantPage.length == 0">
           <v-card class="secondary pa-4">
             <v-card-title>
               Facebook Account
@@ -41,7 +41,7 @@
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col v-else>
           <v-card class="secondary pa-4">
             <v-card-title>
               {{ $t("pageTitle.facebookPage.title") }}

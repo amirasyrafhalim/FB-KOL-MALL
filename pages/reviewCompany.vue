@@ -1,9 +1,13 @@
 <template>
-  <v-container id="referral_code" class="d-flex flex-column  background-gradient" fluid>
+  <v-container
+    id="referral_code"
+    class="d-flex flex-column background-gradient"
+    fluid
+  >
     <v-layout>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="7" md="6">
-          <v-card class="elevation-1 pa-3 radius">
+          <v-card class="elevation-1 pa-3 radius secondary">
             <alert-form-error :error-message="errorMessage" />
             <v-card-text>
               <div class="layout column align-center">
@@ -18,60 +22,44 @@
                     />
                   </v-img>
                 </h1>
-                <h2
-                  class="flex text-xs-center black--text mt-5 mb-5"
-                >
+                <h2 class="flex text-xs-center black--text mt-5 mb-5">
                   {{ $t("label.review") }}
                 </h2>
               </div>
-                <v-text-field
-                  type="referral"
-                  :label="$t('label.size')"
-                  :error-messages="formErrors ? formErrors.size : ''"
-                  v-model="formModel.referral"
-                  single-line
-                  flat
-                  solo
-                  aria-autocomplete="on"
-                  hide-details
-                  class="mb-4 pl-5 pr-5 mt-5 mb-5"
-                ></v-text-field>
-                 <v-text-field
-                  type="referral"
-                  :label="$t('label.retail')"
-                  :error-messages="formErrors ? formErrors.retail : ''"
-                  v-model="formModel.referral"
-                  single-line
-                  flat
-                  solo
-                  aria-autocomplete="on"
-                  hide-details
-                  class="mb-4 pl-5 pr-5 "
-                ></v-text-field>
-                 <v-text-field
-                  type="referral"
-                  :label="$t('label.website')"
-                  :error-messages="formErrors ? formErrors.website : ''"
-                  v-model="formModel.referral"
-                  single-line
-                  flat
-                  solo
-                  aria-autocomplete="on"
-                  hide-details
-                  class="mb-4 pl-5 pr-5"
-                ></v-text-field>
-                 <v-text-field
-                  type="referral"
-                  :label="$t('label.kindProduct')"
-                  :error-messages="formErrors ? formErrors.kindProduct : ''"
-                  v-model="formModel.referral"
-                  single-line
-                  flat
-                  solo
-                  aria-autocomplete="on"
-                  hide-details
-                  class="mb-4 pl-5 pr-5"
-                ></v-text-field>
+              <v-text-field
+                type="referral"
+                :label="$t('label.name')"
+                :error-messages="formErrors ? formErrors.company_name : ''"
+                v-model="formModel.company_name"
+                single-line
+                flat
+                solo
+                aria-autocomplete="on"
+                class=""
+              ></v-text-field>
+              <v-autocomplete
+                solo
+                class="border-radius-button"
+                :items="rangeSize"
+                :label="$t('label.size')"
+                :error-messages="formErrors ? formErrors.business_size : ''"
+                item-text="value"
+                item-value="id"
+                v-model="formModel.business_size"
+                @input.native="fetchItems($event.target.value)"
+              ></v-autocomplete>
+              <v-autocomplete
+                solo
+                class=" border-radius-button"
+                :items="categories"
+                multiple
+                :label="$t('label.category')"
+                :error-messages="formErrors ? formErrors.categories : ''"
+                item-text="name"
+                item-value="id"
+                v-model="formModel.categories"
+                @input.native="fetchItems($event.target.value)"
+              ></v-autocomplete>
             </v-card-text>
             <v-card-actions class="flex-column text-right px-5">
               <v-btn
@@ -79,7 +67,6 @@
                 block
                 @click="next"
                 large
-                :href="localePath('/')"
               >
                 <h4 class="text-white">{{ $t("label.next") }}</h4>
               </v-btn>
@@ -105,43 +92,52 @@ export default {
   },
   asyncData() {
     return {
+      rangeSize: [
+        { value: "0-100" },
+        { value: "101-200" },
+        { value: "201-300" },
+        { value: "301-400" }
+      ],
       formModel: {
-        type: 0,
-        email: "",
-        referral: ""
+        company_name: null,
+        business_size: null,
+        categories: []
       }
     };
   },
+  computed: {
+    categories() {
+      return this.$store.state.categories.records;
+    }
+  },
+  created() {
+    this.fetchItems();
+  },
   methods: {
-     async next() {
-      // console.log(this.formModel)
-      // this.$store.commit("setOverlay", true);
-
+    fetchItems(value) {
+      this.$store.dispatch("categories/fetchItems");
+    },
+    async next() {
       try {
-        // var a = await this.$auth.loginWith("local", {
-        //   data: this.formModel
-        // });
-        // this.clearPreviousError();
-        this.$router.push("/");
+        var res = await this.$api.merchants.create(this.formModel);
+        this.handleApiSuccess(res, "/");
       } catch (err) {
-        console.log(err)
-        // this.handleApiErrors(err);
+        this.handleApiErrors(err);
       } finally {
         this.$store.commit("setOverlay", false);
       }
     },
 
-  beforeCreate() {
-    if (this.$route.hash) {
-      this.$store.commit("setOverlay", true);
+    beforeCreate() {
+      if (this.$route.hash) {
+        this.$store.commit("setOverlay", true);
+      }
     }
-  },
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 .radius {
   border-radius: 25px !important;
 }
@@ -152,5 +148,4 @@ export default {
   background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
     0% no-repeat padding-box;
 }
-
 </style>

@@ -40,7 +40,6 @@
           </v-list-item-subtitle>
         </v-card>
       </v-col>
-      <!-- - -->
 
       <!-- item section -->
       <v-row>
@@ -87,7 +86,7 @@
                   width="15px"
                   height="20px"
                   color="white"
-                  :src="require('~/assets/Img/delete.png')"
+                  src="/deletePurple.png"
                 />
                 <h4 style="color:red; text-transform: capitalize;">
                   {{ $t("label.delete") }}
