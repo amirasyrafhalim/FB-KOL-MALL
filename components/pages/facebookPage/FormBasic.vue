@@ -44,7 +44,7 @@
     ></v-text-field>
 
     <crud-form-action
-      backPath='facebook_page'
+      backPath='facebookPage'
       :loading="loading"
       @submit="submit"
     ></crud-form-action>

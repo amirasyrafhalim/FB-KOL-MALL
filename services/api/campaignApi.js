@@ -76,6 +76,14 @@ export default class CampaignApi extends BaseApi {
       })
     );
   }
+  updateLiveVideo(id, payload) {
+    return this.axios.$patch(
+      this.helper.prepareUrl(apiRoutes[this.module].updateLiveVideo, {
+        id: id,
+      }),
+      payload
+    );
+  }
 
 
 }

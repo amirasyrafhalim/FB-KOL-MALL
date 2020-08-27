@@ -5,7 +5,8 @@ export const state = () => ({
   ...{
     moduleName: "campaigns",
     statusEnums: [],
-    summary: []
+    summary: [],
+    liveVideoUpdate: []
   },
 });
 
@@ -13,6 +14,9 @@ export const mutations = {
   ...BaseVuex.mutations,
   setSummary(state, item) {
     state.summary = item;
+  },
+  setUpdateLiveVideo(state, item) {
+    state.liveVideoUpdate = item;
   },
 };
 

@@ -54,10 +54,7 @@ export default {
   },
   methods: {
     initialize() {
-      console.log("in");
-      console.log(this.record);
        if (this.record.length > 0) {
-         console.log("error")
         this.isCreate = false;
         this.formModel.page_token = this.$helper.jsonReparse(this.record[0].page_token);
       } else {

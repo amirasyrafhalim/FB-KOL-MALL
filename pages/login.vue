@@ -189,7 +189,7 @@ export default {
         var a = await this.$auth.loginWith("local", {
           data: this.formModel
         });
-        this.$router.push("/referralCode");
+        this.$router.push("/");
       } catch (err) {
         console.log(err)
       } finally {

@@ -1,4 +1,5 @@
 import BaseApi from "./baseApi";
+import { apiRoutes } from "@/config";
 
 export default class merchantPage extends BaseApi {
   constructor(axios, helper) {
@@ -7,6 +8,14 @@ export default class merchantPage extends BaseApi {
 
   getAll(searchQuery) {
     return super.getAll(searchQuery);
+  }
+
+  liveVideos(searchQuery){
+    return this.axios.$get(
+      this.helper.prepareUrl(apiRoutes[this.module].liveVideos, {
+        id: searchQuery,
+      })
+    );
   }
 
   getOne(id) {

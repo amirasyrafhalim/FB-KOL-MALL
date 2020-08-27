@@ -49,6 +49,7 @@ export default {
     facebookId: "Facebook Id",
     facebookToken: "Facebook Token",
     gender: "Gender",
+    goToLive: "Go To Live Video",
     id: "ID",
     image: "Image",
     inactive: "Inactive",
