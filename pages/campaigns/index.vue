@@ -32,15 +32,15 @@
               v-on="on"
               :to="
                 localePath({
-                  name: 'campaigns-id-addPackage',
+                  name: 'campaigns-id-campaignPackages',
                   params: { id: item.id }
                 })
               "
             >
-              <v-icon color="purple darken-4">mdi-pencil-plus</v-icon>
+              <v-icon color="purple darken-4">mdi-gamepad-down</v-icon>
             </v-btn>
           </template>
-          <span>Add Package</span>
+          <span>Package Console</span>
         </v-tooltip>
 
         <v-tooltip bottom>
