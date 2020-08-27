@@ -18,7 +18,7 @@
         </v-btn>
         <v-btn icon large >
           <v-avatar size="32px" item>
-            <img src="@/assets/Img/noti@2x.png" :alt="logoAlt" />
+            <img src="@/assets/img/noti@2x.png" :alt="logoAlt" />
           </v-avatar>
         </v-btn>
       </template>

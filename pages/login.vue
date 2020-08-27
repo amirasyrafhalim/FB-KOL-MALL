@@ -10,7 +10,7 @@
                 <h1 class="flex text-center mt-2 mb-2 primary--text">
                   <v-img icon class="pl-1">
                     <img
-                      :src="require('~/assets/Img/logo.png')"
+                      :src="require('~/assets/img/logo.png')"
                       width="auto"
                       height="50"
                       contain
