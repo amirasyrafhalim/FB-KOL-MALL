@@ -1,28 +1,22 @@
 <template>
   <div class="components__campaign--form-basic">
-    <v-row>
-      <v-col sm="6" md="6">
-        <v-text-field
-          v-model="formModel.name"
-          :label="$t('label.name')"
-          :error-messages="formErrors ? formErrors.name : ''"/>
-        <!-- <v-autocomplete
+    <v-col sm="6" md="6">
+      <v-text-field
+        v-model="formModel.name"
+        :label="$t('label.name')"
+        :error-messages="formErrors ? formErrors.name : ''"
+      />
+      <!-- <v-autocomplete
           :items="merchants"
           :label="$t('menuTitle.facebookPage')"
           :error-messages="formErrors ? formErrors.merchant_name : ''"
           item-text="name"
           @input.native="fetchItems($event.target.value)"
         ></v-autocomplete -->
-      </v-col>
-    </v-row>
-    <div class="d-inline-flex my-5">
-      <crud-form-action
-        class="mx-2"
-        backPath="campaigns"
-        :loading="loading"
-        @submit="submit"
-      />
-    </div>
+    </v-col>
+    <v-col cols="12" md="7">
+      <crud-form-action backPath="campaigns" :loading="loading" @submit="submit"
+    /></v-col>
 
     <!--<v-text-field-->
     <!--v-model="formModel.stream_id"-->
@@ -56,6 +50,7 @@ import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 import InputRadioGroup from "@/components/widgets/forms/InputRadioGroup";
 import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
 import FormPackage from "@/components/pages/campaigns/FormPackage";
+import ToolBar from "@/components/TheToolbar.vue";
 
 import formMixin from "@/mixins/form";
 
@@ -66,28 +61,29 @@ export default {
     AlertFormError,
     InputRadioGroup,
     CrudFormAction,
-    FormPackage
+    FormPackage,
+    ToolBar
   },
   data() {
     return {
       moduleName: "campaigns",
       isCreate: true,
       formModel: {
-        name: null,
-        merchant_name: null,
-        merchant_id:1,
+        name: "",
+        merchant_name: this.$auth.user.merchant.name,
+        slug: "",
+        merchant_id: this.$auth.user.merchant.id,
         status: 1,
-        created_by:null,
-        updated_by:null,
-        created_at:null,
-        updated_at:null,
-        video_id:null
+        created_by: this.$auth.user.id,
+        updated_by: this.$auth.user.id,
+        video_id: 1
       }
     };
   },
   computed: {
     merchants() {
-      return this.$store.state.merchants.records;
+      // return this.$store.state.merchants.records;
+      return this.$store.dispatch(`merchants/fetchDetail`);
     }
   },
   watch: {
@@ -99,12 +95,15 @@ export default {
     }
   },
   created() {
+    // this.formModel.merchant_id = this.$auth.user.merchant.id;
     this.fetchItems();
   },
+  
   methods: {
+
     fetchItems(value) {
-      this.$store.dispatch(`merchants/fetchItems`, {
-        code: value
+      this.$store.dispatch(`merchants/fetchDetail`, {
+        merchant_id: value
       });
     },
     async submit() {

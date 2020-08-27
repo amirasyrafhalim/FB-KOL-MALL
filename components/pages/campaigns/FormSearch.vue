@@ -12,20 +12,18 @@
             dense
           ></v-text-field>
         </v-col>
-        <v-col sm="2" md="2">
+        <!-- <v-col sm="2" md="2">
           <v-select
-            :items="statusEnums"
             :label="$t('label.status')"
-            item-text="description"
-            item-value="value"
             hide-details
+            :items="status"
             v-model="formModel.status"
             clearable
             elevation="20"
             solo
             dense
           ></v-select>
-        </v-col>
+        </v-col> -->
         <v-col sm="2" md="2">
           <v-text-field
             :label="$t('label.name')"
@@ -53,6 +51,7 @@ export default {
   },
   data() {
     return {
+      status:[ 1,2],
       formModel: {
         name: null,
         stream_id: null,
