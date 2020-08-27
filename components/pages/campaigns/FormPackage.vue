@@ -96,7 +96,7 @@
                     width="15px"
                     height="20px"
                     color="white"
-                    :src="require('~/assets/Img/delete.png')"
+                    :src="require('~/assets/img/delete.png')"
                   />
                   <h4 style="color:red; text-transform: capitalize;">
                     {{ $t("label.delete") }}
