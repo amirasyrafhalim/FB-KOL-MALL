@@ -1,5 +1,5 @@
 <template>
-  <div id="pages__facebook_page">
+  <div id="pages__facebookPage">
     <v-container>
       <v-toolbar color="white" dark flat dense>
         <v-toolbar-title class="subheading black--text font-weight-bold">
@@ -49,21 +49,23 @@
             <v-row>
               <v-col cols="auto">
                 <v-avatar size="32px" item>
-                  <img
-                    :src="
-                        '/default_avatar.png'
-                    "
-                  />
+                  <img :src="'/default_avatar.png'" />
                 </v-avatar>
-               
               </v-col>
-              <v-col v-if="merchantPage && merchantPage.length > 0 "> 
-                  <h4 >
-                      {{merchantPage[0].name || null}}
-                  </h4>
-                   <span>
-                    {{$t("label.id") }} : {{merchantPage[0].page_id || null}}
-                    </span>
+              <v-col v-if="merchantPage && merchantPage.length > 0">
+                <h4>
+                  {{ merchantPage[0].name || null }}
+                </h4>
+                <span>
+                  {{ $t("label.id") }} : {{ merchantPage[0].page_id || null }}
+                </span>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn dark class="primary" @click="liveVideo()">
+                  {{ $t(`label.goToLive`) }}
+                </v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -108,10 +110,26 @@ export default {
   methods: {
     initialize() {
       this.user = this.$store.state.auth.user;
+      console.log(this.user)
     },
     async fetchMerchantPage() {
       try {
         await this.$store.dispatch(this.moduleName + "/fetchItems");
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async liveVideo() {
+      try {
+          
+          console.log('id',);
+          
+
+           this.$router.push({path: `/facebookPage/`+this.merchantPage[0].id +`/liveConsole/?`})
+     
+         
+        //  this.$router.push( { path: this.localePath("type: 'facebookPage-id-liveConsole', params: { id: this.merchantPage[0].id }") });
+        
       } catch (err) {
         console.log(err);
       }

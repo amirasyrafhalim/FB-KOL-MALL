@@ -21,6 +21,7 @@ export default {
   campaigns: {
     getAllOrCreate: "/v1/campaigns",
     getOneOrUpdateOrDelete: "/v1/campaigns/{id}",
+    updateLiveVideo: "/v1/campaigns/1/live-video",
     getSummary: "/v1/campaigns/orderSummary",
     streamEnd: "/v1/campaigns/streamEnd/{id}",
     streamPause: "/v1/campaigns/streamPause/{id}",
@@ -49,7 +50,8 @@ export default {
   },
   merchantPages: {
     getAllOrCreate: "/v1/merchant-pages",
-    getOneOrUpdateOrDelete: "/v1/merchant-pages/{id}"
+    getOneOrUpdateOrDelete: "/v1/merchant-pages/{id}",
+    liveVideos: "/v1/merchant-pages/{id}/live-videos",
   },
   merchantPageTokens: {
     getAllOrCreate: "/v1/merchantPageTokens",

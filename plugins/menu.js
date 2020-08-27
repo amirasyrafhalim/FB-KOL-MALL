@@ -40,7 +40,7 @@ export default ({ app }, inject) => {
       }, {
         icon: "mdi-briefcase-account",
         text: app.i18n.t("menuTitle.facebookPage"),
-        path: "facebook_page"
+        path: "facebookPage"
       },
       {
         icon: "mdi-hexagon-multiple",
