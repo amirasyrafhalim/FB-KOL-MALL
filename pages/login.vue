@@ -37,7 +37,7 @@
                     width="auto"
                     height="22px"
                     class="pr-5"
-                    src="facebook.png"
+                    src="../assets/img/facebook.png"
                   />{{ $t("label.loginWithFacebook") }}
                 </v-btn>
                 <v-btn
@@ -51,7 +51,7 @@
                     width="auto"
                     height="20px"
                     class="pr-5"
-                    src="google.png"
+                    src="../assets/img/google.png"
                   />{{ $t("label.loginWithGoogle") }}
                 </v-btn>
                 <v-row align="center" justify="center" class="mt-10 mb-10">
