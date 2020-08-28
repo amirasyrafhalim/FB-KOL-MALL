@@ -5,6 +5,7 @@ import apiRoutes from "../apiRoutes";
 const appUrl = process.env.APP_URL;
 const facebookAppId = process.env.FACEBOOK_APP_ID;
 const facebookGraphVersion = process.env.FACEBOOK_GRAPH_VERSION;
+const apiUrlRedirect = process.env.API_URL_REDIRECT;
 
 export default {
   resetOnError: true,
@@ -23,7 +24,7 @@ export default {
     },
     facebook: {
       client_id: facebookAppId,
-      authorization_endpoint: 'https://localhost/kolstore-api/public/v1/auth/fb-redirect',
+      authorization_endpoint: apiUrlRedirect+'/v1/auth/fb-redirect',
       userinfo_endpoint: false,
       scope: ["email","pages_show_list"],
       redirect_uri: `${appUrl}/login`

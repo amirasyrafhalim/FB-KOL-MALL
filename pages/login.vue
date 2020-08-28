@@ -10,7 +10,7 @@
                 <h1 class="flex text-center mt-2 mb-2 primary--text">
                   <v-img icon class="pl-1">
                     <img
-                      :src="require('~/assets/Img/logo.png')"
+                      :src="require('~/assets/img/logo.png')"
                       width="auto"
                       height="50"
                       contain
@@ -37,7 +37,7 @@
                     width="auto"
                     height="22px"
                     class="pr-5"
-                    src="../assets/Img/facebook.png"
+                    src="facebook.png"
                   />{{ $t("label.loginWithFacebook") }}
                 </v-btn>
                 <v-btn
@@ -51,7 +51,7 @@
                     width="auto"
                     height="20px"
                     class="pr-5"
-                    src="../assets/Img/google.png"
+                    src="google.png"
                   />{{ $t("label.loginWithGoogle") }}
                 </v-btn>
                 <v-row align="center" justify="center" class="mt-10 mb-10">
@@ -169,7 +169,7 @@ export default {
       var auth = this.$store.state.auth;
       const { data } = await this.$api.auth.loginFB({token: this.$route.query.token})
       console.log('data', data)
-      this.$auth.setToken("local", "Bearer " + data.token);
+      this.$auth.setToken("local", "Bearer " + data);
       this.$auth.setStrategy("local");
       this.$store.commit("setOverlay", false);
       await this.$auth.fetchUser();
@@ -198,7 +198,7 @@ export default {
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
-       window.location.href = "https://localhost/kolstore-api/public/v1/auth/fb-redirect";
+       window.location.href = process.env.API_URL_REDIRECT+"/v1/auth/fb-redirect";
 
       
 

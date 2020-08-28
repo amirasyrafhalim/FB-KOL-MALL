@@ -2,7 +2,7 @@ export default {
   auth: {
     register: "/v1/register",
     login: "/v1/oauth/token",
-    loginFB: "/v1/auth/login",
+    loginFB: "/v1/auth/fb-login",
     logout: "/v1/auth/logout",
     user: "/v1/me"
   },
