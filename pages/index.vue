@@ -15,7 +15,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 page.text
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -53,7 +53,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 income.joinDate
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -84,7 +84,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 sale.month
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -117,7 +117,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 product.name
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -153,7 +153,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 product.name
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -239,7 +239,7 @@ export default {
   },
   created() {
     // this.user = this.$store.state.auth.user;
-    console.log(this.user);
+    console.log('user', this.user);
   }
 };
 </script>
