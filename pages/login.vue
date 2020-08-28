@@ -169,7 +169,7 @@ export default {
       var auth = this.$store.state.auth;
       const { data } = await this.$api.auth.loginFB({token: this.$route.query.token})
       console.log('data', data)
-      this.$auth.setToken("local", "Bearer " + data.token);
+      this.$auth.setToken("local", "Bearer " + data);
       this.$auth.setStrategy("local");
       this.$store.commit("setOverlay", false);
       await this.$auth.fetchUser();
@@ -198,7 +198,7 @@ export default {
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
-       window.location.href = "https://localhost/kolstore-api/public/v1/auth/fb-redirect";
+       window.location.href = process.env.API_URL_REDIRECT+"/v1/auth/fb-redirect";
 
       
 
