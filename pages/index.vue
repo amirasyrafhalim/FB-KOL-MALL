@@ -28,7 +28,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-blue"
+                class=" mb-1 text-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ page.total }}</v-list-item-title
               >
@@ -61,7 +61,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-magenta"
+                class=" mb-1 text-magenta"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ income.total }}</v-list-item-title
               >
@@ -92,7 +92,7 @@
           <v-list-item class="  align-self-end">
             <v-list-item-content  class="align-self-end">
               <v-list-item-title
-                class="text-h1 mb-1 text-magenta align-self-end"
+                class=" mb-1 text-magenta align-self-end"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ sale.total }}</v-list-item-title
               >
@@ -130,7 +130,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-light-blue"
+                class="mb-1 text-light-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ product.total }}</v-list-item-title
               >
@@ -166,7 +166,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-light-blue"
+                class=" mb-1 text-light-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ product.total }}</v-list-item-title
               >
