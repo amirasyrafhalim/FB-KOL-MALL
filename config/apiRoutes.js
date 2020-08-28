@@ -35,12 +35,12 @@ export default {
     getOneOrUpdateOrDelete: "/v1/campaigns/{id}",
   },
   campaignPackages: {
-    getAllOrCreate: "/v1/campaigns/{campaignId}/campaignPackages",
-    getOneOrUpdateOrDelete: "/v1/campaigns/{campaignId}/campaignPackages/{id}"
+    getAllOrCreate: "/v1/packages",
+    getOneOrUpdateOrDelete: "/v1/packages/{id}"
   },
 
   campaignShippings: {
-    getAllOrCreate: "/v1/campaigns/{campaignId}/campaignShippings",
+    getAllOrCreate: "/v1/package-shipping",
     getOneOrUpdateOrDelete: "/v1/campaigns/{campaignId}/campaignShippings/{id}"
   },
   merchants: {
