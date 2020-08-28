@@ -7,7 +7,7 @@
             <alert-form-error :error-message="errorMessage" />
             <v-card-text>
               <div class="layout column align-center">
-                <img src="logo-black.png" height="50" width="auto" contain />
+                <img :src="require('~/assets/img/logo.png')" height="50" width="auto" contain />
                 <h2
                   class="flex text-xs-center text-black bold font-weight-black my-4"
                 >
@@ -28,7 +28,7 @@
                     width="auto"
                     height="25px"
                     class="pr-5"
-                    src="facebook.png"
+                    src="../assets/img/facebook.png"
                   />{{ $t("label.loginWithFacebook") }}
                 </v-btn>
                 <v-btn
@@ -42,7 +42,7 @@
                     width="auto"
                     height="25px"
                     class="pr-5"
-                    src="google.png"
+                    src="../assets/img/google.png"
                   />{{ $t("label.loginWithGoogle") }}
                 </v-btn>
               </div>

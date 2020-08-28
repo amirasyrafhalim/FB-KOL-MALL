@@ -7,7 +7,7 @@
 
   >
   <div class="py-10 text-center">
-    <img src="logo-white.png"  width="auto" />
+    <img src="../assets/img/logo.png"  width="auto" />
   </div>
   
     <v-list rounded nav class="pr-0 pt-0" active-class="blue--text">
