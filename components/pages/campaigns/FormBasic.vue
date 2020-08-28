@@ -81,10 +81,10 @@ export default {
     };
   },
   computed: {
-    merchants() {
-      // return this.$store.state.merchants.records;
-      return this.$store.dispatch(`merchants/fetchDetail`);
-    }
+    // merchants() {
+    //   // return this.$store.state.merchants.records;
+    //   return this.$store.dispatch(`merchants/fetchDetail`);
+    // }
   },
   watch: {
     record(value) {
@@ -94,18 +94,18 @@ export default {
       }
     }
   },
-  created() {
-    // this.formModel.merchant_id = this.$auth.user.merchant.id;
-    this.fetchItems();
-  },
+  // created() {
+  //   // this.formModel.merchant_id = this.$auth.user.merchant.id;
+  //   this.fetchItems();
+  // },
   
   methods: {
 
-    fetchItems(value) {
-      this.$store.dispatch(`merchants/fetchDetail`, {
-        merchant_id: value
-      });
-    },
+    // fetchItems(value) {
+    //   this.$store.dispatch(`merchants/fetchDetail`, {
+    //     merchant_id: value
+    //   });
+    // },
     async submit() {
       this.loading = true;
 
