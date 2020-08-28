@@ -120,6 +120,7 @@ export default {
     async next() {
       try {
         var res = await this.$api.merchants.create(this.formModel);
+        await this.$auth.fetchUser();
         this.handleApiSuccess(res, "/");
       } catch (err) {
         this.handleApiErrors(err);

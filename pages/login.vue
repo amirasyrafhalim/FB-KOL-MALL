@@ -174,7 +174,13 @@ export default {
       this.$store.commit("setOverlay", false);
       await this.$auth.fetchUser();
       
-      this.$router.push("/referralCode");
+       if(this.$auth.user.merchant){
+          this.$router.push("/");
+        } else {
+          this.$router.push("/referralCode");
+        }
+
+     
     } catch (err) {
       console.log(err);
     }
@@ -189,7 +195,14 @@ export default {
         var a = await this.$auth.loginWith("local", {
           data: this.formModel
         });
-        this.$router.push("/");
+        console.log(this.$auth.user)
+
+        if(this.$auth.user.merchant){
+          this.$router.push("/");
+        } else {
+          this.$router.push("/referralCode");
+        }
+        
       } catch (err) {
         console.log(err)
       } finally {
