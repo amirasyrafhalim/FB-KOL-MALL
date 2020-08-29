@@ -41,7 +41,7 @@ export default class BaseApi {
   }
 
   update(payload, id) {
-    return this.axios.$put(
+    return this.axios.$patch(
       this.helper.prepareUrl(apiRoutes[this.module].getOneOrUpdateOrDelete, {
         id: id,
       }),
