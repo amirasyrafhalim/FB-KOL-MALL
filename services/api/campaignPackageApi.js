@@ -1,5 +1,6 @@
 import BaseApi from "./baseApi";
 import { apiRoutes } from "@/config";
+import QueryString from "qs";
 
 export default class CampaignPackageApi extends BaseApi {
 
@@ -8,11 +9,11 @@ export default class CampaignPackageApi extends BaseApi {
     super(axios, helper, "campaignPackages");
   }
 
-  getAll(searchQuery) {
-    return this.axios.$get(
+  getAll(campaignId) {
+     return this.axios.$get(
       this.helper.prepareUrl(apiRoutes[this.module].getAllOrCreate, {
-        campaignId: searchQuery,
-      })
+        campaignId
+      })  
     );
   }
   getOne(id, campaignId) {
@@ -29,7 +30,7 @@ export default class CampaignPackageApi extends BaseApi {
   }
 
   update(payload, id, campaignId) {
-    return this.axios.$put(
+    return this.axios.$patch(
       this.helper.prepareUrl(apiRoutes[this.module].getOneOrUpdateOrDelete, {
         campaignId: campaignId,
         id: id

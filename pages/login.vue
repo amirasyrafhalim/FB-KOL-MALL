@@ -59,7 +59,7 @@
                     class="subtitle font-weight-bold black--text text-center"
                     :href="localePath('')"
                   >
-                    Dont't have an account?
+                    Don't have an account?
                   </h4>
                   <a :href="localePath('register')" class=" pl-1 " style="text-decoration:none;">
                     Sign Up Now

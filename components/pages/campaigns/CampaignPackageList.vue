@@ -44,7 +44,6 @@
                       :false-value="0"
                       @change="editPackage(packageStatus[key], key, 'status')"
                       color="primary"
-                      :disabled="disabled"
                     ></v-switch>
                   </v-col>
                 </v-row>
@@ -67,9 +66,7 @@
                     :label="$t('label.minOrder')"
                     type="number"
                     v-model="packageMin[key]"
-                    @change="
-                      editPackage(packageMin[key], key, 'minimum_per_user')
-                    "
+                    @change="editPackage(packageMin[key], key, 'min_per_user')"
                     :disabled="disabled"
                   ></v-text-field>
                 </v-col>
@@ -87,7 +84,6 @@
                 <v-col class="pb-0">
                   <v-text-field
                     :label="$t('label.price')"
-                    type="number"
                     v-model="packagePrice[key]"
                     @change="editPackage(packagePrice[key], key, 'price')"
                     :disabled="disabled"
@@ -112,28 +108,19 @@
                     @input.native="fetchProducts($event.target.value)"
                     :disabled="disabled"
                   ></v-autocomplete>
-
-                  <v-list-item class="px-0">
-                    <v-list-item-content class="py-0">
-                      <v-list-item-title
-                        class="title font-weight-black underline"
-                        >{{ $t("label.products") }}</v-list-item-title
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item
-                    two-line
-                    v-for="(field, i) in records[key].products"
-                    :key="i"
-                    class="px-0 border"
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-btn
+                    class="float-right"
+                    x-small
+                    fab
+                    color="red"
+                    v-on:click="removeElement(data.id)"
                   >
-                    <v-list-item-content>
-                      <v-list-item-title>{{ field.name }}</v-list-item-title>
-                      <v-list-item-subtitle>
-                        {{ field.description }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
+                    <v-icon class="white--text">mdi-trash-can-outline</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-expansion-panel-content>
@@ -141,31 +128,40 @@
         </v-expansion-panels>
       </v-row>
     </v-col>
+    <alert-confirmation ref="confirmDialog" />
   </v-row>
 </template>
 <script>
+import AlertConfirmation from "@/components/widgets/alerts/AlertConfirmation";
 import formMixin from "@/mixins/form";
 export default {
   name: "CampaignPackageList",
   mixins: ["formMixin"],
   props: ["products"],
+  components: {
+    AlertConfirmation
+  },
   data() {
     return {
       moduleName: "campaignPackages",
       packages: [],
       packageStatus: [],
-      totalOrder: [],
       packageQuantity: [],
       packageMax: [],
       packageMin: [],
       packagePrice: [],
       productsArray: [],
+      arrayKeywords: [],
       disabled: false
     };
   },
+  created() {
+    this.fetchItems();
+    // this.initialize();
+    // this.fetchShipping();
+  },
   watch: {
     records(value) {
-      console.log("value", value);
       this.packageStatus = [];
       value.forEach((data, key) => {
         this.packageStatus.push(data.status);
@@ -177,15 +173,19 @@ export default {
       });
     }
   },
-  created() {
-    this.fetchItems();
-    // this.initialize();
-    // this.fetchShipping();
+
+  computed: {
+    records() {
+      // this.packages = this.$store.state[this.moduleName].records;
+      this.packages = this.$store.state.campaignPackages.records;
+      console.log("HAHA", this.packages);
+      return this.packages;
+
+    }
   },
 
   methods: {
     fetchItems() {
-      console.log(this.moduleName);
       this.$store.dispatch(
         this.moduleName + "/fetchItems",
         this.$route.params.id
@@ -233,22 +233,34 @@ export default {
           id,
           this.$route.params.id
         );
-        await this.fetchItems();
-        if (field === "status") {
-          this.getKeywords();
-        }
       } catch (err) {
         console.log(err);
       }
-    }
-  },
+    },
 
-  computed: {
-    records() {
-      this.packages = this.$store.state[this.moduleName].records;
-      console.log(this.packages);
-      return this.packages;
+    async removeElement(index) {
+      this.$refs.confirmDialog
+        .open(this.$t("label.delete"), this.$t("message.confirmDelete"), {
+          color: "warning"
+        })
+        .then(confirm => {
+          if (confirm) {
+            this.$api.campaignPackages.delete(index, this.$route.params.id);
+          }
+        });
+      await this.fetchItems();
     }
+
+    //    async removeElement(index) {
+    //   this.$refs.confirmDialog
+    //     .open(this.$t("label.delete"), this.$t("message.confirmDelete"), {
+    //       color: "warning"
+    //     })
+    //     .then(confirm => {
+    //       this.$api.campaignPackages.delete(index, this.$route.params.id);
+    //       this.fetchItems();
+    //     });
+    // }
   }
 };
 </script>
