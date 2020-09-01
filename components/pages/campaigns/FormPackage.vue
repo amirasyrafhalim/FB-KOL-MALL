@@ -186,12 +186,21 @@
           </v-card>
         </v-card>
         <!-- </div> -->
+
         <!-- shipping section -->
         <v-row>
           <v-card-title>
             <h4 class="pl-3 black--text mb-5">Shipping Item 1</h4>
           </v-card-title>
-          <v-spacer></v-spacer>
+          <v-radio-group v-model="formModel.free_shipping" row>
+            <v-radio
+              color="purple"
+              value="0"
+              label="Free Shipping"
+              class="pl-3"
+            ></v-radio>
+            <v-radio color="purple" value="1" label="Paid Shipping"></v-radio>
+          </v-radio-group>
         </v-row>
 
         <!-- text field packaging weight -->
@@ -305,6 +314,7 @@ import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
 import formMixin from "@/mixins/form";
 import InputRadioGroup from "@/components/widgets/forms/InputRadioGroup";
+import campaignPackagesVue from '../../../pages/campaigns/_id/packages.vue';
 
 export default {
   name: "FormPackage",
@@ -345,7 +355,7 @@ export default {
         keyword: "",
         color: "",
         status: "",
-        free_shipping: 1
+        free_shipping: ""
       },
       shippingModel: {
         package_id: "",
@@ -373,18 +383,6 @@ export default {
   },
 
   methods: {
-    // addNewSection() {
-    //   console.log(this.sections);
-    //   this.sections.push({
-    //     product_ids: "",
-    //     quantity: "",
-    //     limit_per_user: "",
-    //     min_per_user: "",
-    //     price: "",
-    //     additionals: []
-    //   });
-    // },
-
     resetForm() {
       this.formModel = {
         product_ids: "",
@@ -394,12 +392,12 @@ export default {
         min_per_user: "",
         name: "",
         slug: "",
-        campaign_id: this.$route.params.id,
+        campaign_id: parseInt(this.$route.params.id),
         sell_method: 1,
         keyword: "",
         color: "",
         status: "",
-        free_shipping: 1
+        free_shipping: ""
       };
     },
     uppercase() {
@@ -419,25 +417,12 @@ export default {
       this.dialog = false;
       this.resetForm();
     },
-    // resetForm() {
-    //   this.formModel = {
-    //     name: "",
-    //     keyword: "",
-    //     product_ids: [],
-    //     quantity: "",
-    //     price: "",
-    //     color: "",
-    //     showPalette: false,
-    //     limit_per_user: "",
-    //     minimum_per_user: "",
-    //     status: 0
-    //   };
-    // },
+
     async submitPackage() {
       try {
         let res = await this.$api[this.moduleName].create(
           this.formModel,
-          this.$route.params.id
+          this.$route.params.id,
         );
         console.log(res);
         this.handleApiSuccess(res);

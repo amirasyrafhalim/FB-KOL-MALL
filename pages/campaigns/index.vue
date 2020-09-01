@@ -32,7 +32,7 @@
               v-on="on"
               :to="
                 localePath({
-                  name: 'campaigns-id-campaignPackages',
+                  name: 'campaigns-id-packages',
                   params: { id: item.id }
                 })
               "
@@ -43,7 +43,7 @@
           <span>Package Console</span>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <!-- <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
               x-small
@@ -61,7 +61,7 @@
             </v-btn>
           </template>
           <span>{{ $t("label.view") }}</span>
-        </v-tooltip>
+        </v-tooltip> -->
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
