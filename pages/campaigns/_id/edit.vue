@@ -8,20 +8,20 @@
     </v-toolbar>
     <v-divider></v-divider>
     <v-card-text>
-      <form-basic :record="record" />
+      <form-edit :record="record" />
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import FormBasic from "@/components/pages/campaigns/FormBasic";
+import FormEdit from "@/components/pages/campaigns/FormEdit";
 
 import getOneMixin from "@/mixins/getOne";
 
 export default {
   mixins: [getOneMixin],
   components: {
-    FormBasic
+    FormEdit
   },
   asyncData() {
     return {
