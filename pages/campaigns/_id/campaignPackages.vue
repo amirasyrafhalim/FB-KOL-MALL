@@ -1,16 +1,16 @@
 <template>
   <div>
     <h1 class="text-center">{{ record.name }}</h1>
-    <v-row>
-      <v-card id="pages__liveConsole" class="mt-10">
+    <v-row justify="center">
+      <v-card class="mt-10" style="width:1000px;">
         <v-toolbar color="primary" dark flat dense>
           <v-toolbar-title class="subheading">
-            {{ $t("label.listpackage") }}
+           {{ record.name }}'s {{ $t("label.listpackage") }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
         <v-divider></v-divider>
-        <v-card-text>
+        <v-card-text style="width:600;">
           <v-row>
             <v-col>
               <CampaignPackageList :products="products" />
@@ -18,11 +18,12 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-row>
-        <v-col>
-          <form-package />
-        </v-col>
-      </v-row>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <form-package />
+      </v-col>
     </v-row>
   </div>
 </template>
