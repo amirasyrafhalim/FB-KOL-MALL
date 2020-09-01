@@ -17,8 +17,8 @@
               class="pr-3"
             ></v-radio>
             <v-radio color="purple" value="0"  class="pr-3" label="Inactive"></v-radio>
-            <v-radio color="purple" value="2"  class="pr-3" label="Pause"></v-radio>
-            <v-radio color="purple" value="3"  class="pr-3" label="Complete"></v-radio>
+            <v-radio color="purple" value="3"  class="pr-3" label="Pause"></v-radio>
+            <v-radio color="purple" value="2"  class="pr-3" label="Complete"></v-radio>
           </v-radio-group>
         </v-row>
       </v-col>
