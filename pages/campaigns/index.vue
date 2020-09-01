@@ -32,7 +32,7 @@
               v-on="on"
               :to="
                 localePath({
-                  name: 'campaigns-id-packages',
+                  name: 'campaigns-id-campaignPackages',
                   params: { id: item.id }
                 })
               "

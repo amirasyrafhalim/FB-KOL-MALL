@@ -314,7 +314,7 @@ import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
 import formMixin from "@/mixins/form";
 import InputRadioGroup from "@/components/widgets/forms/InputRadioGroup";
-import campaignPackagesVue from '../../../pages/campaigns/_id/packages.vue';
+import campaignPackagesVue from '../../../pages/campaigns/_id/campaignPackages.vue';
 
 export default {
   name: "FormPackage",
