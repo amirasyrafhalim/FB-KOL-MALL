@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-row justify="center">
+    <v-row>
       <v-dialog v-model="dialog" persistent max-width="700px">
         <template v-slot:activator="{ on }">
-          <v-col cols="4">
+         <v-col cols="3">
           <v-btn block color="primary" dark v-on="on" class="button">
             <v-icon class="pr-1">mdi-plus</v-icon>Add New Package</v-btn
           ></v-col>
