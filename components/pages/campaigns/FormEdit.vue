@@ -6,6 +6,22 @@
         :label="$t('label.name')"
         :error-messages="formErrors ? formErrors.name : ''"
       />
+
+      <v-col cols="12">
+        <v-row>
+          <v-radio-group v-model="formModel.status" row>
+            <v-radio
+              color="purple"
+              value="1"
+              label="Active"
+              class="pr-3"
+            ></v-radio>
+            <v-radio color="purple" value="0"  class="pr-3" label="Inactive"></v-radio>
+            <v-radio color="purple" value="2"  class="pr-3" label="Pause"></v-radio>
+            <v-radio color="purple" value="3"  class="pr-3" label="Complete"></v-radio>
+          </v-radio-group>
+        </v-row>
+      </v-col>
       <!-- <v-autocomplete
           :items="merchants"
           :label="$t('menuTitle.facebookPage')"
@@ -70,7 +86,7 @@ export default {
         merchant_name: this.$auth.user.merchant.name,
         slug: "",
         merchant_id: this.$auth.user.merchant.id,
-        status: 1,
+        status: "",
         created_by: this.$auth.user.id,
         updated_by: this.$auth.user.id,
         video_id: 1,
