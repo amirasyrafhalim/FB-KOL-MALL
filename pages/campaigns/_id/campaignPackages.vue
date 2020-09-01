@@ -1,20 +1,11 @@
 <template>
   <div>
+    <h1 class="text-center">{{ record.name }}</h1>
     <v-row>
-      <v-dialog>
-        <template v-slot:activator="{ on }">
-          <div class="my-5">
-              <v-btn block color="primary" dark v-on="on" class="button">
-                <v-icon class="pr-1">mdi-plus</v-icon>Add New Package</v-btn
-              >
-          </div>
-        </template>
-        <FormPackage />
-      </v-dialog>
       <v-card id="pages__liveConsole" class="mt-10">
         <v-toolbar color="primary" dark flat dense>
           <v-toolbar-title class="subheading">
-            {{ record.name }}
+            {{ $t("label.listpackage") }}
           </v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -27,6 +18,11 @@
           </v-row>
         </v-card-text>
       </v-card>
+      <v-row>
+        <v-col>
+          <form-package />
+        </v-col>
+      </v-row>
     </v-row>
   </div>
 </template>
