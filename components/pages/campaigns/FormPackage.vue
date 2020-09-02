@@ -3,15 +3,23 @@
     <v-row>
       <v-dialog v-model="dialog" persistent max-width="700px">
         <template v-slot:activator="{ on }">
-         <v-col cols="3" class="mx-auto mt-10">
-          <v-btn block color="primary" dark v-on="on" class="button">
-            <v-icon class="pr-1">mdi-plus</v-icon>Add New Package</v-btn
-          ></v-col>
+          <v-row>
+            <div class="pr-2">
+              <v-btn :to="localePath('campaigns')" outlined text="dark--text">
+                {{ $t("label.back") }}
+              </v-btn>
+            </div>
+            <div>
+              <v-btn color="primary" dark v-on="on" class="button">
+                <v-icon class="pr-1">mdi-plus</v-icon>Add New Package</v-btn
+              >
+            </div>
+          </v-row>
         </template>
         <v-card class="radius">
           <v-card-text>
             <v-row>
-              <v-col cols="5" class="pl-3 mt-10 mb-10">
+              <v-col cols="12" class="pl-3 pr-3 mt-5 ">
                 <v-card-title>
                   <h3 style="color:black;">Package</h3>
                 </v-card-title>
@@ -38,7 +46,7 @@
                     {{ $t("label.selling") }}
                   </h3>
                 </v-card-title>
-                <v-card outlined width="auto" class="ma-2 mb-5">
+                <v-card outlined width="auto" class="mb-5">
                   <v-col>
                     <v-row>
                       <v-radio-group v-model="formModel.sell_method" row>
@@ -68,8 +76,8 @@
                   </v-list-item-subtitle>
                 </v-card>
               </v-col>
-              
-              <v-col cols="6" class="pl-3">
+
+              <v-col cols="6" class="pl-1">
                 <v-card-title>
                   <h3 class="black--text">
                     {{ $t("label.color") }}
@@ -79,7 +87,7 @@
                   @input="updateValue($event)"
                   disabled
                   hide-inputs
-                  class="ma-2 mb-5"
+                  class="mb-5"
                   width="320px"
                   :swatches="swatches"
                   canvas-height="200"
@@ -93,7 +101,7 @@
 
             <!-- item section -->
             <v-card-title>
-              <h3 class="black--text mt-5 mb-5 pl-">
+              <h3 class="black--text mb-5 pl-">
                 {{ $t("label.packageItem") }}
               </h3>
             </v-card-title>
@@ -206,10 +214,7 @@
 
             <!-- text field packaging weight -->
             <div class="pl-5">
-              <v-card
-                class="radius mb-10 background-color-grey"
-                max-width="770"
-              >
+              <v-card class="radius background-color-grey" max-width="770">
                 <v-row justify="center">
                   <v-col cols="5">
                     <v-text-field
@@ -297,7 +302,7 @@
             color="red darken"
             true-value="1"
             false-value="0"
-            class="flex text-xs-center pl-7 mb-5"
+            class="flex text-xs-center pl-7"
           ></v-switch>
           <v-card-actions class="pt-0 mb-5">
             <v-spacer></v-spacer>
