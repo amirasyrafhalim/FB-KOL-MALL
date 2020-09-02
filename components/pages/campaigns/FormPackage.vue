@@ -5,7 +5,7 @@
         <template v-slot:activator="{ on }">
           <v-row>
             <div class="pr-2">
-              <v-btn :to="localePath('campaigns')" outlined text="dark--text">
+              <v-btn :to="localePath('campaigns')" outlined>
                 {{ $t("label.back") }}
               </v-btn>
             </div>
@@ -113,7 +113,7 @@
                 <v-row justify="center">
                   <v-col cols="5">
                     <v-autocomplete
-                      class="mt-5"
+                      class="mt-2"
                       elevation="20"
                       solo
                       dense
@@ -131,7 +131,7 @@
                   </v-col>
                   <v-col cols="6">
                     <v-text-field
-                      class="mt-5"
+                      class="mt-2"
                       elevation="20"
                       solo
                       dense

@@ -9,11 +9,11 @@ export default class CampaignPackageApi extends BaseApi {
     super(axios, helper, "campaignPackages");
   }
 
-  getAll(campaignId) {
+  getAll(campaignId)
+   { 
+    console.log("HUHUHU",campaignId)
      return this.axios.$get(
-      this.helper.prepareUrl(apiRoutes[this.module].getAllOrCreate, {
-        campaignId
-      })  
+      this.helper.prepareUrl(apiRoutes[this.module].getAllOrCreate + "?campaign_id=" + campaignId)  
     );
   }
   getOne(id, campaignId) {
