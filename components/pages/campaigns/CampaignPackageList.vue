@@ -180,8 +180,6 @@ export default {
     records() {
       // this.packages = this.$store.state[this.moduleName].records;
       this.packages = this.$store.state.campaignPackages.records;
-      console.log("HAHA", this.packages);
-      console.log("hehejjjj", this.packages.length);
       if (this.packages.length != 0) {
         this.noRecords = false;
       }
@@ -233,7 +231,7 @@ export default {
       };
 
       try {
-        console.log("HELLOOO", formModel);
+       
         let res = await this.$api.campaignPackages.update(
           formModel,
           id,

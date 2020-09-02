@@ -11,7 +11,6 @@ export default class CampaignPackageApi extends BaseApi {
 
   getAll(campaignId)
    { 
-    console.log("HUHUHU",campaignId)
      return this.axios.$get(
       this.helper.prepareUrl(apiRoutes[this.module].getAllOrCreate + "?campaign_id=" + campaignId)  
     );

@@ -162,7 +162,6 @@ export default {
   computed: {
     records() {
       return this.$store.state[this.moduleName].records;
-      console.log("HAHAHA", this.$store.state[this.moduleName].records);
     }
   },
   methods: {
