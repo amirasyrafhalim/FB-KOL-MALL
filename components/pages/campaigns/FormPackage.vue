@@ -52,6 +52,7 @@
                           color="purple"
                           value="2"
                           label="Bidding"
+                          class="pl-3"
                         ></v-radio>
                       </v-radio-group>
                     </v-row>
@@ -67,7 +68,8 @@
                   </v-list-item-subtitle>
                 </v-card>
               </v-col>
-              <v-col cols="6" class="pl-10">
+              
+              <v-col cols="6" class="pl-3">
                 <v-card-title>
                   <h3 class="black--text">
                     {{ $t("label.color") }}
