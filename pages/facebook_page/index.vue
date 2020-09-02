@@ -12,9 +12,6 @@
       class="elevation-1"
       hide-default-footer
     >
-      <template v-slot:top>
-        <data-table-top :title="$t('menuTitle.facebookPage')" />
-      </template>
 
       <template v-slot:item.page_url="{ item }">
         <a target="_blank" :href="item.page_url">

@@ -6,7 +6,6 @@
           <v-col sm="6" md="4">
             <v-autocomplete
               :items="merchants"
-              :label="$t('menuTitle.facebookPage')"
               item-text="name"
               item-value="id"
               v-model="formModel.merchant_id"

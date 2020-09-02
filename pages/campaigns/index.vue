@@ -11,7 +11,7 @@
 
     <v-data-table
       :headers="headers"
-      :items="records.slice().reverse()"
+      :items="records"
       :loading="isFetching"
       :items-per-page="pagination.perPage"
       hide-default-footer=""
@@ -21,6 +21,9 @@
       </template>
       <template class v-slot:[`item.status`]="{ item }">
         <span>{{ item.status.description }}</span>
+      </template>
+       <template>
+        <data-table-top :title="$t('menuTitle.campaign')" />
       </template>
       <template class v-slot:[`item.actions`]="{ item }">
         <v-tooltip bottom>
@@ -127,6 +130,9 @@ export default {
     FormSearch
   },
   mixins: [dataTableMixin],
+  data() {
+    return {};
+  },
   asyncData({ app, store }) {
     return {
       moduleName: "campaigns",
@@ -154,12 +160,9 @@ export default {
     // this.hidden = this.$store.getters.isAdmin ? true : false;
   },
   computed: {
-    // merchant() {
-    //   return this.$store.state.merchants.records;
-    //   console.log(this.$store.state.merchants.records)
-    // },
     records() {
       return this.$store.state[this.moduleName].records;
+      console.log("HAHAHA", this.$store.state[this.moduleName].records);
     }
   },
   methods: {
