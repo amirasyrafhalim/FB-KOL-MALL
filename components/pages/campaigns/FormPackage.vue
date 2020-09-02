@@ -5,7 +5,7 @@
         <template v-slot:activator="{ on }">
           <v-row>
             <div class="pr-2">
-              <v-btn :to="localePath('campaigns')" outlined>
+              <v-btn :to="localePath('campaigns')">
                 {{ $t("label.back") }}
               </v-btn>
             </div>

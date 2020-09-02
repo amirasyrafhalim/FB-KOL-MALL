@@ -7,6 +7,7 @@
         style="overflow-y: scroll; max-height: 61vh max-height: 600px"
         class="overflow-y-auto"
       >
+        <h5 class="grey--text" v-if="noRecords">No records found...</h5>
         <v-expansion-panels inset focusable>
           <v-expansion-panel v-for="(data, key) in packages" :key="key">
             <v-expansion-panel-header>
@@ -143,6 +144,7 @@ export default {
   },
   data() {
     return {
+      noRecords: true,
       moduleName: "campaignPackages",
       packages: [],
       packageStatus: [],
@@ -179,18 +181,20 @@ export default {
       // this.packages = this.$store.state[this.moduleName].records;
       this.packages = this.$store.state.campaignPackages.records;
       console.log("HAHA", this.packages);
+      console.log("hehejjjj", this.packages.length);
+      if (this.packages.length != 0) {
+        this.noRecords = false;
+      }
       return this.packages;
-
     }
   },
 
   methods: {
     async fetchItems() {
-    var a = await this.$store.dispatch(
+      var a = await this.$store.dispatch(
         this.moduleName + "/fetchItems",
         this.$route.params.id
       );
-      console.log(a)
     },
     // initialize() {
     //   if (this.packages && this.totalOrder) {
@@ -225,11 +229,11 @@ export default {
         price: field === "price" ? data : this.packages[key].price,
         product_ids:
           field === "product_ids" ? data : this.packages[key].product_ids,
-          status: field === "status" ? data : this.packages[key].status.value
+        status: field === "status" ? data : this.packages[key].status.value
       };
 
       try {
-        console.log("HELLOOO", formModel)
+        console.log("HELLOOO", formModel);
         let res = await this.$api.campaignPackages.update(
           formModel,
           id,
