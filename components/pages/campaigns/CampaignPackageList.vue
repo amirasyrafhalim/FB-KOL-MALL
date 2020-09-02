@@ -185,11 +185,12 @@ export default {
   },
 
   methods: {
-    fetchItems() {
-      this.$store.dispatch(
+    async fetchItems() {
+    var a = await this.$store.dispatch(
         this.moduleName + "/fetchItems",
         this.$route.params.id
       );
+      console.log(a)
     },
     // initialize() {
     //   if (this.packages && this.totalOrder) {
@@ -224,10 +225,11 @@ export default {
         price: field === "price" ? data : this.packages[key].price,
         product_ids:
           field === "product_ids" ? data : this.packages[key].product_ids,
-        status: field === "status" ? data : this.packages[key].status
+          status: field === "status" ? data : this.packages[key].status.value
       };
 
       try {
+        console.log("HELLOOO", formModel)
         let res = await this.$api.campaignPackages.update(
           formModel,
           id,
@@ -239,7 +241,7 @@ export default {
     },
 
     async removeElement(index) {
-      this.$refs.confirmDialog
+      await this.$refs.confirmDialog
         .open(this.$t("label.delete"), this.$t("message.confirmDelete"), {
           color: "warning"
         })
