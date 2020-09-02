@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <v-row>
@@ -27,6 +28,7 @@
                   dense
                   v-model="formModel.name"
                   :label="$t('label.packageName')"
+                  :hint="$t('label.enterNamePackage')"
                   required
                   :error-messages="formErrors ? formErrors.name : ''"
                   elevation="20"
@@ -71,6 +73,7 @@
                       <v-text-field
                         v-model="formModel.keyword"
                         label="Insert Your Keyword"
+                        :hint="$t('label.enterKeywordPackage')"
                       ></v-text-field>
                     </v-col>
                   </v-list-item-subtitle>
@@ -136,6 +139,7 @@
                       solo
                       dense
                       :label="$t('label.quantity')"
+                       :hint="$t('label.enterQuantityPackage')"
                       type="number"
                       :error-messages="formErrors ? formErrors.quantity : ''"
                       v-model="formModel.quantity"
@@ -153,6 +157,7 @@
                       dense
                       type="number"
                       :label="$t('label.price')"
+                          :hint="$t('label.enterPricePackage')"
                       :error-messages="formErrors ? formErrors.price : ''"
                       prefix="RM"
                       v-model="formModel.price"
@@ -180,7 +185,7 @@
                       dense
                       :label="$t('label.maxOrder')"
                       type="number"
-                      :hint="$t('label.enterMin')"
+                      :hint="$t('label.enterMax')"
                       v-model="formModel.limit_per_user"
                       :error-messages="
                         formErrors ? formErrors.limit_per_user : ''
@@ -224,6 +229,7 @@
                       dense
                       type="number"
                       :label="$t('label.packagingWeight')"
+                           :hint="$t('label.enterPackageWeight')"
                       v-model="shippingModel.weight"
                     ></v-text-field>
                   </v-col>
@@ -250,6 +256,7 @@
                       dense
                       type="number"
                       :label="$t('label.packagingHeight')"
+                       :hint="$t('label.enterPackageHeight')"
                       v-model="shippingModel.height"
                     ></v-text-field>
                   </v-col>
@@ -266,7 +273,7 @@
                       dense
                       :label="$t('label.packagingLength')"
                       type="number"
-                      :hint="$t('label.enterMin')"
+                      :hint="$t('label.enterPackageLength')"
                       v-model="shippingModel.length"
                     >
                     </v-text-field>
@@ -278,7 +285,7 @@
                       dense
                       :label="$t('label.packagingWidth')"
                       type="number"
-                      :hint="$t('label.enterMin')"
+                      :hint="$t('label.enterPackageWidth')"
                       v-model="shippingModel.width"
                     >
                     </v-text-field>
