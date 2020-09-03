@@ -19,12 +19,16 @@
     "nuxt": "^2.12.2",
     "nuxt-i18n": "^6.11.1",
     "nuxt-webfontloader": "^1.1.0",
+    "socket.io-client": "^2.3.0",
+    "video.js": "^7.8.4",
     "vue-json-excel": "^0.2.98",
+    "vue2-perfect-scrollbar": "^1.5.0",
     "vuetify-datetime-picker": "^2.1.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
     "@nuxtjs/eslint-module": "^1.2.0",
+    "@nuxtjs/laravel-echo": "^1.1.0",
     "@nuxtjs/vuetify": "^1.11.2"
   }
 }
