@@ -15,7 +15,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 page.text
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -28,7 +28,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-blue"
+                class=" mb-1 text-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ page.total }}</v-list-item-title
               >
@@ -53,7 +53,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 income.joinDate
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -61,7 +61,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-magenta"
+                class=" mb-1 text-magenta"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ income.total }}</v-list-item-title
               >
@@ -84,7 +84,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 sale.month
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -92,7 +92,7 @@
           <v-list-item class="  align-self-end">
             <v-list-item-content  class="align-self-end">
               <v-list-item-title
-                class="text-h1 mb-1 text-magenta align-self-end"
+                class=" mb-1 text-magenta align-self-end"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ sale.total }}</v-list-item-title
               >
@@ -117,7 +117,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 product.name
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -130,7 +130,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-light-blue"
+                class="mb-1 text-light-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ product.total }}</v-list-item-title
               >
@@ -153,7 +153,7 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="text-h4">{{
+              <v-list-item-subtitle class="">{{
                 product.name
               }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -166,7 +166,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class="text-h1 mb-1 text-light-blue"
+                class=" mb-1 text-light-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
                 >{{ product.total }}</v-list-item-title
               >
@@ -239,7 +239,7 @@ export default {
   },
   created() {
     // this.user = this.$store.state.auth.user;
-    console.log(this.user);
+    console.log('user', this.user);
   }
 };
 </script>

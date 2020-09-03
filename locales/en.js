@@ -25,7 +25,7 @@ export default {
     color: "Color",
     complete: "Completed",
     confirmPassword: "Confirm Password",
-    connectWithFacebook: "Conenct with Facebook",
+    connectWithFacebook: "Conect with Facebook",
     continue: "Continue",
     country: "Country",
     courierName: "Courier Name",
