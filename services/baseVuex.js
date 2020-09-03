@@ -45,7 +45,7 @@ export default {
       commit("setIsFetching", true);
       try {
         let res = await this.$api[state.moduleName].getAll(
-        params
+          this.$helper.stringifyParams(params)
         );
         commit("setSearchModel", params);
         commit("setRecords", res.data);
