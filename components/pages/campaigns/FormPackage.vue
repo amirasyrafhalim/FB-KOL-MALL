@@ -427,7 +427,7 @@ export default {
       console.log(this.shippingModel.keyword);
     },
     fetchProducts() {
-      this.$store.dispatch("products/fetchItems");
+      this.$store.dispatch("products/fetchItemsById");
     },
     updateValue(evt) {
       this.formModel.color = evt.hex;
@@ -461,7 +461,7 @@ export default {
 
     async fetchItems() {
       await this.$store.dispatch(
-        this.moduleName + "/fetchItems",
+        this.moduleName + "/fetchItemsById",
         this.$route.params.id
       );
       this.fetchCounter();

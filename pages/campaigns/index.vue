@@ -130,17 +130,14 @@ export default {
     FormSearch
   },
   mixins: [dataTableMixin],
-  data() {
-    return {};
-  },
   asyncData({ app, store }) {
     return {
       moduleName: "campaigns",
       headers: [
         { text: app.i18n.t("label.campaignName"), value: "name" },
-        { text: app.i18n.t("label.createdBy"), value: "name" },
+        // { text: app.i18n.t("label.createdBy"), value: "name" },
         // { text: app.i18n.t("label.streamId"), value: "video_id" },
-        // { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
+        { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
         {
           text: app.i18n.t("label.status"),
           value: "status",

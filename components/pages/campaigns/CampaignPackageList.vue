@@ -158,7 +158,7 @@ export default {
     };
   },
   created() {
-    this.fetchItems();
+    this.fetchItemsById();
     // this.initialize();
     // this.fetchShipping();
   },
@@ -188,9 +188,9 @@ export default {
   },
 
   methods: {
-    async fetchItems() {
+    async fetchItemsById() {
       var a = await this.$store.dispatch(
-        this.moduleName + "/fetchItems",
+        this.moduleName + "/fetchItemsById",
         this.$route.params.id
       );
     },
@@ -252,7 +252,7 @@ export default {
             this.$api.campaignPackages.delete(index, this.$route.params.id);
           }
         });
-      await this.fetchItems();
+      await this.fetchItemsById();
     }
 
     //    async removeElement(index) {

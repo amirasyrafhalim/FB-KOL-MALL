@@ -2,31 +2,9 @@
   <v-card class="components__merchants-form-search mb-5">
     <v-card-text class="pt-0">
       <v-row>
-        <!-- <v-col sm="2" md="2">
-          <v-text-field
-            :label="$t('label.streamId')"
-            v-model="formModel.stream_id"
-            hide-details
-            elevation="20"
-            solo
-            dense
-          ></v-text-field>
-        </v-col> -->
-        <!-- <v-col sm="2" md="2">
-          <v-select
-            :label="$t('label.status')"
-            hide-details
-            :items="status"
-            v-model="formModel.status"
-            clearable
-            elevation="20"
-            solo
-            dense
-          ></v-select>
-        </v-col> -->
         <v-col sm="2" md="6">
           <v-text-field
-            :label="$t('label.campaignName')"
+            :label="$t('label.name')"
             v-model="formModel.name"
             hide-details
             elevation="20"
@@ -53,9 +31,9 @@ export default {
     return {
       status:[ 1,2],
       formModel: {
-        name: null,
-        stream_id: null,
-        status: null
+        name: "",
+        // stream_id: null,
+        // status: null
       }
     };
   },
