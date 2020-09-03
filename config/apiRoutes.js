@@ -26,6 +26,7 @@ export default {
     streamEnd: "/v1/campaigns/streamEnd/{id}",
     streamPause: "/v1/campaigns/streamPause/{id}",
     streamStart: "/v1/campaigns/streamStart/{id}",
+    // orderCount: "/v1/packages/{id}",
     orderCount: "/v1/campaigns/orderCount/{id}",
     orderLog: "/v1/campaigns/orderLog/{id}",
     streamRefresh: "/v1/campaigns/streamRefresh/{id}"
@@ -45,7 +46,7 @@ export default {
   },
   merchants: {
     getAllOrCreate: "/v1/merchants",
-    getDetail: "/v1/merchants/detail",
+    // getDetail: "/v1/merchants",
     getOneOrUpdateOrDelete: "/v1/merchants/{id}"
   },
   merchantPages: {

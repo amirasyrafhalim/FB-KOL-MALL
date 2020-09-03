@@ -14,7 +14,7 @@
       :items="records"
       :loading="isFetching"
       :items-per-page="pagination.perPage"
-      hide-default-footer=""
+      hide-default-footer
     >
       <template v-slot:top>
         <data-table-top :title="$t('menuTitle.campaign')" />

@@ -219,6 +219,9 @@ export default {
     async editPackage(data, key, field) {
       var id = this.packages[key].id;
       var formModel = {
+        name: field === "name" ? data : this.packages[key].name,
+        color: field === "color" ? data : this.packages[key].color,
+        keyword: field === "keyword" ? data : this.packages[key].keyword,
         quantity: field === "quantity" ? data : this.packages[key].quantity,
         limit_per_user:
           field === "limit_per_user" ? data : this.packages[key].limit_per_user,

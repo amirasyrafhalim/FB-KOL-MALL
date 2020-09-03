@@ -101,7 +101,7 @@ export default {
       bannerUpdate: false,
       files: null,
       formModel: {
-        merchant_id: 1,
+        merchant_id: 2,
         name: null,
         status: false,
         description: null,

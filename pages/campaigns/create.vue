@@ -2,9 +2,11 @@
   <div class="layout column ">
     <h2 class="flex text-xs-center black--text mt-5 mb-5">
       {{ $t("menuTitle.campaign") }}
-    </h2> 
+    </h2>
+    <v-spacer></v-spacer>
 
-    <form-basic />       
+    
+    <form-basic />
     <!-- //---import form--- -->
 
     <!-- <v-row>
@@ -20,20 +22,14 @@
 
     <!-- <form-package /> -->
     <!-- //---import form--- -->
-
-  
   </div>
 </template>
 
 <script>
 import FormBasic from "@/components/pages/campaigns/FormBasic";
-import FormPackage from "@/components/pages/campaigns/FormPackage";
-import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
 export default {
   components: {
-    FormBasic,
-    CrudFormAction,
-    FormPackage
+    FormBasic
   }
 };
 </script>

@@ -22,6 +22,8 @@ export default {
       state.record = item;
     },
     setRecords(state, items) {
+      console.log('state', state)
+      console.log('items', items)
       state.records = items;
     },
     setIsFetching(state, value) {
@@ -48,6 +50,7 @@ export default {
           this.$helper.stringifyParams(params) 
    
         );
+        console.log('res', res);
         commit("setSearchModel", params);
         commit("setRecords", res.data);
         commit("setPagination", res.meta);

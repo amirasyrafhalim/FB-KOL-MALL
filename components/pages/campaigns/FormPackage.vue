@@ -464,7 +464,6 @@ export default {
         this.moduleName + "/fetchItemsById",
         this.$route.params.id
       );
-      this.fetchCounter();
     }
 
     // async fetchCounter() {

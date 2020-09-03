@@ -99,9 +99,9 @@ export default {
         { value: "301-400" }
       ],
       formModel: {
-        company_name: null,
-        business_size: null,
-        categories: []
+        company_name: "KOL MALL",
+        business_size:null,
+        categories: [1,2],
       }
     };
   },
