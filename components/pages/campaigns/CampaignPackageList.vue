@@ -7,7 +7,7 @@
         style="overflow-y: scroll; max-height: 61vh max-height: 600px"
         class="overflow-y-auto"
       >
-        <h5 class="grey--text" v-if="noRecords">No records found...</h5>
+        <h3 class="grey--text" v-if="noRecords">No records found...</h3>
         <v-expansion-panels inset focusable>
           <v-expansion-panel v-for="(data, key) in packages" :key="key">
             <v-expansion-panel-header>

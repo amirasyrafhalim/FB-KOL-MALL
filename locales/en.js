@@ -30,6 +30,7 @@ export default {
     country: "Country",
     courierName: "Courier Name",
     createdAt: "Created At",
+    createdBy: "Created By",
     dateOfBirth: "Date of Birth",
     delete: "Delete",
     deliverAt: "Deliver Time",

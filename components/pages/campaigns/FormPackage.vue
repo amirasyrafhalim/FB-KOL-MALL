@@ -1,8 +1,7 @@
-
 <template>
   <div>
     <v-row>
-      <v-dialog v-model="dialog" persistent max-width="700px">
+      <v-dialog v-model="dialog" max-width="700px">
         <template v-slot:activator="{ on }">
           <v-row>
             <div class="pr-2">
@@ -17,10 +16,10 @@
             </div>
           </v-row>
         </template>
-        <v-card class="radius">
+        <v-card>
           <v-card-text>
             <v-row>
-              <v-col cols="12" class="pl-3 pr-3 mt-5 ">
+              <v-col cols="12">
                 <v-card-title>
                   <h3 style="color:black;">Package</h3>
                 </v-card-title>
@@ -33,7 +32,6 @@
                   :error-messages="formErrors ? formErrors.name : ''"
                   elevation="20"
                   solo
-                  class="pl-4"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -42,13 +40,13 @@
 
             <!-- color section -->
             <v-row>
-              <v-col cols="6" class="pl-5">
+              <v-col sm="12" md="6">
                 <v-card-title>
                   <h3 style="color:black;" class="text-float-left">
                     {{ $t("label.selling") }}
                   </h3>
                 </v-card-title>
-                <v-card outlined width="auto" class="mb-5">
+                <v-card outlined width="auto">
                   <v-col>
                     <v-row>
                       <v-radio-group v-model="formModel.sell_method" row>
@@ -80,7 +78,7 @@
                 </v-card>
               </v-col>
 
-              <v-col cols="6" class="pl-1">
+              <v-col sm="12" md="6" class="pl-1">
                 <v-card-title>
                   <h3 class="black--text">
                     {{ $t("label.color") }}
@@ -90,7 +88,6 @@
                   @input="updateValue($event)"
                   disabled
                   hide-inputs
-                  class="mb-5"
                   width="320px"
                   :swatches="swatches"
                   canvas-height="200"
@@ -104,17 +101,15 @@
 
             <!-- item section -->
             <v-card-title>
-              <h3 class="black--text mb-5 pl-">
+              <h3 class="black--text">
                 {{ $t("label.packageItem") }}
               </h3>
             </v-card-title>
-            <div class="pl-5">
-              <v-card
-                class="radius mb-10 background-color-grey"
-                max-width="770"
-              >
-                <v-row justify="center">
-                  <v-col cols="5">
+
+            <div>
+              <v-card class="radius mb-2 background-color-grey py-0 px-5" max-width="770">
+                <v-row justify="center" align-content="center">
+                  <v-col cols="sm" md="6">
                     <v-autocomplete
                       class="mt-2"
                       elevation="20"
@@ -132,14 +127,14 @@
                       :error-messages="formErrors ? formErrors.product_ids : ''"
                     ></v-autocomplete>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="sm" md="6">
                     <v-text-field
-                      class="mt-2"
                       elevation="20"
+                      class="mt-2"
                       solo
                       dense
                       :label="$t('label.quantity')"
-                       :hint="$t('label.enterQuantityPackage')"
+                      :hint="$t('label.enterQuantityPackage')"
                       type="number"
                       :error-messages="formErrors ? formErrors.quantity : ''"
                       v-model="formModel.quantity"
@@ -150,20 +145,20 @@
 
                 <!-- text field for price and total order-->
                 <v-row justify="center">
-                  <v-col cols="5">
+                  <v-col cols="sm" md="6">
                     <v-text-field
                       elevation="20"
                       solo
                       dense
                       type="number"
                       :label="$t('label.price')"
-                          :hint="$t('label.enterPricePackage')"
+                      :hint="$t('label.enterPricePackage')"
                       :error-messages="formErrors ? formErrors.price : ''"
                       prefix="RM"
                       v-model="formModel.price"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="sm" md="3">
                     <v-text-field
                       elevation="20"
                       solo
@@ -178,7 +173,7 @@
                     >
                     </v-text-field>
                   </v-col>
-                  <v-col cols="3">
+                  <v-col cols="sm" md="3">
                     <v-text-field
                       elevation="20"
                       solo
@@ -200,7 +195,7 @@
             <!-- shipping section -->
             <v-row>
               <v-card-title>
-                <h3 class="pl-3 black--text mb-5">Shipping</h3>
+                <h3 class="black--text">Shipping</h3>
               </v-card-title>
               <v-radio-group v-model="formModel.free_shipping" row>
                 <v-radio
@@ -218,18 +213,21 @@
             </v-row>
 
             <!-- text field packaging weight -->
-            <div class="pl-5">
-              <v-card class="radius background-color-grey" max-width="770">
-                <v-row justify="center">
-                  <v-col cols="5">
+            <div>
+              <v-card
+                class="radius background-color-grey py-0 px-5"
+                max-width="770"
+              >
+                <v-row justify="center" align-content="center">
+                  <v-col cols="sm" md="6">
                     <v-text-field
-                      class="mt-5"
+                      class="mt-2"
                       elevation="20"
                       solo
                       dense
                       type="number"
                       :label="$t('label.packagingWeight')"
-                           :hint="$t('label.enterPackageWeight')"
+                      :hint="$t('label.enterPackageWeight')"
                       v-model="shippingModel.weight"
                     ></v-text-field>
                   </v-col>
@@ -248,25 +246,19 @@
               @input.native="fetchProducts($event.target.value)"
               :error-messages="formErrors ? formErrors.product_ids : ''"
             ></v-autocomplete> -->
-                  <v-col cols="5">
+                  <v-col cols="sm" md="6">
                     <v-text-field
-                      class="mt-5"
+                      class="mt-2"
                       elevation="20"
                       solo
                       dense
                       type="number"
                       :label="$t('label.packagingHeight')"
-                       :hint="$t('label.enterPackageHeight')"
+                      :hint="$t('label.enterPackageHeight')"
                       v-model="shippingModel.height"
                     ></v-text-field>
                   </v-col>
-                </v-row>
-
-                <!-- - -->
-
-                <!-- text field for shipping fee-->
-                <v-row justify="center">
-                  <v-col cols="5">
+                  <v-col cols="sm" md="6">
                     <v-text-field
                       elevation="20"
                       solo
@@ -278,7 +270,7 @@
                     >
                     </v-text-field>
                   </v-col>
-                  <v-col cols="5">
+                  <v-col cols="sm" md="6">
                     <v-text-field
                       elevation="20"
                       solo
@@ -311,7 +303,7 @@
             false-value="0"
             class="flex text-xs-center pl-7"
           ></v-switch>
-          <v-card-actions class="pt-0 mb-5">
+          <v-card-actions class="pt-0">
             <v-spacer></v-spacer>
             <v-col cols="12">
               <v-btn outlined color="indigo" class="ma-2" @click="close"
@@ -420,6 +412,13 @@ export default {
         status: "",
         free_shipping: ""
       };
+      this.shippingModel = {
+        package_id: "",
+        width: "",
+        length: "",
+        height: "",
+        weight: ""
+      };
     },
     uppercase() {
       this.formModel.keyword = this.formModel.keyword.toUpperCase();
@@ -447,7 +446,6 @@ export default {
         );
         console.log(res);
         this.handleApiSuccess(res);
-        // await this.fetchItems();
         this.shippingModel.package_id = res.data.id;
         console.log(this.shippingModel.package_id);
         let res1 = await this.$api.campaignShippings.create(
@@ -455,7 +453,7 @@ export default {
           this.$route.params.id
         );
         this.close();
-        // this.handleApiSuccess(res1);
+        this.fetchItems();
       } catch (err) {
         this.handleApiErrors(err);
       }

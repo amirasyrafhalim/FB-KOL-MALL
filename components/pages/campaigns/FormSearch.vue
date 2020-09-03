@@ -2,7 +2,7 @@
   <v-card class="components__merchants-form-search mb-5">
     <v-card-text class="pt-0">
       <v-row>
-        <v-col sm="2" md="2">
+        <!-- <v-col sm="2" md="2">
           <v-text-field
             :label="$t('label.streamId')"
             v-model="formModel.stream_id"
@@ -11,7 +11,7 @@
             solo
             dense
           ></v-text-field>
-        </v-col>
+        </v-col> -->
         <!-- <v-col sm="2" md="2">
           <v-select
             :label="$t('label.status')"
@@ -24,9 +24,9 @@
             dense
           ></v-select>
         </v-col> -->
-        <v-col sm="2" md="2">
+        <v-col sm="2" md="6">
           <v-text-field
-            :label="$t('label.name')"
+            :label="$t('label.campaignName')"
             v-model="formModel.name"
             hide-details
             elevation="20"
