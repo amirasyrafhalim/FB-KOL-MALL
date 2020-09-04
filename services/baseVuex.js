@@ -47,11 +47,7 @@ export default {
       try {
     
         let res = await this.$api[state.moduleName].getAll(
-<<<<<<< HEAD
           this.$helper.stringifyParams(params) 
-=======
-          this.$helper.stringifyParams(params)
->>>>>>> ab60ee2000fb2b4c3094b6606effea33d95c0865
         );
         
         commit("setSearchModel", params);
