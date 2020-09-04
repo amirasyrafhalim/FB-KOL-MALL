@@ -158,7 +158,7 @@ export default {
     };
   },
   created() {
-    this.fetchItemsById();
+    this.fetchItems();
     // this.initialize();
     // this.fetchShipping();
   },
@@ -188,10 +188,9 @@ export default {
   },
 
   methods: {
-    async fetchItemsById() {
+    async fetchItems() {
       var a = await this.$store.dispatch(
-        this.moduleName + "/fetchItemsById",
-        this.$route.params.id
+        this.moduleName + "/fetchItems", {campaign_id: this.$route.params.id}  
       );
     },
     // initialize() {
@@ -255,7 +254,7 @@ export default {
             this.$api.campaignPackages.delete(index, this.$route.params.id);
           }
         });
-      await this.fetchItemsById();
+      await this.fetchItems();
     }
 
     //    async removeElement(index) {
