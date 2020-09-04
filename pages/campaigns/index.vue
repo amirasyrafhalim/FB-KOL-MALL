@@ -14,15 +14,15 @@
       :items="records"
       :loading="isFetching"
       :items-per-page="pagination.perPage"
-      hide-default-footer=""
+      hide-default-footer
     >
       <template v-slot:top>
         <data-table-top :title="$t('menuTitle.campaign')" />
       </template>
-      <template class v-slot:[`item.status`]="{ item }">
-        <span>{{ item.status.description }}</span>
-      </template>
-       <template>
+        <template class v-slot:[`item.status`]="{ item }">
+          <span>{{ item.status.description }}</span>
+        </template>
+      <template>
         <data-table-top :title="$t('menuTitle.campaign')" />
       </template>
       <template class v-slot:[`item.actions`]="{ item }">
@@ -130,15 +130,13 @@ export default {
     FormSearch
   },
   mixins: [dataTableMixin],
-  data() {
-    return {};
-  },
   asyncData({ app, store }) {
     return {
       moduleName: "campaigns",
       headers: [
         { text: app.i18n.t("label.campaignName"), value: "name" },
-        { text: app.i18n.t("label.streamId"), value: "video_id" },
+        // { text: app.i18n.t("label.createdBy"), value: "name" },
+        // { text: app.i18n.t("label.streamId"), value: "video_id" },
         { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
         {
           text: app.i18n.t("label.status"),
@@ -162,6 +160,9 @@ export default {
   computed: {
     records() {
       return this.$store.state[this.moduleName].records;
+    },
+    merchants() {
+      return this.$store.state.merchants.records;
     }
   },
   methods: {

@@ -2,7 +2,7 @@
   <v-container id="pages__login" class="fill-height" fluid>
     <v-layout>
       <v-row align="center" justify="center">
-        <v-col cols="12" sm="3" md="5">
+        <v-col cols="12" sm="8" md="6">
           <v-card class="elevation-1 pa-3 radius secondary">
             <alert-form-error :error-message="errorMessage" />
             <v-card-text>

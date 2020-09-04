@@ -43,16 +43,22 @@ export default {
   actions: {
     async fetchItems({ commit, dispatch, state }, params) {
       commit("setIsFetching", true);
+      
       try {
+    
         let res = await this.$api[state.moduleName].getAll(
+<<<<<<< HEAD
+          this.$helper.stringifyParams(params) 
+=======
           this.$helper.stringifyParams(params)
+>>>>>>> ab60ee2000fb2b4c3094b6606effea33d95c0865
         );
+        
         commit("setSearchModel", params);
         commit("setRecords", res.data);
         commit("setPagination", res.meta);
       } catch (err) {
         let resBody = err;
-        console.log(resBody)
         let errMessage = resBody
         dispatch(
           "showSnackbar",
@@ -66,6 +72,32 @@ export default {
         commit("setIsFetching", false);
       }
     },
+    // async fetchItemsById({ commit, dispatch, state }, params) {
+    //   commit("setIsFetching", true);
+    //   try {
+    //     let res = await this.$api[state.moduleName].getAll(
+    //       params 
+    //     );
+    //     commit("setSearchModel", params);
+    //     commit("setRecords", res.data);
+    //     commit("setPagination", res.meta);
+    //   } catch (err) {
+    //     let resBody = err;
+    //     console.log(resBody)
+    //     let errMessage = resBody
+    //     dispatch(
+    //       "showSnackbar",
+    //       {
+    //         text: errMessage || this.app.i18n.t("message.unknownError"),
+    //         color: "error",
+    //       },
+    //       { root: true }
+    //     );
+    //   } finally {
+    //     commit("setIsFetching", false);
+    //   }
+    // },
+
     async fetchItem({ commit, dispatch, state }, id) {
       try {
         let res = await this.$api[state.moduleName].getOne(id);

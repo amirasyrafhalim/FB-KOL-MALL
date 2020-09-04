@@ -7,7 +7,7 @@
         style="overflow-y: scroll; max-height: 61vh max-height: 600px"
         class="overflow-y-auto"
       >
-        <h5 class="grey--text" v-if="noRecords">No records found...</h5>
+        <h3 class="grey--text" v-if="noRecords">No records found...</h3>
         <v-expansion-panels inset focusable>
           <v-expansion-panel v-for="(data, key) in packages" :key="key">
             <v-expansion-panel-header>
@@ -190,8 +190,7 @@ export default {
   methods: {
     async fetchItems() {
       var a = await this.$store.dispatch(
-        this.moduleName + "/fetchItems",
-        this.$route.params.id
+        this.moduleName + "/fetchItems", {campaign_id: this.$route.params.id}  
       );
     },
     // initialize() {
@@ -219,6 +218,9 @@ export default {
     async editPackage(data, key, field) {
       var id = this.packages[key].id;
       var formModel = {
+        name: field === "name" ? data : this.packages[key].name,
+        color: field === "color" ? data : this.packages[key].color,
+        keyword: field === "keyword" ? data : this.packages[key].keyword,
         quantity: field === "quantity" ? data : this.packages[key].quantity,
         limit_per_user:
           field === "limit_per_user" ? data : this.packages[key].limit_per_user,
