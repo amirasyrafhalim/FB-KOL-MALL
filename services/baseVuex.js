@@ -68,31 +68,6 @@ export default {
         commit("setIsFetching", false);
       }
     },
-    // async fetchItemsById({ commit, dispatch, state }, params) {
-    //   commit("setIsFetching", true);
-    //   try {
-    //     let res = await this.$api[state.moduleName].getAll(
-    //       params 
-    //     );
-    //     commit("setSearchModel", params);
-    //     commit("setRecords", res.data);
-    //     commit("setPagination", res.meta);
-    //   } catch (err) {
-    //     let resBody = err;
-    //     console.log(resBody)
-    //     let errMessage = resBody
-    //     dispatch(
-    //       "showSnackbar",
-    //       {
-    //         text: errMessage || this.app.i18n.t("message.unknownError"),
-    //         color: "error",
-    //       },
-    //       { root: true }
-    //     );
-    //   } finally {
-    //     commit("setIsFetching", false);
-    //   }
-    // },
 
     async fetchItem({ commit, dispatch, state }, id) {
       try {
