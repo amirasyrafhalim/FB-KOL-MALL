@@ -1,3 +1,5 @@
+const broadcastServerUrl = process.env.BROADCAST_SERVER_URL;
+
 export default [
 	'@nuxtjs/dotenv',
 	'@nuxtjs/vuetify',
@@ -5,7 +7,7 @@ export default [
 		'@nuxtjs/laravel-echo',
 		{
 			broadcaster: 'socket.io',
-			host: 'http://localhost:6001'
+			host: broadcastServerUrl
 		}
 	]
 ];
