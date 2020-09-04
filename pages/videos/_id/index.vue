@@ -128,9 +128,9 @@ export default {
       console.log(channel);
 
       this.$echo.channel(channel).listen("OrderCreated", (e) => {
-        // console.log(e);
+        console.log(e);
 
-        let name = e.order.social_id;
+        let name = e.order.social_id || 'A buyer';
 
         if (e.detail && e.detail.name) {
           name = e.detail.name;
