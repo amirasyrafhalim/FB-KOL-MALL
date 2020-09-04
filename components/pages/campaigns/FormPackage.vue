@@ -462,7 +462,7 @@ export default {
     async fetchItems() {
       await this.$store.dispatch(
         this.moduleName + "/fetchItems",
-        this.$route.params.id
+        {campaign_id :this.$route.params.id}
       );
     }
 
