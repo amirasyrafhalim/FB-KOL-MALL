@@ -18,58 +18,33 @@
                     />
                   </v-img>
                 </h1>
-                <h2
-                  class="flex text-xs-center black--text mt-5 mb-5"
-                >
-                  {{ $t("label.welcome") }}
-                </h2>
+                <h2 class="flex text-xs-center black--text mt-5 mb-5">{{ $t("label.welcome") }}</h2>
               </div>
               <v-form>
-                <v-btn
-                  color="#3b5998"
-                  block
-                  dark
-                  large
-                  @click="loginWithFacebook()"
-                  class="mt-5"
-                >
-                  <img
-                    width="auto"
-                    height="22px"
-                    class="pr-5"
-                    src="../assets/img/facebook.png"
-                  />{{ $t("label.loginWithFacebook") }}
+                <v-btn color="#3b5998" block dark large @click="loginWithFacebook()" class="mt-5">
+                  <img width="auto" height="22px" class="pr-5" src="../assets/img/facebook.png" />
+                  {{ $t("label.connectWithFacebook") }}
                 </v-btn>
-                <v-btn
-                  block
-                  @click="loginWithGoogle"
-                  class="mt-5"
-                  large
-                  outlined
-                >
-                  <img
-                    width="auto"
-                    height="20px"
-                    class="pr-5"
-                    src="../assets/img/google.png"
-                  />{{ $t("label.loginWithGoogle") }}
-                </v-btn>
+                <!--v-btn block @click="loginWithGoogle" class="mt-5" large outlined>
+                  <img width="auto" height="20px" class="pr-5" src="../assets/img/google.png" />
+                  {{ $t("label.loginWithGoogle") }}
+                </v-btn-->
                 <v-row align="center" justify="center" class="mt-10 mb-10">
                   <h4
                     class="subtitle font-weight-bold black--text text-center"
                     :href="localePath('')"
-                  >
-                    Don't have an account?
-                  </h4>
-                  <a :href="localePath('register')" class=" pl-1 " style="text-decoration:none;">
-                    Sign Up Now
-                  </a>
+                  >Don't have an account?</h4>
+                  <a
+                    :href="localePath('register')"
+                    class="pl-1"
+                    style="text-decoration:none;"
+                  >Sign Up Now</a>
                 </v-row>
                 <v-text-field
                   type="email"
                   :label="$t('label.email')"
                   :error-messages="formErrors ? formErrors.email : ''"
-                   v-model="formModel.username"
+                  v-model="formModel.username"
                   single-line
                   flat
                   solo
@@ -92,22 +67,14 @@
               </v-form>
             </v-card-text>
             <v-card-actions class="flex-column text-right">
-              <v-btn
-                class="default-button text-white"
-                block
-                @click="login"
-                large
-              >
+              <v-btn class="default-button text-white" block @click="login" large>
                 <h4 class="text-white">{{ $t("label.login") }}</h4>
               </v-btn>
               <a
                 :href="localePath('forgotPassword')"
                 class="caption text-right mt-5"
                 style="text-decoration:none;"
-                
-              >
-                Forgot Password
-              </a>
+              >Forgot Password</a>
               <div class="login-option__divider">
                 <div class="login-option__divider--wrapper">
                   <v-divider />
@@ -135,18 +102,18 @@ export default {
   layout: "auth",
   mixins: [formMixin],
   components: {
-    AlertFormError
+    AlertFormError,
   },
   asyncData() {
     return {
       formModel: {
-       "grant_type": "password",
-        "client_id": process.env.CLIENT_ID,
-        "client_secret": process.env.CLIENT_SECRET,
-        "username": "",
-        "password":  "",
-        "scope": "*"
-      }
+        grant_type: "password",
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        username: "",
+        password: "",
+        scope: "*",
+      },
     };
   },
   beforeCreate() {
@@ -154,62 +121,69 @@ export default {
       this.$store.commit("setOverlay", true);
     }
   },
-  created(){
-    console.log(this.$route.query.token)
+  created() {
+    console.log(this.$route.query.token);
 
-   if(this.$route.query.token){
-     this.$store.commit('setToken', this.$route.query.token);
-     this.signUpFB();
-   }
-    
+    if (this.$route.query.token) {
+      this.$store.commit("setToken", this.$route.query.token);
+      this.signUpFB();
+    }
   },
   methods: {
-    async signUpFB(){
-       try {
-      var auth = this.$store.state.auth;
-      const { data } = await this.$api.auth.loginFB({token: this.$route.query.token})
-      console.log('data', data)
-      this.$auth.setToken("local", "Bearer " + data);
-      this.$auth.setStrategy("local");
-      this.$store.commit("setOverlay", false);
-      await this.$auth.fetchUser();
-      
-      this.$router.push("/referralCode");
-    } catch (err) {
-      console.log(err);
-    }
-    },
-    loginWithGoogle(){
+    async signUpFB() {
+      try {
+        var auth = this.$store.state.auth;
+        const { data } = await this.$api.auth.loginFB({
+          token: this.$route.query.token,
+        });
+        console.log("data", data);
+        this.$auth.setToken("local", "Bearer " + data);
+        this.$auth.setStrategy("local");
+        this.$store.commit("setOverlay", false);
+        await this.$auth.fetchUser();
 
+        if (this.$auth.user.merchant) {
+          this.$router.push("/");
+        } else {
+          this.$router.push("/referralCode");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
+    loginWithGoogle() {},
     async login() {
       this.$store.commit("setOverlay", true);
 
       try {
         var a = await this.$auth.loginWith("local", {
-          data: this.formModel
+          data: this.formModel,
         });
-        this.$router.push("/");
+        console.log(this.$auth.user);
+
+        if (this.$auth.user.merchant) {
+          this.$router.push("/");
+        } else {
+          this.$router.push("/referralCode");
+        }
       } catch (err) {
-        console.log(err)
+        console.log(err);
       } finally {
         this.$store.commit("setOverlay", false);
       }
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
-       window.location.href = process.env.API_URL_REDIRECT+"/v1/auth/fb-redirect";
+      window.location.href =
+        process.env.API_URL_REDIRECT + "/v1/auth/fb-redirect";
 
-      
-
-       
       // try {
-      
+
       // } catch (err) {
       //   console.log(err);
       // }
-    }
-  }
+    },
+  },
 };
 </script>
 

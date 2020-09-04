@@ -2,20 +2,15 @@
   <div>
     <v-row>
       <v-col v-if="liveVideos.length > 0" class="mx-auto my-auto">
-            <div class="overline mb-4">Video List</div>
+        <div class="overline mb-4">Video List</div>
         <v-card class="d-flex flex-row mb-6">
-         <v-radio-group v-model="formModel.stream_id" row>
-          <span
-            v-for="(liveVideo, i) in liveVideos"
-            :key="i"
-           
-            class="mr-5"
-          >
-           <v-radio :label="liveVideo.title" :value="liveVideo.id"></v-radio>
-            <p class="heading">Status: {{ liveVideo.status }}</p>
-            <span v-html="liveVideo.embed_html"></span>
-          </span>
-         </v-radio-group>
+          <v-radio-group v-model="formModel.stream_id" row>
+            <span v-for="(liveVideo, i) in liveVideos" :key="i" class="mr-5">
+              <v-radio :label="liveVideo.title" :value="liveVideo.id"></v-radio>
+              <p class="heading">Status: {{ liveVideo.status }}</p>
+              <span v-html="liveVideo.embed_html"></span>
+            </span>
+          </v-radio-group>
         </v-card>
       </v-col>
       <v-col v-else>
@@ -23,9 +18,9 @@
           <v-list-item three-line>
             <v-list-item-content>
               <div class="heading mb-4">Video List</div>
-              <v-list-item-title class="headline mb-1 text-uppercase text-center text-grey">
-                {{ "no video available" }}
-              </v-list-item-title>
+              <v-list-item-title
+                class="headline mb-1 text-uppercase text-center text-grey"
+              >{{ "no video available" }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -45,20 +40,14 @@
         ></v-autocomplete>
       </v-col>
     </v-row>
-      <crud-form-action
-        class="mx-2"
-        backPath="facebookPage"
-        :loading="loading"
-        @submit="submit"
-      />
-  
+    <crud-form-action class="mx-2" backPath="facebookPage" :loading="loading" @submit="submit" />
 
     <!-- <v-btn @click="selectData()" :disabled="disabled" class="primary">
         submit
     </v-btn>
     <v-btn class="light">
         back
-    </v-btn> -->
+    </v-btn>-->
   </div>
 </template>
 <script>
@@ -90,11 +79,11 @@ export default {
       return this.$store.state[this.moduleName].records;
     },
     liveVideos() {
-        var video = this.$store.state[this.moduleName].liveVideos;
-        console.log(video)
-        if(video.length == 0){
-            this.disabled = false
-        }
+      var video = this.$store.state[this.moduleName].liveVideos;
+      console.log(video)
+      if (video.length == 0) {
+        this.disabled = false
+      }
       return this.$store.state[this.moduleName].liveVideos;
     },
     campaigns() {
@@ -109,10 +98,10 @@ export default {
   methods: {
     async submit(i) {
       this.formModel.merchant_page_id = this.$route.params.id;
-       var res = await this.$api.campaigns.updateLiveVideo(  this.campaign_id, this.formModel);
-    
-       this.$store.commit("campaigns/setUpdateLiveVideo", res)
-       this.handleApiSuccess(res, 'controlPanel')
+      var res = await this.$api.campaigns.updateLiveVideo(this.campaign_id, this.formModel);
+
+      this.$store.commit("campaigns/setUpdateLiveVideo", res)
+      this.handleApiSuccess(res, 'controlPanel')
     },
     initialize() {
       this.user = this.$store.state.auth.user;

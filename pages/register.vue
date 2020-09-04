@@ -10,28 +10,15 @@
                 <img :src="require('~/assets/img/logo.png')" height="50" width="auto" contain />
                 <h2
                   class="flex text-xs-center text-black bold font-weight-black my-4"
-                >
-                  {{ $t("label.joinUs") }}
-                </h2>
+                >{{ $t("label.joinUs") }}</h2>
               </div>
               {{formErrors.name}}
               <div>
-                <v-btn
-                  color="#3b5998"
-                  block
-                  dark
-                  large
-                  @click="loginWithFacebook"
-                  class="mt-5"
-                >
-                  <img
-                    width="auto"
-                    height="25px"
-                    class="pr-5"
-                    src="../assets/img/facebook.png"
-                  />{{ $t("label.loginWithFacebook") }}
+                <v-btn color="#3b5998" block dark large @click="loginWithFacebook" class="mt-5">
+                  <img width="auto" height="25px" class="pr-5" src="../assets/img/facebook.png" />
+                  {{ $t("label.loginWithFacebook") }}
                 </v-btn>
-                <v-btn
+                <!--v-btn
                   block
                   @click="loginWithGoogle"
                   class="mt-5"
@@ -44,7 +31,7 @@
                     class="pr-5"
                     src="../assets/img/google.png"
                   />{{ $t("label.loginWithGoogle") }}
-                </v-btn>
+                </v-btn-->
               </div>
               <div class="login-option__divider mt-2">
                 <div class="login-option__divider--wrapper"></div>
@@ -116,21 +103,17 @@
               </v-form>
             </v-card-text>
             <v-card-actions class="flex-column text-right">
-              <v-btn class="default-button white--text mb-2" block @click="signUp">
-                {{ $t("label.signUp") }}
-              </v-btn>
+              <v-btn
+                class="default-button white--text mb-2"
+                block
+                @click="signUp"
+              >{{ $t("label.signUp") }}</v-btn>
 
               <v-row align="center" justify="center">
-                <h4 class="subtitle font-weight-bold black--text text-center">
-                  Already have an account?
-                </h4>
-                <a
-                  :href="localePath('login')"
-                  class=" text-h4 pl-1 "
-                  style="text-decoration:none;"
-                >
-                  Sign In
-                </a>
+                <h4
+                  class="subtitle font-weight-bold black--text text-center"
+                >Already have an account?</h4>
+                <a :href="localePath('login')" class="pl-1" style="text-decoration:none;">Sign In</a>
               </v-row>
 
               <v-checkbox
@@ -139,12 +122,7 @@
                 required
                 label="I agree with KOL Store Terms and Condition"
               ></v-checkbox>
-              <a
-                :href="localePath('forgotPassword')"
-                class="caption text-right"
-              >
-                Forgot Password?
-              </a>
+              <a :href="localePath('forgotPassword')" class="caption text-right">Forgot Password?</a>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -163,7 +141,7 @@ export default {
   layout: "auth",
   mixins: [formMixin],
   components: {
-    AlertFormError
+    AlertFormError,
   },
   asyncData() {
     return {
@@ -172,9 +150,9 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
-        referrer_code: ""
+        referrer_code: "",
       },
-      agree_checkbox: false
+      agree_checkbox: false,
     };
   },
   beforeCreate() {
@@ -189,16 +167,16 @@ export default {
     },
     async signUp() {
       this.$store.commit("setOverlay", true);
-        try {
-          var res = await this.$api.auth.register(this.formModel)
-    
-          this.handleApiSuccess(res, 'login');
-        } catch (err) {
-          console.log(err);
-          this.handleApiErrors(err);
-        } finally {
-          this.$store.commit("setOverlay", false);
-        }
+      try {
+        var res = await this.$api.auth.register(this.formModel);
+
+        this.handleApiSuccess(res, "login");
+      } catch (err) {
+        console.log(err);
+        this.handleApiErrors(err);
+      } finally {
+        this.$store.commit("setOverlay", false);
+      }
     },
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
@@ -209,8 +187,8 @@ export default {
       //   } catch (err) {
       //     console.log(err);
       //   }
-    }
-  }
+    },
+  },
 };
 </script>
 
