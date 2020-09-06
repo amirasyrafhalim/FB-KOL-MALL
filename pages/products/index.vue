@@ -25,7 +25,7 @@
       hide-default-footer
     >
       <template v-slot:[`item.image`]="{ item }">
-        <v-avatar size="50px" tile>
+        <v-avatar size="38px" tile>
           <v-img :src=" item.image || '/upload-image.png'"></v-img>
         </v-avatar>
       </template>
