@@ -23,7 +23,7 @@ export default class OrderApi extends BaseApi {
   }
 
   updateDelivery(payload, id) {
-    return this.axios.$post(
+    return this.axios.$patch(
       this.helper.prepareUrl(apiRoutes[this.module].updateDelivery, {
         id: id,
       }),
@@ -32,7 +32,7 @@ export default class OrderApi extends BaseApi {
   }
 
   updatePickup(payload, id) {
-    return this.axios.$post(
+    return this.axios.$patch(
       this.helper.prepareUrl(apiRoutes[this.module].updatePickup, {
         id: id,
       }),

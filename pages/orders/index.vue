@@ -62,6 +62,7 @@
         <v-tooltip bottom v-if="item.code">
           <template v-slot:activator="{ on }">
             <v-btn
+            class="mt-1"
               color="primary"
               small
               v-on="on"
@@ -72,12 +73,12 @@
           </template>
           <span>{{ $t("label.view") }}</span>
         </v-tooltip>
-        <!-- <v-tooltip bottom v-if="item.order_payment.status == 1">
+        <v-tooltip bottom v-if="item.order_payment.status == 1">
           <template v-slot:activator="{ on }">
             <update-delivery-modal :records="item"  v-on="on" />
           </template>
           <span>{{ $t("label.success") }}</span>
-        </v-tooltip> -->
+        </v-tooltip>
       </template>
     </v-data-table>
 

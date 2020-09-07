@@ -78,7 +78,7 @@ export default {
 	orders: {
 		getAllOrCreate: '/v1/orders',
 		getOneOrUpdateOrDelete: '/v1/orders/{id}',
-		updateDelivery: '/v1/orders/{id}/updateDelivery',
+		updateDelivery: '/v1/order-deliveries/{id}',
 		updatePickup: '/v1/orders/{id}/updatePickup'
 	},
 	facebook: {
