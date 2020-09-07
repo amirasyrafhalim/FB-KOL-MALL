@@ -15,18 +15,20 @@
       :loading="isFetching"
       :items-per-page="pagination.perPage"
       hide-default-footer
+      @click:row="handleRowClick"
+      class="row-pointer"
     >
       <template v-slot:top>
         <data-table-top :title="$t('menuTitle.campaign')" />
       </template>
-        <template class v-slot:[`item.status`]="{ item }">
-          <span>{{ item.status.description }}</span>
-        </template>
+      <template class v-slot:[`item.status`]="{ item }">
+        <span>{{ item.status.description }}</span>
+      </template>
       <template>
         <data-table-top :title="$t('menuTitle.campaign')" />
       </template>
-      <template class v-slot:[`item.actions`]="{ item }">
-        <v-tooltip bottom>
+      <template v-slot:[`item.actions`]="{ item }">
+        <!-- <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
               x-small
@@ -44,7 +46,7 @@
             </v-btn>
           </template>
           <span>Package Console</span>
-        </v-tooltip>
+        </v-tooltip> -->
 
         <!-- <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -70,7 +72,7 @@
           <template v-slot:activator="{ on }">
             <v-btn
               x-small
-              class="px-0"
+              class="px-2"
               text
               v-on="on"
               :to="
@@ -91,7 +93,7 @@
             <v-btn
               x-small
               v-on="on"
-              class="px-0"
+              class="px-2"
               @click="deleteItem(item.id)"
               text
               color="transparent"
@@ -130,14 +132,17 @@ export default {
     FormSearch
   },
   mixins: [dataTableMixin],
+  data() {
+    return {};
+  },
   asyncData({ app, store }) {
     return {
       moduleName: "campaigns",
       headers: [
         { text: app.i18n.t("label.campaignName"), value: "name" },
-        // { text: app.i18n.t("label.createdBy"), value: "name" },
+        { text: app.i18n.t("label.createdBy"), value: "name" },
         // { text: app.i18n.t("label.streamId"), value: "video_id" },
-        { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
+        // { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
         {
           text: app.i18n.t("label.status"),
           value: "status",
@@ -169,6 +174,19 @@ export default {
     // async fetchMerchant() {
     //   await this.$store.dispatch("merchants/fetchItems");
     // }
+    handleRowClick(item) {
+      this.$router.push(
+        this.localePath({
+          name: "campaigns-id-campaignPackages",
+          params: { id: item.id }
+        })
+      );
+    }
   }
 };
 </script>
+<style>
+.row-pointer:hover {
+  cursor: pointer !important;
+}
+</style>

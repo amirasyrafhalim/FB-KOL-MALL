@@ -2,9 +2,9 @@
   <v-card class="components__merchants-form-search mb-5">
     <v-card-text class="pt-0">
       <v-row>
-        <v-col sm="2" md="6">
+        <v-col sm="6" md="6">
           <v-text-field
-            :label="$t('label.name')"
+            :label="$t('label.campaignName')"
             v-model="formModel.name"
             hide-details
             elevation="20"
