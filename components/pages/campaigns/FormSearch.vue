@@ -1,22 +1,19 @@
 <template>
-  <v-card class="components__merchants-form-search mb-5">
-    <v-card-text class="pt-0">
       <v-row>
-        <v-col sm="2" md="6">
+        <v-col sm="6" md="6">
           <v-text-field
-            :label="$t('label.name')"
+            :label="$t('label.campaignName')"
             v-model="formModel.name"
             hide-details
             elevation="20"
             solo
             dense
+            class="mb-5 border-radius-button"
           >
           </v-text-field>
         </v-col>
          <search-form-action v-on:search="search()" v-on:reset="reset()" />
       </v-row>
-    </v-card-text>
-  </v-card>
 </template>
 
 <script>

@@ -1,62 +1,83 @@
 <template>
   <div id="pages__order">
-    <form-search :module-name="moduleName" />
+    <form-search class="mb-5" :module-name="moduleName" />
+
     <download-excel :data="this.orders" type="csv" name="orderList.xls">
-      <v-btn color="success" class="float-right" >
-        {{ $t("label.export") }}
+      <v-btn class="float-right mr-5 mt-1" elevation="0%" style="background-color:transparent;" medium >
+        <v-icon color="green">mdi-printer</v-icon>
       </v-btn>
     </download-excel>
-    <v-data-table 
+ 
+    <v-data-table
       :headers="headers"
       :items="records.slice().reverse()"
       :loading="isFetching"
       :items-per-page="pagination.perPage"
-      class="elevation-1"
+      class="elevation-1 outlined"
       hide-default-footer
+      
     >
       <template v-slot:top>
-        <data-table-top :title="$t('menuTitle.order')" />
+        <data-table-top :title="$t('label.listorder')" />
       </template>
-      <template v-slot:item.buyer.name="{ item }">
-        <v-avatar size="32px" class="text-center" v-if="item && item.buyer">
+      <template v-slot:[`item.order_details.name`]="{ item }">
+        <!-- <v-avatar size="32px" class="text-center" v-if="item && item.buyer">
           <img :src="item.buyer.avatar || '/default_avatar.png'" />
-        </v-avatar>
-        <p>{{ item.buyer.name }}</p>
+        </v-avatar> -->
+        <p>{{ item.order_details.name }}</p>
       </template>
-      <template v-slot:item.delivery_method="{ item }">
-        {{ item.delivery_method ? item.delivery_method.description : null }}
+      <template v-slot:[`item.order_payment.status`]="{ item }">
+        <div v-if="item.order_payment.status === 0">
+          {{ $t("label.failed") }}
+        </div>
+        <div v-if="item.order_payment.status === 1">
+          {{ $t("label.pending") }}
+        </div>
+        <div v-if="item.order_payment.status === 2">
+          {{ $t("label.success") }}
+        </div>
       </template>
-      <template v-slot:item.payment_status="{ item }">
-        {{ item.payment_status ? item.payment_status.description : null }}
-      </template>
-
-      <template v-slot:item.delivery_status="{ item }">
+      <template v-slot:[`item.order_deliveries.method`]="{ item }">
         {{
-          item.delivery_status.value === 0
-            ? $t("label.pending")
-            : $t("label.delivered")
+          item.order_deliveries.method === 2
+            ? $t("label.selfPickup")
+            : $t("label.delivery")
         }}
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.order_deliveries.status`]="{ item }">
+        <div v-if="item.order_deliveries.status === 1">
+          {{ $t("label.processing") }}
+        </div>
+        <div v-if="item.order_deliveries.status === 2">
+          {{ $t("label.outfordelivery") }}
+        </div>
+        <div v-if="item.order_deliveries.status === 3">
+          {{ $t("label.delivered") }}
+        </div>
+        <div v-if="item.order_deliveries.status === 4">
+          {{ $t("label.return") }}
+        </div>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
         <v-tooltip bottom v-if="item.code">
           <template v-slot:activator="{ on }">
             <v-btn
               color="primary"
               small
               v-on="on"
-              :to="localePath({ name: 'orders-id', params: { id: item.code } })"
+              :to="localePath({ name: 'orders-id', params: { id: item.id } })"
             >
               <span>{{ $t("label.view") }}</span>
             </v-btn>
           </template>
           <span>{{ $t("label.view") }}</span>
         </v-tooltip>
-        <v-tooltip bottom v-if="item.payment_status.value == 1">
+        <!-- <v-tooltip bottom v-if="item.order_payment.status == 1">
           <template v-slot:activator="{ on }">
             <update-delivery-modal :records="item"  v-on="on" />
           </template>
           <span>{{ $t("label.success") }}</span>
-        </v-tooltip>
+        </v-tooltip> -->
       </template>
     </v-data-table>
 
@@ -94,16 +115,28 @@ export default {
     return {
       moduleName: "orders",
       headers: [
-        { text: app.i18n.t("label.buyerName"), value: "buyer.name" },
+        { text: app.i18n.t("label.buyerName"), value: "order_details.name" },
         { text: app.i18n.t("label.invoiceNo"), value: "invoice_no" },
         { text: app.i18n.t("label.code"), value: "code" },
         { text: app.i18n.t("label.totalAmount"), value: "total_amount" },
-        { text: app.i18n.t("label.paymentStatus"), value: "payment_status" },
-        { text: app.i18n.t("label.paidAt"), value: "confirmed_at" },
-        { text: app.i18n.t("label.deliveryMethod"), value: "delivery_method" },
-        { text: app.i18n.t("label.trackingNo"), value: "tracking_no" },
-        { text: app.i18n.t("label.deliveryStatus"), value: "delivery_status" },
-        { text: app.i18n.t("label.deliverAt"), value: "delivered_at" },
+        {
+          text: app.i18n.t("label.paymentStatus"),
+          value: "order_payment.status"
+        },
+        // { text: app.i18n.t("label.paidAt"), value: "confirmed_at" },
+        {
+          text: app.i18n.t("label.deliveryMethod"),
+          value: "order_deliveries.method"
+        },
+        {
+          text: app.i18n.t("label.trackingNo"),
+          value: "order_deliveries.tracking_no"
+        },
+        {
+          text: app.i18n.t("label.deliveryStatus"),
+          value: "order_deliveries.status"
+        },
+        { text: app.i18n.t("label.deliverAt"), value: "order_deliveries.delivered_at" },
         { text: app.i18n.t("label.actions"), value: "actions" }
       ],
       orders: [
@@ -139,16 +172,22 @@ export default {
     records() {
       this.orders = [];
       this.$store.state[this.moduleName].records.forEach((element, i) => {
-        var address = element.order_address && element.order_address.address + element.order_address.city + ' ' + element.order_address.postcode + ' ' + element.order_address.state   ;
- 
+        var address =
+          element.order_address &&
+          element.order_address.address +
+            element.order_address.city +
+            " " +
+            element.order_address.postcode +
+            " " +
+            element.order_address.state;
+
         this.orders.push({
-          buyer_name: element.buyer.name,
-          campaign_name: element.campaign_name,
+          buyer_name: element.order_details.name,
           invoice_no: element.invoice_no,
-          quantity: element.order_packages[0].quantity,
+          quantity: element.order_packages.quantity,
           buyer_address: address,
-          phone_no: element.buyer.phone_no,
-          tracking_no: element.tracking_no,
+          phone_no: element.order_details.phone_no,
+          tracking_no: element.order_deliveries.tracking_no
         });
       });
       return this.$store.state[this.moduleName].records;
@@ -165,7 +204,7 @@ export default {
     fetchItems(page = 1) {
       let params = { page: page, campaign_id: this.$route.params.id };
       this.$store.dispatch(this.moduleName + "/fetchItems", params);
-    },
+    }
     // fetchCampaign(page = 1) {
     //   let params = { page: page, campaign_id: this.$route.params.id };
     //   this.$store.dispatch("campaigns/fetchItems");
