@@ -4,7 +4,7 @@
       <v-col cols="auto">
         <h4 class="mb-4 button">Total Pages</h4>
         <v-card
-          class=" d-inline-block dashboard-card ma-2"
+          class="d-inline-block dashboard-card ma-2"
           outlined
           v-for="(page, i) in pages"
           :key="i"
@@ -15,23 +15,24 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="">{{
+              <v-list-item-subtitle class>
+                {{
                 page.text
-              }}</v-list-item-subtitle>
+                }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item style="min-height: 25px;!important">
             <v-list-item-content>
-              <v-list-item-subtitle >{{ page.like }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ page.like }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class=" mb-1 text-blue"
+                class="mb-1 text-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
-                >{{ page.total }}</v-list-item-title
-              >
+              >{{ page.total }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -42,7 +43,7 @@
       <v-col cols="auto">
         <h4 class="mb-4">Total Income Since Joining</h4>
         <v-card
-          class=" d-inline-block dashboard-card mx-2 mb-4"
+          class="d-inline-block dashboard-card mx-2 mb-4"
           outlined
           v-for="(income, i) in incomes"
           :key="i"
@@ -53,18 +54,19 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="">{{
+              <v-list-item-subtitle class>
+                {{
                 income.joinDate
-              }}</v-list-item-subtitle>
+                }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class=" mb-1 text-magenta"
+                class="mb-1 text-magenta"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
-                >{{ income.total }}</v-list-item-title
-              >
+              >{{ income.total }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -78,24 +80,25 @@
           v-for="(sale, i) in sales"
           :key="i"
         >
-          <v-list-item >
-            <v-list-item-avatar size="auto" tile class="mb-0 ">
+          <v-list-item>
+            <v-list-item-avatar size="auto" tile class="mb-0">
               <img src="@/assets/img/total-sale@2x.png" />
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="">{{
+              <v-list-item-subtitle class>
+                {{
                 sale.month
-              }}</v-list-item-subtitle>
+                }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="  align-self-end">
-            <v-list-item-content  class="align-self-end">
+          <v-list-item class="align-self-end">
+            <v-list-item-content class="align-self-end">
               <v-list-item-title
-                class=" mb-1 text-magenta align-self-end"
+                class="mb-1 text-magenta align-self-end"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
-                >{{ sale.total }}</v-list-item-title
-              >
+              >{{ sale.total }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -106,7 +109,7 @@
       <v-col cols="auto">
         <h4 class="mb-4">Most Popular Product</h4>
         <v-card
-          class=" d-inline-block dashboard-card mx-2"
+          class="d-inline-block dashboard-card mx-2"
           outlined
           v-for="(product, i) in mostPopular"
           :key="i"
@@ -117,14 +120,16 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="">{{
+              <v-list-item-subtitle class>
+                {{
                 product.name
-              }}</v-list-item-subtitle>
+                }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item style="min-height: 25px;!important">
             <v-list-item-content>
-              <v-list-item-subtitle >{{ 'Total Revenue' }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ 'Total Revenue' }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -132,8 +137,7 @@
               <v-list-item-title
                 class="mb-1 text-light-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
-                >{{ product.total }}</v-list-item-title
-              >
+              >{{ product.total }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -147,29 +151,30 @@
           v-for="(product, i) in topSales"
           :key="i"
         >
-          <v-list-item >
-            <v-list-item-avatar size="auto" tile class="mb-0 ">
+          <v-list-item>
+            <v-list-item-avatar size="auto" tile class="mb-0">
               <img src="@/assets/img/most-popular@2x.png" />
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-subtitle class="">{{
+              <v-list-item-subtitle class>
+                {{
                 product.name
-              }}</v-list-item-subtitle>
+                }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item style="min-height: 25px;!important">
             <v-list-item-content>
-              <v-list-item-subtitle >{{ 'Total Revenue' }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ 'Total Revenue' }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title
-                class=" mb-1 text-light-blue"
+                class="mb-1 text-light-blue"
                 style="font-weight:700; font-size: 40px; font-family: Montserrat;"
-                >{{ product.total }}</v-list-item-title
-              >
+              >{{ product.total }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-card>
@@ -179,9 +184,8 @@
 </template>
 
 <script>
-
 export default {
- 
+  layout: "main",
   asyncData() {
     return {
       user: [],
@@ -190,57 +194,57 @@ export default {
           image: "@/assets/img/dp@2x.png",
           text: "Goodness Clothes Positively Stylish",
           like: "FB Page Likes",
-          total: "400,000"
+          total: "400,000",
         },
         {
           image: "@/assets/img/dp@2x.png",
           text: "Cooking East 2 West",
           like: "FB Page Likes",
-          total: "250,000"
+          total: "250,000",
         },
         {
           image: "@/assets/img/dp@2x.png",
           text: "Fresh Seafood Restaurant",
           like: "FB Page Likes",
-          total: "150,000"
+          total: "150,000",
         },
         {
           image: "@/assets/img/dp@2x.png",
           text: "DIY Craft Supplies Shop",
           like: "FB Page Likes",
-          total: "140,000"
-        }
+          total: "140,000",
+        },
       ],
       incomes: [
         {
           joinDate: "Joined 2009",
-          total: "RM50,000"
-        }
+          total: "RM50,000",
+        },
       ],
       sales: [
         {
           month: "August 2020",
-          total: "RM20,000"
-        }
+          total: "RM20,000",
+        },
       ],
-       topSales: [
+      topSales: [
         {
           name: "Blue Red Stripe Baby Dress",
-          total: "RM4,000"
-        }
+          total: "RM4,000",
+        },
       ],
       mostPopular: [
         {
           name: "Green Handle Spade",
-          total: "RM6,000"
-        }
-      ]
+          total: "RM6,000",
+        },
+      ],
     };
   },
   created() {
     // this.user = this.$store.state.auth.user;
-    console.log('user', this.user);
-  }
+    console.log("user", this.user);
+  },
 };
 </script>
 <style scoped>

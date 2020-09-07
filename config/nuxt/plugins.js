@@ -1,4 +1,5 @@
 export default [
+	'@/plugins/main',
 	'@/plugins/helper',
 	'@/plugins/axios',
 	'@/plugins/bus',
@@ -6,5 +7,6 @@ export default [
 	'@/plugins/api',
 	'@/plugins/vuejsonexcel',
 	// "@/plugins/datetimepicker",
-	'@/plugins/perfect-scrollbar.js'
+	'@/plugins/perfect-scrollbar.js',
+	'@/plugins/globalComponent'
 ];
