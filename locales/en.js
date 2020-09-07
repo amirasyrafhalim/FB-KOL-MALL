@@ -36,7 +36,7 @@ export default {
 		deliverAt: 'Deliver Time',
 		delivered: 'Delivered ',
 		delivery: 'Delivery ',
-		deliveryAmount: 'Delivery Amount',
+		deliveryAmount: 'Delivery Amount (RM)',
 		deliveryMethod: 'Delivery Method',
 		deliveryPartner: 'Delivery Partner',
 		deliveryStatus: 'Delivery Status',
@@ -75,7 +75,8 @@ export default {
 		login: 'Login',
 		loginWithFacebook: 'Sign Up with Facebook',
 		loginWithGoogle: 'Sign Up with Google',
-		logout: 'Logout',
+    logout: 'Logout',
+    listorder: 'List of orders',
 		manage: 'Manage',
 		max: 'Max',
 		merchant: 'Merchant',
@@ -139,7 +140,7 @@ export default {
 		streamId: 'Stream ID',
 		streamStartAt: 'Stream Start',
 		submit: 'Submit',
-		subtotalAmount: 'Subtotal',
+		subtotalAmount: 'Subtotal (RM)',
 		success: 'Success',
 		summary: 'Summary',
 		taxAmount: 'Tax Amount',
@@ -167,7 +168,11 @@ export default {
 		retail: 'Do you have any retail store?',
 		website: 'Do you have any website for your store? (URL)',
 		kindProduct: ' What kind of product do you sell / plan to sell?',
-		rewards: 'Get more rewards!'
+    rewards: 'Get more rewards!',
+    processing: 'Processing',
+    outfordelivery : 'Out For Delivery',
+    return : 'Return'
+
 	},
 	menuTitle: {
 		buyer: 'Buyer',

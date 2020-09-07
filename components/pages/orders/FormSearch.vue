@@ -1,11 +1,9 @@
 <template>
   <div>
-    <v-card class="mb-2 background-color-grey">
-      <v-col>
-    <!-- <v-card class=" components__campaigns-form-search mb-2 mt-2 radius" outlined>
+        <!-- <v-card class=" components__campaigns-form-search mb-2 mt-2 radius" outlined>
       <v-card-text>
         <v-row>
-          <!-- <v-col sm="6" md="4">
+          <!-<v-col sm="6" md="4">
             <v-autocomplete
               :items="merchants"
               item-text="name"
@@ -15,7 +13,7 @@
               @change="searchItem($event)"
             ></v-autocomplete>
           </v-col> -->
-          <!-- <v-col sm="6" md="4">
+        <!-- <v-col sm="6" md="4">
             <v-autocomplete
               :items="campaigns"
               :label="$t('menuTitle.campaign')"
@@ -29,7 +27,7 @@
         <!-- </v-row>
       </v-card-text>
     </v-card>  -->
-    <!-- <v-card class="components__campaigns-form-search mb-5">
+        <!-- <v-card class="components__campaigns-form-search mb-5">
       <v-card-text class="pt-0">
         <v-row>
           <v-col sm="6" md="4">
@@ -74,8 +72,6 @@
         ></search-form-action>
       </v-card-text>
     </v-card> -->
-    <v-card class=" components__campaigns-form-search mb-2 radius" outlined>
-      <v-card-text>
         <v-row>
           <v-col sm="6" md="4">
             <v-text-field
@@ -85,6 +81,7 @@
               elevation="20"
               solo
               dense
+              class="border-radius-button"
             ></v-text-field>
           </v-col>
           <v-col sm="6" md="4">
@@ -95,6 +92,7 @@
               elevation="20"
               solo
               dense
+              class="border-radius-button"
             ></v-text-field>
           </v-col>
           <!-- <v-col sm="6" md="4">
@@ -107,15 +105,14 @@
               dense
             ></v-text-field>
           </v-col> -->
+          <v-spacer></v-spacer>
+          <div class="float-right">
+            <search-form-action
+              v-on:search="searchItem()"
+              v-on:reset="resetItem()"
+            ></search-form-action>
+          </div>
         </v-row>
-        <search-form-action
-          v-on:search="searchItem()"
-          v-on:reset="resetItem()"
-        ></search-form-action>
-      </v-card-text>
-    </v-card>
-      </v-col>
-    </v-card>
   </div>
 </template>
 
@@ -137,7 +134,7 @@ export default {
         // merchant_name: null,
         // delivery_method:[
         //   { description: 'Delivery', value: 1 },
-        //   { description: 'Self Pickup', value: 2 },      
+        //   { description: 'Self Pickup', value: 2 },
         // ],
       }
     };
@@ -150,7 +147,7 @@ export default {
   computed: {
     deliveryMethodsEnums() {
       let a = this.$store.state[this.moduleName].records;
-      console.log ("hehehehe", a)
+      console.log("hehehehe", a);
     },
     // paymentEnums() {
     //   return this.$store.state[this.moduleName].paymentEnums;
@@ -214,4 +211,5 @@ export default {
 <style scoped>
 .radius {
   border-radius: 25px !important;
-}</style>
+}
+</style>

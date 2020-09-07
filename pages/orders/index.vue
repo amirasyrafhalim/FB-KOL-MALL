@@ -1,6 +1,6 @@
 <template>
   <div id="pages__order">
-    <form-search :module-name="moduleName" />
+    <form-search class="mb-5" :module-name="moduleName" />
 
     <download-excel :data="this.orders" type="csv" name="orderList.xls">
       <v-btn class="float-right mr-5 mt-1" elevation="0%" style="background-color:transparent;" medium >
