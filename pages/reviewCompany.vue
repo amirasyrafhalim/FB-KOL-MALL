@@ -5,39 +5,26 @@
     class="d-flex flex-column"
     fluid
   >
-    <v-layout>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="7" md="6">
-          <v-card class="elevation-1 pa-3 radius secondary">
-            <alert-form-error :error-message="errorMessage" />
-            <v-card-text>
-              <div class="layout column align-center">
-                <h1 class="flex text-center mb-2 primary--text">
-                  <v-img icon class="pl-1">
-                    <img
-                      :src="require('~/assets/img/logo.png')"
-                      width="auto"
-                      height="50"
-                      contain
-                      class="mt-5"
-                    />
-                  </v-img>
-                </h1>
-                <h2 class="flex text-xs-center black--text mt-5 mb-5">
-                  {{ $t("label.review") }}
-                </h2>
-              </div>
-              <v-text-field
-                type="referral"
-                :label="$t('label.name')"
+
+  <vs-row vs-justify="center">
+      <vs-col type="block" vs-justify="center" vs-align="center" class="text-center" vs-w="6">
+        <vs-card class="bg-white">
+          <div slot="header" class="bg-white">
+            <img
+              :src="require('~/assets/img/logo.png')"
+              alt="content-img"
+              class="mx-auto card-img-top "
+            />
+          </div>
+          <!-- <div> -->
+            <vx-card :title=" $t('label.review') ">
+              <vs-input
+                :placeholder="$t('label.company_name')"
                 :error-messages="formErrors ? formErrors.company_name : ''"
                 v-model="formModel.company_name"
-                single-line
-                flat
-                solo
-                aria-autocomplete="on"
-                class=""
-              ></v-text-field>
+                class="w-full mb-4"
+              />
+
               <v-autocomplete
                 solo
                 class="border-radius-button"
@@ -49,7 +36,8 @@
                 v-model="formModel.business_size"
                 @input.native="fetchItems($event.target.value)"
               ></v-autocomplete>
-              <v-autocomplete
+
+               <v-autocomplete
                 solo
                 class=" border-radius-button"
                 :items="categories"
@@ -61,21 +49,16 @@
                 v-model="formModel.categories"
                 @input.native="fetchItems($event.target.value)"
               ></v-autocomplete>
-            </v-card-text>
-            <v-card-actions class="flex-column text-right px-5">
-              <v-btn
-                class="default-button text-white mb-5 mx-auto"
-                block
-                @click="next"
-                large
+
+              <vs-button class="mr-4 w-full" @click="next"
+                >Next</vs-button
               >
-                <h4 class="text-white">{{ $t("label.next") }}</h4>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-layout>
+            </vx-card>
+          <!-- </div> -->
+
+        </vs-card>
+      </vs-col>
+    </vs-row>
   </v-container>
 </template>
 
@@ -94,10 +77,10 @@ export default {
   asyncData() {
     return {
       rangeSize: [
-        { value: "1-10" },
-        { value: "11-20" },
-        { value: "21-30" },
-        { value: "more than 31" }
+        { value: "1-99" },
+        { value: "100-199" },
+        { value: "200-299" },
+        { value: "more than 300" }
       ],
       formModel: {
         company_name: "",

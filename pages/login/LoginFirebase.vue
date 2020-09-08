@@ -128,15 +128,17 @@ export default {
 
     // Facebook login
     loginWithFacebook() {
+      this.$vs.loading();
       window.location.href =
         process.env.API_URL_REDIRECT + "/v1/auth/fb-redirect";
       // this.$store.dispatch('auth/loginWithFacebook', { notify: this.$vs.notify })
     },
     registerUser() {
       if (!this.checkLogin()) return;
-      // this.$router.push("/register");
+      this.$router.push("/register");
     },
     async signUpFB() {
+      this.$vs.loading();
       try {
         var auth = this.$store.state.auth;
         const { data } = await this.$api.auth.loginFB({
