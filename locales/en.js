@@ -75,8 +75,8 @@ export default {
 		login: 'Login',
 		loginWithFacebook: 'Sign Up with Facebook',
 		loginWithGoogle: 'Sign Up with Google',
-    logout: 'Logout',
-    listorder: 'List of orders',
+   		 logout: 'Logout',
+   		 listorder: 'List of orders',
 		manage: 'Manage',
 		max: 'Max',
 		merchant: 'Merchant',
@@ -168,10 +168,13 @@ export default {
 		retail: 'Do you have any retail store?',
 		website: 'Do you have any website for your store? (URL)',
 		kindProduct: ' What kind of product do you sell / plan to sell?',
-    rewards: 'Get more rewards!',
-    processing: 'Processing',
-    outfordelivery : 'Out For Delivery',
-    return : 'Return'
+    	rewards: 'Get more rewards!',
+   		processing: 'Processing',
+    	outfordelivery : 'Out For Delivery',
+		return : 'Return',
+		yourprofile: 'Profile',
+		profiledetail: 'Profile Details',
+		changepassword : 'Change New Password'
 
 	},
 	menuTitle: {
