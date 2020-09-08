@@ -5,9 +5,9 @@
       <nuxt />
     </v-content>
     </div>
-    <v-overlay :value="overlay">
+    <!-- <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
+    </v-overlay> -->
     <notification-message />
   </v-app>
 </template>
@@ -20,9 +20,9 @@ export default {
     NotificationMessage
   },
   computed: {
-    overlay() {
-      return this.$store.state.overlay;
-    }
+    // overlay() {
+    //   return this.$store.state.overlay;
+    // }
   }
 };
 </script>

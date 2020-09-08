@@ -1,7 +1,8 @@
 <template>
+
   <v-container
     id="referral_code"
-    class="d-flex flex-column background-gradient"
+    class="d-flex flex-column"
     fluid
   >
     <v-layout>
@@ -93,15 +94,15 @@ export default {
   asyncData() {
     return {
       rangeSize: [
-        { value: "0-100" },
-        { value: "101-200" },
-        { value: "201-300" },
-        { value: "301-400" }
+        { value: "1-10" },
+        { value: "11-20" },
+        { value: "21-30" },
+        { value: "more than 31" }
       ],
       formModel: {
-        company_name: "KOL MALL",
+        company_name: "",
         business_size:null,
-        categories: [1,2],
+        categories: [],
       }
     };
   },

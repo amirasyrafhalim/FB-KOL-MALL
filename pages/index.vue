@@ -242,7 +242,7 @@ export default {
     };
   },
   created() {
-    // this.user = this.$store.state.auth.user;
+    this.user = this.$store.state.auth.user;
     console.log("user", this.user);
   },
 };

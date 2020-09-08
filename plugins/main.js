@@ -63,3 +63,7 @@ Vue.config.productionTip = false;
 // 	store,
 // 	render: (h) => h(App)
 // }).$mount('#app');
+
+// VeeValidate
+// import VeeValidate from 'vee-validate'
+// Vue.use(VeeValidate)

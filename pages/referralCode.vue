@@ -1,5 +1,5 @@
 <template>
-  <v-container id="referral_code" class="d-flex flex-column background-gradient" fluid>
+  <v-container id="referral_code" class="d-flex flex-column" fluid>
     <v-layout>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="5" md="5">
