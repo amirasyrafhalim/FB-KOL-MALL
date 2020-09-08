@@ -50,6 +50,16 @@ const is_touch_device = () => {
 // /////////////////////////////////////////////
 
 const state = {
+	token: null,
+	appName: process.env.APP_NAME,
+	drawer: true,
+	overlay: false,
+	snackbar: {
+		show: false,
+		text: null,
+		timeout: 3000,
+		color: null
+	},
 	AppActiveUser: userDefaults,
 	bodyOverlay: false,
 	isVerticalNavMenuActive: true,

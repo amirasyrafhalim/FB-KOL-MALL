@@ -1,17 +1,17 @@
 require('dotenv').config();
 
-export const state = () => ({
-	token: null,
-	appName: process.env.APP_NAME,
-	drawer: true,
-	overlay: false,
-	snackbar: {
-		show: false,
-		text: null,
-		timeout: 3000,
-		color: null
-	}
-});
+// export const state = () => ({
+// 	token: null,
+// 	appName: process.env.APP_NAME,
+// 	drawer: true,
+// 	overlay: false,
+// 	snackbar: {
+// 		show: false,
+// 		text: null,
+// 		timeout: 3000,
+// 		color: null
+// 	}
+// });
 
 export const getters = {
 	currentUser(state) {
