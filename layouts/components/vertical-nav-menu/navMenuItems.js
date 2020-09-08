@@ -7,18 +7,23 @@
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
-
 export default [
-  {
-    url: "/",
-    name: "Home",
-    slug: "home",
-    icon: "HomeIcon",
-  },
-  {
-    url: "/page2",
-    name: "Page 2",
-    slug: "page2",
-    icon: "FileIcon",
-  }
-]
+	{
+		url: '/',
+		name: 'Home',
+		slug: 'home',
+		icon: 'HomeIcon'
+	},
+	{
+		url: '/facebookPage',
+		name: 'Page',
+		slug: 'facebookPage',
+		icon: 'FileIcon'
+	},
+	{
+		url: '/campaigns',
+		name: 'Campaign',
+		slug: 'campaign',
+		icon: 'FileIcon'
+	}
+];
