@@ -1,12 +1,13 @@
 <template>
-<v-dialog>
+<v-dialog width="800px">
     <template v-slot:activator="{ on }">
       <v-btn color="primary" small v-on="on" class="mt-1 mb-1">
         <span>{{ $t("label.changepassword") }}</span>
       </v-btn>
     </template>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="4">
+    
+      <v-card align="center" justify="center" class="background-gradient">
+        <v-col cols="12" sm="8" md="8">
           <v-card class="elevation-1 pa-3">
             <alert-form-error :error-message="errorMessage" />
             <v-card-title>
@@ -35,7 +36,8 @@
             </v-card-text>
           </v-card>
         </v-col>
-      </v-row>
+      </v-card>
+  
 </v-dialog>
 </template>
 
