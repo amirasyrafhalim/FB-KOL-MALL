@@ -10,20 +10,51 @@
 export default [
 	{
 		url: '/',
-		name: 'Home',
-		slug: 'home',
+		name: 'Dashboard',
+		slug: 'dashboard',
 		icon: 'HomeIcon'
 	},
 	{
 		url: '/facebookPage',
 		name: 'Page',
-		slug: 'facebookPage',
-		icon: 'FileIcon'
+		slug: 'facebook-page',
+		icon: 'LayoutIcon'
+	},
+	{
+		url: '/products',
+		name: 'Products',
+		slug: 'products',
+		icon: 'BookOpenIcon'
 	},
 	{
 		url: '/campaigns',
-		name: 'Campaign',
-		slug: 'campaign',
-		icon: 'FileIcon'
+		name: 'Campaigns',
+		slug: 'campaigns',
+		icon: 'PackageIcon'
+	},
+	{
+		url: '/orders',
+		name: 'Orders',
+		slug: 'orders',
+		icon: 'ShoppingCartIcon'
+	},
+	{
+		url: '/#',
+		name: 'Videos',
+		slug: 'videos',
+		icon: 'VideoIcon'
+	},
+	{
+		header: 'Misc',
+		icon: 'FileIcon',
+		i18n: 'Pages',
+		items: [
+			{
+				url: '/#',
+				slug: 'settings',
+				name: 'Setting',
+				icon: 'SettingsIcon'
+			}
+		]
 	}
 ];
