@@ -1,6 +1,4 @@
 export default ({ route, app }, inject) => {
-	// Inject $hello(msg) in Vue, context and store.
-
 	const navigation = {
 		index: {
 			title: 'Dashboard'
