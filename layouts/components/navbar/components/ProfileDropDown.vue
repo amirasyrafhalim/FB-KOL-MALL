@@ -11,8 +11,9 @@
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
       <div class="con-img ml-3">
         <img
+          v-if="activeUserInfo.userSocial && activeUserInfo.userSocial.avatar"
           key="onlineImg"
-          :src="activeUserInfo.social.avatar || 'default_avatar.png' " 
+          :src="activeUserInfo.userSocial.avatar"
           alt="user-img"
           width="40"
           height="40"
@@ -24,7 +25,6 @@
         <ul style="min-width: 9rem">
           <li
             class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-            @click="$router.push('userprofile').catch(() => {})"
           >
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4" />
             <span class="ml-2">Profile</span>
