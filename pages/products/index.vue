@@ -11,27 +11,6 @@
 
   <div id="page-user-list">
 
-    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
-      <div class="vx-row">
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Role</label>
-          <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Status</label>
-          <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Verified</label>
-          <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Department</label>
-          <v-select :options="departmentOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="departmentFilter" />
-        </div>
-      </div>
-    </vx-card>
-
     <div class="vx-card p-6">
 
       <div class="flex flex-wrap items-center">
@@ -40,7 +19,7 @@
         <div class="flex-grow">
           <vs-dropdown vs-trigger-click class="cursor-pointer">
             <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-<!--              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>-->
+              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ records.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : records.length }} of {{ records.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
             <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
@@ -213,35 +192,27 @@ export default {
         {
           headerName: 'Image',
           field: 'image',
-          width: 125,
           filter: true,
-          checkboxSelection: true,
-          headerCheckboxSelectionFilteredOnly: true,
-          headerCheckboxSelection: true
         },
         {
           headerName: 'Name',
           field: 'name',
-          filter: true,
-          width: 210,
-          cellRendererFramework: 'CellRendererLink'
+          filter: true
         },
         {
           headerName: 'Category',
-          field: 'category',
+          field: 'category[0]',
           filter: true,
-          width: 225
         },
         {
           headerName: 'Status',
-          field: 'status',
+          field: 'status.description',
           filter: true,
-          width: 200
+          cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'Actions',
           field: 'transactions',
-          width: 150,
           cellRendererFramework: 'CellRendererActions'
         }
       ],
@@ -327,7 +298,7 @@ export default {
   },
   mounted () {
     this.gridApi = this.gridOptions.api
-
+    this.gridApi.sizeColumnsToFit()
     /* =================================================================
       NOTE:
       Header is not aligned properly in RTL version of agGrid table.
