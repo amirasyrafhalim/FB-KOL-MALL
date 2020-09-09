@@ -1,192 +1,175 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div id="pages__campaign">
-    <form-search :module-name="moduleName" />
-    <v-btn
-      color="primary"
-      class="float-right"
-      :to="localePath({ name: 'campaigns-create' })"
-    >
-      {{ $t("pageTitle.campaign.add") }}
-    </v-btn>
+<template>
+  <div id="ag-grid-demo">
+    <vx-card>
+      <div class="flex flex-wrap justify-between items-center">
 
-    <v-data-table
-      :headers="headers"
-      :items="records"
-      :loading="isFetching"
-      :items-per-page="pagination.perPage"
-      hide-default-footer
-      @click:row="handleRowClick"
-      class="row-pointer"
-    >
-      <template v-slot:top>
-        <data-table-top :title="$t('menuTitle.campaign')" />
-      </template>
-      <template class v-slot:[`item.status`]="{ item }">
-        <span>{{ item.status.description }}</span>
-      </template>
-      <template>
-        <data-table-top :title="$t('menuTitle.campaign')" />
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <!-- <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              x-small
-              class="px-0"
-              text
-              v-on="on"
-              :to="
-                localePath({
-                  name: 'campaigns-id-campaignPackages',
-                  params: { id: item.id }
-                })
-              "
-            >
-              <v-icon color="purple darken-4">mdi-gamepad-down</v-icon>
-            </v-btn>
-          </template>
-          <span>Package Console</span>
-        </v-tooltip> -->
+        <div class="mb-4 md:mb-0 mr-4 ag-grid-table-actions-left">
+          <vs-dropdown vs-trigger-click class="cursor-pointer">
+            <div
+              class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ records.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : records.length }} of {{ records.length }}</span>
+              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
+            </div>
 
-        <!-- <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              x-small
-              class="px-0"
-              text
-              v-on="on"
-              :to="
-                localePath({
-                  name: 'campaigns-id-addPackage',
-                  params: { id: item.id }
-                })
-              "
-            >
-              <img src="/view.png" />
-            </v-btn>
-          </template>
-          <span>{{ $t("label.view") }}</span>
-        </v-tooltip> -->
+            <vs-dropdown-menu>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              x-small
-              class="px-2"
-              text
-              v-on="on"
-              :to="
-                localePath({
-                  name: 'campaigns-id-edit',
-                  params: { id: item.id }
-                })
-              "
-            >
-              <img src="/edit.png" />
-            </v-btn>
-          </template>
-          <span>{{ $t("label.edit") }}</span>
-        </v-tooltip>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(20)">
+                <span>20</span>
+              </vs-dropdown-item>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(50)">
+                <span>50</span>
+              </vs-dropdown-item>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(100)">
+                <span>100</span>
+              </vs-dropdown-item>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(150)">
+                <span>150</span>
+              </vs-dropdown-item>
+            </vs-dropdown-menu>
+          </vs-dropdown>
+        </div>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              x-small
-              v-on="on"
-              class="px-2"
-              @click="deleteItem(item.id)"
-              text
-              color="transparent"
-            >
-              <img src="/deletepurple.png" />
-            </v-btn>
-          </template>
-          <span>{{ $t("label.delete") }}</span>
-        </v-tooltip>
-      </template>
-    </v-data-table>
+        <div class="flex flex-wrap items-center justify-between ag-grid-table-actions-right">
+          <vs-input class="mb-4 md:mb-0 mr-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..."/>
+          <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button>
+        </div>
+      </div>
 
-    <data-table-pagination
-      :moduleName="moduleName"
-      :currentPage="pagination.currentPage"
-      :lastPage="pagination.lastPage"
-    />
+      <ag-grid-vue
+        ref="agGridTable"
+        :components="components"
+        :gridOptions="gridOptions"
+        class="ag-theme-material w-100 my-4 ag-grid-table"
+        :columnDefs="columnDefs"
+        :defaultColDef="defaultColDef"
+        :rowData="records"
+        rowSelection="multiple"
+        colResizeDefault="shift"
+        :animateRows="true"
+        :floatingFilter="true"
+        :pagination="true"
+        :paginationPageSize="paginationPageSize"
+        :suppressPaginationPanel="true"
+        style="width: 100%;"
+        :enableRtl="$vs.rtl">
 
-    <alert-confirmation ref="confirmDialog" />
+      </ag-grid-vue>
+      <vs-pagination
+        :total="totalPages"
+        :max="maxPageNumbers"
+        v-model="currentPage"/>
+    </vx-card>
   </div>
 </template>
 
 <script>
-import AlertConfirmation from "@/components/widgets/alerts/AlertConfirmation";
-import DataTableTop from "@/components/widgets/dataTables/DataTableTop";
-import DataTablePagination from "@/components/widgets/dataTables/DataTablePagination";
-import FormSearch from "@/components/pages/campaigns/FormSearch";
+  import {AgGridVue} from 'ag-grid-vue'
+  import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
 
-import dataTableMixin from "@/mixins/dataTable";
+  import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
+  import CellRendererActions from './cell-renderer/CellRendererActions.vue'
 
-export default {
-  components: {
-    AlertConfirmation,
-    DataTableTop,
-    DataTablePagination,
-    FormSearch
-  },
-  mixins: [dataTableMixin],
-  data() {
-    return {};
-  },
-  asyncData({ app, store }) {
-    return {
-      moduleName: "campaigns",
-      headers: [
-        { text: app.i18n.t("label.campaignName"), value: "name" },
-        { text: app.i18n.t("label.createdBy"), value: "name" },
-        // { text: app.i18n.t("label.streamId"), value: "video_id" },
-        // { text: app.i18n.t("label.streamStartAt"), value: "created_at" },
-        {
-          text: app.i18n.t("label.status"),
-          value: "status",
-          align: "center"
-        },
-        { text: app.i18n.t("label.actions"), value: "actions", align: "center" }
-      ],
-      hidden: false
-      // records: [
-      //   // {id:1,
-      //   //   name: "test"
-
-      // ]
-    };
-  },
-  created() {
-    // this.fetchMerchant();
-    // this.hidden = this.$store.getters.isAdmin ? true : false;
-  },
-  computed: {
-    records() {
-      return this.$store.state[this.moduleName].records;
+  export default {
+    layout: "main",
+    components: {
+      AgGridVue,
+      CellRendererStatus,
+      CellRendererActions
     },
-    merchants() {
-      return this.$store.state.merchants.records;
+    data() {
+      return {
+        moduleName: "campaigns",
+        searchQuery: '',
+        gridOptions: {},
+        maxPageNumbers: 7,
+        gridApi: null,
+        defaultColDef: {
+          sortable: true,
+          editable: true,
+          resizable: true,
+          suppressMenu: true,
+          suppressAutoSize: true
+        },
+        columnDefs: [
+          {
+            headerName: 'Name',
+            field: 'name',
+            filter: true,
+          },
+          {
+            headerName: 'Merchant Name',
+            field: 'merchant.name',
+            filter: true,
+          },
+          {
+            headerName: 'Status',
+            field: 'status.description',
+            filter: true,
+            cellRendererFramework: 'CellRendererStatus'
+          },
+          {
+            headerName: 'Created By',
+            field: 'created.name',
+            filter: true,
+          },
+          {
+            headerName: 'Updated By',
+            field: 'updated.name',
+            filter: true,
+          },
+          {
+            headerName: 'Actions',
+            field: 'transactions',
+            cellRendererFramework: 'CellRendererActions'
+          },
+        ],
+        components: {
+          CellRendererStatus,
+          CellRendererActions
+        }
+      }
+    },
+    computed: {
+      records() {
+        return this.$store.state[this.moduleName].records;
+      },
+      paginationPageSize() {
+        if (this.gridApi) return this.gridApi.paginationGetPageSize()
+        else return 50
+      },
+      totalPages() {
+        if (this.gridApi) return this.gridApi.paginationGetTotalPages()
+        else return 0
+      },
+      currentPage: {
+        get() {
+          if (this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1
+          else return 1
+        },
+        set(val) {
+          this.gridApi.paginationGoToPage(val - 1)
+        }
+      }
+    },
+    created() {
+      this.fetchItems();
+    },
+    methods: {
+      updateSearchQuery(val) {
+        this.gridApi.setQuickFilter(val)
+      },
+      fetchItems() {
+        this.$store.dispatch(this.moduleName + "/fetchItems");
+      }
+    },
+    mounted() {
+      this.gridApi = this.gridOptions.api
+      this.gridApi.sizeColumnsToFit()
+
+      if (this.$vs.rtl) {
+        const header = this.$refs.agGridTable.$el.querySelector('.ag-header-container')
+        header.style.left = `-${String(Number(header.style.transform.slice(11, -3)) + 9)}px`
+      }
     }
-  },
-  methods: {
-    // async fetchMerchant() {
-    //   await this.$store.dispatch("merchants/fetchItems");
-    // }
-    handleRowClick(item) {
-      this.$router.push(
-        this.localePath({
-          name: "campaigns-id-campaignPackages",
-          params: { id: item.id }
-        })
-      );
-    }
-  }
-};
+  };
 </script>
-<style>
-.row-pointer:hover {
-  cursor: pointer !important;
-}
-</style>
