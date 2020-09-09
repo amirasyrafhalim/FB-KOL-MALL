@@ -10,5 +10,7 @@ export default [
 	'@/plugins/perfect-scrollbar.js',
 	'@/plugins/globalComponent',
 	// '@/plugins/vee-validate',
-	'@/plugins/navigation'
+	'@/plugins/navigation',
+	'@/plugins/vue-select',
+	'@/plugins/vuejs-auto-complete'
 ];
