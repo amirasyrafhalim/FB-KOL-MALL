@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="the-navbar__user-meta flex items-center"
-    v-if="activeUserInfo.name"
-  >
+  <div class="the-navbar__user-meta flex items-center" v-if="activeUserInfo.name">
     <div class="text-right leading-tight hidden sm:block">
       <p class="font-semibold">{{ activeUserInfo.name }}</p>
       <small>Merchant</small>
@@ -11,13 +8,15 @@
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
       <div class="con-img ml-3">
         <img
+          v-if="activeUserInfo.social && activeUserInfo.social.avatar"
           key="onlineImg"
-          :src="activeUserInfo.userSocial.avatar || 'default_avatar.png' " 
+          :src="activeUserInfo.social.avatar"
           alt="user-img"
           width="40"
           height="40"
           class="rounded-full shadow-md cursor-pointer block"
         />
+        <vs-avatar v-else color="primary" :text="activeUserInfo.name" />
       </div>
 
       <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -51,7 +50,7 @@ export default {
     activeUserInfo() {
       // return this.$store.state.AppActiveUser
       return this.$auth.user;
-    }
+    },
   },
   methods: {
     async logout() {
@@ -60,10 +59,18 @@ export default {
       } catch (err) {
         this.$store.dispatch("showSnackbar", {
           text: this.$t("message.logoutError"),
-          color: "error"
+          color: "error",
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style lang="scss">
+.con-vs-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  margin: 0 !important;
+}
+</style>
