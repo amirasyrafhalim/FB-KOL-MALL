@@ -13,7 +13,7 @@
     class="layout--main"
     :class="[layoutTypeClass, navbarClasses, footerClasses, {'no-scroll': isAppPage}]"
   >
-    <v-nav-menu :navMenuItems="navMenuItems" title="Vuexy" parent=".layout--main" />
+    <v-nav-menu :navMenuItems="navMenuItems" title="KOLSTORE" parent=".layout--main" />
 
     <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
       <div id="content-overlay" />
@@ -21,7 +21,6 @@
       <!-- Navbar -->
 
       <template v-if="mainLayoutType === 'horizontal' && windowWidth >= 1200">
-        test
         <the-navbar-horizontal
           :navbarType="navbarType"
           :class="[

@@ -30,10 +30,10 @@ import '@/themeConfig.js';
 // import './globalComponents.js';
 
 // Styles: SCSS
-import '@/assets/scss/main.scss';
+// import '@/assets/scss/main.scss';
 
 // Tailwind
-import '@/assets/css/main.css';
+// import '@/assets/css/main.css';
 
 // Vue Router
 // import router from './router';
