@@ -1,5 +1,24 @@
 <template>
   <div>
+    <div class="social-login-buttons flex flex-wrap items-center mt-4">
+      <!-- facebook -->
+      <vs-button color="#3b5998" class="w-full my-auto" @click="loginWithFacebook">
+        <vs-row>
+          <vs-col vs-type="flex" vs-w="auto">
+             <feather-icon
+        icon="FacebookIcon"
+        class="mr-1"
+      />
+       <span class="my-auto">
+          {{ $t("label.loginWithFacebook") }}
+        </span>
+          </vs-col>
+        </vs-row>
+      </vs-button >
+    </div>
+
+    <vs-divider>OR</vs-divider>
+
     <vs-input
       name="email"
       icon-no-border
@@ -31,23 +50,18 @@
     <vs-button class="float-right" :disabled="!validateForm" @click="login"
       >Login</vs-button
     >
-
-    <vs-divider>OR</vs-divider>
-
-    <div class="social-login-buttons flex flex-wrap items-center mt-4">
-      <!-- facebook -->
-      <div
-        class="bg-facebook pt-3 pb-2 px-4 rounded-lg cursor-pointer mr-4 w-full text-center text-white"
-        @click="loginWithFacebook"
-      >
-        {{ "Login With Facebook" }}
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import AlertFormError from "@/components/widgets/alerts/AlertFormError";
+import formMixin from "@/mixins/form";
+
 export default {
+  mixins: [formMixin],
+  components: {
+    AlertFormError
+  },
   data() {
     return {
       email: "",
@@ -61,7 +75,6 @@ export default {
   },
   created() {
     if (this.$route.query.token) {
-      console.log("token", this.$route.query.token);
       this.signUpFB();
     }
   },
@@ -95,7 +108,7 @@ export default {
       // Loading
       this.$vs.loading();
 
-      const payload ={
+      const payload = {
         userDetails: {
           username: this.email,
           password: this.password,
@@ -104,21 +117,18 @@ export default {
           client_secret: process.env.CLIENT_SECRET,
           scope: "*"
         }
-      }
-      
+      };
+
       try {
         await this.$auth.loginWith("local", {
           data: payload.userDetails
         });
-       console.log('auth', this.$auth.user);;
-        // this.$router.push("/referralCode");
-        
-       if (this.$auth.user.merchant) {
-          this.$router.push("/"); 
+
+        if (this.$auth.user.merchant) {
+          this.$router.push("/");
         } else {
           this.$router.push("/referralCode");
         }
-        
       } catch (err) {
         console.log(err);
       } finally {
@@ -131,7 +141,6 @@ export default {
       this.$vs.loading();
       window.location.href =
         process.env.API_URL_REDIRECT + "/v1/auth/fb-redirect";
-      // this.$store.dispatch('auth/loginWithFacebook', { notify: this.$vs.notify })
     },
     registerUser() {
       if (!this.checkLogin()) return;
@@ -144,11 +153,9 @@ export default {
         const { data } = await this.$api.auth.loginFB({
           token: this.$route.query.token
         });
-        console.log("data", data);
         this.$auth.setToken("local", "Bearer " + data);
         this.$auth.setStrategy("local");
         await this.$auth.fetchUser();
-        console.log('authh', this.$auth.user)
         if (this.$auth.user.merchant) {
           this.$router.push("/");
         } else {
@@ -164,20 +171,5 @@ export default {
 </script>
 
 <style lang="scss">
-#page-login {
-  .social-login-buttons {
-    .bg-facebook {
-      background-color: #1551b1;
-    }
-    .bg-twitter {
-      background-color: #00aaff;
-    }
-    .bg-google {
-      background-color: #4285f4;
-    }
-    .bg-github {
-      background-color: #333;
-    }
-  }
-}
+
 </style>
