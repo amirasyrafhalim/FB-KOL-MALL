@@ -1,5 +1,33 @@
 <template>
   <div id="pages__merchantPage">
+    <div class="grid grid-cols-3 gap-4 mt-20" v-if="merchantPage.length == 0">
+      <div class="col-span-3 md:col-span-1 flex content-center flex-wrap">
+        <h1 class="mb-4">Selling on Facebook</h1>
+        <p>
+          A Facebook shop lets you show and sell products to people on
+          Facebook. Choose a Facebook Page to add a shop.
+        </p>
+      </div>
+
+      <vx-card title="Facebook Account" title-color="primary" class="col-span-3 md:col-span-2">
+        <p class="mb-3">
+          You need to connect your facebook account before start using all
+          facebook features, including page shops.
+        </p>
+        <vs-button
+          color="#3b5998"
+          class="w-100 my-auto mt-3"
+          :href="redirectPage + '/v1/auth/fb-page/' + this.user.id"
+        >
+          <vs-row>
+            <vs-col vs-type="flex" vs-w="auto">
+              <feather-icon icon="FacebookIcon" class="mr-1" />
+              <span class="my-auto">{{ $t("label.connectWithFacebook") }}</span>
+            </vs-col>
+          </vs-row>
+        </vs-button>
+      </vx-card>
+    </div>
     <!--v-container>
       <v-toolbar color="white" dark flat dense>
         <v-toolbar-title

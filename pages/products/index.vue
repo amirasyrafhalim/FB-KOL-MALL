@@ -1,150 +1,188 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div id="pages__product">
-    <form-search :module-name="moduleName" />
-    <v-row class="justify-space-between">
-      <v-col class="font-weight-bold">
-        {{ $t("pageTitle.product.total") }}
-      </v-col>
-      <v-col class="text-right">
-        <v-btn
-          color="primary"
-          class="text-right border-radius-button text-capitalize small-button"
-          :to="localePath({ name: 'products-create' })"
-        >
-          {{ $t("pageTitle.product.add") }}
-        </v-btn>
-      </v-col>
-    </v-row>
+<template>
 
-    <v-data-table
-      :headers="headers"
-      :items="records"
-      :loading="isFetching"
-      :items-per-page="pagination.perPage"
-      class="elevation-1"
-      hide-default-footer
-    >
-      <template v-slot:[`item.image`]="{ item }">
-        <v-avatar size="38px" tile>
-          <v-img :src=" item.image || '/upload-image.png'"></v-img>
-        </v-avatar>
-      </template>
-     
-      <template v-slot:[`item.category`]="{ item }">
-        <span v-for="(category, i) in item.category" :key="i">{{category.name}}</span>
-      </template>
+  <div id="page-user-list">
+    <div class="vx-card p-6">
+      <div class="flex flex-wrap items-center">
 
-       <template v-slot:[`item.status`]="{ item }">
-         
-        <span>{{item.status.description}}</span>
-      </template>
+        <!-- ITEMS PER PAGE -->
+        <div class="flex-grow">
+          <vs-dropdown vs-trigger-click class="cursor-pointer">
+            <div
+              class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ records.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : records.length }} of {{ records.length }}</span>
+              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
+            </div>
+            <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
+            <vs-dropdown-menu>
 
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-            x-small
-              class="px-0"
-              text
-              v-on="on"
-              :to="localePath({ name: 'products-id', params: { id: item.id } })"
-            >
-              <img src="view.png" />
-            </v-btn>
-          </template>
-          <span>{{ $t("label.view") }}</span>
-        </v-tooltip>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
+                <span>10</span>
+              </vs-dropdown-item>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(20)">
+                <span>20</span>
+              </vs-dropdown-item>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(25)">
+                <span>25</span>
+              </vs-dropdown-item>
+              <vs-dropdown-item @click="gridApi.paginationSetPageSize(30)">
+                <span>30</span>
+              </vs-dropdown-item>
+            </vs-dropdown-menu>
+          </vs-dropdown>
+        </div>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-             x-small
-              class="px-0"
-              text
-              v-on="on"
-              :to="
-                localePath({
-                  name: 'products-id-edit',
-                  params: { id: item.id }
-                })
-              "
-            >
-              <img src="edit.png" />
-            </v-btn>
-          </template>
-          <span>{{ $t("label.edit") }}</span>
-        </v-tooltip>
+        <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
+        <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery"
+                  @input="updateSearchQuery" placeholder="Search..."/>
+        <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button>
+      </div>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn
-             x-small
-              v-on="on"
-              class="px-0"
-              @click="deleteItem(item.id)"
-              text
-              color="transparent"
-            >
-              <img src="deletepurple.png" />
-            </v-btn>
-          </template>
-          <span>{{ $t("label.delete") }}</span>
-        </v-tooltip>
-      </template>
-    </v-data-table>
+      <!-- AgGrid Table -->
+      <ag-grid-vue
+        ref="agGridTable"
+        :components="components"
+        :gridOptions="gridOptions"
+        class="ag-theme-material w-100 my-4 ag-grid-table"
+        :columnDefs="columnDefs"
+        :defaultColDef="defaultColDef"
+        :rowData="records"
+        rowSelection="multiple"
+        colResizeDefault="shift"
+        :animateRows="true"
+        :floatingFilter="true"
+        :pagination="true"
+        :paginationPageSize="paginationPageSize"
+        :suppressPaginationPanel="true"
+        :enableRtl="$vs.rtl">
+      </ag-grid-vue>
 
-    <data-table-pagination
-      :moduleName="moduleName"
-      :currentPage="pagination.currentPage"
-      :lastPage="pagination.lastPage"
-    ></data-table-pagination>
-
-    <alert-confirmation ref="confirmDialog" />
+      <vs-pagination
+        :total="totalPages"
+        :max="7"
+        v-model="currentPage"/>
+    </div>
   </div>
+
 </template>
 
 <script>
-import AlertConfirmation from "@/components/widgets/alerts/AlertConfirmation";
-import DataTableTop from "@/components/widgets/dataTables/DataTableTop";
-import DataTablePagination from "@/components/widgets/dataTables/DataTablePagination";
-import FormSearch from "@/components/pages/products/FormSearch";
+  import {AgGridVue} from 'ag-grid-vue'
+  import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
+  import vSelect from 'vue-select'
 
-import dataTableMixin from "@/mixins/dataTable";
+  import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
+  import CellRendererActions from './cell-renderer/CellRendererActions.vue'
 
-export default {
-  name: "index",
-  components: {
-    AlertConfirmation,
-    DataTableTop,
-    DataTablePagination,
-    FormSearch
-  },
-  mixins: [dataTableMixin],
-  asyncData({ app, store }) {
-    return {
-      moduleName: "products",
-      headers: [
-        { text: app.i18n.t("label.image"), value: "image" },
-        { text: app.i18n.t("label.name"), value: "name" },
-        { text: app.i18n.t("label.category"), value: "category" },
-        
-
-        { text: app.i18n.t("label.status"), value: "status" },
-        {
-          text: app.i18n.t("label.actions"),
-          value: "actions"
+  export default {
+    layout: "main",
+    components: {
+      AgGridVue,
+      vSelect,
+      CellRendererStatus,
+      CellRendererActions
+    },
+    data() {
+      return {
+        moduleName: "products",
+        searchQuery: '',
+        // AgGrid
+        gridApi: null,
+        gridOptions: {},
+        defaultColDef: {
+          sortable: true,
+          resizable: true,
+          suppressMenu: true
+        },
+        columnDefs: [
+          {
+            headerName: 'Image',
+            field: 'image',
+            filter: true,
+          },
+          {
+            headerName: 'Name',
+            field: 'name',
+            filter: true
+          },
+          {
+            headerName: 'Category',
+            field: 'category[0]',
+            filter: true,
+          },
+          {
+            headerName: 'Status',
+            field: 'status.description',
+            filter: true,
+            cellRendererFramework: 'CellRendererStatus'
+          },
+          {
+            headerName: 'Actions',
+            field: 'transactions',
+            cellRendererFramework: 'CellRendererActions'
+          }
+        ],
+        components: {
+          CellRendererStatus,
+          CellRendererActions
         }
-      ]
-    };
-  },
-  computed: {
-    records() {
-      return this.$store.state[this.moduleName].records;
-    }
-  },
-  created() {}
-  // methods: {
-};
+      }
+    },
+    computed: {
+      records() {
+        return this.$store.state[this.moduleName].records;
+      },
+      paginationPageSize() {
+        if (this.gridApi) return this.gridApi.paginationGetPageSize()
+        else return 10
+      },
+      totalPages() {
+        if (this.gridApi) return this.gridApi.paginationGetTotalPages()
+        else return 0
+      },
+      currentPage: {
+        get() {
+          if (this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1
+          else return 1
+        },
+        set(val) {
+          this.gridApi.paginationGoToPage(val - 1)
+        }
+      }
+    },
+    created() {
+      this.fetchItems();
+    },
+    methods: {
+      fetchItems() {
+        return this.$store.dispatch(this.moduleName + "/fetchItems");
+
+      },
+      updateSearchQuery(val) {
+        this.gridApi.setQuickFilter(val)
+      }
+    },
+    mounted() {
+      this.gridApi = this.gridOptions.api
+      this.gridApi.sizeColumnsToFit()
+
+      if (this.$vs.rtl) {
+        const header = this.$refs.agGridTable.$el.querySelector('.ag-header-container')
+        header.style.left = `-${String(Number(header.style.transform.slice(11, -3)) + 9)}px`
+      }
+    },
+  }
+
 </script>
 
-<style scoped></style>
+<style lang="scss">
+  #page-user-list {
+    .user-list-filters {
+      .vs__actions {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-58%);
+      }
+    }
+  }
+</style>
