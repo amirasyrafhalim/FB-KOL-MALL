@@ -15,9 +15,9 @@ export default [
 		icon: 'HomeIcon'
 	},
 	{
-		url: '/facebookPage',
+		url: '/merchantPage',
 		name: 'Page',
-		slug: 'facebook-page',
+		slug: 'merchant-page',
 		icon: 'LayoutIcon'
 	},
 	{
