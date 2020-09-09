@@ -8,7 +8,7 @@
         <div class="vx-col" id="avatar-col">
           <div class="img-container mb-4">
             <img
-              :src="user.userSocial.avatar || 'default_avatar.png'"
+              :src="user.social.avatar || 'default_avatar.png'"
               class="rounded w-full"
             />
           </div>
@@ -100,24 +100,25 @@
                       </div>
                     </div>
                     <div class="float-right">
-                    <vs-button
-                      class="primary mt-4"
-                      color="rgb(6, 137, 219)"
-                      @click="validate"
-                      type="filled"
-                    >
-                      SUBMIT
-                    </vs-button>
-                    <vs-button
-                      class="mt-4"
-                      color="warning"
-                      type="filled"
-                      @click="
-                        formModel.new_confirm_password = formModel.new_password = formModel.current_password =
-                          ''
-                      "
-                      >Reset</vs-button
-                    ></div>
+                      <vs-button
+                        class="primary mt-4"
+                        color="rgb(6, 137, 219)"
+                        @click="validate"
+                        type="filled"
+                      >
+                        SUBMIT
+                      </vs-button>
+                      <vs-button
+                        class="mt-4"
+                        color="warning"
+                        type="filled"
+                        @click="
+                          formModel.new_confirm_password = formModel.new_password = formModel.current_password =
+                            ''
+                        "
+                        >Reset</vs-button
+                      >
+                    </div>
                   </vs-popup>
                 </div>
               </div>
@@ -135,18 +136,18 @@
           <table>
             <tr>
               <td class="font-semibold pb-6">Phone No.</td>
-              <td class="pl-5 pb-5">{{ user.userSocial.phone_no }}</td>
+              <td class="pl-5 pb-5">{{ user.social.phone_no }}</td>
             </tr>
             <tr>
               <td class="font-semibold pb-6">Facebook ID</td>
-              <td class="pl-5 pb-5">{{ user.userSocial.social_id }}</td>
+              <td class="pl-5 pb-5">{{ user.social.social_id }}</td>
             </tr>
             <tr>
               <td class="font-semibold pb-6">Gender</td>
-              <template v-if="user.userSocial.gender == 1">
+              <template v-if="user.social.gender == 1">
                 <td class="pl-5 pb-5">Male</td>
               </template>
-              <template v-if="user.userSocial.gender == 2">
+              <template v-if="user.social.gender == 2">
                 <td>class="pl-5 pb-5">Female</td>
               </template>
             </tr>
@@ -157,9 +158,33 @@
         <vx-card title="Merchant Information" class="mb-base">
           <table>
             <tr>
+              <td class="font-semibold pb-5">Company Name</td>
+
+              <td class="pl-5 pb-5">{{ user.merchant.detail.company_name }}</td>
+            </tr>
+            <tr>
               <td class="font-semibold pb-5">Role</td>
 
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
+            </tr>
+            <tr>
+              <td class="font-semibold pb-5">Business Size</td>
+
+              <td class="pl-5 pb-5">
+                {{ user.merchant.detail.business_size }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold pb-5">Business Products</td>
+
+              <ol
+                class="pl-5"
+                v-for="(item, key) in user.merchant.detail.categories"
+                :key="key"
+              >
+                  <li>{{ item.name }}</li>
+              
+              </ol>
             </tr>
             <!-- <tr>
               <td class="font-semibold">Company</td>
@@ -209,21 +234,29 @@ export default {
           ...this.formModel
         });
         if (res.http_code == 201) {
-          this.$vs.notify({title:'Success!',text:'Your password has been updated',color:'success'})
+          this.$vs.notify({
+            title: "Success!",
+            text: "Your password has been updated",
+            color: "success"
+          });
           this.popupActive2 = false;
         }
       } catch (err) {
-          if (err) {
-          this.$vs.notify({title:'Failed!',text:'Please insert your data correctly',color:'danger'})
+        if (err) {
+          this.$vs.notify({
+            title: "Failed!",
+            text: "Please insert your data correctly",
+            color: "danger"
+          });
+        }
       }
     }
-  }
-},
+  },
   created() {
     this.user = this.$store.state.auth.user;
     console.log("user", this.user);
   }
-}
+};
 </script>
 <style scoped>
 .v-card__text,
