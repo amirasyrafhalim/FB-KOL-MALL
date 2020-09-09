@@ -99,14 +99,15 @@
                   type="gradient"
                   icon-pack="feather"
                   icon="icon-video"
-                  class="mr-2"
-                  @click.stop="liveVideo"
+                  class="mr-2 mb-1 mt-1"
+                  @click.stop="liveVideo(tr)"
                 >Live Now</vs-button>
                 <vs-button
                   color="primary"
                   type="gradient"
                   icon-pack="feather"
                   icon="icon-dollar-sign"
+                  class="mt-1"
                 >Topup</vs-button>
               </vs-td>
             </vs-tr>
@@ -114,69 +115,6 @@
         </template>
       </vs-table>
     </div>
-
-    <!--v-container>
-      <v-toolbar color="white" dark flat dense>
-        <v-toolbar-title
-          class="subheading black--text font-weight-bold"
-        >{{ $t("pageTitle.merchantPage.title") }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-      <feather-icon
-        icon="FacebookIcon"
-        svgClasses="h-16 w-16 stroke-current text-grey"
-        class="block"
-      />
-      <v-row>
-        <v-col cols="4">
-          <v-card flat>
-            <v-card-title>Selling on Facebook</v-card-title>
-            <v-card-text>
-              A Facebook shop lets you show and sell products to people on
-              Facebook. Choose a Facebook Page to add a shop.
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col v-if="merchantPage.length == 1">
-          <v-card class="secondary pa-4">
-            <v-card-title>Facebook Account</v-card-title>
-            <v-card-text>
-              You need to connect your facebook account before start using all
-              facebook features, including page shops.
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="#3b5998" dark :href="redirectPage + '/v1/auth/fb-page/' + this.user.id">
-                <img width="auto" height="25px" src="facebook.png" />
-                {{
-                $t("label.connectWithFacebook")
-                }}
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col v-else>
-          <v-card class="secondary pa-4">
-            <v-card-title>{{ $t("pageTitle.merchantPage.title") }}</v-card-title>
-            <v-row>
-              <v-col cols="auto">
-                <v-avatar size="32px" item>
-                  <img :src="'/default_avatar.png'" />
-                </v-avatar>
-              </v-col>
-              <v-col v-if="merchantPage && merchantPage.length > 0">
-                <h4>{{ merchantPage[0].name || null }}</h4>
-                <span>{{ $t("label.id") }} : {{ merchantPage[0].page_id || null }}</span>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-btn dark class="primary" @click="liveVideo()">{{ $t(`label.goToLive`) }}</v-btn>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container-->
   </div>
 </template>
 
@@ -231,15 +169,11 @@ export default {
         console.log(err);
       }
     },
-    async liveVideo() {
+    async liveVideo(page) {
       try {
-        console.log("id");
-
         this.$router.push({
-          path: `/merchantPage/` + this.merchantPage[0].id + `/liveVideo`,
+          path: `/merchantPage/${page.id}/liveVideo`,
         });
-
-        //  this.$router.push( { path: this.localePath("type: 'merchantPage-id-liveConsole', params: { id: this.merchantPage[0].id }") });
       } catch (err) {
         console.log(err);
       }
@@ -251,9 +185,7 @@ export default {
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        hid: "description",
-        name: "description",
-        content: "my website description",
+        content: "Merchant page",
       },
     ],
   },
@@ -263,6 +195,7 @@ export default {
 <style lang="scss">
 #data-list-thumb-view {
   .vs-con-table {
+    background: none;
     .product-name {
       max-width: 23rem;
     }
@@ -270,8 +203,8 @@ export default {
     .vs-table--header {
       display: flex;
       flex-wrap: wrap-reverse;
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
+      // margin-left: 1.5rem;
+      // margin-right: 1.5rem;
       > span {
         display: flex;
         flex-grow: 1;
@@ -298,7 +231,7 @@ export default {
     .vs-table {
       border-collapse: separate;
       border-spacing: 0 1.3rem;
-      padding: 0 1rem;
+      // padding: 0 1rem;
 
       tr {
         box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
