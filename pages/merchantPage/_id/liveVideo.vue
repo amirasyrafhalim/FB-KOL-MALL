@@ -12,10 +12,9 @@
               <div v-html="item.embed_html" class="responsive card-img-top"></div>
             </div>
             <h5 class="mb-2">{{ item.title }}</h5>
-            <p class="text-grey">{{ item.broadcast_start_time }}</p>
+            <!--p class="text-grey">{{ item.broadcast_start_time }}</p-->
             <vs-divider></vs-divider>
             <p class="text-grey" v-if="item.recorded && item.recorded.campaign">
-              <strong>Campaign Name:</strong>
               {{item.recorded.campaign.name}}.
               <a
                 href="javascript:;"
