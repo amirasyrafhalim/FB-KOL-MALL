@@ -23,6 +23,7 @@ export default {
 		city: 'City',
 		code: 'Code',
 		color: 'Color',
+		company_name: "Company Name",
 		complete: 'Completed',
 		confirmPassword: 'Confirm Password',
 		connectWithFacebook: 'Connect with Facebook',

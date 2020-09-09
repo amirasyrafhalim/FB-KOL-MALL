@@ -1,138 +1,41 @@
 <template>
-  <v-container id="pages__register" class="fill-height background" fluid>
-    <v-layout justify-center>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="6">
-          <v-card class="elevation-1 pa-3 border-radius-box secondary">
-            <alert-form-error :error-message="errorMessage" />
-            <v-card-text>
-              <div class="layout column align-center">
-                <img :src="require('~/assets/img/logo.png')" height="50" width="auto" contain />
-                <h2
-                  class="flex text-xs-center text-black bold font-weight-black my-4"
-                >{{ $t("label.joinUs") }}</h2>
+  <div
+    class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
+  >
+    <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
+      <vx-card>
+        <div slot="no-body" class="full-page-bg-color">
+          <div class="vx-row no-gutter">
+            <div
+              class="vx-col hidden sm:hidden md:hidden lg:block lg:w-1/2 mx-auto self-center"
+            >
+              <img
+                src="@/assets/images/pages/register.jpg"
+                alt="register"
+                class="mx-auto"
+              />
+            </div>
+            <div
+              class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center  d-theme-dark-bg"
+            >
+              <div class="px-8 py-8 register-tabs-container">
+                <div class="vx-card__title mb-4">
+                  <h4 class="mb-4">Create Account</h4>
+                  <p>Fill the below form to create a new account.</p>
+                </div>
+                <register-firebase></register-firebase>
               </div>
-              {{formErrors.name}}
-              <div>
-                <v-btn color="#3b5998" block dark large @click="loginWithFacebook" class="mt-5">
-                  <img width="auto" height="25px" class="pr-5" src="../assets/img/facebook.png" />
-                  {{ $t("label.loginWithFacebook") }}
-                </v-btn>
-                <!--v-btn
-                  block
-                  @click="loginWithGoogle"
-                  class="mt-5"
-                  large
-                  outlined
-                >
-                  <img
-                    width="auto"
-                    height="25px"
-                    class="pr-5"
-                    src="../assets/img/google.png"
-                  />{{ $t("label.loginWithGoogle") }}
-                </v-btn-->
-              </div>
-              <div class="login-option__divider mt-2">
-                <div class="login-option__divider--wrapper"></div>
-                <h5 class="mb-0 py-2 text-center">{{ $t("label.or") }}</h5>
-                <div class="login-option__divider--wrapper"></div>
-              </div>
-
-              <v-form>
-                <v-text-field
-                  text--primary
-                  font-weigth-black
-                  class="my-2"
-                  text-grey
-                  single-line
-                  solo
-                  flat
-                  dense
-                  type="text"
-                  :label="$t('label.name')"
-                  :error-messages="formErrors ? formErrors.name : ''"
-                  v-model="formModel.name"
-                ></v-text-field>
-                <v-text-field
-                  text--primary
-                  font-weigth-black
-                  class="my-2"
-                  text-grey
-                  single-line
-                  solo
-                  flat
-                  dense
-                  type="email"
-                  :label="$t('label.email')"
-                  :error-messages="formErrors ? formErrors.email : ''"
-                  v-model="formModel.email"
-                ></v-text-field>
-                <v-text-field
-                  class="my-2"
-                  single-line
-                  solo
-                  flat
-                  dense
-                  type="password"
-                  :label="$t('label.password')"
-                  :error-messages="formErrors ? formErrors.password : ''"
-                  v-model="formModel.password"
-                ></v-text-field>
-                <v-text-field
-                  class="my-2"
-                  single-line
-                  solo
-                  flat
-                  dense
-                  type="password"
-                  :label="$t('label.confirmPassword')"
-                  :error-messages="formErrors ? formErrors.password : ''"
-                  v-model="formModel.password_confirmation"
-                ></v-text-field>
-                <v-text-field
-                  class="my-2"
-                  single-line
-                  solo
-                  flat
-                  dense
-                  type="text"
-                  :label="$t('label.referalCode')"
-                  v-model="formModel.referrer_code"
-                ></v-text-field>
-              </v-form>
-            </v-card-text>
-            <v-card-actions class="flex-column text-right">
-              <v-btn
-                class="default-button white--text mb-2"
-                block
-                @click="signUp"
-              >{{ $t("label.signUp") }}</v-btn>
-
-              <v-row align="center" justify="center">
-                <h4
-                  class="subtitle font-weight-bold black--text text-center"
-                >Already have an account?</h4>
-                <a :href="localePath('login')" class="pl-1" style="text-decoration:none;">Sign In</a>
-              </v-row>
-
-              <v-checkbox
-                v-model="agree_checkbox"
-                :rules="[v => !!v || 'You must agree to continue!']"
-                required
-                label="I agree with KOL Store Terms and Condition"
-              ></v-checkbox>
-              <a :href="localePath('forgotPassword')" class="caption text-right">Forgot Password?</a>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-layout>
-  </v-container>
+            </div>
+          </div>
+        </div>
+      </vx-card>
+    </div>
+  </div>
 </template>
 
 <script>
 import AlertFormError from "@/components/widgets/alerts/AlertFormError";
+import RegisterFirebase from "./register/RegisterFirebase.vue";
 
 import formMixin from "@/mixins/form";
 
@@ -142,6 +45,7 @@ export default {
   mixins: [formMixin],
   components: {
     AlertFormError,
+    RegisterFirebase
   },
   asyncData() {
     return {
@@ -150,9 +54,9 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
-        referrer_code: "",
+        referrer_code: ""
       },
-      agree_checkbox: false,
+      agree_checkbox: false
     };
   },
   beforeCreate() {
@@ -181,14 +85,8 @@ export default {
     async loginWithFacebook() {
       this.$store.commit("setOverlay", true);
       console.log("login with facebook");
-
-      //   try {
-      //     await this.$auth.loginWith("facebook");
-      //   } catch (err) {
-      //     console.log(err);
-      //   }
-    },
-  },
+    }
+  }
 };
 </script>
 
