@@ -99,7 +99,7 @@
                   type="gradient"
                   icon-pack="feather"
                   icon="icon-video"
-                  class="mr-2 mb-1"
+                  class="mr-2 mb-1 mt-1"
                   @click.stop="liveVideo(tr)"
                 >Live Now</vs-button>
                 <vs-button
@@ -107,6 +107,7 @@
                   type="gradient"
                   icon-pack="feather"
                   icon="icon-dollar-sign"
+                  class="mt-1"
                 >Topup</vs-button>
               </vs-td>
             </vs-tr>

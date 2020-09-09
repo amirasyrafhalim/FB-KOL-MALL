@@ -17,9 +17,11 @@ export default {
 		getNavigation({ commit, dispatch, state }, route) {
 			let routeName = route.name.split('___', 1)[0];
 
-			if (routeName && this.$navigation[routeName]) {
+			if (routeName) {
 				routeName = camelCase(routeName);
+			}
 
+			if (routeName && this.$navigation[routeName]) {
 				if (this.$navigation[routeName].title) {
 					commit('setPageTitle', this.$navigation[routeName].title);
 				} else {
