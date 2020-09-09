@@ -12,7 +12,7 @@
       <div class="con-img ml-3">
         <img
           key="onlineImg"
-          :src="activeUserInfo.userSocial.avatar || 'default_avatar.png' " 
+          :src="activeUserInfo.social.avatar || 'default_avatar.png' " 
           alt="user-img"
           width="40"
           height="40"
