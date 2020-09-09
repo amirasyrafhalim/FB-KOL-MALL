@@ -88,8 +88,8 @@ export default {
 		addBuyerOrder: '/v1/buyerOrder'
 	},
 	password: {
-		resetPassword: '/v1/password/reset',
-		newPassword: '/v1/password/update'
+		resetPassword: '/v1/password/reset-request',
+		newPassword: '/v1/password/reset'
 	},
 	user: {
 		getAllOrCreate: '/v1/users',
