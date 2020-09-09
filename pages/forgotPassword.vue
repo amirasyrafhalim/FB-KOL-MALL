@@ -1,5 +1,5 @@
 <template>
-  <v-container id="forgotPassword__login" class="fill-height background-gradient" fluid >
+  <v-container id="forgotPassword__login" class="fill-height" fluid >
     <v-layout>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">

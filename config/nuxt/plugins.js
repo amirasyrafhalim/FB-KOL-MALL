@@ -8,5 +8,6 @@ export default [
 	'@/plugins/vuejsonexcel',
 	// "@/plugins/datetimepicker",
 	'@/plugins/perfect-scrollbar.js',
-	'@/plugins/globalComponent'
+	'@/plugins/globalComponent',
+	// '@/plugins/vee-validate'
 ];

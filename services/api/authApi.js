@@ -7,7 +7,6 @@ export default class AuthApi extends BaseApi {
   }
 
   register(payload) {
-    console.log(this.module)
     return this.axios.$post(apiRoutes[this.module].register, payload);
   }
 
