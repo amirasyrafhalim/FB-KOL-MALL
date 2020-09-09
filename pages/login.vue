@@ -8,6 +8,11 @@
         <div slot="no-body" class="full-page-bg-color">
           <div class="vx-row no-gutter justify-center items-center">
             <div class="vx-col hidden lg:block lg:w-1/2">
+             <img
+                src="logo-black.png"
+                alt="login"
+                class="mx-auto mb-5"
+              />
               <img
                 src="@/assets/images/pages/login.png"
                 alt="login"

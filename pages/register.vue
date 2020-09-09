@@ -9,6 +9,11 @@
             <div
               class="vx-col hidden sm:hidden md:hidden lg:block lg:w-1/2 mx-auto self-center"
             >
+             <img
+                src="logo-black.png"
+                alt="login"
+                class="mx-auto mb-5"
+              />
               <img
                 src="@/assets/images/pages/register.jpg"
                 alt="register"

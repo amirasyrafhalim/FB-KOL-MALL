@@ -1,12 +1,17 @@
 <template>
-  <div id="pages__facebookPage">
-    <v-container>
+  <div id="pages__merchantPage">
+    <!--v-container>
       <v-toolbar color="white" dark flat dense>
         <v-toolbar-title
           class="subheading black--text font-weight-bold"
-        >{{ $t("pageTitle.facebookPage.title") }}</v-toolbar-title>
+        >{{ $t("pageTitle.merchantPage.title") }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
+      <feather-icon
+        icon="FacebookIcon"
+        svgClasses="h-16 w-16 stroke-current text-grey"
+        class="block"
+      />
       <v-row>
         <v-col cols="4">
           <v-card flat>
@@ -36,7 +41,7 @@
         </v-col>
         <v-col v-else>
           <v-card class="secondary pa-4">
-            <v-card-title>{{ $t("pageTitle.facebookPage.title") }}</v-card-title>
+            <v-card-title>{{ $t("pageTitle.merchantPage.title") }}</v-card-title>
             <v-row>
               <v-col cols="auto">
                 <v-avatar size="32px" item>
@@ -56,7 +61,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
+    </v-container-->
   </div>
 </template>
 
@@ -110,14 +115,26 @@ export default {
         console.log("id");
 
         this.$router.push({
-          path: `/facebookPage/` + this.merchantPage[0].id + `/liveVideo`,
+          path: `/merchantPage/` + this.merchantPage[0].id + `/liveVideo`,
         });
 
-        //  this.$router.push( { path: this.localePath("type: 'facebookPage-id-liveConsole', params: { id: this.merchantPage[0].id }") });
+        //  this.$router.push( { path: this.localePath("type: 'merchantPage-id-liveConsole', params: { id: this.merchantPage[0].id }") });
       } catch (err) {
         console.log(err);
       }
     },
+  },
+  head: {
+    title: "Merchant Page",
+    meta: [
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        hid: "description",
+        name: "description",
+        content: "my website description",
+      },
+    ],
   },
 };
 </script>

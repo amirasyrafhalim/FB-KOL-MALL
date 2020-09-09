@@ -9,5 +9,6 @@ export default [
 	// "@/plugins/datetimepicker",
 	'@/plugins/perfect-scrollbar.js',
 	'@/plugins/globalComponent',
-	// '@/plugins/vee-validate'
+	// '@/plugins/vee-validate',
+	'@/plugins/navigation'
 ];

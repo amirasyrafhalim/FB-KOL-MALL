@@ -56,70 +56,22 @@
           <div class="router-content">
             <transition :name="routerTransition">
               <div
-                v-if="$route.meta.breadcrumb || $route.meta.pageTitle"
+                v-if="pageTitle || breadcrumb"
                 class="router-header flex flex-wrap items-center mb-6"
               >
                 <div
                   class="content-area__heading"
-                  :class="{'pr-4 border-0 md:border-r border-solid border-grey-light' : $route.meta.breadcrumb}"
+                  :class="{'pr-4 border-0 md:border-r border-solid border-grey-light' : breadcrumb}"
                 >
-                  <h2 class="mb-1">{{ routeTitle }}</h2>
+                  <h2 class="mb-1">{{ pageTitle }}</h2>
                 </div>
 
                 <!-- BREADCRUMB -->
                 <vx-breadcrumb
                   class="ml-4 md:block hidden"
-                  v-if="$route.meta.breadcrumb"
-                  :route="$route"
-                  :isRTL="$vs.rtl"
+                  v-if="breadcrumb"
+                  :breadcrumb="breadcrumb"
                 />
-
-                <!-- DROPDOWN -->
-                <vs-dropdown vs-trigger-click class="ml-auto md:block hidden cursor-pointer">
-                  <vs-button radius icon="icon-settings" icon-pack="feather" />
-
-                  <vs-dropdown-menu class="w-32">
-                    <vs-dropdown-item>
-                      <div
-                        @click="$router.push('/pages/profile').catch(() => {})"
-                        class="flex items-center"
-                      >
-                        <feather-icon
-                          icon="UserIcon"
-                          class="inline-block mr-2"
-                          svgClasses="w-4 h-4"
-                        />
-                        <span>Profile</span>
-                      </div>
-                    </vs-dropdown-item>
-                    <vs-dropdown-item>
-                      <div
-                        @click="$router.push('/apps/todo').catch(() => {})"
-                        class="flex items-center"
-                      >
-                        <feather-icon
-                          icon="CheckSquareIcon"
-                          class="inline-block mr-2"
-                          svgClasses="w-4 h-4"
-                        />
-                        <span>Tasks</span>
-                      </div>
-                    </vs-dropdown-item>
-                    <vs-dropdown-item>
-                      <div
-                        @click="$router.push('/apps/email').catch(() => {})"
-                        class="flex items-center"
-                      >
-                        <feather-icon
-                          icon="MailIcon"
-                          class="inline-block mr-2"
-                          svgClasses="w-4 h-4"
-                        />
-                        <span>Inbox</span>
-                      </div>
-                    </vs-dropdown-item>
-                  </vs-dropdown-menu>
-                </vs-dropdown>
               </div>
             </transition>
 
@@ -188,7 +140,8 @@ export default {
   },
   watch: {
     $route() {
-      this.routeTitle = this.$route.meta.pageTitle;
+      // this.$store.dispatch("navigation/clear");
+      this.$store.dispatch("navigation/getNavigation", this.$route);
     },
     isThemeDark(val) {
       const color = this.navbarColor === "#fff" && val ? "#10163a" : "#fff";
@@ -249,6 +202,12 @@ export default {
     },
     windowWidth() {
       return this.$store.state.windowWidth;
+    },
+    pageTitle() {
+      return this.$store.state["navigation"].pageTitle;
+    },
+    breadcrumb() {
+      return this.$store.state["navigation"].breadcrumb;
     },
   },
   methods: {
@@ -312,6 +271,7 @@ export default {
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   },
   created() {
+    // console.log(this.$navigation);
     const dir = this.$vs.rtl ? "rtl" : "ltr";
     document.documentElement.setAttribute("dir", dir);
 
@@ -325,7 +285,10 @@ export default {
     this.updateNavbarColor(color);
 
     this.setNavMenuVisibility(this.$store.state.mainLayoutType);
+
+    this.$store.dispatch("navigation/getNavigation", this.$route);
   },
+  updated() {},
   destroyed() {
     window.removeEventListener("resize", this.handleWindowResize);
     window.removeEventListener("scroll", this.handleScroll);
