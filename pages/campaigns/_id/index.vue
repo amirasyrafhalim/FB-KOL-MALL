@@ -1,7 +1,8 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
 
-    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems" :data="sidebarData" />
+    <data-view-sidebar-package :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar"
+                               @fetchItems="fetchItems" :data="sidebarData"/>
 
     <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records">
 
@@ -43,11 +44,12 @@
       </div>
 
       <template slot="thead">
-        <vs-th sort-key="merchant.name">Merchant</vs-th>
         <vs-th sort-key="name">Name</vs-th>
+        <vs-th sort-key="sell_method.description">Sell Method</vs-th>
+        <vs-th sort-key="keyword">Keyword</vs-th>
+        <vs-th sort-key="quantity">Quantity</vs-th>
+        <vs-th sort-key="price">Price</vs-th>
         <vs-th sort-key="status.description">Status</vs-th>
-        <vs-th sort-key="created.name">Created By</vs-th>
-        <vs-th sort-key="updated.name">Updated By</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -55,12 +57,26 @@
         <tbody>
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
-          <vs-td :data="data[indextr].merchant.name">
-            {{ tr.merchant.name }}
-          </vs-td>
-
           <vs-td :data="data[indextr].name">
             {{ tr.name }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].sell_method.description">
+            <!--            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">-->
+            {{tr.sell_method.description }}
+            <!--            </vs-chip>-->
+          </vs-td>
+
+          <vs-td :data="data[indextr].keyword">
+            {{ tr.keyword }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].quantity">
+            {{ tr.quantity }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].price">
+            {{ tr.price }}
           </vs-td>
 
           <vs-td :data="data[indextr].status.description">
@@ -69,24 +85,9 @@
             </vs-chip>
           </vs-td>
 
-          <vs-td :data="data[indextr].created.name">
-            {{ tr.created.name }}
-          </vs-td>
-
-          <vs-td :data="data[indextr].updated.name">
-            {{ tr.updated.name }}
-          </vs-td>
-
           <vs-td class="whitespace-no-wrap">
-            <nuxt-link :to="localePath({ name: 'campaigns-id', params: { id: tr.id } })">
-              <feather-icon icon="PackageIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current"
-                            />
-            </nuxt-link>
-
             <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current ml-2"
                           @click.stop="editData(tr)"/>
-            <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"
-                          @click.stop="confirmDeleteRecord(tr.id)"/>
           </vs-td>
 
         </vs-tr>
@@ -98,16 +99,16 @@
 </template>
 
 <script>
-  import DataViewSidebar from './DataViewSidebar.vue'
+  import DataViewSidebarPackage from './DataViewSidebarPackage.vue'
 
   export default {
     layout: 'main',
     components: {
-      DataViewSidebar
+      DataViewSidebarPackage
     },
     data() {
       return {
-        moduleName: "campaigns",
+        moduleName: "packages",
         selected: [],
         itemsPerPage: 10,
         isMounted: false,
@@ -131,7 +132,7 @@
     },
     methods: {
       fetchItems(page = 1) {
-        let params = { page: page };
+        let params = {page: page, campaign_id: this.$route.params.id};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
       },
       addNewData() {
@@ -145,38 +146,10 @@
       getOrderStatusColor(status) {
         if (status === 'Active') return 'success'
         if (status === 'Inactive') return 'danger'
-        if (status === 'Pause') return 'warning'
-        return 'primary'
       },
       toggleDataSidebar(val = false) {
         this.addNewDataSidebar = val
       },
-      confirmDeleteRecord(id) {
-        this.$vs.dialog({
-          type: 'confirm',
-          color: 'danger',
-          title: 'Are you sure?',
-          text: `You won't be able to revert this!`,
-          accept: this.deleteRecord(id),
-          acceptText: 'Delete'
-        })
-      },
-      deleteRecord(id) {
-          this.$store.dispatch(this.moduleName + "/deleteRecord", id)
-            .then(() => {
-              this.showDeleteSuccess()
-            })
-            .catch(err => {
-              console.error(err)
-            })
-      },
-      showDeleteSuccess() {
-        this.$vs.notify({
-          color: 'success',
-          title: 'User Deleted',
-          text: 'The selected user was successfully deleted'
-        })
-      }
     },
     created() {
       this.fetchItems();

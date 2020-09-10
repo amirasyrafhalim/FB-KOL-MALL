@@ -8,7 +8,11 @@
         <div class="vx-col" id="avatar-col">
           <div class="img-container mb-4">
             <img
-              :src="user.social.avatar || 'default_avatar.png'"
+              :src="
+                user.social && user.social.avatar
+                  ? user.social.avatar
+                  : 'default_avatar.png'
+              "
               class="rounded w-full"
             />
           </div>
@@ -149,15 +153,15 @@
             </tr>
             <tr>
               <td class="font-semibold pb-6">Gender</td>
-              <template v-if="user.social.gender == 0">
+              <template v-if="!user.social.gender">
                 <td class="pl-5 pb-5">-</td>
               </template>
-              <template v-if="user.social.gender == 1">
+              <!-- <template v-if="user.social.gender == 1">
                 <td class="pl-5 pb-5">Male</td>
               </template>
               <template v-if="user.social.gender == 2">
                 <td>class="pl-5 pb-5">Female</td>
-              </template>
+              </template> -->
             </tr>
           </table>
         </vx-card>
