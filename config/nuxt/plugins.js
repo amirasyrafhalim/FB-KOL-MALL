@@ -12,5 +12,6 @@ export default [
 	// '@/plugins/vee-validate',
 	'@/plugins/navigation',
 	'@/plugins/vue-select',
-	'@/plugins/vuejs-auto-complete'
+	'@/plugins/vuejs-auto-complete',
+	'@/plugins/filters'
 ];
