@@ -15,4 +15,14 @@ export default class DashboardApi extends BaseApi {
 
 		return this.axios.$get(url);
 	}
+
+	getSalesChart(searchQuery) {
+		let url = apiRoutes[this.module].getSalesChart;
+
+		if (searchQuery) {
+			url += '?' + searchQuery;
+		}
+
+		return this.axios.$get(url);
+	}
 }

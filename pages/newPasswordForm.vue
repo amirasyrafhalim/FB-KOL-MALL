@@ -1,5 +1,6 @@
 <template>
-  <v-container id="pages__login" class="fill-height">
+  <div>
+    <div class="fill-height h-screen flex w-full bg-img vx-row no-gutter items-center justify-center">
     <v-layout>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="5">
@@ -55,7 +56,8 @@
         </v-col>
       </v-row>
     </v-layout>
-  </v-container>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -8,7 +8,11 @@
         <div class="vx-col" id="avatar-col">
           <div class="img-container mb-4">
             <img
-              :src="user.social.avatar || 'default_avatar.png'"
+              :src="
+                user.social && user.social.avatar
+                  ? user.social.avatar
+                  : 'default_avatar.png'
+              "
               class="rounded w-full"
             />
           </div>
@@ -136,7 +140,12 @@
           <table>
             <tr>
               <td class="font-semibold pb-6">Phone No.</td>
-              <td class="pl-5 pb-5">{{ user.social.phone_no }}</td>
+              <template v-if="user.social.phone_no">
+                <td class="pl-5 pb-5">{{ user.social.phone_no }}</td>
+              </template>
+              <template v-if="!user.social.phone_no">
+                <td class="pl-5 pb-5">-</td>
+              </template>
             </tr>
             <tr>
               <td class="font-semibold pb-6">Facebook ID</td>
@@ -144,12 +153,15 @@
             </tr>
             <tr>
               <td class="font-semibold pb-6">Gender</td>
-              <template v-if="user.social.gender == 1">
+              <template v-if="!user.social.gender">
+                <td class="pl-5 pb-5">-</td>
+              </template>
+              <!-- <template v-if="user.social.gender == 1">
                 <td class="pl-5 pb-5">Male</td>
               </template>
               <template v-if="user.social.gender == 2">
                 <td>class="pl-5 pb-5">Female</td>
-              </template>
+              </template> -->
             </tr>
           </table>
         </vx-card>
@@ -182,8 +194,7 @@
                 v-for="(item, key) in user.merchant.detail.categories"
                 :key="key"
               >
-                  <li>{{ item.name }}</li>
-              
+                <li>{{ item.name }}</li>
               </ol>
             </tr>
             <!-- <tr>

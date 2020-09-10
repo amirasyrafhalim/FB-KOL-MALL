@@ -30,6 +30,10 @@ export default {
 		orderLog: '/v1/campaigns/orderLog/{id}',
 		streamRefresh: '/v1/campaigns/streamRefresh/{id}'
 	},
+  packages: {
+    getAllOrCreate: '/v1/packages',
+    getOneOrUpdateOrDelete: '/v1/packages/{id}',
+  },
 	categories: {
 		getAllOrCreate: '/v1/categories',
 		getOneOrUpdateOrDelete: '/v1/campaigns/{id}'
@@ -75,11 +79,17 @@ export default {
 		getAllOrCreate: '/v1/buyers',
 		getOneOrUpdateOrDelete: '/v1/buyers/{id}'
 	},
+	shippingPartners: {
+		getAll: '/v1/shipping-partners'
+	},
 	orders: {
 		getAllOrCreate: '/v1/orders',
 		getOneOrUpdateOrDelete: '/v1/orders/{id}',
 		updateDelivery: '/v1/order-deliveries/{id}',
 		updatePickup: '/v1/orders/{id}/updatePickup'
+	},
+	orderDeliveries: {
+		updateOrderDelivery: '/v1/order-deliveries/{id}'
 	},
 	facebook: {
 		video: '/v1/facebook/addVideo'
@@ -104,6 +114,7 @@ export default {
 		getOneOrUpdateOrDelete: '/v1/videos/{id}'
 	},
 	dashboard: {
-		getSalesSummary: '/v1/dashboard/sales-summary'
+		getSalesSummary: '/v1/dashboard/sales-summary',
+		getSalesChart: '/v1/dashboard/sales-chart'
 	}
 };

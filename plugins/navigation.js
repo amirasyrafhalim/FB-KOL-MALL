@@ -15,6 +15,10 @@ export default ({ route, app }, inject) => {
 			title: 'Campaigns',
 			breadcrumb: [ { title: 'Campaigns', url: '/campaigns' }, { title: 'List', active: true } ]
 		},
+		orders: {
+			title: 'Orders',
+			breadcrumb: [ { title: 'Orders', url: '/orders' }, { title: 'List', active: true } ]
+		},
 		merchantPageIdLiveVideo: {
 			title: 'Live Videos',
 			breadcrumb: [
@@ -22,6 +26,10 @@ export default ({ route, app }, inject) => {
 				{ title: 'Live Videos' },
 				{ title: 'List', active: true }
 			]
+		},
+		videos: {
+			title: 'Videos',
+			breadcrumb: [ { title: 'Videos', url: '/videos' }, { title: 'List', active: true } ]
 		},
 		videosId: {
 			title: 'Video Console',

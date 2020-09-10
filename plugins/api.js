@@ -1,6 +1,7 @@
 import BuyerApi from '../services/api/buyerApi';
 import BuyerOrderApi from '../services/api/buyerOrderApi';
 import CampaignApi from '@/services/api/campaignApi';
+import PackageApi from '@/services/api/packageApi';
 import CampaignPackageApi from '@/services/api/campaignPackageApi';
 import CampaignShippingApi from '@/services/api/campaignShippingApi';
 import DropdownApi from '../services/api/dropdownApi';
@@ -19,10 +20,13 @@ import EmailApi from '../services/api/emailApi';
 import CategoryApi from '../services/api/categoryApi';
 import VideoApi from '../services/api/videoApi';
 import DashboardApi from '../services/api/dashboardApi';
+import ShippingPartnerApi from '../services/api/ShippingPartnerApi';
+import OrderDeliveriesApi from '../services/api/orderDeliveriesApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
 		campaigns: new CampaignApi($axios, app.$helper),
+    packages: new PackageApi($axios, app.$helper),
 		campaignPackages: new CampaignPackageApi($axios, app.$helper),
 		campaignShippings: new CampaignShippingApi($axios, app.$helper),
 		enums: new EnumApi($axios, app.$helper),
@@ -42,7 +46,9 @@ export default ({ $axios, app }, inject) => {
 		email: new EmailApi($axios, app.$helper),
 		categories: new CategoryApi($axios, app.$helper),
 		videos: new VideoApi($axios, app.$helper),
-		dashboard: new DashboardApi($axios, app.$helper)
+		dashboard: new DashboardApi($axios, app.$helper),
+		shippingPartners: new ShippingPartnerApi($axios, app.$helper),
+		orderDeliveries: new OrderDeliveriesApi($axios, app.$helper)
 	};
 
 	inject('api', api);

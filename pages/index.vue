@@ -94,27 +94,28 @@
             <feather-icon icon="SettingsIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
           </template>
           <div slot="no-body" class="p-6 pb-0">
-            <div class="flex" v-if="revenueComparisonLine.analyticsData">
+            <div class="flex" v-if="salesChart && salesChart.analyticsData">
               <div class="mr-6">
                 <p class="mb-1 font-semibold">This Month</p>
                 <p class="text-3xl text-success">
-                  <sup class="text-base mr-1">$</sup>
-                  {{ revenueComparisonLine.analyticsData.thisMonth.toLocaleString() }}
+                  <sup class="text-base mr-1">RM</sup>
+                  {{ salesChart.analyticsData.thisMonth.toLocaleString() }}
                 </p>
               </div>
               <div>
                 <p class="mb-1 font-semibold">Last Month</p>
                 <p class="text-3xl">
-                  <sup class="text-base mr-1">$</sup>
-                  {{ revenueComparisonLine.analyticsData.lastMonth.toLocaleString() }}
+                  <sup class="text-base mr-1">RM</sup>
+                  {{ salesChart.analyticsData.lastMonth.toLocaleString() }}
                 </p>
               </div>
             </div>
             <vue-apex-charts
+              v-if="salesChart && salesChart.series"
               type="line"
               height="266"
               :options="analyticsData.revenueComparisonLine.chartOptions"
-              :series="revenueComparisonLine.series"
+              :series="salesChart.series"
             />
           </div>
         </vx-card>
@@ -207,6 +208,9 @@ export default {
     salesSummary() {
       return this.$store.state[this.moduleName].salesSummary;
     },
+    salesChart() {
+      return this.$store.state[this.moduleName].salesChart;
+    },
   },
   mounted() {
     // const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS;
@@ -214,6 +218,7 @@ export default {
   },
   created() {
     this.fetchSalesSummary();
+    this.fetchSalesChart();
     // Subscribers gained - Statistics
     this.subscribersGained = JSON.parse(
       '{"series":[{"name":"Subscribers","data":[28,40,36,52,38,60,55]}],"analyticsData":{"subscribers":92600}}'
@@ -240,6 +245,14 @@ export default {
     async fetchSalesSummary() {
       try {
         await this.$store.dispatch(this.moduleName + "/fetchSalesSummary");
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    async fetchSalesChart() {
+      try {
+        await this.$store.dispatch(this.moduleName + "/fetchSalesChart");
       } catch (err) {
         console.log(err);
       }
