@@ -1,0 +1,260 @@
+<template>
+  <vs-sidebar click-not-close position-right parent="body" default-index="1" color="primary"
+              class="add-new-data-sidebar items-no-padding" spacer v-model="isSidebarActiveLocal">
+    <div class="mt-6 flex items-center justify-between px-6">
+      <h4>{{ Object.entries(this.data).length === 0 ? "ADD NEW" : "UPDATE" }} PACKAGE</h4>
+      <feather-icon icon="XIcon" @click.stop="isSidebarActiveLocal = false" class="cursor-pointer"></feather-icon>
+    </div>
+    <vs-divider class="mb-0"></vs-divider>
+
+    <component :is="scrollbarTag" class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
+
+      <div class="px-6 py-2">
+        <vs-input label="Name" v-model="dataName" class="w-full" name="item-name"/>
+      </div>
+
+      <div class="px-6 py-2">
+        <v-select :options="sellMethod" v-model="dataSellMethod"/>
+      </div>
+
+      <div class="px-6 py-2">
+        <vs-input label="Keyword" v-model="dataKeyword" class="w-full" name="item-keyword"/>
+      </div>
+
+      <vs-row>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Price" v-model="dataPrice" class="w-full" name="item-price"/>
+          </div>
+        </vs-col>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Quantity" v-model="dataQuantity" class="w-full" name="item-quantity"/>
+          </div>
+        </vs-col>
+      </vs-row>
+
+      <vs-row>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Min Per User" v-model="dataMinPerUser" class="w-full" name="item-min-per-user"/>
+          </div>
+        </vs-col>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Limit Per User" v-model="dataLimitPerUser" class="w-full" name="item-limit-per-user"/>
+          </div>
+        </vs-col>
+      </vs-row>
+
+      <div class="px-6 py-2">
+        <v-select multiple :options="products" v-model="dataProductIds" label="name"/>
+      </div>
+
+      <div class="px-6 py-2">
+        <v-select :options="status" v-model="dataStatus"/>
+      </div>
+
+      <div class="px-6 py-2">
+        <v-select :options="freeShipping" v-model="dataFreeShipping"/>
+      </div>
+
+    </component>
+
+    <div class="flex flex-wrap items-center p-6" slot="footer">
+      <vs-button class="mr-6" @click="submitData" :disabled="!isFormValid">Submit</vs-button>
+      <vs-button type="border" color="danger" @click="isSidebarActiveLocal = false">Cancel</vs-button>
+    </div>
+  </vs-sidebar>
+</template>
+
+<script>
+  import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
+  export default {
+    props: {
+      isSidebarActive: {
+        type: Boolean,
+        required: true
+      },
+      data: {
+        type: Object,
+        default: () => {
+        }
+      }
+    },
+    components: {
+      VuePerfectScrollbar
+    },
+    data() {
+      return {
+        dataId: null,
+        dataName: '',
+        dataSellMethod: '',
+        dataKeyword: '',
+        dataColor: '',
+        dataQuantity: '',
+        dataMinPerUser: '',
+        dataLimitPerUser: '',
+        dataPrice: '',
+        dataProductIds: '',
+        dataStatus: '',
+        dataFreeShipping: '',
+        settings: {
+          maxScrollbarLength: 60,
+          wheelSpeed: .60
+        },
+        swatches: [
+          ["#CC0000", "#0070C0"],
+          ["#FF9900", "#002060"],
+          ["#0FB694", "#7030A0"],
+          ["#7ECA2D", "#ED2C67"],
+          ["#109E51", "#DE6656"]
+        ],
+        sellMethod: [
+          {label: 'Keyword', code: 1},
+          {label: 'Bidding', code: 2},
+        ],
+        status: [
+          {label: 'Inactive', code: 0},
+          {label: 'Active', code: 1},
+        ],
+        freeShipping: [
+          {label: 'No', code: 0},
+          {label: 'Yes', code: 1},
+        ],
+      }
+    },
+    watch: {
+      isSidebarActive(val) {
+        if (!val) return
+        if (Object.entries(this.data).length === 0) {
+          this.initValues()
+        } else {
+          const {id, name, sell_method, keyword, color, quantity, min_per_user, limit_per_user, price, product_ids, status, free_shipping} = JSON.parse(JSON.stringify(this.data))
+          this.dataId = id
+          this.dataName = name
+          this.dataSellMethod = sell_method.description
+          this.dataKeyword = keyword
+          this.dataColor = color
+          this.dataQuantity = quantity
+          this.dataMinPerUser = min_per_user
+          this.dataLimitPerUser = limit_per_user
+          this.dataPrice = price
+          this.dataProductIds = product_ids
+          this.dataStatus = status.description
+          this.dataFreeShipping = free_shipping.description
+          this.initValues()
+        }
+      }
+    },
+    computed: {
+      products() {
+        return this.$store.state.products.records;
+      },
+      isSidebarActiveLocal: {
+        get() {
+          return this.isSidebarActive
+        },
+        set(val) {
+          if (!val) {
+            this.$emit('closeSidebar')
+          }
+        }
+      },
+      isFormValid() {
+        return true;
+      },
+      scrollbarTag() {
+        return this.$store.getters.scrollbarTag
+      }
+    },
+    created() {
+      this.fetchProducts();
+    },
+    methods: {
+      fetchProducts(page = 1) {
+        let params = {page: page};
+        this.$store.dispatch("products/fetchItems", params);
+      },
+      initValues() {
+        if (this.data.id) return
+        this.dataId = null
+        this.dataName = ''
+        this.dataSellMethod = ''
+        this.dataKeyword = ''
+        this.dataColor = ''
+        this.dataQuantity = ''
+        this.dataMinPerUser = ''
+        this.dataLimitPerUser = ''
+        this.dataPrice = ''
+        this.dataProductIds = ''
+        this.dataStatus = ''
+        this.dataFreeShipping = ''
+      },
+      submitData() {
+        const obj = {
+          campaign_id: this.$route.params.id,
+          name: this.dataName,
+          sell_method: this.dataSellMethod.code,
+          keyword: this.dataKeyword,
+          color: '#CC0000',
+          quantity: this.dataQuantity,
+          min_per_user: this.dataMinPerUser,
+          limit_per_user: this.dataLimitPerUser,
+          price: this.dataPrice,
+          product_ids: this.product_ids,
+          status: this.dataStatus.code,
+          free_shipping: this.dataFreeShipping.code
+        }
+
+        if (this.dataId !== null && this.dataId >= 0) {
+          this.$api.packages.update(obj, this.dataId).catch(err => {
+            console.error(err)
+          })
+        } else {
+          this.$api.packages.create(obj);
+        }
+        this.$emit('fetchItems')
+        this.$emit('closeSidebar')
+        this.initValues()
+      },
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  .add-new-data-sidebar {
+    ::v-deep .vs-sidebar--background {
+      z-index: 52010;
+    }
+
+    ::v-deep .vs-sidebar {
+      z-index: 52010;
+      width: 400px;
+      max-width: 90vw;
+
+      .img-upload {
+        margin-top: 2rem;
+
+        .con-img-upload {
+          padding: 0;
+        }
+
+        .con-input-upload {
+          width: 100%;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .scroll-area--data-list-add-new {
+    // height: calc(var(--vh, 1vh) * 100 - 4.3rem);
+    height: calc(var(--vh, 1vh) * 100 - 16px - 45px - 82px);
+
+    &:not(.ps) {
+      overflow-y: auto;
+    }
+  }
+</style>
