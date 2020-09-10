@@ -46,7 +46,7 @@ export default {
 
 			try {
 				let res = await this.$api[state.moduleName].getAll(this.$helper.stringifyParams(params));
-console.log(res)
+
 				commit('setSearchModel', params);
 				commit('setRecords', res.data);
 				commit('setPagination', res.meta);

@@ -90,7 +90,8 @@
               </vs-td>
 
               <vs-td>
-                <p class="product-category">{{ tr.subscription.end_date }}</p>
+                <p v-if="tr.subscription" class="product-category">{{ tr.subscription.end_date }}</p>
+                <p v-else class="product-category">-</p>
               </vs-td>
 
               <vs-td class="whitespace-no-wrap text-center">
