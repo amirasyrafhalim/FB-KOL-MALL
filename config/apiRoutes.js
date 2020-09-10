@@ -89,7 +89,8 @@ export default {
 	},
 	password: {
 		resetPassword: '/v1/password/reset-request',
-		newPassword: '/v1/password/reset'
+		newPassword: '/v1/password/reset',
+		updatePassword: '/v1/update-passwords'
 	},
 	user: {
 		getAllOrCreate: '/v1/users',

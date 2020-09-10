@@ -12,6 +12,12 @@ export default class PasswordApi extends BaseApi {
         payload
       );
     }
+    updatePassword(payload) {
+      return this.axios.$post(
+          this.helper.prepareUrl(apiRoutes.password.updatePassword),
+          payload
+        );
+      }
     newPassword(payload) {
       return this.axios.$post(
         this.helper.prepareUrl(apiRoutes.password.newPassword),
