@@ -89,7 +89,8 @@ export default {
 	},
 	password: {
 		resetPassword: '/v1/password/reset-request',
-		newPassword: '/v1/password/reset'
+		newPassword: '/v1/password/reset',
+		updatePassword: '/v1/update-passwords'
 	},
 	user: {
 		getAllOrCreate: '/v1/users',
@@ -101,5 +102,8 @@ export default {
 	videos: {
 		getAllOrCreate: '/v1/videos',
 		getOneOrUpdateOrDelete: '/v1/videos/{id}'
+	},
+	dashboard: {
+		getSalesSummary: '/v1/dashboard/sales-summary'
 	}
 };
