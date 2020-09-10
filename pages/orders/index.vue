@@ -9,6 +9,7 @@
       :data="records"
       class="bg-transparent"
     >
+
       <!-- <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
         <div class="flex flex-wrap-reverse items-center data-list-btn-container">
         </div>
@@ -26,27 +27,33 @@
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-          <vs-td :data="tr.user.name">
+          <vs-td :data="data[indextr].user.name">
             {{ tr.user && tr.user.name }}
           </vs-td>
 
-          <vs-td :data="tr.invoice_no">
+          <vs-td :data="data[indextr].invoice_no">
             {{ tr.invoice_no }}
           </vs-td>
-          <vs-td :data="tr.campaign.name">
+          <vs-td :data="data[indextr].campaign.name">
             {{ tr.campaign && tr.campaign.name }}
           </vs-td>
-          <vs-td :data="tr.order_deliveries.tracking_no">
+          <vs-td :data="data[indextr].order_deliveries.tracking_no">
             {{ tr.order_deliveries && tr.order_deliveries.tracking_no }}
           </vs-td>
 
-          <vs-td :data="tr.total_amount">
+          <vs-td :data="data[indextr].total_amount">
             {{ tr.total_amount }}
           </vs-td>
 
-          <vs-td :data="tr.status">
-            {{ tr.status && tr.status.description }}
+          <vs-td :data="data[indextr].status.description">
+            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
+              {{tr.status && tr.status.description }}
+            </vs-chip>
           </vs-td>
+
+          <!-- <vs-td :data="tr.status">
+            {{ tr.status && tr.status.description }}
+          </vs-td> -->
 
           <vs-td :data="tr.status">
             <feather-icon
@@ -54,8 +61,6 @@
               class="mr-1"
               @click="activePromptFn(indextr)"
             />
-            <!-- <feather-icon  :icon="card_4.footer_text_1_icon" svgClasses="h-5 w-5 text-warning stroke-current" /> -->
-            <!-- <vs-button color="primary" type="border">Update Tracking Number</vs-button> -->
 
             <vs-prompt
               @cancel="val = ''"
@@ -125,6 +130,11 @@ export default {
     }
   },
   methods: {
+    getOrderStatusColor(status) {
+if (status === 'Success') return 'success'
+if (status === 'Failed') return 'danger'
+if (status === 'Pending') return 'warning'
+},
     setSelected(value) {
       console.log(value)
      //  trigger a mutation, or dispatch an action  
