@@ -3,7 +3,7 @@
     <div class="vx-row">
       <div class="vx-col w-full sm:w-1/2 mb-base">
         <vx-card v-if="record">
-          <div v-html="record.embed_html" class="responsive flex justify-center"></div>
+          <div v-html="record.embed_html" class="responsive flex justify-center video-placeholder"></div>
           <h5 class="my-6">{{ record.title || 'Untitled'}}</h5>
           <vs-divider></vs-divider>
           <p class="text-grey" v-if="record.campaign">{{ record.campaign.name }}</p>
@@ -127,12 +127,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 /* .ps {
   height: 800px;
 }
 
-div >>> iframe {
+.video-placeholder {
   width: 100% !important;
   max-width: 640px;
   max-height: 360px;
@@ -145,4 +145,50 @@ div >>> iframe {
   width: 100%;
   height: 100%;
 } */
+.video-placeholder {
+  width: 100% !important;
+  max-height: 500px;
+}
+
+@media only screen and (min-width: 1601px) {
+  .video-placeholder {
+    height: 420px !important;
+  }
+}
+
+@media only screen and (max-width: 1600px) {
+  .video-placeholder {
+    height: 320px !important;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .video-placeholder {
+    height: 260px !important;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .video-placeholder {
+    height: 220px !important;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .video-placeholder {
+    height: 260px !important;
+  }
+}
+
+@media only screen and (max-width: 980px) {
+  .video-placeholder {
+    height: 200px !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .video-placeholder {
+    height: 150px !important;
+  }
+}
 </style>

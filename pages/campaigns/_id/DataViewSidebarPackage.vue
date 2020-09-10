@@ -55,9 +55,31 @@
         <v-select :options="status" v-model="dataStatus"/>
       </div>
 
-      <div class="px-6 py-2">
-        <v-select :options="freeShipping" v-model="dataFreeShipping"/>
-      </div>
+      <vs-row>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Weight" v-model="dataWeight" class="w-full" name="item-weight"/>
+          </div>
+        </vs-col>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Length" v-model="dataLength" class="w-full" name="item-length"/>
+          </div>
+        </vs-col>
+      </vs-row>
+
+      <vs-row>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Height" v-model="dataHeight" class="w-full" name="item-height"/>
+          </div>
+        </vs-col>
+        <vs-col vs-w="6">
+          <div class="px-6 py-2">
+            <vs-input label="Width" v-model="dataWidth" class="w-full" name="item-width"/>
+          </div>
+        </vs-col>
+      </vs-row>
 
     </component>
 
@@ -70,6 +92,7 @@
 
 <script>
   import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+  import map from "lodash/map";
 
   export default {
     props: {
@@ -99,7 +122,10 @@
         dataPrice: '',
         dataProductIds: '',
         dataStatus: '',
-        dataFreeShipping: '',
+        dataWeight: '',
+        dataLength: '',
+        dataHeight: '',
+        dataWidth: '',
         settings: {
           maxScrollbarLength: 60,
           wheelSpeed: .60
@@ -119,10 +145,6 @@
           {label: 'Inactive', code: 0},
           {label: 'Active', code: 1},
         ],
-        freeShipping: [
-          {label: 'No', code: 0},
-          {label: 'Yes', code: 1},
-        ],
       }
     },
     watch: {
@@ -131,7 +153,7 @@
         if (Object.entries(this.data).length === 0) {
           this.initValues()
         } else {
-          const {id, name, sell_method, keyword, color, quantity, min_per_user, limit_per_user, price, product_ids, status, free_shipping} = JSON.parse(JSON.stringify(this.data))
+          const {id, name, sell_method, keyword, color, quantity, min_per_user, limit_per_user, price, products, status, shipping} = JSON.parse(JSON.stringify(this.data))
           this.dataId = id
           this.dataName = name
           this.dataSellMethod = sell_method.description
@@ -141,9 +163,12 @@
           this.dataMinPerUser = min_per_user
           this.dataLimitPerUser = limit_per_user
           this.dataPrice = price
-          this.dataProductIds = product_ids
+          this.dataProductIds = map(products, 'name')
           this.dataStatus = status.description
-          this.dataFreeShipping = free_shipping.description
+          this.dataWeight = shipping.weight
+          this.dataLength = shipping.length
+          this.dataHeight = shipping.height
+          this.dataWidth = shipping.width
           this.initValues()
         }
       }
@@ -190,7 +215,10 @@
         this.dataPrice = ''
         this.dataProductIds = ''
         this.dataStatus = ''
-        this.dataFreeShipping = ''
+        this.dataWeight = ''
+        this.dataLength = ''
+        this.dataHeight = ''
+        this.dataWidth = ''
       },
       submitData() {
         const obj = {
@@ -203,9 +231,12 @@
           min_per_user: this.dataMinPerUser,
           limit_per_user: this.dataLimitPerUser,
           price: this.dataPrice,
-          product_ids: this.product_ids,
+          product_ids: map(this.dataProductIds, 'id'),
           status: this.dataStatus.code,
-          free_shipping: this.dataFreeShipping.code
+          weight: this.dataWeight,
+          length: this.dataLength,
+          height: this.dataHeight,
+          width: this.dataWidth
         }
 
         if (this.dataId !== null && this.dataId >= 0) {

@@ -94,23 +94,24 @@
             <feather-icon icon="SettingsIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
           </template>
           <div slot="no-body" class="p-6 pb-0">
-            <div class="flex" v-if="salesChart.analyticsData">
+            <div class="flex" v-if="salesChart && salesChart.analyticsData">
               <div class="mr-6">
                 <p class="mb-1 font-semibold">This Month</p>
                 <p class="text-3xl text-success">
-                  <sup class="text-base mr-1">$</sup>
+                  <sup class="text-base mr-1">RM</sup>
                   {{ salesChart.analyticsData.thisMonth.toLocaleString() }}
                 </p>
               </div>
               <div>
                 <p class="mb-1 font-semibold">Last Month</p>
                 <p class="text-3xl">
-                  <sup class="text-base mr-1">$</sup>
+                  <sup class="text-base mr-1">RM</sup>
                   {{ salesChart.analyticsData.lastMonth.toLocaleString() }}
                 </p>
               </div>
             </div>
             <vue-apex-charts
+              v-if="salesChart && salesChart.series"
               type="line"
               height="266"
               :options="analyticsData.revenueComparisonLine.chartOptions"

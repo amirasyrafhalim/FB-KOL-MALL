@@ -90,7 +90,8 @@
               </vs-td>
 
               <vs-td>
-                <p class="product-category">{{ tr.subscription.end_date }}</p>
+                <p v-if="tr.subscription" class="product-category">{{ tr.subscription.end_date }}</p>
+                <p v-else class="product-category">-</p>
               </vs-td>
 
               <vs-td class="whitespace-no-wrap text-center">
@@ -102,13 +103,13 @@
                   class="mr-2 mb-1 mt-1"
                   @click.stop="liveVideo(tr)"
                 >Live Now</vs-button>
-                <vs-button
+                <!--vs-button
                   color="primary"
                   type="gradient"
                   icon-pack="feather"
                   icon="icon-dollar-sign"
                   class="mt-1"
-                >Topup</vs-button>
+                >Topup</vs-button-->
               </vs-td>
             </vs-tr>
           </tbody>

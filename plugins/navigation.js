@@ -27,6 +27,10 @@ export default ({ route, app }, inject) => {
 				{ title: 'List', active: true }
 			]
 		},
+		videos: {
+			title: 'Videos',
+			breadcrumb: [ { title: 'Videos', url: '/videos' }, { title: 'List', active: true } ]
+		},
 		videosId: {
 			title: 'Video Console',
 			breadcrumb: [ { title: 'Videos', url: '/videos' }, { title: 'Console', active: true } ]
