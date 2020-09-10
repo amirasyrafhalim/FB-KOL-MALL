@@ -30,6 +30,10 @@ export default {
 		orderLog: '/v1/campaigns/orderLog/{id}',
 		streamRefresh: '/v1/campaigns/streamRefresh/{id}'
 	},
+  packages: {
+    getAllOrCreate: '/v1/packages',
+    getOneOrUpdateOrDelete: '/v1/packages/{id}',
+  },
 	categories: {
 		getAllOrCreate: '/v1/categories',
 		getOneOrUpdateOrDelete: '/v1/campaigns/{id}'

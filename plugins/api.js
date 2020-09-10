@@ -1,6 +1,7 @@
 import BuyerApi from '../services/api/buyerApi';
 import BuyerOrderApi from '../services/api/buyerOrderApi';
 import CampaignApi from '@/services/api/campaignApi';
+import PackageApi from '@/services/api/packageApi';
 import CampaignPackageApi from '@/services/api/campaignPackageApi';
 import CampaignShippingApi from '@/services/api/campaignShippingApi';
 import DropdownApi from '../services/api/dropdownApi';
@@ -25,6 +26,7 @@ import OrderDeliveriesApi from '../services/api/orderDeliveriesApi';
 export default ({ $axios, app }, inject) => {
 	const api = {
 		campaigns: new CampaignApi($axios, app.$helper),
+    packages: new PackageApi($axios, app.$helper),
 		campaignPackages: new CampaignPackageApi($axios, app.$helper),
 		campaignShippings: new CampaignShippingApi($axios, app.$helper),
 		enums: new EnumApi($axios, app.$helper),
