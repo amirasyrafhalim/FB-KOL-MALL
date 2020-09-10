@@ -143,7 +143,7 @@ export default {
       this.dataDescription = ''
       this.dataStatus = ''
       this.dataCategory = ''
-      this.dataImg = null
+      this.dataImg = ''
     },
     submitData() {
 
@@ -152,7 +152,7 @@ export default {
         name: this.dataName,
         description: this.dataDescription,
         category_id: this.dataCategory.id,
-        image: this.dataImg,
+        image: this.dataImg.replace(/^data:(.*;base64,)?/, ""),
         status: this.dataStatus.code,
       }
 
@@ -170,10 +170,13 @@ export default {
       this.initValues()
     },
     updateCurrImg (input) {
-      if (input.target.files && input.target.files[0]) {
+
+      if (input.target.files && input.target.files[0])
+      {
         const reader = new FileReader()
         reader.onload = e => {
           this.dataImg = e.target.result
+          console.log(this.dataImg )
         }
         reader.readAsDataURL(input.target.files[0])
       }
