@@ -15,6 +15,29 @@
         </div>
 
         </div>
+        <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
+          <div
+            class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+            <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ records.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : records.length }} of {{ queriedItems }}</span>
+            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
+          </div>
+          <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
+          <vs-dropdown-menu>
+
+            <vs-dropdown-item @click="itemsPerPage=10">
+              <span>10</span>
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="itemsPerPage=20">
+              <span>20</span>
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="itemsPerPage=30">
+              <span>30</span>
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="itemsPerPage=40">
+              <span>40</span>
+            </vs-dropdown-item>
+          </vs-dropdown-menu>
+        </vs-dropdown>
 
       </div>
 
@@ -30,8 +53,9 @@
         <tbody>
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
-          <vs-td class="img-container">
-            <img :src="tr.image" class="product-img" />
+          <vs-td class="img-container" style="width: 50px;margin: auto;" >
+
+            <img :src="tr.image" class="product-img" style="width: 50px;" />
           </vs-td>
 
           <vs-td :data="data[indextr].name">
