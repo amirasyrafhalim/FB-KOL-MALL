@@ -153,7 +153,7 @@
         if (Object.entries(this.data).length === 0) {
           this.initValues()
         } else {
-          const {id, name, sell_method, keyword, color, quantity, min_per_user, limit_per_user, price, product_ids, status, package_shipping} = JSON.parse(JSON.stringify(this.data))
+          const {id, name, sell_method, keyword, color, quantity, min_per_user, limit_per_user, price, products, status, shipping} = JSON.parse(JSON.stringify(this.data))
           this.dataId = id
           this.dataName = name
           this.dataSellMethod = sell_method.description
@@ -163,12 +163,12 @@
           this.dataMinPerUser = min_per_user
           this.dataLimitPerUser = limit_per_user
           this.dataPrice = price
-          this.dataProductIds = product_ids
+          this.dataProductIds = map(products, 'name')
           this.dataStatus = status.description
-          this.dataWeight = package_shipping.weight
-          this.dataLength = package_shipping.length
-          this.dataHeight = package_shipping.height
-          this.dataWidth = package_shipping.width
+          this.dataWeight = shipping.weight
+          this.dataLength = shipping.length
+          this.dataHeight = shipping.height
+          this.dataWidth = shipping.width
           this.initValues()
         }
       }
@@ -221,7 +221,6 @@
         this.dataWidth = ''
       },
       submitData() {
-        console.log(map(this.dataProductIds, 'id'))
         const obj = {
           campaign_id: this.$route.params.id,
           name: this.dataName,
