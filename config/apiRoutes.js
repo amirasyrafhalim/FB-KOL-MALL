@@ -110,6 +110,7 @@ export default {
 		getOneOrUpdateOrDelete: '/v1/videos/{id}'
 	},
 	dashboard: {
-		getSalesSummary: '/v1/dashboard/sales-summary'
+		getSalesSummary: '/v1/dashboard/sales-summary',
+		getSalesChart: '/v1/dashboard/sales-chart'
 	}
 };
