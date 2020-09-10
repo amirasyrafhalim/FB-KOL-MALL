@@ -48,7 +48,7 @@
       return {
         dataId: null,
         dataName: '',
-        dataStatus: 1,
+        dataStatus: {label: 'Active', code: 1},
         settings: {
           maxScrollbarLength: 60,
           wheelSpeed: .60
@@ -70,7 +70,7 @@
           const {id, name, status} = JSON.parse(JSON.stringify(this.data))
           this.dataId = id
           this.dataName = name
-          this.dataStatus = status
+          this.dataStatus = status.description
           this.initValues()
         }
       }
@@ -103,7 +103,7 @@
         const obj = {
           merchant_id: this.$auth.state.user.merchant.id,
           name: this.dataName,
-          status: this.dataStatus
+          status: this.dataStatus.code
         }
         if (this.dataId !== null && this.dataId >= 0) {
           this.$api.campaigns.update(obj, this.dataId).catch(err => {
