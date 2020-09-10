@@ -102,5 +102,8 @@ export default {
 	videos: {
 		getAllOrCreate: '/v1/videos',
 		getOneOrUpdateOrDelete: '/v1/videos/{id}'
+	},
+	dashboard: {
+		getSalesSummary: '/v1/dashboard/sales-summary'
 	}
 };

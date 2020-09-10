@@ -52,9 +52,9 @@
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <statistics-card-line
-          v-if="revenueGenerated.analyticsData"
+          v-if="revenueGenerated.analyticsData && salesSummary"
           icon="DollarSignIcon"
-          :statistic="revenueGenerated.analyticsData.revenue | k_formatter"
+          :statistic="'RM '+ salesSummary.yesterday_sales | k_formatter"
           statisticTitle="Yesterday Sales"
           :chartData="revenueGenerated.series"
           color="success"
@@ -64,9 +64,9 @@
 
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <statistics-card-line
-          v-if="quarterlySales.analyticsData"
-          icon="ShoppingCartIcon"
-          :statistic="quarterlySales.analyticsData.sales"
+          v-if="quarterlySales.analyticsData && salesSummary"
+          icon="DollarSignIcon"
+          :statistic="'RM '+ salesSummary.total_sales"
           statisticTitle="Total Revenue"
           :chartData="quarterlySales.series"
           color="danger"
@@ -75,9 +75,9 @@
       </div>
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <statistics-card-line
-          v-if="ordersRecevied.analyticsData"
+          v-if="ordersRecevied.analyticsData && salesSummary"
           icon="ShoppingBagIcon"
-          :statistic="ordersRecevied.analyticsData.orders | k_formatter"
+          :statistic="salesSummary.total_order | k_formatter"
           statisticTitle="Orders Received"
           :chartData="ordersRecevied.series"
           color="warning"
@@ -175,6 +175,7 @@ export default {
   },
   data() {
     return {
+      moduleName: "dashboard",
       subscribersGained: {},
       revenueGenerated: {},
       quarterlySales: {},
@@ -203,12 +204,16 @@ export default {
     scrollbarTag() {
       return this.$store.getters.scrollbarTag;
     },
+    salesSummary() {
+      return this.$store.state[this.moduleName].salesSummary;
+    },
   },
   mounted() {
     // const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS;
     // scroll_el.scrollTop = this.$refs.chatLog.scrollHeight;
   },
   created() {
+    this.fetchSalesSummary();
     // Subscribers gained - Statistics
     this.subscribersGained = JSON.parse(
       '{"series":[{"name":"Subscribers","data":[28,40,36,52,38,60,55]}],"analyticsData":{"subscribers":92600}}'
@@ -230,6 +235,15 @@ export default {
     this.goalOverview = JSON.parse(
       '{"analyticsData":{"completed":786617,"inProgress":13561},"series":[83]}'
     );
+  },
+  methods: {
+    async fetchSalesSummary() {
+      try {
+        await this.$store.dispatch(this.moduleName + "/fetchSalesSummary");
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>

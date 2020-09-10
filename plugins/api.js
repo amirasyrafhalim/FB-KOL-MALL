@@ -18,6 +18,7 @@ import PasswordApi from '@/services/api/passwordApi';
 import EmailApi from '../services/api/emailApi';
 import CategoryApi from '../services/api/categoryApi';
 import VideoApi from '../services/api/videoApi';
+import DashboardApi from '../services/api/dashboardApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
@@ -40,7 +41,8 @@ export default ({ $axios, app }, inject) => {
 		password: new PasswordApi($axios, app.$helper),
 		email: new EmailApi($axios, app.$helper),
 		categories: new CategoryApi($axios, app.$helper),
-		videos: new VideoApi($axios, app.$helper)
+		videos: new VideoApi($axios, app.$helper),
+		dashboard: new DashboardApi($axios, app.$helper)
 	};
 
 	inject('api', api);
