@@ -30,7 +30,7 @@ export default [
 		url: '/campaigns',
 		name: 'Campaigns',
 		slug: 'campaigns',
-		icon: 'PackageIcon'
+		icon: 'CalendarIcon'
 	},
 	{
 		url: '/orders',

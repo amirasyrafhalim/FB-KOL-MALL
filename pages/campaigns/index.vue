@@ -1,175 +1,217 @@
 <template>
-  <div id="ag-grid-demo">
-    <vx-card>
-      <div class="flex flex-wrap justify-between items-center">
+  <div id="data-list-list-view" class="data-list-container">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records">
 
-        <div class="mb-4 md:mb-0 mr-4 ag-grid-table-actions-left">
-          <vs-dropdown vs-trigger-click class="cursor-pointer">
-            <div
-              class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ records.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : records.length }} of {{ records.length }}</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
-            </div>
+      <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
-            <vs-dropdown-menu>
-
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(20)">
-                <span>20</span>
-              </vs-dropdown-item>
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(50)">
-                <span>50</span>
-              </vs-dropdown-item>
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(100)">
-                <span>100</span>
-              </vs-dropdown-item>
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(150)">
-                <span>150</span>
-              </vs-dropdown-item>
-            </vs-dropdown-menu>
-          </vs-dropdown>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-between ag-grid-table-actions-right">
-          <vs-input class="mb-4 md:mb-0 mr-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..."/>
-          <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button>
+        <div class="flex flex-wrap-reverse items-center data-list-btn-container">
         </div>
       </div>
 
-      <ag-grid-vue
-        ref="agGridTable"
-        :components="components"
-        :gridOptions="gridOptions"
-        class="ag-theme-material w-100 my-4 ag-grid-table"
-        :columnDefs="columnDefs"
-        :defaultColDef="defaultColDef"
-        :rowData="records"
-        rowSelection="multiple"
-        colResizeDefault="shift"
-        :animateRows="true"
-        :floatingFilter="true"
-        :pagination="true"
-        :paginationPageSize="paginationPageSize"
-        :suppressPaginationPanel="true"
-        style="width: 100%;"
-        :enableRtl="$vs.rtl">
+      <template slot="thead">
+        <vs-th sort-key="merchant.name">Merchant</vs-th>
+        <vs-th sort-key="name">Name</vs-th>
+        <vs-th sort-key="created.name">Created By</vs-th>
+        <vs-th sort-key="updated.name">Updated By</vs-th>
+      </template>
 
-      </ag-grid-vue>
-      <vs-pagination
-        :total="totalPages"
-        :max="maxPageNumbers"
-        v-model="currentPage"/>
-    </vx-card>
+      <template slot-scope="{data}">
+        <tbody>
+        <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+
+          <vs-td :data="data[indextr].merchant.name">
+            {{ tr.merchant.name }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].name">
+            {{ tr.name }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].created.name">
+            {{ tr.created.name }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].updated.name">
+            {{ tr.updated.name }}
+          </vs-td>
+
+        </vs-tr>
+        </tbody>
+      </template>
+    </vs-table>
   </div>
+
 </template>
 
 <script>
-  import {AgGridVue} from 'ag-grid-vue'
-  import '@/assets/scss/vuexy/extraComponents/agGridStyleOverride.scss'
-
-  import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
-  import CellRendererActions from './cell-renderer/CellRendererActions.vue'
-
   export default {
-    layout: "main",
-    components: {
-      AgGridVue,
-      CellRendererStatus,
-      CellRendererActions
-    },
+    layout: 'main',
     data() {
       return {
         moduleName: "campaigns",
-        searchQuery: '',
-        gridOptions: {},
-        maxPageNumbers: 7,
-        gridApi: null,
-        defaultColDef: {
-          sortable: true,
-          editable: true,
-          resizable: true,
-          suppressMenu: true,
-          suppressAutoSize: true
-        },
-        columnDefs: [
-          {
-            headerName: 'Name',
-            field: 'name',
-            filter: true,
-          },
-          {
-            headerName: 'Merchant Name',
-            field: 'merchant.name',
-            filter: true,
-          },
-          {
-            headerName: 'Status',
-            field: 'status.description',
-            filter: true,
-            cellRendererFramework: 'CellRendererStatus'
-          },
-          {
-            headerName: 'Created By',
-            field: 'created.name',
-            filter: true,
-          },
-          {
-            headerName: 'Updated By',
-            field: 'updated.name',
-            filter: true,
-          },
-          {
-            headerName: 'Actions',
-            field: 'transactions',
-            cellRendererFramework: 'CellRendererActions'
-          },
-        ],
-        components: {
-          CellRendererStatus,
-          CellRendererActions
-        }
+        selected: [],
+        itemsPerPage: 4,
+        isMounted: false,
       }
     },
     computed: {
+      currentPage() {
+        if (this.isMounted) {
+          return this.$refs.table.currentx
+        }
+        return 0
+      },
       records() {
         return this.$store.state[this.moduleName].records;
       },
-      paginationPageSize() {
-        if (this.gridApi) return this.gridApi.paginationGetPageSize()
-        else return 50
-      },
-      totalPages() {
-        if (this.gridApi) return this.gridApi.paginationGetTotalPages()
-        else return 0
-      },
-      currentPage: {
-        get() {
-          if (this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1
-          else return 1
-        },
-        set(val) {
-          this.gridApi.paginationGoToPage(val - 1)
-        }
+      queriedItems() {
+        return this.$refs.table ? this.$refs.table.queriedResults.length : this.records.length
       }
+    },
+    methods: {
+      fetchItems() {
+        this.$store.dispatch(this.moduleName + "/fetchItems");
+      },
+      addNewData() {
+        this.sidebarData = {}
+        this.toggleDataSidebar(true)
+      },
+      editData(data) {
+        this.sidebarData = data
+        this.toggleDataSidebar(true)
+      },
+      toggleDataSidebar(val = false) {
+        this.addNewDataSidebar = val
+      },
     },
     created() {
       this.fetchItems();
     },
-    methods: {
-      updateSearchQuery(val) {
-        this.gridApi.setQuickFilter(val)
-      },
-      fetchItems() {
-        this.$store.dispatch(this.moduleName + "/fetchItems");
-      }
-    },
     mounted() {
-      this.gridApi = this.gridOptions.api
-      this.gridApi.sizeColumnsToFit()
+      this.isMounted = true
+    }
+  }
+</script>
 
-      if (this.$vs.rtl) {
-        const header = this.$refs.agGridTable.$el.querySelector('.ag-header-container')
-        header.style.left = `-${String(Number(header.style.transform.slice(11, -3)) + 9)}px`
+<style lang="scss">
+  #data-list-list-view {
+    .vs-con-table {
+      @media (max-width: 689px) {
+        .vs-table--search {
+          margin-left: 0;
+          max-width: unset;
+          width: 100%;
+
+          .vs-table--search-input {
+            width: 100%;
+          }
+        }
+      }
+
+      @media (max-width: 461px) {
+        .items-per-page-handler {
+          display: none;
+        }
+      }
+
+      @media (max-width: 341px) {
+        .data-list-btn-container {
+          width: 100%;
+
+          .dd-actions,
+          .btn-add-new {
+            width: 100%;
+            margin-right: 0 !important;
+          }
+        }
+      }
+
+      .product-name {
+        max-width: 23rem;
+      }
+
+      .vs-table--header {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+
+        > span {
+          display: flex;
+          flex-grow: 1;
+        }
+
+        .vs-table--search {
+          padding-top: 0;
+
+          .vs-table--search-input {
+            padding: 0.9rem 2.5rem;
+            font-size: 1rem;
+
+            & + i {
+              left: 1rem;
+            }
+
+            &:focus + i {
+              left: 1rem;
+            }
+          }
+        }
+      }
+
+      .vs-table {
+        border-collapse: separate;
+        border-spacing: 0 1.3rem;
+        padding: 0 1rem;
+
+        tr {
+          box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .05);
+
+          td {
+            padding: 20px;
+
+            &:first-child {
+              border-top-left-radius: .5rem;
+              border-bottom-left-radius: .5rem;
+            }
+
+            &:last-child {
+              border-top-right-radius: .5rem;
+              border-bottom-right-radius: .5rem;
+            }
+          }
+
+          td.td-check {
+            padding: 20px !important;
+          }
+        }
+      }
+
+      .vs-table--thead {
+        th {
+          padding-top: 0;
+          padding-bottom: 0;
+
+          .vs-table-text {
+            text-transform: uppercase;
+            font-weight: 600;
+          }
+        }
+
+        th.td-check {
+          padding: 0 15px !important;
+        }
+
+        tr {
+          background: none;
+          box-shadow: none;
+        }
+      }
+
+      .vs-table--pagination {
+        justify-content: center;
       }
     }
-  };
-</script>
+  }
+</style>
+
