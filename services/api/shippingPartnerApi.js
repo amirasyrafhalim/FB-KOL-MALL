@@ -7,17 +7,8 @@ export default class ShippingPartnerApi extends BaseApi {
   }
 
   getAll(){
-
-    let url = apiRoutes[this.module].getAll;
-    console.log(this.module);
-
-    // if (searchQuery) {
-    //   url += "?" + searchQuery;
-    // }
-
-    return this.axios.$get(url);
-    // return this.axios.$get(
-    //     this.helper.prepareUrl(apiRoutes[this.module].getAll)
-    //   );
+    return this.axios.$get(
+        this.helper.prepareUrl(apiRoutes[this.module].getAll)
+      );
   }
 }
