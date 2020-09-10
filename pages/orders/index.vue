@@ -9,11 +9,10 @@
       :data="records"
       class="bg-transparent"
     >
-
       <!-- <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
         <div class="flex flex-wrap-reverse items-center data-list-btn-container">
         </div>
-      </div> -->
+      </div>-->
 
       <template slot="thead">
         <vs-th sort-key="user.name">Name</vs-th>
@@ -27,40 +26,29 @@
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-          <vs-td :data="data[indextr].user.name">
-            {{ tr.user && tr.user.name }}
-          </vs-td>
+          <vs-td :data="data[indextr].user && data[indextr].user.name">{{ tr.user && tr.user.name }}</vs-td>
 
-          <vs-td :data="data[indextr].invoice_no">
-            {{ tr.invoice_no }}
-          </vs-td>
-          <vs-td :data="data[indextr].campaign.name">
-            {{ tr.campaign && tr.campaign.name }}
-          </vs-td>
-          <vs-td :data="data[indextr].order_deliveries.tracking_no">
-            {{ tr.order_deliveries && tr.order_deliveries.tracking_no }}
-          </vs-td>
+          <vs-td :data="data[indextr].invoice_no">{{ tr.invoice_no }}</vs-td>
+          <vs-td :data="data[indextr].campaign.name">{{ tr.campaign && tr.campaign.name }}</vs-td>
+          <vs-td
+            :data="data[indextr].order_deliveries && data[indextr].order_deliveries.tracking_no"
+          >{{ tr.order_deliveries && tr.order_deliveries.tracking_no }}</vs-td>
 
-          <vs-td :data="data[indextr].total_amount">
-            {{ tr.total_amount }}
-          </vs-td>
+          <vs-td :data="data[indextr].total_amount">{{ tr.total_amount }}</vs-td>
 
           <vs-td :data="data[indextr].status.description">
-            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
-              {{tr.status && tr.status.description }}
-            </vs-chip>
+            <vs-chip
+              :color="getOrderStatusColor(tr.status.description)"
+              class="product-order-status"
+            >{{tr.status && tr.status.description }}</vs-chip>
           </vs-td>
 
           <!-- <vs-td :data="tr.status">
             {{ tr.status && tr.status.description }}
-          </vs-td> -->
+          </vs-td>-->
 
           <vs-td :data="tr.status">
-            <feather-icon
-              icon="EditIcon"
-              class="mr-1"
-              @click="activePromptFn(indextr)"
-            />
+            <feather-icon icon="EditIcon" class="mr-1" @click="activePromptFn(indextr)" />
 
             <vs-prompt
               @cancel="val = ''"
@@ -75,7 +63,7 @@
                   label="name"
                   @input="fetchPartners"
                   v-model="selected"
-                  :value="selected" 
+                  :value="selected"
                 ></v-select>
                 <vs-input
                   placeholder="Tracking Number"
@@ -98,7 +86,7 @@ import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
 export default {
   layout: "main",
   components: {
-    UpdateDeliveryModal
+    UpdateDeliveryModal,
   },
   data() {
     return {
@@ -110,7 +98,7 @@ export default {
       shippingPartners: {},
       tracking_no: "",
       orderDeliveryId: "",
-      partner: ""
+      partner: "",
     };
   },
   computed: {
@@ -127,24 +115,24 @@ export default {
       return this.$refs.table
         ? this.$refs.table.queriedResults.length
         : this.records.length;
-    }
+    },
   },
   methods: {
     getOrderStatusColor(status) {
-if (status === 'Success') return 'success'
-if (status === 'Failed') return 'danger'
-if (status === 'Pending') return 'warning'
-},
+      if (status === "Success") return "success";
+      if (status === "Failed") return "danger";
+      if (status === "Pending") return "warning";
+    },
     setSelected(value) {
-      console.log(value)
-     //  trigger a mutation, or dispatch an action  
-  },
+      console.log(value);
+      //  trigger a mutation, or dispatch an action
+    },
     activePromptFn(orderDeliveryId) {
       this.orderDeliveryId = this.records[orderDeliveryId].order_deliveries.id;
       this.activePrompt = true;
     },
     async fetchPartners(value) {
-      if(value) {
+      if (value) {
         this.partner = value.name;
       }
       var a = await this.$api.shippingPartners.getAll();
@@ -164,7 +152,7 @@ if (status === 'Pending') return 'warning'
       this.$vs.notify({
         color: "success",
         title: "Update racking number",
-        text: "The selected tracking number was successfully updated"
+        text: "The selected tracking number was successfully updated",
       });
     },
 
@@ -172,7 +160,7 @@ if (status === 'Pending') return 'warning'
       this.$vs.notify({
         color: "danger",
         title: "Closed",
-        text: "You close a dialog!"
+        text: "You close a dialog!",
       });
     },
     fetchItems() {
@@ -188,7 +176,7 @@ if (status === 'Pending') return 'warning'
     },
     toggleDataSidebar(val = false) {
       this.addNewDataSidebar = val;
-    }
+    },
   },
   created() {
     this.fetchItems();
@@ -196,7 +184,7 @@ if (status === 'Pending') return 'warning'
   },
   mounted() {
     this.isMounted = true;
-  }
+  },
 };
 </script>
 
