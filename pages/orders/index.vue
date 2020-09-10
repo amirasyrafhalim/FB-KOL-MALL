@@ -25,17 +25,16 @@
       </template>
 
       <template slot-scope="{ data }">
-        <!-- {{data}} -->
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
           <vs-td :data="tr.user.name">
-            {{ tr.user.name }}
+            {{ tr.user && tr.user.name }}
           </vs-td>
 
           <vs-td :data="tr.invoice_no">
             {{ tr.invoice_no }}
           </vs-td>
           <vs-td :data="tr.campaign.name">
-            {{ tr.campaign.name }}
+            {{ tr.campaign && tr.campaign.name }}
           </vs-td>
           <vs-td :data="tr.order_deliveries.tracking_no">
             {{ tr.order_deliveries && tr.order_deliveries.tracking_no }}
@@ -66,14 +65,13 @@
               title="Update Tracking Number"
             >
               <div class="con-exemple-prompt">
-                {{ shippingPartners }}
-                <!-- <v-select
-              :options="shippingPartners.data"
-              :label="$t('label.partner')"
-              item-text="description"
-              item-value="value"
-              @change="fetchShippingPartners($event)"
-            ></v-select> -->
+                <v-select
+                  :options="shippingPartners"
+                  label="name"
+                  @input="fetchPartners"
+                  v-model="selected"
+                  :value="selected" 
+                ></v-select>
                 <vs-input
                   placeholder="Tracking Number"
                   vs-placeholder="Tracking Number"
@@ -104,9 +102,10 @@ export default {
       activePrompt: false,
       itemsPerPage: 4,
       isMounted: false,
-      shippingPartners: [],
+      shippingPartners: {},
       tracking_no: "",
-      orderDeliveryId: ""
+      orderDeliveryId: "",
+      partner: ""
     };
   },
   computed: {
@@ -126,24 +125,32 @@ export default {
     }
   },
   methods: {
+    setSelected(value) {
+      console.log(value)
+     //  trigger a mutation, or dispatch an action  
+  },
     activePromptFn(orderDeliveryId) {
       this.orderDeliveryId = this.records[orderDeliveryId].order_deliveries.id;
       this.activePrompt = true;
     },
-    fetchPartners() {
-      this.shippingPartners = this.$api.shippingPartners.getAll();
+    async fetchPartners(value) {
+      if(value) {
+        this.partner = value.name;
+      }
+      var a = await this.$api.shippingPartners.getAll();
+      this.shippingPartners = a.data;
     },
     async updateTracking() {
       var res = await this.$api.orderDeliveries.updateOrderDelivery(
-        { tracking_no: this.tracking_no },
+        { tracking_no: this.tracking_no, partner: this.partner },
         this.orderDeliveryId
       );
       if (res) {
-        this.showDeleteSuccess();
+        this.showSuccess();
       }
       await this.fetchItems();
     },
-    showDeleteSuccess() {
+    showSuccess() {
       this.$vs.notify({
         color: "success",
         title: "Update racking number",
