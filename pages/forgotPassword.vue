@@ -1,5 +1,7 @@
 <template>
-  <v-container id="forgotPassword__login" class="fill-height" fluid >
+ <div>
+    <div class="fill-height h-screen flex w-full bg-img vx-row no-gutter items-center justify-center">
+  <!-- <v-container id="forgotPassword__login" class="fill-height h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" fluid > -->
     <v-layout>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
@@ -36,7 +38,8 @@
         </v-col>
       </v-row>
     </v-layout>
-  </v-container>
+    </div>
+ </div>
 </template>
 
 <script>

@@ -1,227 +1,313 @@
 <template>
-  <div id="pages__order">
-    <form-search class="mb-5" :module-name="moduleName" />
-
-    <download-excel :data="this.orders" type="csv" name="orderList.xls">
-      <v-btn class="float-right mr-5 mt-1" elevation="0%" style="background-color:transparent;" medium >
-        <v-icon color="green">mdi-printer</v-icon>
-      </v-btn>
-    </download-excel>
- 
-    <v-data-table
-      :headers="headers"
-      :items="records.slice().reverse()"
-      :loading="isFetching"
-      :items-per-page="pagination.perPage"
-      class="elevation-1 outlined"
-      hide-default-footer
-      
+  <div id="data-list-list-view" class="data-list-container">
+    <vs-table
+      ref="table"
+      v-model="selected"
+      pagination
+      :max-items="itemsPerPage"
+      search
+      :data="records"
+      class="bg-transparent"
     >
-      <template v-slot:top>
-        <data-table-top :title="$t('label.listorder')" />
+      <!-- <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
+        <div class="flex flex-wrap-reverse items-center data-list-btn-container">
+        </div>
+      </div> -->
+
+      <template slot="thead">
+        <vs-th sort-key="user.name">Name</vs-th>
+        <vs-th sort-key="invoice_no">Invoice Number</vs-th>
+        <vs-th sort-key="campaign.name">Campaign Name</vs-th>
+        <vs-th sort-key="order_deliveries.tracking_no">Tracking Number</vs-th>
+        <vs-th sort-key="total_amount">Total Amount</vs-th>
+        <vs-th sort-key="status">Status</vs-th>
+        <vs-th sort-key="deliver_at">Action</vs-th>
       </template>
-      <template v-slot:[`item.order_details.name`]="{ item }">
-        <!-- <v-avatar size="32px" class="text-center" v-if="item && item.buyer">
-          <img :src="item.buyer.avatar || '/default_avatar.png'" />
-        </v-avatar> -->
-        <p>{{ item.order_details.name }}</p>
-      </template>
-      <template v-slot:[`item.order_payment.status`]="{ item }">
-        <div v-if="item.order_payment.status === 0">
-          {{ $t("label.failed") }}
-        </div>
-        <div v-if="item.order_payment.status === 1">
-          {{ $t("label.pending") }}
-        </div>
-        <div v-if="item.order_payment.status === 2">
-          {{ $t("label.success") }}
-        </div>
-      </template>
-      <template v-slot:[`item.order_deliveries.method`]="{ item }">
-        {{
-          item.order_deliveries.method === 2
-            ? $t("label.selfPickup")
-            : $t("label.delivery")
-        }}
-      </template>
-      <template v-slot:[`item.order_deliveries.status`]="{ item }">
-        <div v-if="item.order_deliveries.status === 1">
-          {{ $t("label.processing") }}
-        </div>
-        <div v-if="item.order_deliveries.status === 2">
-          {{ $t("label.outfordelivery") }}
-        </div>
-        <div v-if="item.order_deliveries.status === 3">
-          {{ $t("label.delivered") }}
-        </div>
-        <div v-if="item.order_deliveries.status === 4">
-          {{ $t("label.return") }}
-        </div>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-tooltip bottom v-if="item.code">
-          <template v-slot:activator="{ on }">
-            <v-btn
-            class="mt-1"
-              color="primary"
-              small
-              v-on="on"
-              :to="localePath({ name: 'orders-id', params: { id: item.id } })"
+
+      <template slot-scope="{ data }">
+        <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+          <vs-td :data="tr.user.name">
+            {{ tr.user && tr.user.name }}
+          </vs-td>
+
+          <vs-td :data="tr.invoice_no">
+            {{ tr.invoice_no }}
+          </vs-td>
+          <vs-td :data="tr.campaign.name">
+            {{ tr.campaign && tr.campaign.name }}
+          </vs-td>
+          <vs-td :data="tr.order_deliveries.tracking_no">
+            {{ tr.order_deliveries && tr.order_deliveries.tracking_no }}
+          </vs-td>
+
+          <vs-td :data="tr.total_amount">
+            {{ tr.total_amount }}
+          </vs-td>
+
+          <vs-td :data="tr.status">
+            {{ tr.status && tr.status.description }}
+          </vs-td>
+
+          <vs-td :data="tr.status">
+            <feather-icon
+              icon="EditIcon"
+              class="mr-1"
+              @click="activePromptFn(indextr)"
+            />
+            <!-- <feather-icon  :icon="card_4.footer_text_1_icon" svgClasses="h-5 w-5 text-warning stroke-current" /> -->
+            <!-- <vs-button color="primary" type="border">Update Tracking Number</vs-button> -->
+
+            <vs-prompt
+              @cancel="val = ''"
+              @accept="updateTracking()"
+              @close="close"
+              :active.sync="activePrompt"
+              title="Update Tracking Number"
             >
-              <span>{{ $t("label.view") }}</span>
-            </v-btn>
-          </template>
-          <span>{{ $t("label.view") }}</span>
-        </v-tooltip>
-        <v-tooltip bottom v-if="item.order_payment.status == 1">
-          <template v-slot:activator="{ on }">
-            <update-delivery-modal :records="item"  v-on="on" />
-          </template>
-          <span>{{ $t("label.success") }}</span>
-        </v-tooltip>
+              <div class="con-exemple-prompt">
+                <v-select
+                  :options="shippingPartners"
+                  label="name"
+                  @input="fetchPartners"
+                  v-model="selected"
+                  :value="selected" 
+                ></v-select>
+                <vs-input
+                  placeholder="Tracking Number"
+                  vs-placeholder="Tracking Number"
+                  v-model="tracking_no"
+                  class="mt-3 w-full"
+                />
+              </div>
+            </vs-prompt>
+          </vs-td>
+        </vs-tr>
       </template>
-    </v-data-table>
-
-    <data-table-pagination
-      :moduleName="moduleName"
-      :currentPage="pagination.currentPage"
-      :lastPage="pagination.lastPage"
-    ></data-table-pagination>
-
-    <alert-confirmation ref="confirmDialog" />
+    </vs-table>
   </div>
 </template>
 
 <script>
-import AlertConfirmation from "@/components/widgets/alerts/AlertConfirmation";
-import DataTableTop from "@/components/widgets/dataTables/DataTableTop";
-import DataTablePagination from "@/components/widgets/dataTables/DataTablePagination";
-import FormSearch from "@/components/pages/orders/FormSearch";
-import UpdateDeliveryModal from "../../components/pages/orders/UpdateDeliveryModal";
-import JsonExcel from "vue-json-excel";
-import dataTableMixin from "@/mixins/dataTable";
+import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
 
 export default {
-  name: "index",
+  layout: "main",
   components: {
-    UpdateDeliveryModal,
-    AlertConfirmation,
-    DataTableTop,
-    DataTablePagination,
-    FormSearch,
-    JsonExcel
+    UpdateDeliveryModal
   },
-  mixins: [dataTableMixin],
-  asyncData({ app, store }) {
+  data() {
     return {
       moduleName: "orders",
-      headers: [
-        { text: app.i18n.t("label.buyerName"), value: "order_details.name" },
-        { text: app.i18n.t("label.invoiceNo"), value: "invoice_no" },
-        { text: app.i18n.t("label.code"), value: "code" },
-        { text: app.i18n.t("label.totalAmount"), value: "total_amount" },
-        {
-          text: app.i18n.t("label.paymentStatus"),
-          value: "order_payment.status"
-        },
-        // { text: app.i18n.t("label.paidAt"), value: "confirmed_at" },
-        {
-          text: app.i18n.t("label.deliveryMethod"),
-          value: "order_deliveries.method"
-        },
-        {
-          text: app.i18n.t("label.trackingNo"),
-          value: "order_deliveries.tracking_no"
-        },
-        {
-          text: app.i18n.t("label.deliveryStatus"),
-          value: "order_deliveries.status"
-        },
-        { text: app.i18n.t("label.deliverAt"), value: "order_deliveries.delivered_at" },
-        { text: app.i18n.t("label.actions"), value: "actions" }
-      ],
-      orders: [
-        {
-          id: "",
-          buyer_id: "",
-          buyer: "",
-          // merchant: "",
-          campaign_name: "",
-          campaign_id: "",
-          invoice_no: "",
-          code: "",
-          delivery_method: "",
-          delivery_partner: "",
-          order_address: "",
-          tracking_no: "",
-          delivery_status: "",
-          subtotal_amount: "",
-          delivery_amount: "",
-          tax_amount: "",
-          total_amount: "",
-          payment_status: "",
-          remarks: "",
-          confirmed_at: "",
-          delivered_at: "",
-          created_at: "",
-          updated_at: ""
-        }
-      ]
+      selected: [],
+      activePrompt: false,
+      itemsPerPage: 4,
+      isMounted: false,
+      shippingPartners: {},
+      tracking_no: "",
+      orderDeliveryId: "",
+      partner: ""
     };
   },
   computed: {
+    currentPage() {
+      if (this.isMounted) {
+        return this.$refs.table.currentx;
+      }
+      return 0;
+    },
     records() {
-      this.orders = [];
-      this.$store.state[this.moduleName].records.forEach((element, i) => {
-        var address =
-          element.order_address &&
-          element.order_address.address +
-            element.order_address.city +
-            " " +
-            element.order_address.postcode +
-            " " +
-            element.order_address.state;
-
-        this.orders.push({
-          buyer_name: element.order_details.name,
-          invoice_no: element.invoice_no,
-          quantity: element.order_packages.quantity,
-          buyer_address: address,
-          phone_no: element.order_details.phone_no,
-          tracking_no: element.order_deliveries.tracking_no
-        });
-      });
       return this.$store.state[this.moduleName].records;
     },
-    packages() {
-      return this.$store.state.campaigns.records;
+    queriedItems() {
+      return this.$refs.table
+        ? this.$refs.table.queriedResults.length
+        : this.records.length;
+    }
+  },
+  methods: {
+    setSelected(value) {
+      console.log(value)
+     //  trigger a mutation, or dispatch an action  
+  },
+    activePromptFn(orderDeliveryId) {
+      this.orderDeliveryId = this.records[orderDeliveryId].order_deliveries.id;
+      this.activePrompt = true;
+    },
+    async fetchPartners(value) {
+      if(value) {
+        this.partner = value.name;
+      }
+      var a = await this.$api.shippingPartners.getAll();
+      this.shippingPartners = a.data;
+    },
+    async updateTracking() {
+      var res = await this.$api.orderDeliveries.updateOrderDelivery(
+        { tracking_no: this.tracking_no, partner: this.partner },
+        this.orderDeliveryId
+      );
+      if (res) {
+        this.showSuccess();
+      }
+      await this.fetchItems();
+    },
+    showSuccess() {
+      this.$vs.notify({
+        color: "success",
+        title: "Update racking number",
+        text: "The selected tracking number was successfully updated"
+      });
+    },
+
+    close() {
+      this.$vs.notify({
+        color: "danger",
+        title: "Closed",
+        text: "You close a dialog!"
+      });
+    },
+    fetchItems() {
+      this.$store.dispatch(this.moduleName + "/fetchItems");
+    },
+    addNewData() {
+      this.sidebarData = {};
+      this.toggleDataSidebar(true);
+    },
+    editData(data) {
+      this.sidebarData = data;
+      this.toggleDataSidebar(true);
+    },
+    toggleDataSidebar(val = false) {
+      this.addNewDataSidebar = val;
     }
   },
   created() {
     this.fetchItems();
-    // this.fetchCampaign();
+    this.fetchPartners();
   },
-  methods: {
-    fetchItems(page = 1) {
-      let params = { page: page, campaign_id: this.$route.params.id };
-      this.$store.dispatch(this.moduleName + "/fetchItems", params);
-    }
-    // fetchCampaign(page = 1) {
-    //   let params = { page: page, campaign_id: this.$route.params.id };
-    //   this.$store.dispatch("campaigns/fetchItems");
-    // }
+  mounted() {
+    this.isMounted = true;
   }
 };
 </script>
 
-<style>
-.v-data-table td {
-  font-size: 0.875rem;
-  height: 48px;
-  text-align: center !important;
-}
+<style lang="scss">
+#data-list-list-view {
+  .vs-con-table {
+    @media (max-width: 689px) {
+      .vs-table--search {
+        margin-left: 0;
+        max-width: unset;
+        width: 100%;
 
-.v-application--is-ltr .v-data-table th {
-  text-align: center;
+        .vs-table--search-input {
+          width: 100%;
+        }
+      }
+    }
+
+    @media (max-width: 461px) {
+      .items-per-page-handler {
+        display: none;
+      }
+    }
+
+    @media (max-width: 341px) {
+      .data-list-btn-container {
+        width: 100%;
+
+        .dd-actions,
+        .btn-add-new {
+          width: 100%;
+          margin-right: 0 !important;
+        }
+      }
+    }
+
+    .product-name {
+      max-width: 23rem;
+    }
+
+    .vs-table--header {
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
+
+      > span {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      .vs-table--search {
+        padding-top: 0;
+
+        .vs-table--search-input {
+          padding: 0.9rem 2.5rem;
+          font-size: 1rem;
+
+          & + i {
+            left: 1rem;
+          }
+
+          &:focus + i {
+            left: 1rem;
+          }
+        }
+      }
+    }
+
+    .vs-table {
+      border-collapse: separate;
+      border-spacing: 0 1.3rem;
+      padding: 0 1rem;
+
+      tr {
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+
+        td {
+          padding: 20px;
+
+          &:first-child {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+          }
+
+          &:last-child {
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+          }
+        }
+
+        td.td-check {
+          padding: 20px !important;
+        }
+      }
+    }
+
+    .vs-table--thead {
+      th {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .vs-table-text {
+          text-transform: uppercase;
+          font-weight: 600;
+        }
+      }
+
+      th.td-check {
+        padding: 0 15px !important;
+      }
+
+      tr {
+        background: none;
+        box-shadow: none;
+      }
+    }
+
+    .vs-table--pagination {
+      justify-content: center;
+    }
+  }
 }
 </style>
