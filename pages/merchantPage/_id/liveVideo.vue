@@ -1,56 +1,56 @@
 <template>
   <div>
-    <h1>Live Videos</h1>
-    <v-row dense v-if="liveVideos.length > 0" class="mt-2">
-      <v-col v-for="(item, index) in liveVideos" v-bind:key="index" class="col-4 mt-2">
-        <v-card max-width="500" class="mx-auto">
-          <v-list-item>
-            <v-list-item-avatar color="grey"></v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title class="headline">{{ item.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.broadcast_start_time }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-
-          <div v-html="item.embed_html" class="facebook-responsive"></div>
-          <v-card-text v-if="item.recorded && item.recorded.campaign">
-            <strong>Campaign Name</strong>
-
-            <br />
-            {{item.recorded.campaign.name}}.
-            <a
-              href="javascript:;"
-              v-on:click="openUpdateCampaignDialog(item)"
-            >Change</a>
-          </v-card-text>
-          <v-card-text v-else>
-            This video is not linked to any campaign yet.
-            <a
-              href="javascript:;"
-              v-on:click="openUpdateCampaignDialog(item)"
-            >Add campaign now</a>.
-          </v-card-text>
-
-          <v-card-actions>
-            <v-btn class="bg-gradient white--text" @click="goToConsole(item || null)">Console</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon>mdi-share-variant</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div v-if="liveVideos.length > 0">
+      <div class="vx-row">
+        <div
+          class="vx-col w-full sm:w-1/2 lg:w-1/3 mb-base"
+          v-for="(item, index) in liveVideos"
+          v-bind:key="index"
+        >
+          <vx-card>
+            <div slot="no-body">
+              <div v-html="item.embed_html" class="responsive card-img-top"></div>
+            </div>
+            <h5 class="mb-2">{{ item.title }}</h5>
+            <!--p class="text-grey">{{ item.broadcast_start_time }}</p-->
+            <vs-divider></vs-divider>
+            <p class="text-grey" v-if="item.recorded && item.recorded.campaign">
+              {{item.recorded.campaign.name}}.
+              <a
+                href="javascript:;"
+                v-on:click="openUpdateCampaignDialog(item)"
+              >Change</a>
+            </p>
+            <p class="text-grey" v-else>
+              This video is not linked to any campaign yet.
+              <a
+                href="javascript:;"
+                v-on:click="openUpdateCampaignDialog(item)"
+              >Add campaign now</a>.
+            </p>
+            <div class="flex justify-between flex-wrap">
+              <vs-button
+                class="w-full mt-4 mr-2 shadow-lg"
+                type="gradient"
+                color="#7367F0"
+                gradient-color-secondary="#CE9FFC"
+                @click="goToConsole(item || null)"
+              >Console</vs-button>
+            </div>
+          </vx-card>
+        </div>
+      </div>
+    </div>
     <div v-else>
       <p>There is no live video at the moment. Please check again in a moment.</p>
-      <v-btn
+
+      <vs-button
+        color="dark"
+        type="border"
         :disabled="loading"
-        :to="localePath('facebookPage')"
+        :to="localePath('merchantPage')"
         class="mt-5"
-      >{{ $t("label.back") }}</v-btn>
+      >{{ $t("label.back") }}</vs-button>
     </div>
 
     <update-campaign-dialog
@@ -63,24 +63,25 @@
 <script>
 import AlertConfirmation from "@/components/widgets/alerts/AlertConfirmation";
 import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
-import UpdateCampaignDialog from "@/components/pages/facebookPage/UpdateCampaignDialog";
+import UpdateCampaignDialog from "@/components/pages/merchantPage/UpdateCampaignDialog";
 
 import formMixin from "@/mixins/form";
 
 export default {
+  layout: "main",
   name: "index",
   components: {
     AlertConfirmation,
     CrudFormAction,
-    UpdateCampaignDialog
+    UpdateCampaignDialog,
   },
   mixins: [formMixin],
   asyncData({ app, store }) {
     return {
       moduleName: "merchantPages",
       formModel: {
-        stream_id: '',
-        merchant_page_id: null
+        stream_id: "",
+        merchant_page_id: null,
       },
       campaign_id: null,
       disabled: false,
@@ -95,13 +96,13 @@ export default {
       var video = this.$store.state[this.moduleName].liveVideos;
       //   console.log(video)
       if (video.length == 0) {
-        this.disabled = false
+        this.disabled = false;
       }
       return this.$store.state[this.moduleName].liveVideos;
     },
     merchantPageId() {
       return this.$route.params.id;
-    }
+    },
   },
   created() {
     this.initialize();
@@ -125,35 +126,39 @@ export default {
 
     openUpdateCampaignDialog(item) {
       this.currentItem = item;
-      $nuxt.$emit('open-dialog-form')
+      $nuxt.$emit("open-dialog-form");
 
       this.formModel.merchant_page_id = this.$route.params.id;
       this.formModel.stream_id = item.id;
-
     },
     closeUpdateCampaignDialog() {
       this.currentItem = null;
       this.showUpdateCampaignDialog = false;
       this.formModel = {
-        stream_id: '',
-        merchant_page_id: null
+        stream_id: "",
+        merchant_page_id: null,
       };
       this.initialize();
     },
     goToConsole(item) {
       if (!(item.recorded && item.recorded.campaign)) {
-        this.$store.dispatch("showSnackbar", {
-          text: 'Please add campaign first.',
+        /*   this.$store.dispatch("showSnackbar", {
+          text: "Please add campaign first.",
           color: "error",
+        }); */
+        this.$vs.notify({
+          color: "warning",
+          title: "Warning",
+          text: "Please add campaign first.",
         });
         return;
       }
 
       this.$router.push({
-        path: `/videos/${item.recorded.id}`
-      })
-    }
-  }
+        path: `/videos/${item.recorded.id}`,
+      });
+    },
+  },
 };
 </script>
 

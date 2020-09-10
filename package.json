@@ -37,9 +37,11 @@
     "vue-prism-component": "^1.2.0",
     "vue-property-decorator": "^9.0.0",
     "vue-select": "^3.10.8",
+    "vue-simple-suggest": "^1.10.1",
     "vue2-hammer": "^2.1.2",
     "vue2-perfect-scrollbar": "^1.5.0",
     "vuedraggable": "^2.24.1",
+    "vuejs-auto-complete": "^0.9.0",
     "vuesax": "^3.11.17",
     "vuetify-datetime-picker": "^2.1.1"
   },
