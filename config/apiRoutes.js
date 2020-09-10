@@ -75,11 +75,17 @@ export default {
 		getAllOrCreate: '/v1/buyers',
 		getOneOrUpdateOrDelete: '/v1/buyers/{id}'
 	},
+	shippingPartners: {
+		getAll: '/v1/shipping-partners'
+	},
 	orders: {
 		getAllOrCreate: '/v1/orders',
 		getOneOrUpdateOrDelete: '/v1/orders/{id}',
 		updateDelivery: '/v1/order-deliveries/{id}',
 		updatePickup: '/v1/orders/{id}/updatePickup'
+	},
+	orderDeliveries: {
+		updateOrderDelivery: '/v1/order-deliveries/{id}'
 	},
 	facebook: {
 		video: '/v1/facebook/addVideo'
