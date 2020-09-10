@@ -39,7 +39,7 @@ export default [
 		icon: 'ShoppingCartIcon'
 	},
 	{
-		url: '/#',
+		url: '/videos',
 		name: 'Videos',
 		slug: 'videos',
 		icon: 'VideoIcon'
