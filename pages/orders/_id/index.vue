@@ -1,210 +1,167 @@
 <template>
-  <v-card id="pages__orders-id">
-    <v-toolbar color="primary" dark text dense>
-      <v-toolbar-title class="subheading">{{
-        $t("pageTitle.order.edit")
-      }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-divider></v-divider>
-    <v-card-text>
-      <v-card class="mx-auto">
-        <!-- <v-container> -->
-        <v-row>
-          <v-col cols="12">
-            <v-card-subtitle
-              class="headline pb-0 font-weight-black"
-              align="center"
-              >Invoice No. {{ record.invoice_no }}</v-card-subtitle
-            >
-            <v-card-subtitle class="headline pt-0" align="center"
-              >({{ record.code }})</v-card-subtitle
-            >
-            <v-divider></v-divider>
+  <!-- <vs-card id="pages__orders-id"> -->
 
-            <v-row>
-              <v-col cols="auto">
-                <v-avatar size="60px" class="text-center ml-1">
-                  <v-img
-                    :src="this.avatar || '/default_avatar.png'"
-                    class="elevation-6"
-                  ></v-img>
-                </v-avatar>
-              </v-col>
-              <v-row>
-                <v-col cols="12" class="my-auto pb-0">{{ this.name }}</v-col>
-                <v-col cols="12" class="pt-0">{{ this.email }}</v-col>
-              </v-row>
-            </v-row>
+  <div
+  >
+  <h3 class="text-center mb-5">{{record.campaign && record.campaign.name + ' Campaign'}}</h3>
+  <h5 class="text-center mb-5 font-base">Invoice Number ({{record && record.invoice_no}})</h5>
+    <div>
+      <vs-row class="mb-4">
+        <vs-col vs-w="6" class="pr-2">
+          <vx-card
+            v-if="record"
+            class="mb-5 h-full "
+            title="Buyer Details"
+            title-color="primary"
+            subtitle-color="warning"
+            subtitle=""
+          >
+            <div class="inner-border" v-if="record.order_details">
+              <div class="mb-2">
+                <span class="font-semibold">Name: </span>
+                <span>{{ record.order_details.name }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Email: </span>
+                <span>{{ record.order_details.email }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Phone No: </span>
+                <span>{{ record.order_details.phone_no }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Address: </span>
+                <span class="mb-3">
+                  {{
+                    record.order_address.address +
+                      " " +
+                      record.order_address.city +
+                      " " +
+                      record.order_address.postcode +
+                      " " +
+                      record.order_address.state +
+                      " " +
+                      record.order_address.country_code
+                  }}
+                </span>
+              </div>
+            </div>
+          </vx-card>
+        </vs-col>
+        <vs-col vs-w="6" class="pl-2">
+          <vx-card
+           
+            class="mb-5 h-full"
+            title="Order Details"
+            title-color="primary"
+            subtitle-color="warning"
+            subtitle=""
+          >
+            <div class="inner-border" v-if="record.order_packages">
+              <div class="mb-2">
+                <span class="font-semibold">Package Name: </span>
+                <span>{{ record.order_packages.package.name }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Product: </span>
+                <vs-list
+                  v-for="(product, i) in record.order_packages.products"
+                  :key="i"
+                  class="py-0"
+                >
+                  <vs-list-item
+                    icon="check"
+                    class="py-0"
+                    :title="product.name"
+                  ></vs-list-item>
+                </vs-list>
+              </div>
+            </div>
+          </vx-card>
+        </vs-col>
+      </vs-row>
+      <vs-row>
+        <vs-col vs-w="6" class="pr-2">
+          <vx-card
+            class="mb-5 h-full"
+            title="Delivery Details"
+            title-color="primary"
+            subtitle-color="warning"
+            subtitle=""
+          >
+          <div class="inner-border" v-if="record.order_deliveries">
+              <div class="mb-2">
+                <span class="font-semibold">Delivery Method: </span>
+                <span>{{ record.order_deliveries.method == 1 ? "Postage" : "Self Pickup" }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Delivery Status: </span>
+                <span>{{ record.order_deliveries.status == 1 ? "Success" : "Pending" }}</span>
+              </div>
+              <div v-if="record.order_deliveries.method == 1">
+                <div class="mb-2">
+                <span class="font-semibold">Delivery Partner: </span>
+                <span>{{ record.order_deliveries.partner }}</span>
+              </div>
+               <div class="mb-2">
+                <span class="font-semibold">Tracking No: </span>
+                <span>{{ record.order_deliveries.tracking_no }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Remark: </span>
+                <span>{{ record.order_deliveries.remark }}</span>
+              </div>
+               <div class="mb-2">
+                <span class="font-semibold">Amount: </span>
+                <span>{{ record.order_deliveries.amount }}</span>
+              </div>
+            </div>
+          </div> 
+          </vx-card>
+        </vs-col>
+        <vs-col vs-w="6" class="pl-2">
+          <vx-card
+            class="mb-5 h-full"
+            title="Total Amount"
+            title-color="primary"
+            subtitle-color="warning"
+            subtitle=""
+          >
+          <div class="inner-border" v-if="record.order_deliveries">
+              <div class="mb-2">
+                <span class="font-semibold">Delivery Method: </span>
+                <span>{{ record.order_deliveries.method == 1 ? "Postage" : "Self Pickup" }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Delivery Status: </span>
+                <span>{{ record.order_deliveries.status == 1 ? "Success" : "Pending" }}</span>
+              </div>
+              <div v-if="record.order_deliveries.method == 1">
+                <div class="mb-2">
+                <span class="font-semibold">Delivery Partner: </span>
+                <span>{{ record.order_deliveries.partner }}</span>
+              </div>
+               <div class="mb-2">
+                <span class="font-semibold">Tracking No: </span>
+                <span>{{ record.order_deliveries.tracking_no }}</span>
+              </div>
+              <div class="mb-2">
+                <span class="font-semibold">Remark: </span>
+                <span>{{ record.order_deliveries.remark }}</span>
+              </div>
+               <div class="mb-2">
+                <span class="font-semibold">Amount: </span>
+                <span>{{ record.order_deliveries.amount }}</span>
+              </div>
+            </div>
+          </div> 
+          </vx-card>
+        </vs-col>
+      </vs-row>
+    </div>
+  </div>
 
-            <v-divider />
-            <v-row>
-              <v-col>
-                <v-card-text>
-                    <v-card-subtitle
-                      class="headline font-weight-black py-1"
-                      align="center"
-                      >Campaign {{ this.campaign }}</v-card-subtitle
-                    >
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.packageName")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.packageName || "-"
-                    }}</v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("menuTitle.product")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">
-                      <div v-for="(field, i) in product" :key="i">
-                        {{ field }}
-                      </div>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.quantity")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.packageQuantity || "-"
-                    }}</v-col>
-                  </v-row>
-                </v-card-text>
-              </v-col>
-            </v-row>
-            <v-divider />
-
-            <v-row>
-              <v-col>
-                <v-card-text>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.deliveryMethod")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">
-                      <div v-if="this.deliveryMethodString === 1">
-                        {{ $t("label.delivery") }}
-                      </div>
-                      <div v-if="this.deliveryMethodString === 2">
-                        {{ $t("label.selfPickup") }}
-                      </div>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.deliveryPartner")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      record.delivery_partner || "-"
-                    }}</v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.trackingNo")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.trackingNo || "-"
-                    }}</v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.deliverAt")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.deliveredAt || "-"
-                    }}</v-col>
-                  </v-row>
-                </v-card-text>
-              </v-col>
-              <!-- <v-col cols="2" class="text-right">
-                  <update-delivery-modal
-                    :records="record"
-                    v-if="
-                      record.payment_status && record.payment_status.value == 1
-                    "
-                  />
-                </v-col> -->
-            </v-row>
-            <v-divider />
-            <v-row>
-              <v-col>
-                <v-card-text>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.subtotalAmount")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.subtotal || "-"
-                    }}</v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.deliveryAmount")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.orderamount || "-"
-                    }}</v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.totalAmount")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col cols="auto" class="subtitle-1">{{
-                      this.totalamount || "-"
-                    }}</v-col>
-                  </v-row>
-
-                  <v-row>
-                    <v-col cols="2" class="subtitle-1">{{
-                      $t("label.paymentStatus")
-                    }}</v-col>
-                    <v-col cols="auto">:</v-col>
-                    <v-col
-                      v-if="this.paymentStatusValue === 0"
-                      cols="auto"
-                      class="subtitle-1"
-                      color="error"
-                      >{{ $t("label.fail") }}</v-col
-                    >
-                    <v-col
-                      v-else-if="this.paymentStatusValue === 1"
-                      cols="auto"
-                      class="subtitle-1"
-                      color="success"
-                      >{{ $t("label.pending") }}</v-col
-                    >
-                    <v-col
-                      v-else-if="this.paymentStatusValue === 2"
-                      cols="auto"
-                      class="subtitle-1"
-                      color="warning"
-                      >{{ $t("label.success") }}</v-col
-                    >
-                  </v-row>
-                </v-card-text>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card>
-      <v-btn :to="localePath('orders')" class="mt-2">
-        {{ $t("label.back") }}
-      </v-btn>
-    </v-card-text>
-  </v-card>
+  <!-- </vs-card> -->
 </template>
 
 <script>
@@ -213,6 +170,7 @@ import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
 
 export default {
   name: "index",
+  layout: "main",
   mixins: [getOneMixin],
   components: {
     UpdateDeliveryModal
@@ -236,51 +194,68 @@ export default {
       totalamount: null
     };
   },
-  watch: {
-    record() {
-      this.deliveryMethodString = this.record.order_deliveries.method
-        ? this.record.order_deliveries.method
-        : null;
-      this.paymentStatusValue = this.record.order_payment.status
-        ? this.record.order_payment.status
-        : null;
-      this.avatar = this.record.buyer ? this.record.buyer.avatar : null;
-      this.name = this.record.order_details.name
-        ? this.record.order_details.name
-        : null;
-      this.email = this.record.order_details.email
-        ? this.record.order_details.email
-        : null;
-      this.campaign = this.record.campaign.name
-        ? this.record.campaign.name
-        : null;
-      this.packageName = this.record.order_packages.package.name
-        ? this.record.order_packages.package.name
-        : null;
-      this.packageQuantity = this.record.order_packages.quantity
-        ? this.record.order_packages.quantity
-        : null;
-      this.deliveredAt = this.record.order_deliveries.delivered_at
-        ? this.record.order_deliveries.delivered_at
-        : null;
-      this.trackingNo = this.record.order_deliveries.tracking_no
-        ? this.record.order_deliveries.tracking_no
-        : null;
-      this.product = this.record.order_packages.package.product_ids
-        ? this.record.order_packages.package.product_ids
-        : null;
-      this.subtotal = this.record.subtotal_amount
-        ? this.record.subtotal_amount
-        : null;
-      this.orderamount = this.record.order_deliveries.amount
-        ? this.record.order_deliveries.amount
-        : null;
-      this.totalamount = this.record.total_amount
-        ? this.record.total_amount
-        : null;
-    }
-  }
+  watch: {}
 };
 </script>
 
-<style scoped></style>
+
+<style lang="scss">
+#avatar-col {
+  width: 10rem;
+}
+
+#page-user-view {
+  table {
+    td {
+      vertical-align: top;
+      min-width: 140px;
+      padding-bottom: .8rem;
+      word-break: break-all;
+    }
+
+    &:not(.permissions-table) {
+      td {
+        @media screen and (max-width:370px) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// #account-info-col-1 {
+//   // flex-grow: 1;
+//   width: 30rem !important;
+//   @media screen and (min-width:1200px) {
+//     & {
+//       flex-grow: unset !important;
+//     }
+//   }
+// }
+
+
+@media screen and (min-width:1201px) and (max-width:1211px),
+only screen and (min-width:636px) and (max-width:991px) {
+  #account-info-col-1 {
+    width: calc(100% - 12rem) !important;
+  }
+
+  // #account-manage-buttons {
+  //   width: 12rem !important;
+  //   flex-direction: column;
+
+  //   > button {
+  //     margin-right: 0 !important;
+  //     margin-bottom: 1rem;
+  //   }
+  // }
+
+}
+
+/* .inner-border {
+  box-shadow: inset 0px 0px 0px 1px grey;
+  box-sizing: border-box; 
+  border-radius: 20px;
+  padding: 20px;
+} */
+</style>
