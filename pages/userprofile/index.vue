@@ -26,30 +26,24 @@
               <td class="pl-5 pb-5">{{ user.name }}</td>
             </tr>
             <tr>
-              <td class="font-semibold pb-6 ">Email</td>
+              <td class="font-semibold pb-6">Email</td>
 
               <td class="pl-5 pb-5">{{ user.email }}</td>
             </tr>
             <tr>
               <td class="font-semibold">Status</td>
-              <p style="color: #4CAF50;" class="pl-5">
-                {{ user.status.description }}
-              </p>
+              <p style="color: #4CAF50;" class="pl-5">{{ user.status.description }}</p>
             </tr>
             <tr>
               <td class="font-semibold pb-5">Password</td>
-              <div
-                class="vx-col w-full flex pb-3 mt-3 pl-5"
-                id="account-manage-buttons"
-              >
+              <div class="vx-col w-full flex pb-3 mt-3 pl-5" id="account-manage-buttons">
                 <div class="demo-alignment">
                   <vs-button
                     @click="popupActive2 = true"
                     color="primary"
                     type="filled"
                     class="my-2 mb-4 mt-3"
-                    >Change Password</vs-button
-                  >
+                  >Change Password</vs-button>
 
                   <vs-popup
                     classContent="popup-example"
@@ -58,7 +52,7 @@
                   >
                     <div class="vx-row mb-6">
                       <div class="vx-col sm:w-1/3 w-full">
-                        <span> Current Password</span>
+                        <span>Current Password</span>
                       </div>
                       <div class="vx-col sm:w-2/3 w-full">
                         <vs-input
@@ -109,9 +103,7 @@
                         color="rgb(6, 137, 219)"
                         @click="validate"
                         type="filled"
-                      >
-                        SUBMIT
-                      </vs-button>
+                      >SUBMIT</vs-button>
                       <vs-button
                         class="mt-4"
                         color="warning"
@@ -120,8 +112,7 @@
                           formModel.new_confirm_password = formModel.new_password = formModel.current_password =
                             ''
                         "
-                        >Reset</vs-button
-                      >
+                      >Reset</vs-button>
                     </div>
                   </vs-popup>
                 </div>
@@ -161,7 +152,7 @@
               </template>
               <template v-if="user.social.gender == 2">
                 <td>class="pl-5 pb-5">Female</td>
-              </template> -->
+              </template>-->
             </tr>
           </table>
         </vx-card>
@@ -182,25 +173,19 @@
             <tr>
               <td class="font-semibold pb-5">Business Size</td>
 
-              <td class="pl-5 pb-5">
-                {{ user.merchant.detail.business_size }}
-              </td>
+              <td class="pl-5 pb-5">{{ user.merchant.detail.business_size }}</td>
             </tr>
             <tr>
               <td class="font-semibold pb-5">Business Products</td>
 
-              <ol
-                class="pl-5"
-                v-for="(item, key) in user.merchant.detail.categories"
-                :key="key"
-              >
+              <ol class="pl-5" v-for="(item, key) in user.merchant.detail.categories" :key="key">
                 <li>{{ item.name }}</li>
               </ol>
             </tr>
             <!-- <tr>
               <td class="font-semibold">Company</td>
               <td class="pl-5">{{ user.merchant_details.company_name }}</td>
-            </tr> -->
+            </tr>-->
           </table>
         </vx-card>
       </div>
@@ -210,7 +195,7 @@
 
 <script>
 import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
-import ForgotPassword from "@/components/pages/profile/forgotPassword.vue";
+import ForgotPassword from "@/components/pages/profile/ForgotPassword.vue";
 import formMixin from "@/mixins/form";
 import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 export default {
@@ -221,34 +206,34 @@ export default {
       formModel: {
         current_password: null,
         new_confirm_password: null,
-        new_password: null
+        new_password: null,
       },
 
-      popupActive2: false
+      popupActive2: false,
     };
   },
   layout: "main",
   components: {
     CrudFormAction,
     ForgotPassword,
-    AlertFormError
+    AlertFormError,
   },
   asyncData() {
     return {
-      user: []
+      user: [],
     };
   },
   methods: {
     async validate() {
       try {
         let res = await this.$api.password.updatePassword({
-          ...this.formModel
+          ...this.formModel,
         });
         if (res.http_code == 201) {
           this.$vs.notify({
             title: "Success!",
             text: "Your password has been updated",
-            color: "success"
+            color: "success",
           });
           this.popupActive2 = false;
         }
@@ -257,16 +242,16 @@ export default {
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
-            color: "danger"
+            color: "danger",
           });
         }
       }
-    }
+    },
   },
   created() {
     this.user = this.$store.state.auth.user;
     console.log("user", this.user);
-  }
+  },
 };
 </script>
 <style scoped>

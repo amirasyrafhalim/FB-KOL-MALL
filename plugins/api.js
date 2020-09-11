@@ -20,13 +20,13 @@ import EmailApi from '../services/api/emailApi';
 import CategoryApi from '../services/api/categoryApi';
 import VideoApi from '../services/api/videoApi';
 import DashboardApi from '../services/api/dashboardApi';
-import ShippingPartnerApi from '../services/api/ShippingPartnerApi';
+import ShippingPartnerApi from '../services/api/shippingPartnerApi';
 import OrderDeliveriesApi from '../services/api/orderDeliveriesApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
 		campaigns: new CampaignApi($axios, app.$helper),
-    packages: new PackageApi($axios, app.$helper),
+		packages: new PackageApi($axios, app.$helper),
 		campaignPackages: new CampaignPackageApi($axios, app.$helper),
 		campaignShippings: new CampaignShippingApi($axios, app.$helper),
 		enums: new EnumApi($axios, app.$helper),
