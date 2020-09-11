@@ -103,7 +103,7 @@ export default {
         this.dataName = name
         this.merchantId = merchant_id
         this.dataDescription = description
-        this.dataStatus = status
+        this.dataStatus = status.description
         this.dataCategory = category
         this.dataImg = image
         this.initValues()
@@ -139,7 +139,7 @@ export default {
       if (this.data.id) return
       this.dataId = null
       this.dataName = ''
-      this.merchantId = 2
+      this.merchantId = ''
       this.dataDescription = ''
       this.dataStatus = ''
       this.dataCategory = ''
@@ -148,7 +148,7 @@ export default {
     submitData() {
 
       const obj = {
-        merchant_id: this.merchantId,
+        merchant_id: this.$auth.state.user.merchant.id,
         name: this.dataName,
         description: this.dataDescription,
         category_id: this.dataCategory.id,
@@ -156,14 +156,13 @@ export default {
         status: this.dataStatus.code,
       }
 
+
       if (this.dataId !== null && this.dataId >= 0) {
         this.$api.products.update(obj, this.dataId).catch(err => {
           console.error(err)
         })
       } else {
-
         this.$api.products.create(obj);
-
       }
       this.$emit('fetchItems')
       this.$emit('closeSidebar')
@@ -176,7 +175,6 @@ export default {
         const reader = new FileReader()
         reader.onload = e => {
           this.dataImg = e.target.result
-          console.log(this.dataImg )
         }
         reader.readAsDataURL(input.target.files[0])
       }
