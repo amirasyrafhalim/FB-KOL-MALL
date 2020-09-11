@@ -63,8 +63,8 @@
           </vs-td>
 
           <template v-for="(category, i) in tr.category" >
-            <vs-td :data="data[i].category.description">
-              {{category.description}}
+            <vs-td :data="data[i].category.name">
+              {{category.name}}
             </vs-td>
           </template>
 
