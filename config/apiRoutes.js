@@ -62,6 +62,14 @@ export default {
 		getOneOrUpdateOrDelete: '/v1/merchantPageTokens/{id}',
 		debugPageToken: '/v1/merchantPageTokens/{id}/debugMerchantPageToken'
 	},
+  shippingMethods: {
+    getAllOrCreate: '/v1/shipping-methods',
+    getOneOrUpdateOrDelete: '/v1/shipping-methods/{id}'
+  },
+  shippingPartners: {
+    getAllOrCreate: '/v1/shipping-partners',
+    getOneOrUpdateOrDelete: '/v1/shipping-partners/{id}'
+  },
 	products: {
 		getAllOrCreate: '/v1/products',
 		getOneOrUpdateOrDelete: '/v1/products/{id}'
@@ -78,9 +86,6 @@ export default {
 	buyers: {
 		getAllOrCreate: '/v1/buyers',
 		getOneOrUpdateOrDelete: '/v1/buyers/{id}'
-	},
-	shippingPartners: {
-		getAll: '/v1/shipping-partners'
 	},
 	orders: {
 		getAllOrCreate: '/v1/orders',

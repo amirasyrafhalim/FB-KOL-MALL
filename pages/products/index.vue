@@ -3,7 +3,7 @@
 
     <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" :data="sidebarData" />
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 

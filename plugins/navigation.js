@@ -34,7 +34,11 @@ export default ({ route, app }, inject) => {
 		videosId: {
 			title: 'Video Console',
 			breadcrumb: [ { title: 'Videos', url: '/videos' }, { title: 'Console', active: true } ]
-		}
+		},
+    settings: {
+      title: 'Settings',
+      breadcrumb: [ { title: 'Settings', url: '/settings' }, { title: 'List', active: true } ]
+    }
 	};
 
 	inject('navigation', navigation);
