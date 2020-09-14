@@ -17,6 +17,7 @@
             />
           </div>
         </div>
+
         <!-- Information - Col 1 -->
         <div class="vx-col flex-1" id="account-info-col-1">
           <table>
@@ -31,10 +32,12 @@
               <td class="pl-5 pb-5">{{ user.email }}</td>
             </tr>
             <tr>
-              <td class="font-semibold">Status</td>
-              <p style="color: #4CAF50;" class="pl-5">{{ user.status.description }}</p>
+              <td class="font-semibold pb-5">Status</td>
+              <p style="color: #4CAF50;" class="pl-5 mb-5">
+                {{ user.status.description }}
+              </p>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="font-semibold pb-5">Password</td>
               <div class="vx-col w-full flex pb-3 mt-3 pl-5" id="account-manage-buttons">
                 <div class="demo-alignment">
@@ -117,8 +120,23 @@
                   </vs-popup>
                 </div>
               </div>
-            </tr>
+            </tr> -->
           </table>
+
+          <div class="vx-col w-full flex" id="account-manage-buttons">
+            <vs-button
+              icon-pack="feather"
+              icon="icon-edit"
+              class="mr-4"
+              :to="
+                localePath({
+                  name: 'userprofile-id-edit',
+                  params: { id: user.id }
+                })
+              "
+              >Edit</vs-button
+            >
+          </div>
         </div>
         <!-- /Information - Col 1 -->
 
@@ -173,14 +191,47 @@
             <tr>
               <td class="font-semibold pb-5">Business Size</td>
 
-              <td class="pl-5 pb-5">{{ user.merchant.detail.business_size }}</td>
+              <td class="pl-5 pb-5">
+                {{ user.merchant.detail.business_size }}
+              </td>
             </tr>
             <tr>
               <td class="font-semibold pb-5">Business Products</td>
 
-              <ol class="pl-5" v-for="(item, key) in user.merchant.detail.categories" :key="key">
+              <ol
+                class="pl-5"
+                v-for="(item, key) in user.merchant.detail.categories"
+                :key="key"
+              >
                 <li>{{ item.name }}</li>
               </ol>
+            </tr>
+            <tr>
+              <td class="font-semibold pb-5">Business Size</td>
+
+              <td class="pl-5 pb-5">
+                {{ user.merchant.detail.business_size }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold pb-5">Payment Method</td>
+
+              <template v-if="user.merchant.payment_method_id == 1">
+                <td class="pl-5 pb-5">Xenopay</td>
+              </template>
+              <template v-if="user.merchant.payment_method_id == 2">
+                <td class="pl-5 pb-5">Offline</td>
+              </template>
+            </tr>
+            <tr>
+              <td class="font-semibold pb-5">Merchant Logo</td>
+
+              <template v-if="!user.merchant.merchant_logo">
+                <td class="pl-5 pb-5">Xenopay</td>
+              </template>
+              <template v-else>
+                <td class="pl-5 pb-5">{{user.merchant.payment_method_id}}</td>
+              </template>
             </tr>
             <!-- <tr>
               <td class="font-semibold">Company</td>
@@ -206,34 +257,34 @@ export default {
       formModel: {
         current_password: null,
         new_confirm_password: null,
-        new_password: null,
+        new_password: null
       },
 
-      popupActive2: false,
+      popupActive2: false
     };
   },
   layout: "main",
   components: {
     CrudFormAction,
     ForgotPassword,
-    AlertFormError,
+    AlertFormError
   },
   asyncData() {
     return {
-      user: [],
+      user: []
     };
   },
   methods: {
     async validate() {
       try {
         let res = await this.$api.password.updatePassword({
-          ...this.formModel,
+          ...this.formModel
         });
         if (res.http_code == 201) {
           this.$vs.notify({
             title: "Success!",
             text: "Your password has been updated",
-            color: "success",
+            color: "success"
           });
           this.popupActive2 = false;
         }
@@ -242,16 +293,16 @@ export default {
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
-            color: "danger",
+            color: "danger"
           });
         }
       }
-    },
+    }
   },
   created() {
     this.user = this.$store.state.auth.user;
     console.log("user", this.user);
-  },
+  }
 };
 </script>
 <style scoped>

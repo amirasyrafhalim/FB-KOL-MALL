@@ -1,29 +1,40 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
+    <data-view-sidebar
+      :isSidebarActive="addNewDataSidebar"
+      @closeSidebar="toggleDataSidebar"
+      :data="sidebarData"
+    />
 
-    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" :data="sidebarData" />
-
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records">
-
+    <vs-table
+      ref="table"
+      v-model="selected"
+      pagination
+      :max-items="itemsPerPage"
+      search
+      :data="records"
+    >
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
-
         <div class="flex flex-wrap-reverse items-center data-list-btn-container">
-
-        <div class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary" @click="addNewData">
-          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
-          <span class="ml-2 text-base text-primary">Add New</span>
-        </div>
-
+          <div
+            class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
+            @click="addNewData"
+          >
+            <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+            <span class="ml-2 text-base text-primary">Add New</span>
+          </div>
         </div>
         <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
           <div
-            class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-            <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ records.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : records.length }} of {{ queriedItems }}</span>
-            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
+            class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
+          >
+            <span
+              class="mr-2"
+            >{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ records.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : records.length }} of {{ queriedItems }}</span>
+            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
           </div>
           <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
           <vs-dropdown-menu>
-
             <vs-dropdown-item @click="itemsPerPage=10">
               <span>10</span>
             </vs-dropdown-item>
@@ -38,12 +49,12 @@
             </vs-dropdown-item>
           </vs-dropdown-menu>
         </vs-dropdown>
-
       </div>
 
       <template slot="thead">
         <vs-th sort-key="merchant.name">Image</vs-th>
         <vs-th sort-key="name">Name</vs-th>
+        <vs-th sort-key="description">Description</vs-th>
         <vs-th sort-key="created.name">Category</vs-th>
         <vs-th sort-key="updated.name">Status</vs-th>
         <vs-th sort-key="updated.name">Action</vs-th>
@@ -51,38 +62,45 @@
 
       <template slot-scope="{data}">
         <tbody>
-        <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-
-          <vs-td class="img-container" style="width: 50px;margin: auto;" >
-
-            <img :src="tr.image" class="product-img" style="width: 50px;" />
-          </vs-td>
-
-          <vs-td :data="data[indextr].name">
-            {{ tr.name }}
-          </vs-td>
-
-          <template v-for="(category, i) in tr.category" >
-            <vs-td :data="data[i].category.description">
-              {{category.description}}
+          <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+            <vs-td class="img-container" style="width: 50px;margin: auto;">
+              
+              <img :src="tr.image" class="product-img" style="width: 50px;" />
             </vs-td>
-          </template>
 
-          <vs-td>
-            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">{{ tr.status.description }}</vs-chip>
-          </vs-td>
+            <vs-td :data="data[indextr].name">{{ tr.name }}</vs-td>
 
-          <vs-td class="whitespace-no-wrap">
-            <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current" @click.stop="editData(tr)" />
-            <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2" @click="confirmDeleteRecord(tr.id)" />
-          </vs-td>
+            <vs-td :data="data[indextr].description">{{ tr.description }}</vs-td>
 
-        </vs-tr>
+            <template v-for="(category, i) in tr.category">
+              <vs-td v-bind:key="data[i].category.name">{{category.name}}</vs-td>
+            </template>
+
+            <vs-td>
+              <vs-chip
+                :color="getOrderStatusColor(tr.status.description)"
+                class="product-order-status"
+              >{{ tr.status.description }}</vs-chip>
+            </vs-td>
+
+            <vs-td class="whitespace-no-wrap">
+              <feather-icon
+                icon="EditIcon"
+                svgClasses="w-5 h-5 hover:text-primary stroke-current"
+                @click.stop="editData(tr)"
+              />
+              <feather-icon
+                icon="TrashIcon"
+                svgClasses="w-5 h-5 hover:text-danger stroke-current"
+                class="ml-2"
+                @click="confirmDeleteRecord(tr.id)"
+              />
+            </vs-td>
+          </vs-tr>
         </tbody>
       </template>
     </vs-table>
   </div>
-
 </template>
 
 <script>
@@ -94,9 +112,11 @@ export default {
   components: {
     DataViewSidebar
   },
+
   data() {
     return {
       moduleName: "products",
+      activeConfirm:false,
       selected: [],
       itemsPerPage: 4,
       isMounted: false,
@@ -126,23 +146,22 @@ export default {
       this.sidebarData = {}
       this.toggleDataSidebar(true)
     },
-
     confirmDeleteRecord (id) {
       this.$vs.dialog({
         type: 'confirm',
         color: 'danger',
         title: 'Confirm Delete',
         text: 'You are about to delete',
-        acceptText: 'Delete',
-        accept: this.deleteRecord(id),
+        accept: this.deleteRecord,
+        parameters: id 
       })
     },
-    deleteRecord (id) {
+    deleteRecord: function(parameters) {
       // /* Below two lines are just for demo purpose */
       // this.showDeleteSuccess()
 
       /* UnComment below lines for enabling true flow if deleting user */
-      this.$store.dispatch(this.moduleName + "/deleteRecord", id)
+      this.$store.dispatch(this.moduleName + "/deleteRecord", parameters)
         .then(()   => { this.showDeleteSuccess() })
         .catch(err => { console.error(err)       })
     },
@@ -248,19 +267,19 @@ export default {
       padding: 0 1rem;
 
       tr {
-        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .05);
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 
         td {
           padding: 20px;
 
           &:first-child {
-            border-top-left-radius: .5rem;
-            border-bottom-left-radius: .5rem;
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
           }
 
           &:last-child {
-            border-top-right-radius: .5rem;
-            border-bottom-right-radius: .5rem;
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
           }
         }
 
@@ -297,4 +316,3 @@ export default {
   }
 }
 </style>
-
