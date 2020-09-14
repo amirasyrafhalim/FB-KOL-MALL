@@ -1,8 +1,8 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
 
-    <data-view-sidebar-package :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar"
-                               @fetchItems="fetchItems" :data="sidebarData"/>
+    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems"
+                       :data="sidebarData"/>
 
     <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
 
@@ -45,11 +45,10 @@
 
       <template slot="thead">
         <vs-th sort-key="name">Name</vs-th>
-        <vs-th sort-key="sell_method.description">Sell Method</vs-th>
-        <vs-th sort-key="keyword">Keyword</vs-th>
-        <vs-th sort-key="quantity">Quantity</vs-th>
-        <vs-th sort-key="price">Price</vs-th>
-        <vs-th sort-key="status.description">Status</vs-th>
+        <vs-th sort-key="partner.name">Shipping Partner</vs-th>
+        <vs-th sort-key="fee">Fee</vs-th>
+        <vs-th sort-key="free_minimum_type.description">Free Minimum Type</vs-th>
+        <vs-th sort-key="free_minimum_value">Free Minimum Value</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -61,33 +60,27 @@
             {{ tr.name }}
           </vs-td>
 
-          <vs-td :data="data[indextr].sell_method.description">
-            <!--            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">-->
-            {{tr.sell_method.description }}
-            <!--            </vs-chip>-->
+          <vs-td :data="data[indextr].partner.name">
+            {{ tr.partner.name }}
           </vs-td>
 
-          <vs-td :data="data[indextr].keyword">
-            {{ tr.keyword }}
+          <vs-td :data="data[indextr].fee">
+            {{ tr.fee }}
           </vs-td>
 
-          <vs-td :data="data[indextr].quantity">
-            {{ tr.quantity }}
+          <vs-td :data="data[indextr].free_minimum_type.description">
+            {{ tr.free_minimum_type.description }}
           </vs-td>
 
-          <vs-td :data="data[indextr].price">
-            {{ tr.price }}
-          </vs-td>
-
-          <vs-td :data="data[indextr].status.description">
-            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
-              {{tr.status.description }}
-            </vs-chip>
+          <vs-td :data="data[indextr].free_minimum_value">
+            {{ tr.free_minimum_value }}
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
             <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current ml-2"
                           @click.stop="editData(tr)"/>
+            <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"
+                          @click.stop="confirmDeleteRecord(tr.id)"/>
           </vs-td>
 
         </vs-tr>
@@ -99,16 +92,16 @@
 </template>
 
 <script>
-  import DataViewSidebarPackage from './DataViewSidebarPackage.vue'
+  import DataViewSidebar from './DataViewSidebarShipping.vue'
 
   export default {
     layout: 'main',
     components: {
-      DataViewSidebarPackage
+      DataViewSidebar
     },
     data() {
       return {
-        moduleName: "packages",
+        moduleName: "shippingMethods",
         selected: [],
         itemsPerPage: 10,
         isMounted: false,
@@ -132,7 +125,7 @@
     },
     methods: {
       fetchItems(page = 1) {
-        let params = {page: page, campaign_id: this.$route.params.id};
+        let params = {page: page};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
       },
       addNewData() {
@@ -146,10 +139,38 @@
       getOrderStatusColor(status) {
         if (status === 'Active') return 'success'
         if (status === 'Inactive') return 'danger'
+        if (status === 'Pause') return 'warning'
+        return 'primary'
       },
       toggleDataSidebar(val = false) {
         this.addNewDataSidebar = val
       },
+      confirmDeleteRecord(id) {
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: 'Are you sure?',
+          text: `You won't be able to revert this!`,
+          accept: this.deleteRecord,
+          parameters: id
+        })
+      },
+      deleteRecord(parameters) {
+        this.$store.dispatch(this.moduleName + "/deleteRecord", parameters)
+          .then(() => {
+            this.showDeleteSuccess()
+          })
+          .catch(err => {
+            console.error(err)
+          })
+      },
+      showDeleteSuccess() {
+        this.$vs.notify({
+          color: 'success',
+          title: 'Shipping Deleted',
+          text: 'The selected shipping was successfully deleted'
+        })
+      }
     },
     created() {
       this.fetchItems();
