@@ -1,13 +1,11 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
-<<<<<<< HEAD
     <data-view-sidebar
       :isSidebarActive="addNewDataSidebar"
       @closeSidebar="toggleDataSidebar"
       :data="sidebarData"
       @fetchItems="fetchItems"
     />
-
     <vs-table
       ref="table"
       v-model="selected"
@@ -15,14 +13,8 @@
       :max-items="itemsPerPage"
       search
       :data="records"
+      class="bg-transparent"
     >
-=======
-
-    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" :data="sidebarData" />
-
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
-
->>>>>>> feature/nadiah
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
         <div class="flex flex-wrap-reverse items-center data-list-btn-container">
           <div
@@ -73,7 +65,6 @@
         <tbody>
           <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
             <vs-td class="img-container" style="width: 50px;margin: auto;">
-              
               <img :src="tr.image" class="product-img" style="width: 50px;" />
             </vs-td>
 
@@ -113,96 +104,101 @@
 </template>
 
 <script>
-
-import DataViewSidebar from './DataViewSidebar.vue'
+import DataViewSidebar from "./DataViewSidebar.vue";
 
 export default {
   layout: "main",
   components: {
-    DataViewSidebar
+    DataViewSidebar,
   },
 
   data() {
     return {
       moduleName: "products",
-      activeConfirm:false,
+      activeConfirm: false,
       selected: [],
       itemsPerPage: 4,
       isMounted: false,
       addNewDataSidebar: false,
-      sidebarData: {}
-    }
+      sidebarData: {},
+    };
   },
   computed: {
     currentPage() {
       if (this.isMounted) {
-        return this.$refs.table.currentx
+        return this.$refs.table.currentx;
       }
-      return 0
+      return 0;
     },
     records() {
       return this.$store.state[this.moduleName].records;
     },
     queriedItems() {
-      return this.$refs.table ? this.$refs.table.queriedResults.length : this.records.length
-    }
+      return this.$refs.table
+        ? this.$refs.table.queriedResults.length
+        : this.records.length;
+    },
   },
   methods: {
     fetchItems() {
       this.$store.dispatch(this.moduleName + "/fetchItems");
     },
     addNewData() {
-      this.sidebarData = {}
-      this.toggleDataSidebar(true)
+      this.sidebarData = {};
+      this.toggleDataSidebar(true);
     },
-    confirmDeleteRecord (id) {
+    confirmDeleteRecord(id) {
       this.$vs.dialog({
-        type: 'confirm',
-        color: 'danger',
-        title: 'Confirm Delete',
-        text: 'You are about to delete',
+        type: "confirm",
+        color: "danger",
+        title: "Confirm Delete",
+        text: "You are about to delete",
         accept: this.deleteRecord,
-        parameters: id 
-      })
+        parameters: id,
+      });
     },
-    deleteRecord: function(parameters) {
+    deleteRecord: function (parameters) {
       // /* Below two lines are just for demo purpose */
       // this.showDeleteSuccess()
 
       /* UnComment below lines for enabling true flow if deleting user */
-      this.$store.dispatch(this.moduleName + "/deleteRecord", parameters)
-        .then(()   => { this.showDeleteSuccess() })
-        .catch(err => { console.error(err)       })
+      this.$store
+        .dispatch(this.moduleName + "/deleteRecord", parameters)
+        .then(() => {
+          this.showDeleteSuccess();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
-    showDeleteSuccess () {
+    showDeleteSuccess() {
       this.$vs.notify({
-        color: 'success',
-        title: 'Product Deleted',
-        text: 'The selected product was successfully deleted',
+        color: "success",
+        title: "Product Deleted",
+        text: "The selected product was successfully deleted",
         position: "bottom-left",
-      })
+      });
     },
     editData(data) {
-      this.sidebarData = data
-      this.toggleDataSidebar(true)
+      this.sidebarData = data;
+      this.toggleDataSidebar(true);
     },
     toggleDataSidebar(val = false) {
-      this.addNewDataSidebar = val
+      this.addNewDataSidebar = val;
     },
-    getOrderStatusColor (status) {
-      if (status === 'Active') return 'success'
-      if (status === 'Inactive')  return 'danger'
-      return 'primary'
+    getOrderStatusColor(status) {
+      if (status === "Active") return "success";
+      if (status === "Inactive") return "danger";
+      return "primary";
     },
-
   },
   created() {
     this.fetchItems();
   },
   mounted() {
-    this.isMounted = true
-  }
-}
+    this.isMounted = true;
+  },
+};
 </script>
 
 <style lang="scss">
