@@ -170,7 +170,8 @@ export default {
       this.$vs.notify({
         color: 'success',
         title: 'Product Deleted',
-        text: 'The selected product was successfully deleted'
+        text: 'The selected product was successfully deleted',
+        position: "bottom-left",
       })
     },
     editData(data) {
