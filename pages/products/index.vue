@@ -4,6 +4,7 @@
       :isSidebarActive="addNewDataSidebar"
       @closeSidebar="toggleDataSidebar"
       :data="sidebarData"
+      @fetchItems="fetchItems"
     />
 
     <vs-table
