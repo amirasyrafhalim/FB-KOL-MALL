@@ -1,51 +1,72 @@
 <template>
-  <vs-sidebar click-not-close position-right parent="body" default-index="1" color="primary"
-              class="add-new-data-sidebar items-no-padding" spacer v-model="isSidebarActiveLocal">
+  <vs-sidebar
+    click-not-close
+    position-right
+    parent="body"
+    default-index="1"
+    color="primary"
+    class="add-new-data-sidebar items-no-padding"
+    spacer
+    v-model="isSidebarActiveLocal"
+  >
     <div class="mt-6 flex items-center justify-between px-6">
       <h4>{{ Object.entries(this.data).length === 0 ? "ADD NEW" : "UPDATE" }} PRODUCT</h4>
       <feather-icon icon="XIcon" @click.stop="isSidebarActiveLocal = false" class="cursor-pointer"></feather-icon>
     </div>
     <vs-divider class="mb-0"></vs-divider>
 
-    <component :is="scrollbarTag" class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
-
+    <component
+      :is="scrollbarTag"
+      class="scroll-area--data-list-add-new"
+      :settings="settings"
+      :key="$vs.rtl"
+    >
       <template v-if="dataImg">
-
         <!-- Image Container -->
         <div class="img-container w-64 mx-auto flex items-center justify-center">
-          <img :src="dataImg" alt="img" class="responsive">
+          <img :src="dataImg" alt="img" class="responsive" />
         </div>
 
         <!-- Image upload Buttons -->
         <div class="modify-img flex justify-between mt-5">
-          <input type="file" class="hidden" ref="updateImgInput" @change="updateCurrImg" accept="image/*">
-          <vs-button class="mr-4" type="flat" @click="$refs.updateImgInput.click()">Update Image</vs-button>
-          <vs-button type="flat" color="#999" @click="dataImg = null">Remove Image</vs-button>
+          <input type="file" class="hidden" ref="updateImgInput" accept="image/*" />
         </div>
       </template>
 
       <div class="p-6 py-2">
-        <vs-input label="Name" v-model="dataName" class="mt-5 w-full" name="item-name"/>
+        <span>Name</span>
+        <vs-input v-model="dataName" v-validate="'required'" class="w-full" name="item-name" />
       </div>
 
       <div class="p-6 py-2">
-        <vs-input label="Description" v-model="dataDescription" class="mt-5 w-full" name="item-description"/>
+        <span>Description</span>
+        <vs-textarea v-model="dataDescription" class="w-full" name="item-description" />
       </div>
 
-      <div class="px-6 py-2">
+      <div class="px-6 py-2" label="Status">
+        <span>Status</span>
         <v-select :options="status" v-model="dataStatus" />
       </div>
 
       <div class="px-6 py-2">
-        <v-select :options="category" v-model="dataCategory" label="name"/>
+        <span>Category</span>
+        <v-select :options="category" v-model="dataCategory" label="name" />
       </div>
 
       <div class="upload-img px-6 py-2">
-
-        <input type="file" class="hidden" ref="uploadImgInput" @change="updateCurrImg" accept="image/*">
-        <vs-button @click="$refs.uploadImgInput.click()">Upload Image</vs-button>
+        <input
+          type="file"
+          class="hidden"
+          ref="uploadImgInput"
+          @change="updateCurrImg"
+          accept="image/*"
+        />
+        <vs-button
+          @click="$refs.uploadImgInput.click()"
+          color="success"
+          type="gradient"
+        >Upload Image</vs-button>
       </div>
-
     </component>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
@@ -56,135 +77,196 @@
 </template>
 
 <script>
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
+import map from "lodash/map";
 
 export default {
   props: {
     isSidebarActive: {
       type: Boolean,
-      required: true
+      required: true,
     },
     data: {
       type: Object,
-      default: () => {
-      }
-    }
+      default: () => {},
+    },
   },
   components: {
-    VuePerfectScrollbar
+    VuePerfectScrollbar,
   },
   data() {
     return {
       dataId: null,
-      dataName: '',
-      dataDescription: '',
-      dataStatus: '',
+      dataName: "",
+      dataDescription: "",
+      dataStatus: "",
       status: [
-        {label: 'Inactive', code: 0},
-        {label: 'Active', code: 1},
+        { label: "Active", code: 1 },
+        { label: "Inactive", code: 0 },
       ],
-      dataCategory: '',
-      dataImg: null,
+      dataCategory: "",
+      dataImg: "",
       settings: {
         maxScrollbarLength: 60,
-        wheelSpeed: .60
-      }
-    }
+        wheelSpeed: 0.6,
+      },
+    };
   },
 
   watch: {
     isSidebarActive(val) {
-      if (!val) return
+      if (!val) return;
       if (Object.entries(this.data).length === 0) {
-        this.initValues()
+        this.initValues();
       } else {
-        const {id, name, merchant_id, description, status, category, image} = JSON.parse(JSON.stringify(this.data))
-        this.dataId = id
-        this.dataName = name
-        this.merchantId = merchant_id
-        this.dataDescription = description
-        this.dataStatus = status.description
-        this.dataCategory = category
-        this.dataImg = image
-        this.initValues()
+        const {
+          id,
+          name,
+          merchant_id,
+          description,
+          status,
+          category,
+          image,
+        } = JSON.parse(JSON.stringify(this.data));
+        this.dataId = id;
+        this.dataName = name;
+        this.merchantId = merchant_id;
+        this.dataDescription = description;
+        this.dataStatus = status.description;
+        this.dataCategory = category;
+        this.dataImg = image;
+        this.initValues();
       }
-    }
+    },
   },
-  created(){
+  created() {
     this.fetchCategory();
   },
   computed: {
-    category(){
+    category() {
       return this.$store.state.categories.records;
     },
     isSidebarActiveLocal: {
       get() {
-        return this.isSidebarActive
+        return this.isSidebarActive;
       },
       set(val) {
         if (!val) {
-          this.$emit('closeSidebar')
+          this.$emit("closeSidebar");
         }
-      }
+      },
     },
     isFormValid() {
       return true;
     },
     scrollbarTag() {
-      return this.$store.getters.scrollbarTag
-    }
+      return this.$store.getters.scrollbarTag;
+    },
   },
   methods: {
     initValues() {
-      if (this.data.id) return
-      this.dataId = null
-      this.dataName = ''
-      this.merchantId = ''
-      this.dataDescription = ''
-      this.dataStatus = ''
-      this.dataCategory = ''
-      this.dataImg = ''
+      if (this.data.id) return;
+      this.dataId = null;
+      this.dataName = "";
+      this.merchantId = "";
+      this.dataDescription = "";
+      this.dataStatus = "";
+      this.dataCategory = "";
+      this.dataImg = "";
     },
-    submitData() {
+    async submitData() {
+      function isValidURL(string) {
+        var res = string.match(
+          /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        );
+        return res !== null;
+      }
 
+      if (!isValidURL(this.dataImg)) {
+        var dataImage = this.dataImg.replace(/^data:(.*;base64,)?/, "");
+      }
+
+      var a = map(this.dataCategory, "id");
+      if (!this.dataCategory.id) {
+        var e = a[0];
+      } else {
+        var e = this.dataCategory.id;
+      }
       const obj = {
         merchant_id: this.$auth.state.user.merchant.id,
         name: this.dataName,
         description: this.dataDescription,
-        category_id: this.dataCategory.id,
-        image: this.dataImg.replace(/^data:(.*;base64,)?/, ""),
+        category_id: e,
+        image: dataImage,
         status: this.dataStatus.code,
-      }
-
+      };
 
       if (this.dataId !== null && this.dataId >= 0) {
-        this.$api.products.update(obj, this.dataId).catch(err => {
-          console.error(err)
-        })
-      } else {
-        this.$api.products.create(obj);
-      }
-      this.$emit('fetchItems')
-      this.$emit('closeSidebar')
-      this.initValues()
-    },
-    updateCurrImg (input) {
-
-      if (input.target.files && input.target.files[0])
-      {
-        const reader = new FileReader()
-        reader.onload = e => {
-          this.dataImg = e.target.result
+        try {
+          let res = await this.$api.products.update(obj, this.dataId);
+          if (res.http_code == 200) {
+            this.$vs.notify({
+              title: "Success!",
+              text: "Your product has been updated",
+              color: "success",
+              position: "bottom-left",
+            });
+            this.popupActive2 = false;
+          }
+        } catch (err) {
+          if (err) {
+            this.$vs.notify({
+              title: "Failed!",
+              text: "Please insert your data correctly",
+              color: "danger",
+              position: "bottom-left",
+            });
+          }
         }
-        reader.readAsDataURL(input.target.files[0])
+      } else {
+        try {
+          let res = await this.$api.products.create(obj);
+          if (res.http_code == 201) {
+            this.$vs.notify({
+              title: "Success!",
+              text: "Your product has been created",
+              color: "success",
+              position: "bottom-left",
+            });
+            this.popupActive2 = false;
+          }
+        } catch (err) {
+          if (err) {
+            this.$vs.notify({
+              title: "Failed!",
+              text: "Please insert your data correctly",
+              color: "danger",
+              position: "bottom-left",
+            });
+          }
+        }
+      }
+      this.$emit("fetchItems");
+      this.$emit("closeSidebar");
+      this.initValues();
+    },
+
+    updateCurrImg(input) {
+      if (input.target.files && input.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.dataImg = e.target.result;
+        };
+        reader.readAsDataURL(input.target.files[0]);
       }
     },
+
     fetchCategory(page = 1) {
-      let params = {page: page};
+      let params = { page: page };
       this.$store.dispatch("categories/fetchItems", params);
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
