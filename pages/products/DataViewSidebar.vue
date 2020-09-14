@@ -24,7 +24,7 @@
       <template v-if="dataImg">
         <!-- Image Container -->
         <div class="img-container w-64 mx-auto flex items-center justify-center">
-          <img :src="dataImg" alt="img" class="responsive"/>
+          <img :src="dataImg" alt="img" class="responsive" />
         </div>
 
         <!-- Image upload Buttons -->
@@ -34,22 +34,13 @@
       </template>
 
       <div class="p-6 py-2">
-         <span>Name</span>
-        <vs-input
-          v-model="dataName"
-          v-validate="'required'"
-          class="w-full"
-          name="item-name"
-        />
+        <span>Name</span>
+        <vs-input v-model="dataName" v-validate="'required'" class="w-full" name="item-name" />
       </div>
 
       <div class="p-6 py-2">
-         <span>Description</span>
-        <vs-textarea
-          v-model="dataDescription"
-          class="w-full"
-          name="item-description"
-        />
+        <span>Description</span>
+        <vs-textarea v-model="dataDescription" class="w-full" name="item-description" />
       </div>
 
       <div class="px-6 py-2" label="Status">
@@ -191,10 +182,10 @@ export default {
         return res !== null;
       }
 
-      if (!isValidURL(this.dataImg)){
+      if (!isValidURL(this.dataImg)) {
         var dataImage = this.dataImg.replace(/^data:(.*;base64,)?/, "");
       }
-      
+
       var a = map(this.dataCategory, "id");
       if (!this.dataCategory.id) {
         var e = a[0];
@@ -218,6 +209,7 @@ export default {
               title: "Success!",
               text: "Your product has been updated",
               color: "success",
+              position: "bottom-left",
             });
             this.popupActive2 = false;
           }
@@ -227,6 +219,7 @@ export default {
               title: "Failed!",
               text: "Please insert your data correctly",
               color: "danger",
+              position: "bottom-left",
             });
           }
         }
@@ -238,6 +231,7 @@ export default {
               title: "Success!",
               text: "Your product has been created",
               color: "success",
+              position: "bottom-left",
             });
             this.popupActive2 = false;
           }
@@ -247,6 +241,7 @@ export default {
               title: "Failed!",
               text: "Please insert your data correctly",
               color: "danger",
+              position: "bottom-left",
             });
           }
         }
