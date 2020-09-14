@@ -16,11 +16,6 @@
             <UserEditTabAccount class="mt-4" />
           </div>
         </vs-tab>
-        <vs-tab label="Information" icon-pack="feather" icon="icon-info">
-          <div class="tab-text">
-            <UserEditTabInformation class="mt-4" />
-          </div>
-        </vs-tab>
         <vs-tab
           icon-pack="feather"
           icon="icon-lock"
@@ -28,6 +23,20 @@
         >
           <div>
             <UserChangePassword />
+          </div>
+        </vs-tab>
+        <vs-tab
+          label="Merchant Information"
+          icon-pack="feather"
+          icon="icon-info"
+        >
+          <div class="tab-text">
+            <UserEditTabInformation class="mt-4" />
+          </div>
+        </vs-tab>
+        <vs-tab label="Bank Information" icon-pack="feather" icon="icon-info">
+          <div class="tab-text">
+            <UserEditTabInformation class="mt-4" />
           </div>
         </vs-tab>
       </vs-tabs>

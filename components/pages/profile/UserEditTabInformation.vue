@@ -14,7 +14,7 @@
         <!-- Col Header -->
         <div class="flex items-end">
           <feather-icon icon="UserIcon" class="mr-2" svgClasses="w-5 h-5" />
-          <span class="leading-none font-medium">Merchant Information</span>
+          <span class="leading-none font-medium">Information</span>
         </div>
 
         <!-- Col Content -->

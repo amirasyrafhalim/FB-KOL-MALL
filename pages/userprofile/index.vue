@@ -227,10 +227,10 @@
               <td class="font-semibold pb-5">Merchant Logo</td>
 
               <template v-if="!user.merchant.merchant_logo">
-                <td class="pl-5 pb-5">Xenopay</td>
+                <td class="pl-5 pb-5">-</td>
               </template>
               <template v-else>
-                <td class="pl-5 pb-5">{{user.merchant.payment_method_id}}</td>
+                <td class="pl-5 pb-5">{{user.merchant.merchant_logo}}</td>
               </template>
             </tr>
             <!-- <tr>
