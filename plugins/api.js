@@ -22,7 +22,7 @@ import VideoApi from '../services/api/videoApi';
 import DashboardApi from '../services/api/dashboardApi';
 import ShippingPartnerApi from '../services/api/shippingPartnerApi';
 import OrderDeliveriesApi from '../services/api/orderDeliveriesApi';
-import ShippingMethodApi from '../services/api/ShippingMethodApi';
+import ShippingMethodApi from '../services/api/shippingMethodApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
@@ -50,7 +50,7 @@ export default ({ $axios, app }, inject) => {
 		dashboard: new DashboardApi($axios, app.$helper),
 		shippingPartners: new ShippingPartnerApi($axios, app.$helper),
 		orderDeliveries: new OrderDeliveriesApi($axios, app.$helper),
-    shippingMethods: new ShippingMethodApi($axios, app.$helper),
+		shippingMethods: new ShippingMethodApi($axios, app.$helper)
 	};
 
 	inject('api', api);
