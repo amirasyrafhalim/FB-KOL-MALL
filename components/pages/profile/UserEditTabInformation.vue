@@ -42,22 +42,33 @@
           <div class="mt-4">
             <label class="text-sm">Gender</label>
             <div class="mt-2">
-              <vs-radio vs-value="male" class="mr-4">Male</vs-radio>
-              <vs-radio vs-value="female" class="mr-4">Female</vs-radio>
+              <vs-radio vs-value="male" class="mb-3">Male</vs-radio>
+              <vs-radio vs-value="female" class="mb-3">Female</vs-radio>
               <vs-radio vs-value="other">Other</vs-radio>
             </div>
           </div>
 
           <div class="mt-6">
-            <label>Contact Options</label>
+            <label>Delivery Methods</label>
             <div class="flex flex-wrap mt-1">
               <vs-checkbox vs-value="email" class="mr-4 mb-2"
-                >Email</vs-checkbox
+                >Delivery</vs-checkbox
               >
               <vs-checkbox vs-value="message" class="mr-4 mb-2"
-                >Message</vs-checkbox
+                >Self Pickup</vs-checkbox
               >
-              <vs-checkbox vs-value="Phone" class=" mb-2">Phone</vs-checkbox>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <label>Payment Method</label>
+            <div class="flex flex-wrap mt-1">
+              <vs-checkbox vs-value="email" class="mr-4 mb-2"
+                >Xenopay</vs-checkbox
+              >
+              <vs-checkbox vs-value="message" class="mr-4 mb-2"
+                >Offline</vs-checkbox
+              >
             </div>
           </div>
         </div>
