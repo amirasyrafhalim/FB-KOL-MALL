@@ -29,7 +29,7 @@
                 <span class="font-semibold">Phone No: </span>
                 <span>{{ record.order_details.phone_no }}</span>
               </div>
-              <div class="mb-2">
+              <div class="mb-2" v-if=" record.order_address">
                 <span class="font-semibold">Address: </span>
                 <span class="mb-3">
                   {{
