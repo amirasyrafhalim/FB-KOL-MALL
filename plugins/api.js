@@ -5,7 +5,7 @@ import PackageApi from '@/services/api/packageApi';
 import CampaignPackageApi from '@/services/api/campaignPackageApi';
 import CampaignShippingApi from '@/services/api/campaignShippingApi';
 import DropdownApi from '../services/api/dropdownApi';
-import EnumApi from '@/services/api/enumApi';
+import EnumApi from '../services/api/enumApi';
 import FacebookApi from '../services/api/facebookApi';
 import MerchantApi from '../services/api/merchantApi';
 import MerchantPageApi from '../services/api/merchantPageApi';

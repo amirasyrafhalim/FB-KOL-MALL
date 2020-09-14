@@ -61,9 +61,12 @@
           </vs-td>
 
           <vs-td :data="data[indextr].packages">
-            <div v-for="(item,index) in tr.packages" :key="index" style="display: inline;">
-              {{ item.name }},
+            <div style="text-overflow: ellipsis; width: 250px !important; white-space: nowrap; overflow: hidden">
+              <div v-for="(item,index) in tr.packages" :key="index" style="display: inline;">
+                {{ item.name }},
+              </div>
             </div>
+
           </vs-td>
 
           <vs-td :data="data[indextr].status.description">
@@ -158,12 +161,12 @@
           color: 'danger',
           title: 'Are you sure?',
           text: `You won't be able to revert this!`,
-          accept: this.deleteRecord(id),
-          acceptText: 'Delete'
+          accept: this.deleteRecord,
+          parameters: id
         })
       },
-      deleteRecord(id) {
-        this.$store.dispatch(this.moduleName + "/deleteRecord", id)
+      deleteRecord(parameters) {
+        this.$store.dispatch(this.moduleName + "/deleteRecord", parameters)
           .then(() => {
             this.showDeleteSuccess()
           })

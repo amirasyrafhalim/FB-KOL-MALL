@@ -151,12 +151,12 @@
           color: 'danger',
           title: 'Are you sure?',
           text: `You won't be able to revert this!`,
-          accept: this.deleteRecord(id),
-          acceptText: 'Delete'
+          accept: this.deleteRecord,
+          parameters: id
         })
       },
-      deleteRecord(id) {
-        this.$store.dispatch(this.moduleName + "/deleteRecord", id)
+      deleteRecord(parameters) {
+        this.$store.dispatch(this.moduleName + "/deleteRecord", parameters)
           .then(() => {
             this.showDeleteSuccess()
           })

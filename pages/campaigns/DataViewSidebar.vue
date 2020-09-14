@@ -99,18 +99,56 @@
         this.dataId = null
         this.dataName = ''
       },
-      submitData() {
+      async submitData() {
         const obj = {
           merchant_id: this.$auth.state.user.merchant.id,
           name: this.dataName,
           status: this.dataStatus.code
         }
         if (this.dataId !== null && this.dataId >= 0) {
-          this.$api.campaigns.update(obj, this.dataId).catch(err => {
-            console.error(err)
-          })
+          try {
+            let res = await this.$api.campaigns.update(obj, this.dataId);
+            if (res.http_code == 200) {
+              this.$vs.notify({
+                title: "Success!",
+                text: "Your campaign has been updated",
+                color: "success",
+                position: "bottom-left"
+              });
+              this.popupActive2 = false;
+            }
+          } catch (err) {
+            if (err) {
+              this.$vs.notify({
+                title: "Failed!",
+                text: "Please insert your data correctly",
+                color: "danger",
+                position: "bottom-left"
+              });
+            }
+          }
         } else {
-          this.$api.campaigns.create(obj);
+          try {
+            let res = await this.$api.campaigns.create(obj);
+            if (res.http_code == 201) {
+              this.$vs.notify({
+                title: "Success!",
+                text: "Your campaign has been created",
+                color: "success",
+                position: "bottom-left"
+              });
+              this.popupActive2 = false;
+            }
+          } catch (err) {
+            if (err) {
+              this.$vs.notify({
+                title: "Failed!",
+                text: "Please insert your data correctly",
+                color: "danger",
+                position: "bottom-left"
+              });
+            }
+          }
         }
         this.$emit('fetchItems')
         this.$emit('closeSidebar')
