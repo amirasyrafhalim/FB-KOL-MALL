@@ -1,9 +1,10 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
 
-    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems" :data="sidebarData" />
+    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems"
+                       :data="sidebarData"/>
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
@@ -43,8 +44,8 @@
       </div>
 
       <template slot="thead">
-        <vs-th sort-key="merchant.name">Merchant</vs-th>
         <vs-th sort-key="name">Name</vs-th>
+        <vs-th sort-key="packages">Package</vs-th>
         <vs-th sort-key="status.description">Status</vs-th>
         <vs-th sort-key="createdBy.name">Created By</vs-th>
         <vs-th sort-key="updatedBy.name">Updated By</vs-th>
@@ -55,12 +56,17 @@
         <tbody>
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
-          <vs-td :data="data[indextr].merchant.name">
-            {{ tr.merchant.name }}
-          </vs-td>
-
           <vs-td :data="data[indextr].name">
             {{ tr.name }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].packages">
+            <div style="text-overflow: ellipsis; width: 250px !important; white-space: nowrap; overflow: hidden">
+              <div v-for="(item,index) in tr.packages" :key="index" style="display: inline;">
+                {{ item.name }},
+              </div>
+            </div>
+
           </vs-td>
 
           <vs-td :data="data[indextr].status.description">
@@ -78,15 +84,12 @@
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
-            <nuxt-link :to="localePath({ name: 'campaigns-id', params: { id: tr.id } })">
-              <feather-icon icon="PackageIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current"
-                            />
-            </nuxt-link>
-
-            <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current ml-2"
-                          @click.stop="editData(tr)"/>
-            <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"
-                          @click.stop="confirmDeleteRecord(tr.id)"/>
+            <vs-button :color="colorx" :gradient-color-secondary="colorx2" type="gradient" icon="library_books"
+                       :to="localePath({ name: 'campaigns-id', params: { id: tr.id } })">Package
+            </vs-button>
+            <vs-button color="warning" type="border" icon="edit" class="ml-2" @click.stop="editData(tr)"></vs-button>
+            <vs-button color="danger" type="border" icon="delete_outline" class="ml-2"
+                       @click.stop="confirmDeleteRecord(tr.id)"></vs-button>
           </vs-td>
 
         </vs-tr>
@@ -94,7 +97,6 @@
       </template>
     </vs-table>
   </div>
-
 </template>
 
 <script>
@@ -107,6 +109,8 @@
     },
     data() {
       return {
+        colorx: '#c72a75',
+        colorx2: '#5252e8',
         moduleName: "campaigns",
         selected: [],
         itemsPerPage: 10,
@@ -131,7 +135,7 @@
     },
     methods: {
       fetchItems(page = 1) {
-        let params = { page: page };
+        let params = {page: page};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
       },
       addNewData() {
@@ -157,24 +161,24 @@
           color: 'danger',
           title: 'Are you sure?',
           text: `You won't be able to revert this!`,
-          accept: this.deleteRecord(id),
-          acceptText: 'Delete'
+          accept: this.deleteRecord,
+          parameters: id
         })
       },
-      deleteRecord(id) {
-          this.$store.dispatch(this.moduleName + "/deleteRecord", id)
-            .then(() => {
-              this.showDeleteSuccess()
-            })
-            .catch(err => {
-              console.error(err)
-            })
+      deleteRecord(parameters) {
+        this.$store.dispatch(this.moduleName + "/deleteRecord", parameters)
+          .then(() => {
+            this.showDeleteSuccess()
+          })
+          .catch(err => {
+            console.error(err)
+          })
       },
       showDeleteSuccess() {
         this.$vs.notify({
           color: 'success',
-          title: 'User Deleted',
-          text: 'The selected user was successfully deleted'
+          title: 'Campaign Deleted',
+          text: 'The selected campaign was successfully deleted'
         })
       }
     },

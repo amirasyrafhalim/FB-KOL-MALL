@@ -81,6 +81,10 @@
         </vs-col>
       </vs-row>
 
+      <div class="px-6 py-2">
+        <v-select :options="shippingMethods" v-model="dataShippingMethod" label="name"/>
+      </div>
+
     </component>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
@@ -126,6 +130,7 @@
         dataLength: '',
         dataHeight: '',
         dataWidth: '',
+        dataShippingMethod: null,
         settings: {
           maxScrollbarLength: 60,
           wheelSpeed: .60
@@ -163,12 +168,13 @@
           this.dataMinPerUser = min_per_user
           this.dataLimitPerUser = limit_per_user
           this.dataPrice = price
-          this.dataProductIds = map(products, 'name')
+          this.dataProductIds = products
           this.dataStatus = status.description
           this.dataWeight = shipping.weight
           this.dataLength = shipping.length
           this.dataHeight = shipping.height
           this.dataWidth = shipping.width
+          this.dataShippingMethod = shipping.shipping_method
           this.initValues()
         }
       }
@@ -176,6 +182,9 @@
     computed: {
       products() {
         return this.$store.state.products.records;
+      },
+      shippingMethods() {
+        return this.$store.state.shippingMethods.records;
       },
       isSidebarActiveLocal: {
         get() {
@@ -196,11 +205,16 @@
     },
     created() {
       this.fetchProducts();
+      this.fetchShippingMethods();
     },
     methods: {
       fetchProducts(page = 1) {
         let params = {page: page};
         this.$store.dispatch("products/fetchItems", params);
+      },
+      fetchShippingMethods(page = 1) {
+        let params = {page: page};
+        this.$store.dispatch("shippingMethods/fetchItems", params);
       },
       initValues() {
         if (this.data.id) return
@@ -219,6 +233,7 @@
         this.dataLength = ''
         this.dataHeight = ''
         this.dataWidth = ''
+        this.dataShippingMethod = null
       },
       submitData() {
         const obj = {
@@ -236,7 +251,8 @@
           weight: this.dataWeight,
           length: this.dataLength,
           height: this.dataHeight,
-          width: this.dataWidth
+          width: this.dataWidth,
+          shipping_method_id: this.dataShippingMethod && this.dataShippingMethod.id
         }
 
         if (this.dataId !== null && this.dataId >= 0) {

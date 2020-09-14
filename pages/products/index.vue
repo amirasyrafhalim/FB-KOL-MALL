@@ -1,5 +1,6 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
+<<<<<<< HEAD
     <data-view-sidebar
       :isSidebarActive="addNewDataSidebar"
       @closeSidebar="toggleDataSidebar"
@@ -15,6 +16,13 @@
       search
       :data="records"
     >
+=======
+
+    <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" :data="sidebarData" />
+
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
+
+>>>>>>> feature/nadiah
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
         <div class="flex flex-wrap-reverse items-center data-list-btn-container">
           <div
