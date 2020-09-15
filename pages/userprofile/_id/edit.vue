@@ -11,11 +11,11 @@
   <vx-card>
     <div slot="no-body" class="tabs-container px-6 pt-6">
       <vs-tabs class="tab-action-btn-fill-conatiner">
-        <vs-tab label="Account" icon-pack="feather" icon="icon-user">
+        <!-- <vs-tab label="Account" icon-pack="feather" icon="icon-user">
           <div class="tab-text">
             <UserEditTabAccount class="mt-4" />
           </div>
-        </vs-tab>
+        </vs-tab> -->
         <vs-tab
           icon-pack="feather"
           icon="icon-lock"
@@ -31,7 +31,7 @@
           icon="icon-info"
         >
           <div class="tab-text">
-            <UserEditTabInformation class="mt-4" />
+            <UserEditTabInformation />
           </div>
         </vs-tab>
         <vs-tab label="Bank Information" icon-pack="feather" icon="icon-info">

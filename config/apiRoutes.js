@@ -50,7 +50,8 @@ export default {
 	merchants: {
 		getAllOrCreate: '/v1/merchants',
 		getDetail: '/v1/merchants/detail',
-		getOneOrUpdateOrDelete: '/v1/merchants/{id}'
+		getOneOrUpdateOrDelete: '/v1/merchants/{id}',
+		getOneOrUpdateOrDeleteMerchantDetail: '/v1/merchant-details/{id}'
 	},
 	merchantPages: {
 		getAllOrCreate: '/v1/merchant-pages',

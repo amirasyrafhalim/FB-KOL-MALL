@@ -12,40 +12,61 @@
     <div class="vx-row">
       <div class="vx-col w-full md:w-1/2">
         <!-- Col Header -->
-        <div class="flex items-end">
+        <!-- <div class="flex items-end">
           <feather-icon icon="UserIcon" class="mr-2" svgClasses="w-5 h-5" />
           <span class="leading-none font-medium">Information</span>
-        </div>
+        </div> -->
 
         <!-- Col Content -->
-        <div>
+        <div class="mt-4">
+          <!-- 
+          <template v-if="formModel.dataLogo">
+          <div class="flex flex-wrap items-center mb-base">
+            <vs-avatar
+              :src="formModel.dataLogo"
+              size="70px"
+              class="mr-4 mb-4"
+            />
+            <div>
+              <p class="text-sm mt-2">
+                Allowed JPG, GIF or PNG. Max size of 800kB
+              </p>
+            </div>
+          </div>
+          </template> -->
+
+          <!-- <div class="upload-img mx-auto flex items-center justify-center">
+            <input
+              type="file"
+              class="hidden"
+              ref="uploadImgInput"
+              @change="updateCurrImg"
+              accept="image/*"
+            />
+            <vs-button
+              @click="$refs.uploadImgInput.click()"
+              color="success"
+              type="gradient"
+              >Upload Image</vs-button
+            >
+          </div> -->
+          <vs-input
+            class="w-full mt-4"
+            label="Merchant Name"
+            v-model="formModel1.name"
+          />
+
           <vs-input
             class="w-full mt-4"
             label="Company"
             v-model="formModel.dataCompany"
           />
-          <vs-input
-            class="w-full mt-4"
-            label="Mobile"
-            name="mobile"
-            v-model="formModel.dataPhone"
-          />
-          <div class="mt-4">
-            <label class="vs-input--label">Gender</label>
-            <v-select
-              name="status"
-              :options="gender"
-              v-model="formModel.dataGender"
-            />
-            <span class="text-danger text-sm"></span>
-          </div>
-
           <div class="mt-4">
             <label class="vs-input--label">Payment Methods</label>
             <v-select
               name="status"
               :options="payment"
-              v-model="formModel.dataPayment"
+              v-model="formModel1.payment_method_id"
             />
             <span class="text-danger text-sm"></span>
           </div>
@@ -54,29 +75,22 @@
 
       <!-- Address Col -->
       <div class="vx-col w-full md:w-1/2">
-        <!-- Col Header -->
-        <div class="flex items-end md:mt-0 mt-base">
-          <feather-icon icon="MapPinIcon" class="mr-2" svgClasses="w-5 h-5" />
-          <span class="leading-none font-medium">Address</span>
-        </div>
-
         <!-- Col Content -->
         <div>
-          <vs-input class="w-full mt-4" label="Address Line 1" />
+          <vs-input
+            class="w-full mt-4"
+            label="Address"
+            v-model="formModel.dataAddress"
+          />
           <span class="text-danger text-sm"></span>
-
-          <vs-input class="w-full mt-4" label="Address Line 2" />
-
-          <vs-input class="w-full mt-4" label="Post Code" />
-          <span class="text-danger text-sm"></span>
-
-          <vs-input class="w-full mt-4" label="City" />
-          <span class="text-danger text-sm"></span>
-
-          <vs-input class="w-full mt-4" label="State" />
-          <span class="text-danger text-sm"></span>
-
-          <vs-input class="w-full mt-4" label="Country" />
+        </div>
+        <div class="mt-4">
+          <label class="vs-input--label">Business Size</label>
+          <v-select
+            name="status"
+            :options="business"
+            v-model="formModel.dataBusinessSize"
+          />
           <span class="text-danger text-sm"></span>
         </div>
       </div>
@@ -86,8 +100,17 @@
     <div class="vx-row">
       <div class="vx-col w-full">
         <div class="mt-8 flex flex-wrap items-center justify-end">
-          <vs-button class="ml-auto mt-2">Save Changes</vs-button>
-          <vs-button class="ml-4 mt-2" type="border" color="warning"
+          <vs-button @click="validate" class="ml-auto mt-2"
+            >Save Changes</vs-button
+          >
+          <vs-button
+            class="ml-4 mt-2"
+            type="border"
+            color="warning"
+            @click="
+              formModel = formModel1 =
+                ''
+            "
             >Reset</vs-button
           >
         </div>
@@ -107,52 +130,84 @@ export default {
   props: {},
   data() {
     return {
-      payment: [
-        { label: "Xenopay", code: 1 },
-        { label: "Ofline", code: 2 }
+      business: [
+        { label: "0-5" },
+        { label: "6-10" },
+        { label: "11-15" },
+        { label: "16-20" }
       ],
-      gender: [
-        { label: "Male", code: 2 },
-        { label: "Female", code: 1 }
-      ],
-      product: [
-        { label: "Admin", code: 1 },
-        { label: "Staff", code: 0 },
-        { label: "Merchant", code: 0 }
-      ],
+      payment: [{ label: "Xenopay" }, { label: "Offline" }],
       formModel: {
         dataCompany: "",
         dataPhone: "",
-        dataPayment: "",
         dataProduct: "",
         dataGender: "",
-        dataDelivery:"",
+        dataDelivery: "",
+        dataLogo: "",
+        dataBusinessSize: "",
+        dataAddress: ""
+      },
+      formModel1: {
+        name: "",
+        payment_method_id: ""
       }
     };
   },
   methods: {
-    fetchProducts(page = 1) {
-      let params = { page: page };
-      this.$store.dispatch("products/fetchItems", params);
+    async validate() {
+      try {
+        const obj = {
+          name: this.formModel1.name,
+          payment_method_id: this.formModel1.payment_method_id.label,
+          company_name: this.formModel.dataCompany,
+          business_size: this.formModel.dataBusinessSize.label,
+          address: this.formModel.dataAddress
+        };
+        let res = await this.$api.merchants.update(obj, this.user.id);
+        let res1 = await this.$api.merchants.updateDetail(obj, this.user.id);
+        if ((res.http_code == 200) & (res1.http_code == 200)) {
+          this.$vs.notify({
+            title: "Success!",
+            text: "Your data has been updated",
+            color: "success"
+          });
+        }
+      } catch (err) {
+        if (err) {
+          this.$vs.notify({
+            title: "Failed!",
+            text: "Please insert your data correctly",
+            color: "danger"
+          });
+        }
+      }
     }
   },
   computed: {
-    products() {
-      return this.$store.state.products.records;
-    },
     ...mapState({ user: state => state.auth.user })
   },
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
     this.formModel.dataPhone = this.user.social.phone_no;
-    this.formModel.dataPayment = this.user.merchant.payment_method_id == 2 ? 'Offline' : 'Xenopay';
-    this.formModel.dataGender = this.user.social.gender == 2 ? 'Male' : 'Female';
-    // this.formModel.dataDelivery = this.
-  },
-  created() {
-    this.fetchProducts();
-    this.user = this.$store.state.auth.user;
-    console.log("user", this.user);
+    this.formModel1.payment_method_id = this.user.merchant.payment_method_id;
+    this.formModel.dataLogo = this.user.merchant.logo;
+    this.formModel1.name = this.user.merchant.name;
+    this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
+    this.formModel.dataAddress = this.user.merchant.detail.address;
   }
 };
 </script>
+<style scoped>
+.img-upload {
+  margin-top: 2rem;
+}
+
+.con-img-upload {
+  padding: 0;
+}
+
+.con-input-upload {
+  width: 100%;
+  margin: 0;
+}
+</style>

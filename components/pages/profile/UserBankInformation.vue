@@ -11,12 +11,6 @@
   <div id="user-edit-tab-info">
     <div class="vx-row">
       <div class="vx-col w-full md:w-1/2">
-        <!-- Col Header -->
-        <div class="flex items-end">
-          <feather-icon icon="userIcon" class="mr-2" svgClasses="w-5 h-5" />
-          <span class="leading-none font-medium">Information Bank 1</span>
-        </div>
-
         <!-- Col Content -->
         <div>
           <!-- DOB -->
@@ -27,17 +21,17 @@
           </div>
           <vs-input class="w-full mt-4" label="Name" />
           <vs-input class="w-full mt-4" label="Account No." />
-
-          <div class="mt-4">
-            <label class="text-sm">Status</label>
-            <v-select />
-            <span class="text-danger text-sm"></span>
-          </div>
-          <vs-input class="w-full mt-4" label="Remark" />
-
         </div>
+      </div>
+      <div class="vx-col w-full md:w-1/2">
+        <div class="mt-4">
+          <label class="text-sm">Status</label>
+          <v-select />
+          <span class="text-danger text-sm"></span>
+        </div>
+        <vs-input class="w-full mt-4" label="Remark" />
+      </div>
     </div>
-  </div>
     <!-- Save & Reset Button -->
     <div class="vx-row">
       <div class="vx-col w-full">
@@ -50,7 +44,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
