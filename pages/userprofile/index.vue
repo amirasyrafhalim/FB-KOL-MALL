@@ -165,12 +165,12 @@
               <template v-if="!user.social.gender">
                 <td class="pl-5 pb-5">-</td>
               </template>
-              <!-- <template v-if="user.social.gender == 1">
-                <td class="pl-5 pb-5">Male</td>
+              <template v-if="user.social.gender == 1">
+                <td class="pl-5 pb-5">Female</td>
               </template>
               <template v-if="user.social.gender == 2">
-                <td>class="pl-5 pb-5">Female</td>
-              </template>-->
+                <td class="pl-5 pb-5">Male</td>
+              </template>
             </tr>
           </table>
         </vx-card>
@@ -196,7 +196,7 @@
               </td>
             </tr>
             <tr>
-              <td class="font-semibold pb-5">Business Products</td>
+              <td class="font-semibold pb-5">Business Categories</td>
 
               <ol
                 class="pl-5"

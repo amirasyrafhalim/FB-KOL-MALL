@@ -19,7 +19,7 @@
         <vs-tab
           icon-pack="feather"
           icon="icon-lock"
-          :label="!isSmallerScreen ? 'Change Password' : ''"
+          label="Password Settings"
         >
           <div>
             <UserChangePassword />
@@ -36,7 +36,7 @@
         </vs-tab>
         <vs-tab label="Bank Information" icon-pack="feather" icon="icon-info">
           <div class="tab-text">
-            <UserEditTabInformation class="mt-4" />
+            <UserBankInformation class="mt-4" />
           </div>
         </vs-tab>
       </vs-tabs>
@@ -48,13 +48,15 @@
 import UserEditTabAccount from "@/components/pages/profile/UserEditTabAccount.vue";
 import UserEditTabInformation from "@/components/pages/profile/UserEditTabInformation.vue";
 import UserChangePassword from "@/components/pages/profile/UserChangePassword.vue";
+import UserBankInformation from "@/components/pages/profile/UserBankInformation.vue";
 
 export default {
   layout: "main",
   components: {
     UserEditTabInformation,
     UserEditTabAccount,
-    UserChangePassword
+    UserChangePassword,
+    UserBankInformation
   },
   data() {
     return {
@@ -67,7 +69,12 @@ export default {
       */
       //   activeTab: 0
     };
-  }
+  },
+    computed: {
+    records() {
+      return this.$store.state.auth.user;
+    }
+  },
   //   watch: {
   //     activeTab () {
   //       this.fetch_user_data(this.$route.params.userId)

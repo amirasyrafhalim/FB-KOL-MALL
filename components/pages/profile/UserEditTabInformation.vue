@@ -19,57 +19,35 @@
 
         <!-- Col Content -->
         <div>
-          <!-- DOB -->
+          <vs-input
+            class="w-full mt-4"
+            label="Company"
+            v-model="formModel.dataCompany"
+          />
+          <vs-input
+            class="w-full mt-4"
+            label="Mobile"
+            name="mobile"
+            v-model="formModel.dataPhone"
+          />
           <div class="mt-4">
-            <label class="vs-input--label">Role</label>
-            <v-select name="role" />
+            <label class="vs-input--label">Gender</label>
+            <v-select
+              name="status"
+              :options="gender"
+              v-model="formModel.dataGender"
+            />
             <span class="text-danger text-sm"></span>
           </div>
-          <vs-input class="w-full mt-4" label="Company" />
-          <vs-input class="w-full mt-4" label="Mobile" name="mobile" />
-          <span class="text-danger text-sm"></span>
-
-          <vs-input class="w-full mt-4" label="Website" />
-          <span class="text-danger text-sm"></span>
 
           <div class="mt-4">
-            <label class="text-sm">Languages</label>
-            <v-select />
+            <label class="vs-input--label">Payment Methods</label>
+            <v-select
+              name="status"
+              :options="payment"
+              v-model="formModel.dataPayment"
+            />
             <span class="text-danger text-sm"></span>
-          </div>
-
-          <!-- Gender -->
-          <div class="mt-4">
-            <label class="text-sm">Gender</label>
-            <div class="mt-2">
-              <vs-radio vs-value="male" class="mb-3">Male</vs-radio>
-              <vs-radio vs-value="female" class="mb-3">Female</vs-radio>
-              <vs-radio vs-value="other">Other</vs-radio>
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <label>Delivery Methods</label>
-            <div class="flex flex-wrap mt-1">
-              <vs-checkbox vs-value="email" class="mr-4 mb-2"
-                >Delivery</vs-checkbox
-              >
-              <vs-checkbox vs-value="message" class="mr-4 mb-2"
-                >Self Pickup</vs-checkbox
-              >
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <label>Payment Method</label>
-            <div class="flex flex-wrap mt-1">
-              <vs-checkbox vs-value="email" class="mr-4 mb-2"
-                >Xenopay</vs-checkbox
-              >
-              <vs-checkbox vs-value="message" class="mr-4 mb-2"
-                >Offline</vs-checkbox
-              >
-            </div>
           </div>
         </div>
       </div>
@@ -119,5 +97,62 @@
 </template>
 
 <script>
-export default {};
+import vSelect from "vue-select";
+import { mapState } from "vuex";
+export default {
+  layout: "main",
+  components: {
+    vSelect
+  },
+  props: {},
+  data() {
+    return {
+      payment: [
+        { label: "Xenopay", code: 1 },
+        { label: "Ofline", code: 2 }
+      ],
+      gender: [
+        { label: "Male", code: 2 },
+        { label: "Female", code: 1 }
+      ],
+      product: [
+        { label: "Admin", code: 1 },
+        { label: "Staff", code: 0 },
+        { label: "Merchant", code: 0 }
+      ],
+      formModel: {
+        dataCompany: "",
+        dataPhone: "",
+        dataPayment: "",
+        dataProduct: "",
+        dataGender: "",
+        dataDelivery:"",
+      }
+    };
+  },
+  methods: {
+    fetchProducts(page = 1) {
+      let params = { page: page };
+      this.$store.dispatch("products/fetchItems", params);
+    }
+  },
+  computed: {
+    products() {
+      return this.$store.state.products.records;
+    },
+    ...mapState({ user: state => state.auth.user })
+  },
+  mounted() {
+    this.formModel.dataCompany = this.user.merchant.detail.company_name;
+    this.formModel.dataPhone = this.user.social.phone_no;
+    this.formModel.dataPayment = this.user.merchant.payment_method_id == 2 ? 'Offline' : 'Xenopay';
+    this.formModel.dataGender = this.user.social.gender == 2 ? 'Male' : 'Female';
+    // this.formModel.dataDelivery = this.
+  },
+  created() {
+    this.fetchProducts();
+    this.user = this.$store.state.auth.user;
+    console.log("user", this.user);
+  }
+};
 </script>
