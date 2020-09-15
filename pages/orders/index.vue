@@ -13,7 +13,7 @@
         <vs-th sort-key="user.name">Name</vs-th>
         <vs-th sort-key="invoice_no">Invoice Number</vs-th>
         <vs-th sort-key="campaign.name">Campaign Name</vs-th>
-        <vs-th sort-key="order_deliveries.tracking_no">Tracking Number</vs-th>
+        <vs-th sort-key="delivery.tracking_no">Tracking Number</vs-th>
         <vs-th sort-key="total_amount">Total Amount</vs-th>
         <vs-th sort-key="total_amount">Date</vs-th>
         <vs-th sort-key="status">Order Status</vs-th>
@@ -33,10 +33,10 @@
           }}</vs-td>
           <vs-td
             :data="
-              data[indextr].order_deliveries &&
-                data[indextr].order_deliveries.tracking_no
+              data[indextr].delivery &&
+                data[indextr].delivery.tracking_no
             "
-            >{{ tr.order_deliveries && tr.order_deliveries.tracking_no }}</vs-td
+            >{{ tr.delivery && tr.delivery.tracking_no }}</vs-td
           >
 
           <vs-td :data="data[indextr].total_amount">{{
@@ -70,7 +70,7 @@
               </vs-button>
             </nuxt-link>
             <vs-button
-              v-if="tr.order_deliveries"
+              v-if="tr.delivery"
               color="primary"
               class="text-xs"
               type="gradient border"
@@ -149,9 +149,10 @@ export default {
   },
   methods: {
     getOrderStatusColor(status) {
-      if (status === "Success") return "success";
+      console.log(status)
+      if (status === "Completed") return "success";
       if (status === "Failed") return "danger";
-      if (status === "Pending") return "warning";
+      if (status === "Pending payment") return "warning";
     },
     getOrderPaymentStatusColor(orderPayment) {
       var statusInt = 1;
@@ -174,7 +175,7 @@ export default {
       //  trigger a mutation, or dispatch an action
     },
     activePromptFn(orderDeliveryId) {
-      this.orderDeliveryId = this.records[orderDeliveryId].order_deliveries.id;
+      this.orderDeliveryId = this.records[orderDeliveryId].deliveries.id;
       this.activePrompt = true;
     },
     async fetchPartners(value) {
