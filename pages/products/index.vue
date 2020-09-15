@@ -72,9 +72,13 @@
 
             <vs-td :data="data[indextr].description">{{ tr.description }}</vs-td>
 
-            <template v-for="(category, i) in tr.category">
-              <vs-td v-bind:key="data[i].category.name">{{category.name}}</vs-td>
-            </template>
+            <vs-td :data="data[indextr].category">
+                <div
+                  v-for="(item,index) in tr.category"
+                  :key="index"
+                  style="display: inline;"
+                >{{ item.name }}</div>
+            </vs-td>
 
             <vs-td>
               <vs-chip
@@ -319,6 +323,9 @@ export default {
     .vs-table--pagination {
       justify-content: center;
     }
+  }
+  .vs-lg-6 {
+    width: 100% !important;
   }
 }
 </style>

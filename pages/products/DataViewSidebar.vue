@@ -35,7 +35,7 @@
 
       <div class="p-6 py-2">
         <span>Name</span>
-        <vs-input v-model="dataName" v-validate="'required'" class="w-full" name="item-name" />
+        <vs-input v-model="dataName" class="w-full" name="item-name" />
       </div>
 
       <div class="p-6 py-2">
@@ -176,14 +176,35 @@ export default {
     },
     async submitData() {
       function isValidURL(string) {
-        var res = string.match(
-          /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
-        );
+        if(string) {
+          var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        }        
         return res !== null;
       }
 
       if (!isValidURL(this.dataImg)) {
         var dataImage = this.dataImg.replace(/^data:(.*;base64,)?/, "");
+      }
+
+      if (isValidURL(this.dataImg)) {
+        const toDataURL = (url) =>
+          fetch(url)
+            .then((response) => response.blob())
+            .then(
+              (blob) =>
+                new Promise((resolve, reject) => {
+                  const reader = new FileReader();
+                  reader.onloadend = () => resolve(reader.result);
+                  reader.onerror = reject;
+                  reader.readAsDataURL(blob);
+                })
+            );
+
+        toDataURL(
+          this.dataImg
+        ).then((dataUrl) => {
+         var dataImage = dataUrl.replace(/^data:(.*;base64,)?/, "");
+        });
       }
 
       var a = map(this.dataCategory, "id");
