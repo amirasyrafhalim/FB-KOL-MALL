@@ -73,11 +73,11 @@
             <vs-td :data="data[indextr].description">{{ tr.description }}</vs-td>
 
             <vs-td :data="data[indextr].category">
-                <div
-                  v-for="(item,index) in tr.category"
-                  :key="index"
-                  style="display: inline;"
-                >{{ item.name }}</div>
+              <div
+                v-for="(item,index) in tr.category"
+                :key="index"
+                style="display: inline;"
+              >{{ item.name }}</div>
             </vs-td>
 
             <vs-td>
@@ -88,18 +88,21 @@
             </vs-td>
 
             <vs-td class="whitespace-no-wrap">
-              <feather-icon
-                icon="EditIcon"
-                svgClasses="w-5 h-5 hover:text-primary stroke-current"
+              <vs-button
+                color="warning"
+                type="border"
+                icon="edit"
                 @click.stop="editData(tr)"
-              />
-              <feather-icon
-                icon="TrashIcon"
-                svgClasses="w-5 h-5 hover:text-danger stroke-current"
+              ></vs-button>
+              <vs-button
+                color="danger"
+                type="border"
+                icon="delete_outline"
                 class="ml-2"
-                @click="confirmDeleteRecord(tr.id)"
-              />
+                @click.stop="confirmDeleteRecord(tr.id)"
+              ></vs-button>
             </vs-td>
+            
           </vs-tr>
         </tbody>
       </template>
