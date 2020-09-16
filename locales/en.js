@@ -152,6 +152,7 @@ export default {
 		trackingNo: 'Tracking No.',
 		update: 'Update',
 		updatedAt: 'Updated At',
+		updateStatus: 'Update Status',
 		updateDeliveryDetails: 'Update Delivery Details',
 		user: 'User',
 		userName: 'User Name',

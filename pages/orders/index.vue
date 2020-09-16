@@ -65,8 +65,7 @@
             <nuxt-link
               :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
             >
-              <vs-button color="success" class="text-xs" type="gradient border"
-                >{{ "View" }}
+              <vs-button color="danger" type="gradient" class="text-xs">{{ "View" }}
               </vs-button>
             </nuxt-link>
             <vs-button
@@ -92,7 +91,7 @@
                 :options="shippingPartners"
                 label="name"
                 placeholder="Select Partner"
-                @input="fetchPartners"
+                @input.native="fetchPartners($event.target.value)"
                 v-model="selected"
                 :value="selected"
               ></v-select>
