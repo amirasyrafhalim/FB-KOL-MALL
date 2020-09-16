@@ -189,13 +189,6 @@
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
             </tr>
             <tr>
-              <td class="font-semibold pb-5">Business Size</td>
-
-              <td class="pl-5 pb-5">
-                {{ user.merchant.detail.business_size }}
-              </td>
-            </tr>
-            <tr>
               <td class="font-semibold pb-5">Business Categories</td>
 
               <ol
