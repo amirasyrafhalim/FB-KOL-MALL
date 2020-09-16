@@ -79,7 +79,8 @@
             </vs-button>
           </vs-td>
 
-          <vs-prompt
+        </vs-tr>
+         <vs-prompt
             @cancel="val = ''"
             @accept="updateTracking()"
             @close="close"
@@ -98,12 +99,11 @@
               <vs-input
                 placeholder="Tracking Number"
                 vs-placeholder="Tracking Number"
-                v-model="tracking_no"
+                v-model="tracking_no_id"
                 class="mt-3 w-full"
               />
             </div>
           </vs-prompt>
-        </vs-tr>
       </template>
     </vs-table>
   </div>
@@ -125,7 +125,8 @@ export default {
       itemsPerPage: 4,
       isMounted: false,
       shippingPartners: {},
-      tracking_no: "",
+      tracking_no: [],
+      tracking_no_id: '',
       orderDeliveryId: "",
       partner: "",
       orderStatus: "Pending"
@@ -139,6 +140,12 @@ export default {
       return 0;
     },
     records() {
+      const a = this.$store.state[this.moduleName].records;
+      this.tracking_no=[]
+      a.forEach((data, i) => {
+        this.tracking_no.push(data.delivery.tracking_no)
+      });
+     
       return this.$store.state[this.moduleName].records;
     },
     queriedItems() {
@@ -149,7 +156,6 @@ export default {
   },
   methods: {
     getOrderStatusColor(status) {
-      console.log(status)
       if (status === "Completed") return "success";
       if (status === "Failed") return "danger";
       if (status === "Pending payment") return "warning";
@@ -171,11 +177,11 @@ export default {
       if (this.orderStatus === "Pending") return "warning";
     },
     setSelected(value) {
-      console.log(value);
       //  trigger a mutation, or dispatch an action
     },
     activePromptFn(orderDeliveryId) {
-      this.orderDeliveryId = this.records[orderDeliveryId].deliveries.id;
+      this.orderDeliveryId = this.records[orderDeliveryId].delivery.id;
+      this.tracking_no_id = this.tracking_no[orderDeliveryId]
       this.activePrompt = true;
     },
     async fetchPartners(value) {
@@ -187,7 +193,7 @@ export default {
     },
     async updateTracking() {
       var res = await this.$api.orderDeliveries.updateOrderDelivery(
-        { tracking_no: this.tracking_no, partner: this.partner },
+        { tracking_no: this.tracking_no_id, partner: this.partner },
         this.orderDeliveryId
       );
       if (res) {
