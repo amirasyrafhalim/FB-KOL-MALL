@@ -130,13 +130,16 @@ export default {
   props: {},
   data() {
     return {
+        payment: [
+        { label: "Xenopay", code: 1 },
+        { label: "Offline", code: 2},
+      ],
       business: [
         { label: "0-5" },
         { label: "6-10" },
         { label: "11-15" },
         { label: "16-20" }
       ],
-      payment: [{ label: "Xenopay" }, { label: "Offline" }],
       formModel: {
         dataCompany: "",
         dataPhone: "",
@@ -158,7 +161,7 @@ export default {
       try {
         const obj = {
           name: this.formModel1.name,
-          payment_method_id: this.formModel1.payment_method_id.label,
+          payment_method_id: this.formModel1.payment_method_id.code,
           company_name: this.formModel.dataCompany,
           business_size: this.formModel.dataBusinessSize.label,
           address: this.formModel.dataAddress
@@ -189,7 +192,7 @@ export default {
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
     this.formModel.dataPhone = this.user.social.phone_no;
-    this.formModel1.payment_method_id = this.user.merchant.payment_method_id;
+    this.formModel1.payment_method_id = this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
     this.formModel.dataLogo = this.user.merchant.logo;
     this.formModel1.name = this.user.merchant.name;
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;

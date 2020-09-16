@@ -215,20 +215,24 @@
             </tr>
             <tr>
               <td class="font-semibold pb-5">Payment Method</td>
-              <td class="pl-5 pb-5">
-                {{ user.merchant.payment_method_id}}
-              </td>
+
+              <template v-if="user.merchant.payment_method_id == 1">
+                <td class="pl-5 pb-5">Xenopay</td>
+              </template>
+              <template v-if="user.merchant.payment_method_id == 2">
+                <td class="pl-5 pb-5">Offline</td>
+              </template>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="font-semibold pb-5">Merchant Logo</td>
 
               <template v-if="!user.merchant.merchant_logo">
                 <td class="pl-5 pb-5">-</td>
               </template>
               <template v-else>
-                <td class="pl-5 pb-5">{{ user.merchant.merchant_logo }}</td>
+                <td class="pl-5 pb-5">{{user.merchant.merchant_logo}}</td>
               </template>
-            </tr>
+            </tr> -->
             <!-- <tr>
               <td class="font-semibold">Company</td>
               <td class="pl-5">{{ user.merchant_details.company_name }}</td>
