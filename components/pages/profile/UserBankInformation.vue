@@ -13,23 +13,23 @@
       <table>
         <tr>
           <td class="font-semibold pb-6">Bank Name</td>
-          <td class=" pl-6 pb-6">Malayan Banking Berhad (Maybank)</td>
+          <td class="pl-6 pb-6">{{ formModel.bankname }}</td>
         </tr>
         <tr>
           <td class="font-semibold pb-6">Name</td>
-          <td class="pl-6 pb-6">Raditz Farhan</td>
+          <td class="pl-6 pb-6">{{ formModel.name }}</td>
         </tr>
         <tr>
           <td class="font-semibold pb-6">Account No.</td>
-          <td class=" pl-6 pb-6">151258621805</td>
+          <td class=" pl-6 pb-6">{{ formModel.accountno }}</td>
         </tr>
         <tr>
           <td class="font-semibold pb-6">Status</td>
-          <td class=" pl-6 pb-6">Active</td>
+          <td class=" pl-6 pb-6">{{ formModel.status }}</td>
         </tr>
         <tr>
           <td class="font-semibold pb-6">Remark</td>
-          <td class="pl-6 pb-6">Bank Name</td>
+          <td class="pl-6 pb-6">{{ formModel.remark }}</td>
         </tr>
       </table>
     </vx-card>
@@ -38,7 +38,7 @@
       <vs-button @click="popupActive2 = true" color="primary" type="filled"
         >Add</vs-button
       >
-      <vs-button type="border" color="danger" @click="confirmDeleteRecord"
+      <vs-button type="border" color="danger"
         >Delete</vs-button
       >
     </div>
@@ -48,12 +48,17 @@
       title="Add Bank Information"
       :active.sync="popupActive2"
     >
+
       <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
           <span>Bank Name</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <vs-input type="password" class="w-full" icon-no-border />
+           <v-select
+            name="status"
+            :options="bank"
+            v-model="formModel.bankname"
+          />
         </div>
       </div>
 
@@ -62,7 +67,7 @@
           <span>Name</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <vs-input type="password" class="w-full" icon-no-border />
+          <vs-input  class="w-full" icon-no-border v-model=" formModel.name " />
         </div>
       </div>
 
@@ -71,7 +76,7 @@
           <span>Account No</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <vs-input type="password" class="w-full" />
+          <vs-input class="w-full" v-model="formModel.accountno " />
         </div>
       </div>
       <div class="vx-row mb-6">
@@ -79,7 +84,11 @@
           <span>Status</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <vs-input type="password" class="w-full" />
+       <v-select
+            name="status"
+            :options="status"
+            v-model="formModel.status"
+          />
         </div>
       </div>
       <div class="vx-row mb-6">
@@ -87,14 +96,14 @@
           <span>Remark</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <vs-input type="password" class="w-full" />
+          <vs-input  class="w-full" v-model="formModel.remark"   />
         </div>
       </div>
       <div class="vx-row">
         <div class="vx-col w-full">
           <div class="mt-8 flex flex-wrap items-center justify-end">
             <vs-button class="ml-auto mt-2">Save Changes</vs-button>
-            <vs-button class="ml-4 mt-2" type="border" color="warning"
+            <vs-button class="ml-4 mt-2" type="border" color="warning" @click="reset"
               >Reset</vs-button
             >
           </div>
@@ -132,9 +141,23 @@
 export default {
   data() {
     return {
-      popupActive2: false
+      status: [ "Active",  "Inactive" ],
+      bank: [ "Maybank" ,"CIMB" ,"Bank Islam" ],
+      popupActive2: false,
+      formModel:{
+      bankname:"",
+      accountno:"",
+      name:"",
+      remark:"",
+      status:""
+      }
     };
-  }
+  },
+   methods: {
+     reset(){
+       this.formModel = ''
+     }
+   }
 };
 </script>
 <style scoped></style>

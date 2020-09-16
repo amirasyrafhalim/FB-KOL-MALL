@@ -107,10 +107,7 @@
             class="ml-4 mt-2"
             type="border"
             color="warning"
-            @click="
-              formModel = formModel1 =
-                ''
-            "
+            @click="reset_data"
             >Reset</vs-button
           >
         </div>
@@ -130,9 +127,9 @@ export default {
   props: {},
   data() {
     return {
-        payment: [
+      payment: [
         { label: "Xenopay", code: 1 },
-        { label: "Offline", code: 2},
+        { label: "Offline", code: 2 }
       ],
       business: [
         { label: "0-5" },
@@ -157,6 +154,16 @@ export default {
     };
   },
   methods: {
+    reset_data() {
+      this.formModel.dataCompany = this.user.merchant.detail.company_name;
+      this.formModel.dataPhone = this.user.social.phone_no;
+      this.formModel1.payment_method_id =
+      this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+      this.formModel.dataLogo = this.user.merchant.logo;
+      this.formModel1.name = this.user.merchant.name;
+      this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
+      this.formModel.dataAddress = this.user.merchant.detail.address;
+    },
     async validate() {
       try {
         const obj = {
@@ -186,17 +193,22 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapState({ user: state => state.auth.user })
-  },
+  // computed: {
+  //   ...mapState({ user: state => state.auth.user })
+  // },
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
     this.formModel.dataPhone = this.user.social.phone_no;
-    this.formModel1.payment_method_id = this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+    this.formModel1.payment_method_id =
+    this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
     this.formModel.dataLogo = this.user.merchant.logo;
     this.formModel1.name = this.user.merchant.name;
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
+  },
+  created() {
+    this.user = this.$store.state.auth.user;
+    console.log("userss", this.user);
   }
 };
 </script>
