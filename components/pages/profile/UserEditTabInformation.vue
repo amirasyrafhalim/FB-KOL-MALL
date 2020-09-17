@@ -76,15 +76,12 @@
       <!-- Address Col -->
       <div class="vx-col w-full md:w-1/2">
         <!-- Col Content -->
-        <div>
-          <vs-input
-            class="w-full mt-4"
-            label="Address"
-            v-model="formModel.dataAddress"
-          />
+        <div class="mt-4">
+          <label class="vs-input--label">Business Size</label>
+          <vs-textarea class="w-full" v-model="formModel.dataAddress" />
           <span class="text-danger text-sm"></span>
         </div>
-        <div class="mt-4">
+        <div class="mt-2">
           <label class="vs-input--label">Business Size</label>
           <v-select
             name="status"
@@ -175,7 +172,7 @@ export default {
       try {
         let res = await this.$api.merchants.update(obj, this.user.id);
         let res1 = await this.$api.merchants.updateDetail(obj, this.user.id);
-        if (res.http_code == 200 & res1.http_code == 200) {
+        if ((res.http_code == 200) & (res1.http_code == 200)) {
           this.$vs.notify({
             title: "Success!",
             text: "Your data has been updated",
