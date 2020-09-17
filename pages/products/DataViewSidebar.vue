@@ -24,7 +24,7 @@
       <template v-if="dataImg">
         <!-- Image Container -->
         <div class="img-container w-64 mx-auto flex items-center justify-center">
-          <img :src="dataImg" alt="img" class="responsive"/>
+          <img :src="dataImg" alt="img" class="responsive" />
         </div>
 
         <!-- Image upload Buttons -->
@@ -34,21 +34,13 @@
       </template>
 
       <div class="p-6 py-2">
-         <span>Name</span>
-        <vs-input
-          v-model="dataName"
-          class="w-full"
-          name="item-name"
-        />
+        <span>Name</span>
+        <vs-input v-model="dataName" class="w-full" name="item-name" />
       </div>
 
       <div class="p-6 py-2">
-         <span>Description</span>
-        <vs-textarea
-          v-model="dataDescription"
-          class="w-full"
-          name="item-description"
-        />
+        <span>Description</span>
+        <vs-textarea v-model="dataDescription" class="w-full" name="item-description" />
       </div>
 
       <div class="px-6 py-2" label="Status">
@@ -184,16 +176,37 @@ export default {
     },
     async submitData() {
       function isValidURL(string) {
-        var res = string.match(
-          /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
-        );
+        if(string) {
+          var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        }        
         return res !== null;
       }
 
-      if (!isValidURL(this.dataImg)){
+      if (!isValidURL(this.dataImg)) {
         var dataImage = this.dataImg.replace(/^data:(.*;base64,)?/, "");
       }
-      
+
+      if (isValidURL(this.dataImg)) {
+        const toDataURL = (url) =>
+          fetch(url)
+            .then((response) => response.blob())
+            .then(
+              (blob) =>
+                new Promise((resolve, reject) => {
+                  const reader = new FileReader();
+                  reader.onloadend = () => resolve(reader.result);
+                  reader.onerror = reject;
+                  reader.readAsDataURL(blob);
+                })
+            );
+
+        toDataURL(
+          this.dataImg
+        ).then((dataUrl) => {
+         var dataImage = dataUrl.replace(/^data:(.*;base64,)?/, "");
+        });
+      }
+
       var a = map(this.dataCategory, "id");
       if (!this.dataCategory.id) {
         var e = a[0];
@@ -217,6 +230,7 @@ export default {
               title: "Success!",
               text: "Your product has been updated",
               color: "success",
+              position: "bottom-left",
             });
             this.popupActive2 = false;
           }
@@ -226,6 +240,7 @@ export default {
               title: "Failed!",
               text: "Please insert your data correctly",
               color: "danger",
+              position: "bottom-left",
             });
           }
         }
@@ -237,6 +252,7 @@ export default {
               title: "Success!",
               text: "Your product has been created",
               color: "success",
+              position: "bottom-left",
             });
             this.popupActive2 = false;
           }
@@ -246,6 +262,7 @@ export default {
               title: "Failed!",
               text: "Please insert your data correctly",
               color: "danger",
+              position: "bottom-left",
             });
           }
         }

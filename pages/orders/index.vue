@@ -9,72 +9,100 @@
       :data="records"
       class="bg-transparent"
     >
-      <!-- <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
-        <div class="flex flex-wrap-reverse items-center data-list-btn-container">
-        </div>
-      </div>-->
-
-      <template slot="thead">
+      <template slot="thead" class="text-center">
         <vs-th sort-key="user.name">Name</vs-th>
         <vs-th sort-key="invoice_no">Invoice Number</vs-th>
         <vs-th sort-key="campaign.name">Campaign Name</vs-th>
-        <vs-th sort-key="order_deliveries.tracking_no">Tracking Number</vs-th>
+        <vs-th sort-key="delivery.tracking_no">Tracking Number</vs-th>
         <vs-th sort-key="total_amount">Total Amount</vs-th>
-        <vs-th sort-key="status">Status</vs-th>
+        <vs-th sort-key="total_amount">Date</vs-th>
+        <vs-th sort-key="status">Order Status</vs-th>
+        <vs-th sort-key="status">Payment Status</vs-th>
         <vs-th sort-key="deliver_at">Action</vs-th>
       </template>
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-          <vs-td :data="data[indextr].user && data[indextr].user.name">{{ tr.user && tr.user.name }}</vs-td>
+          <vs-td :data="data[indextr].user && data[indextr].user.name">{{
+            tr.user && tr.user.name
+          }}</vs-td>
 
           <vs-td :data="data[indextr].invoice_no">{{ tr.invoice_no }}</vs-td>
-          <vs-td :data="data[indextr].campaign.name">{{ tr.campaign && tr.campaign.name }}</vs-td>
+          <vs-td :data="data[indextr].campaign.name">{{
+            tr.campaign && tr.campaign.name
+          }}</vs-td>
           <vs-td
-            :data="data[indextr].order_deliveries && data[indextr].order_deliveries.tracking_no"
-          >{{ tr.order_deliveries && tr.order_deliveries.tracking_no }}</vs-td>
+            :data="
+              data[indextr].delivery &&
+                data[indextr].delivery.tracking_no
+            "
+            >{{ tr.delivery && tr.delivery.tracking_no }}</vs-td
+          >
 
-          <vs-td :data="data[indextr].total_amount">{{ tr.total_amount }}</vs-td>
+          <vs-td :data="data[indextr].total_amount">{{
+            tr.total_amount
+          }}</vs-td>
 
+          <vs-td :data="tr.created_at">
+            {{ tr.created_at }}
+          </vs-td>
           <vs-td :data="data[indextr].status.description">
             <vs-chip
               :color="getOrderStatusColor(tr.status.description)"
               class="product-order-status"
-            >{{tr.status && tr.status.description }}</vs-chip>
-          </vs-td>
-
-          <!-- <vs-td :data="tr.status">
-            {{ tr.status && tr.status.description }}
-          </vs-td>-->
-
-          <vs-td :data="tr.status">
-            <feather-icon icon="EditIcon" class="mr-1" @click="activePromptFn(indextr)" />
-
-            <vs-prompt
-              @cancel="val = ''"
-              @accept="updateTracking()"
-              @close="close"
-              :active.sync="activePrompt"
-              title="Update Tracking Number"
+              >{{ tr.status && tr.status.description }}</vs-chip
             >
-              <div class="con-exemple-prompt">
-                <v-select
-                  :options="shippingPartners"
-                  label="name"
-                  @input="fetchPartners"
-                  v-model="selected"
-                  :value="selected"
-                ></v-select>
-                <vs-input
-                  placeholder="Tracking Number"
-                  vs-placeholder="Tracking Number"
-                  v-model="tracking_no"
-                  class="mt-3 w-full"
-                />
-              </div>
-            </vs-prompt>
           </vs-td>
+          <vs-td :data="data[indextr].order_payment">
+            <vs-chip
+              :color="getOrderPaymentStatusColor(tr.order_payment)"
+              class="product-order-status"
+              >{{ orderStatus }}</vs-chip
+            >
+          </vs-td>
+
+          <vs-td class="whitespace-no-wrap">
+            <nuxt-link
+              :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
+            >
+              <vs-button color="danger" type="gradient" class="text-xs">{{ "View" }}
+              </vs-button>
+            </nuxt-link>
+            <vs-button
+              v-if="tr.delivery"
+              color="primary"
+              class="text-xs"
+              type="gradient border"
+              @click="activePromptFn(indextr)"
+              >{{ "Tracking Info" }}
+            </vs-button>
+          </vs-td>
+
         </vs-tr>
+         <vs-prompt
+            @cancel="val = ''"
+            @accept="updateTracking()"
+            @close="close"
+            :active.sync="activePrompt"
+            title="Update Tracking Number"
+          >
+            <div class="con-exemple-prompt">
+              <v-select
+                :options="shippingPartners"
+                label="name"
+                placeholder="Select Partner"
+                @input.native="fetchPartners($event.target.value)"
+                v-model="selected"
+                :value="selected"
+              ></v-select>
+              <vs-input
+                placeholder="Tracking Number"
+                vs-placeholder="Tracking Number"
+                v-model="tracking_no_id"
+                class="mt-3 w-full"
+              />
+            </div>
+          </vs-prompt>
       </template>
     </vs-table>
   </div>
@@ -86,7 +114,7 @@ import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
 export default {
   layout: "main",
   components: {
-    UpdateDeliveryModal,
+    UpdateDeliveryModal
   },
   data() {
     return {
@@ -96,9 +124,11 @@ export default {
       itemsPerPage: 4,
       isMounted: false,
       shippingPartners: {},
-      tracking_no: "",
+      tracking_no: [],
+      tracking_no_id: '',
       orderDeliveryId: "",
       partner: "",
+      orderStatus: "Pending"
     };
   },
   computed: {
@@ -109,26 +139,48 @@ export default {
       return 0;
     },
     records() {
+      const a = this.$store.state[this.moduleName].records;
+      this.tracking_no=[]
+      a.forEach((data, i) => {
+        this.tracking_no.push(data.delivery.tracking_no)
+      });
+     
       return this.$store.state[this.moduleName].records;
     },
     queriedItems() {
       return this.$refs.table
         ? this.$refs.table.queriedResults.length
         : this.records.length;
-    },
+    }
   },
   methods: {
     getOrderStatusColor(status) {
-      if (status === "Success") return "success";
+      if (status === "Completed") return "success";
       if (status === "Failed") return "danger";
-      if (status === "Pending") return "warning";
+      if (status === "Pending payment") return "warning";
+    },
+    getOrderPaymentStatusColor(orderPayment) {
+      var statusInt = 1;
+      if (orderPayment) {
+        if (orderPayment.status == 0) {
+          this.status = "Failed";
+        } else if (orderPayment.status == 1) {
+          this.status = "Pending";
+        } else if (orderPayment.status == 2) {
+          this.status = "Success";
+        }
+      }
+
+      if (this.orderStatus === "Success") return "success";
+      if (this.orderStatus === "Failed") return "danger";
+      if (this.orderStatus === "Pending") return "warning";
     },
     setSelected(value) {
-      console.log(value);
       //  trigger a mutation, or dispatch an action
     },
     activePromptFn(orderDeliveryId) {
-      this.orderDeliveryId = this.records[orderDeliveryId].order_deliveries.id;
+      this.orderDeliveryId = this.records[orderDeliveryId].delivery.id;
+      this.tracking_no_id = this.tracking_no[orderDeliveryId]
       this.activePrompt = true;
     },
     async fetchPartners(value) {
@@ -140,7 +192,7 @@ export default {
     },
     async updateTracking() {
       var res = await this.$api.orderDeliveries.updateOrderDelivery(
-        { tracking_no: this.tracking_no, partner: this.partner },
+        { tracking_no: this.tracking_no_id, partner: this.partner },
         this.orderDeliveryId
       );
       if (res) {
@@ -152,7 +204,7 @@ export default {
       this.$vs.notify({
         color: "success",
         title: "Update racking number",
-        text: "The selected tracking number was successfully updated",
+        text: "The selected tracking number was successfully updated"
       });
     },
 
@@ -160,7 +212,7 @@ export default {
       this.$vs.notify({
         color: "danger",
         title: "Closed",
-        text: "You close a dialog!",
+        text: "You close a dialog!"
       });
     },
     fetchItems() {
@@ -176,7 +228,7 @@ export default {
     },
     toggleDataSidebar(val = false) {
       this.addNewDataSidebar = val;
-    },
+    }
   },
   created() {
     this.fetchItems();
@@ -184,7 +236,7 @@ export default {
   },
   mounted() {
     this.isMounted = true;
-  },
+  }
 };
 </script>
 
@@ -305,6 +357,9 @@ export default {
 
     .vs-table--pagination {
       justify-content: center;
+    }
+    .vs-lg-6 {
+      width: 100% !important;
     }
   }
 }
