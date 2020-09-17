@@ -155,10 +155,15 @@ export default {
       }
     };
   },
+  computed:{
+    bank() {
+      return this.$store.state.banks.records;
+    },
+  },
   methods: {
-    fetchBank() {
-      console.log("huhuhu", this.bank)
-       return this.bank = this.$store.state.banks.records;
+    fetchBank(page = 1) {
+      let params = { page: page };
+      this.$store.dispatch("banks/fetchItems", params);
     },
     reset() {
       this.formModel = {
@@ -171,7 +176,6 @@ export default {
     }
   },
   created() {
-    console.log("hehehe",this.fetchBank())
     this.fetchBank();
   }
 };
