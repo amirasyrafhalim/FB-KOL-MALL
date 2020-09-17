@@ -1,34 +1,57 @@
 <template>
-<div>
-    <td class="font-semibold pb-5">Enter your new password</td>
+  <div>
+    <div v-if="user.has_password == true">
+      <td class="font-semibold pb-5">Update your password</td>
+      <vs-input
+        type="password"
+        class="w-full pb-3"
+        icon-pack="feather"
+        icon="icon-lock"
+        icon-no-border
+        label-placeholder="Current Password"
+        v-model="formModel.current_password"
+      />
+      <vs-input
+        type="password"
+        class="w-full pb-3"
+        icon-pack="feather"
+        icon="icon-lock"
+        icon-no-border
+        label-placeholder="New Password"
+        v-model="formModel.new_password"
+      />
+      <vs-input
+        type="password"
+        class="w-full pb-3"
+        icon-pack="feather"
+        icon="icon-lock"
+        icon-no-border
+        label-placeholder="Confirm New Password"
+        v-model="formModel.new_confirm_password"
+      />
+    </div>
 
-    <vs-input
-      type="password"
-      class="w-full pb-3"
-      icon-pack="feather"
-      icon="icon-lock"
-      icon-no-border
-      label-placeholder="Current Password"
-      v-model="formModel.current_password"
-    />
-    <vs-input
-      type="password"
-      class="w-full pb-3"
-      icon-pack="feather"
-      icon="icon-lock"
-      icon-no-border
-      label-placeholder="New Password"
-      v-model="formModel.new_password"
-    />
-    <vs-input
-      type="password"
-      class="w-full pb-3"
-      icon-pack="feather"
-      icon="icon-lock"
-      icon-no-border
-      label-placeholder="Confirm New Password"
-      v-model="formModel.new_confirm_password"
-    />
+    <div v-if="user.has_password == false">
+      <td class="font-semibold pb-5">Enter your new password</td>
+      <vs-input
+        type="password"
+        class="w-full pb-3"
+        icon-pack="feather"
+        icon="icon-lock"
+        icon-no-border
+        label-placeholder="New Password"
+        v-model="formModel.new_password"
+      />
+      <vs-input
+        type="password"
+        class="w-full pb-3"
+        icon-pack="feather"
+        icon="icon-lock"
+        icon-no-border
+        label-placeholder="Confirm New Password"
+        v-model="formModel.new_confirm_password"
+      />
+    </div>
 
     <!-- Save & Reset Button -->
     <div class="float-right">
@@ -46,7 +69,7 @@
         >Reset</vs-button
       >
     </div>
-</div>
+  </div>
 </template>
 
 <script>
