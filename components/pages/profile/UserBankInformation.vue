@@ -9,7 +9,8 @@
 
 <template>
   <div class="vx-col w-full">
-    <vx-card title="Bank Information">
+    <div title="Bank Information">
+      <vs-divider></vs-divider>
       <table>
         <tr>
           <td class="font-semibold pb-6">Bank Name</td>
@@ -32,7 +33,7 @@
           <td class="pl-6 pb-6">{{ formModel.remark }}</td>
         </tr>
       </table>
-    </vx-card>
+    </div>
 
     <div class="mt-5 float-right mb-5">
       <vs-button @click="popupActive2 = true" color="primary" type="filled"
@@ -145,18 +146,30 @@ export default {
       bank: [ "Maybank" ,"CIMB" ,"Bank Islam" ],
       popupActive2: false,
       formModel:{
-      bankname:"",
-      accountno:"",
-      name:"",
-      remark:"",
-      status:""
+        bankname:"",
+        accountno:"",
+        name:"",
+        remark:"",
+        status:""
       }
     };
   },
    methods: {
      reset(){
-       this.formModel = ''
+       this.formModel =
+       {
+        bankname:"",
+        accountno:"",
+        name:"",
+        remark:"",
+        status:""
+      }
      }
+   },
+   computed:{
+      category() {
+      return this.$store.state.banks.records;
+    },
    }
 };
 </script>
