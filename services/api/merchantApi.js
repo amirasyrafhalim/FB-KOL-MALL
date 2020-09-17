@@ -24,8 +24,9 @@ export default class MerchantApi extends BaseApi {
 
   }
   updateDetail(payload, id) {
+    console.log("bbb",payload,id)
     return this.axios.$patch(
-      this.helper.prepareUrl(apiRoutes[this.module].getOneOrUpdateOrDeleteMerchantDetail, {
+      this.helper.prepareUrl(apiRoutes.merchantDetail.getOneOrUpdateOrDeleteMerchantDetail, {
         id: id,
       }),
       payload
