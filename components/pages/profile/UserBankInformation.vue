@@ -190,7 +190,6 @@ export default {
       return this.$store.state.banks.records;
     },
     records() {
-      console.log("hehehe", this.a);
       return (this.a = this.$store.state.merchantBanks.records);
     }
   },
@@ -245,7 +244,6 @@ export default {
     this.fetchUser();
     this.fetchBank();
     this.user = this.$store.state.auth.user;
-    console.log("userss", this.user);
   }
 };
 </script>

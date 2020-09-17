@@ -205,7 +205,6 @@ export default {
   },
   created() {
     this.user = this.$store.state.auth.user;
-    console.log("userss", this.user);
   }
 };
 </script>
