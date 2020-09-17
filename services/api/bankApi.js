@@ -1,8 +1,8 @@
 import BaseApi from "./baseApi";
 
-export default class ShippingPartnerApi extends BaseApi {
+export default class CategoryApi extends BaseApi {
   constructor(axios, helper) {
-    super(axios, helper, "shippingPartners");
+    super(axios, helper, "banks");
   }
 
   getAll(searchQuery) {

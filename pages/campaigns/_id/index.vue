@@ -4,7 +4,7 @@
     <data-view-sidebar-package :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar"
                                @fetchItems="fetchItems" :data="sidebarData"/>
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
@@ -50,6 +50,7 @@
         <vs-th sort-key="quantity">Quantity</vs-th>
         <vs-th sort-key="price">Price</vs-th>
         <vs-th sort-key="status.description">Status</vs-th>
+        <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -83,6 +84,10 @@
             <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
               {{tr.status.description }}
             </vs-chip>
+          </vs-td>
+
+          <vs-td :data="data[indextr].created_at">
+            {{ tr.created_at }}
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">

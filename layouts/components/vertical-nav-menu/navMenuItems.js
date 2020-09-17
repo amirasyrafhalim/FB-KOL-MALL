@@ -50,9 +50,9 @@ export default [
 		i18n: 'Pages',
 		items: [
 			{
-				url: '/#',
+				url: '/settings',
 				slug: 'settings',
-				name: 'Setting',
+				name: 'Settings',
 				icon: 'SettingsIcon'
 			}
 		]

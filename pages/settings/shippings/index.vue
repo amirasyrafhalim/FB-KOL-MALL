@@ -45,10 +45,10 @@
 
       <template slot="thead">
         <vs-th sort-key="name">Name</vs-th>
-        <vs-th sort-key="packages">Package</vs-th>
-        <vs-th sort-key="status.description">Status</vs-th>
-        <vs-th sort-key="createdBy.name">Created By</vs-th>
-        <vs-th sort-key="updatedBy.name">Updated By</vs-th>
+        <vs-th sort-key="partner.name">Shipping Partner</vs-th>
+        <vs-th sort-key="fee">Fee</vs-th>
+        <vs-th sort-key="free_minimum_type">Free Minimum Type</vs-th>
+        <vs-th sort-key="free_minimum_value">Free Minimum Value</vs-th>
         <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
       </template>
@@ -61,27 +61,20 @@
             {{ tr.name }}
           </vs-td>
 
-          <vs-td :data="data[indextr].packages">
-            <div style="text-overflow: ellipsis; width: 250px !important; white-space: nowrap; overflow: hidden">
-              <div v-for="(item,index) in tr.packages" :key="index" style="display: inline;">
-                {{ item.name }},
-              </div>
-            </div>
-
+          <vs-td :data="data[indextr].partner.name">
+            {{ tr.partner.name }}
           </vs-td>
 
-          <vs-td :data="data[indextr].status.description">
-            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
-              {{tr.status.description }}
-            </vs-chip>
+          <vs-td :data="data[indextr].fee">
+            {{ tr.fee }}
           </vs-td>
 
-          <vs-td :data="data[indextr].createdBy.name">
-            {{ tr.createdBy.name }}
+          <vs-td :data="data[indextr].free_minimum_type">
+            {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
           </vs-td>
 
-          <vs-td :data="data[indextr].updatedBy.name">
-            {{ tr.updatedBy.name }}
+          <vs-td :data="data[indextr].free_minimum_value">
+            {{ tr.free_minimum_value }}
           </vs-td>
 
           <vs-td :data="data[indextr].created_at">
@@ -89,12 +82,10 @@
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
-            <vs-button :color="colorx" :gradient-color-secondary="colorx2" type="gradient" icon="library_books"
-                       :to="localePath({ name: 'campaigns-id', params: { id: tr.id } })">Package
-            </vs-button>
-            <vs-button color="warning" type="border" icon="edit" class="ml-2" @click.stop="editData(tr)"></vs-button>
-            <vs-button color="danger" type="border" icon="delete_outline" class="ml-2"
-                       @click.stop="confirmDeleteRecord(tr.id)"></vs-button>
+            <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current ml-2"
+                          @click.stop="editData(tr)"/>
+            <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"
+                          @click.stop="confirmDeleteRecord(tr.id)"/>
           </vs-td>
 
         </vs-tr>
@@ -102,10 +93,11 @@
       </template>
     </vs-table>
   </div>
+
 </template>
 
 <script>
-  import DataViewSidebar from './DataViewSidebar.vue'
+  import DataViewSidebar from './DataViewSidebarShipping.vue'
 
   export default {
     layout: 'main',
@@ -114,9 +106,7 @@
     },
     data() {
       return {
-        colorx: '#c72a75',
-        colorx2: '#5252e8',
-        moduleName: "campaigns",
+        moduleName: "shippingMethods",
         selected: [],
         itemsPerPage: 10,
         isMounted: false,
@@ -182,8 +172,8 @@
       showDeleteSuccess() {
         this.$vs.notify({
           color: 'success',
-          title: 'Campaign Deleted',
-          text: 'The selected campaign was successfully deleted'
+          title: 'Shipping Deleted',
+          text: 'The selected shipping was successfully deleted'
         })
       }
     },

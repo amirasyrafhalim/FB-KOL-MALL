@@ -1,15 +1,17 @@
 import BuyerApi from '../services/api/buyerApi';
+import BankApi from '../services/api/bankApi';
 import BuyerOrderApi from '../services/api/buyerOrderApi';
 import CampaignApi from '@/services/api/campaignApi';
 import PackageApi from '@/services/api/packageApi';
 import CampaignPackageApi from '@/services/api/campaignPackageApi';
 import CampaignShippingApi from '@/services/api/campaignShippingApi';
 import DropdownApi from '../services/api/dropdownApi';
-import EnumApi from '@/services/api/enumApi';
+import EnumApi from '../services/api/enumApi';
 import FacebookApi from '../services/api/facebookApi';
 import MerchantApi from '../services/api/merchantApi';
 import MerchantPageApi from '../services/api/merchantPageApi';
 import MerchantPageTokenApi from '../services/api/merchantPageTokenApi';
+import MerchantBankApi from '../services/api/merchantBanks';
 import MerchantShippingApi from '../services/api/merchantShippingApi';
 import OrderApi from '../services/api/orderApi';
 import ProductApi from '../services/api/productApi';
@@ -22,9 +24,12 @@ import VideoApi from '../services/api/videoApi';
 import DashboardApi from '../services/api/dashboardApi';
 import ShippingPartnerApi from '../services/api/shippingPartnerApi';
 import OrderDeliveriesApi from '../services/api/orderDeliveriesApi';
+import ShippingMethodApi from '../services/api/shippingMethodApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
+		merchantBanks: new MerchantBankApi($axios, app.$helper),
+		banks: new BankApi($axios, app.$helper),
 		campaigns: new CampaignApi($axios, app.$helper),
 		packages: new PackageApi($axios, app.$helper),
 		campaignPackages: new CampaignPackageApi($axios, app.$helper),
@@ -48,7 +53,8 @@ export default ({ $axios, app }, inject) => {
 		videos: new VideoApi($axios, app.$helper),
 		dashboard: new DashboardApi($axios, app.$helper),
 		shippingPartners: new ShippingPartnerApi($axios, app.$helper),
-		orderDeliveries: new OrderDeliveriesApi($axios, app.$helper)
+		orderDeliveries: new OrderDeliveriesApi($axios, app.$helper),
+		shippingMethods: new ShippingMethodApi($axios, app.$helper)
 	};
 
 	inject('api', api);

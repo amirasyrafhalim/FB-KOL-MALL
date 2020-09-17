@@ -1,8 +1,9 @@
 import BaseApi from "./baseApi";
+import { apiRoutes } from "@/config";
 
-export default class ShippingPartnerApi extends BaseApi {
+export default class MerchantApi extends BaseApi {
   constructor(axios, helper) {
-    super(axios, helper, "shippingPartners");
+    super(axios, helper, "merchantBanks");
   }
 
   getAll(searchQuery) {
@@ -18,10 +19,16 @@ export default class ShippingPartnerApi extends BaseApi {
   }
 
   update(payload, id) {
+    console.log("aaa")
     return super.update(payload, id);
+
   }
 
   delete(id) {
     return super.delete(id);
+  }
+
+  getDetail() {
+    return this.axios.$get(apiRoutes[this.module].getDetail);
   }
 }
