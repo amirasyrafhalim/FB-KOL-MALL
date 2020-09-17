@@ -15,7 +15,7 @@
         <vs-th sort-key="campaign.name">Campaign Name</vs-th>
         <vs-th sort-key="delivery.tracking_no">Tracking Number</vs-th>
         <vs-th sort-key="total_amount">Total Amount</vs-th>
-        <vs-th sort-key="total_amount">Date</vs-th>
+        <vs-th sort-key="created_at">Date</vs-th>
         <vs-th sort-key="status">Order Status</vs-th>
         <vs-th sort-key="status">Payment Status</vs-th>
         <vs-th sort-key="deliver_at">Action</vs-th>
@@ -32,12 +32,10 @@
             tr.campaign && tr.campaign.name
           }}</vs-td>
           <vs-td
-            :data="
-              data[indextr].delivery &&
-                data[indextr].delivery.tracking_no
-            "
-            >{{ tr.delivery && tr.delivery.tracking_no }}</vs-td
+            :data="data[indextr].delivery && data[indextr].delivery.tracking_no"
           >
+            {{ tr.delivery && tr.delivery.tracking_no }}
+          </vs-td>
 
           <vs-td :data="data[indextr].total_amount">{{
             tr.total_amount
@@ -48,15 +46,15 @@
           </vs-td>
           <vs-td :data="data[indextr].status.description">
             <vs-chip
-              :color="getOrderStatusColor(tr.status.description)"
-              class="product-order-status"
+              :color="getOrderStatusColor(tr.status.value)"
+              class="payment-status p-2"
               >{{ tr.status && tr.status.description }}</vs-chip
             >
           </vs-td>
           <vs-td :data="data[indextr].order_payment">
             <vs-chip
               :color="getOrderPaymentStatusColor(tr.order_payment)"
-              class="product-order-status"
+              class="p-2 mx-auto"
               >{{ orderStatus }}</vs-chip
             >
           </vs-td>
@@ -65,7 +63,8 @@
             <nuxt-link
               :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
             >
-              <vs-button color="danger" type="gradient" class="text-xs">{{ "View" }}
+              <vs-button color="danger" type="gradient" class="text-xs"
+                >{{ "View" }}
               </vs-button>
             </nuxt-link>
             <vs-button
@@ -77,32 +76,23 @@
               >{{ "Tracking Info" }}
             </vs-button>
           </vs-td>
-
         </vs-tr>
-         <vs-prompt
-            @cancel="val = ''"
-            @accept="updateTracking()"
-            @close="close"
-            :active.sync="activePrompt"
-            title="Update Tracking Number"
-          >
-            <div class="con-exemple-prompt">
-              <v-select
-                :options="shippingPartners"
-                label="name"
-                placeholder="Select Partner"
-                @input.native="fetchPartners($event.target.value)"
-                v-model="selected"
-                :value="selected"
-              ></v-select>
-              <vs-input
-                placeholder="Tracking Number"
-                vs-placeholder="Tracking Number"
-                v-model="tracking_no_id"
-                class="mt-3 w-full"
-              />
-            </div>
-          </vs-prompt>
+        <vs-prompt
+          @cancel="val = ''"
+          @accept="updateTracking()"
+          @close="close"
+          :active.sync="activePrompt"
+          title="Update Tracking Number"
+        >
+          <div class="con-exemple-prompt">
+            <vs-input
+              placeholder="Tracking Number"
+              vs-placeholder="Tracking Number"
+              v-model="tracking_no_id"
+              class="mt-3 w-full"
+            />
+          </div>
+        </vs-prompt>
       </template>
     </vs-table>
   </div>
@@ -125,10 +115,11 @@ export default {
       isMounted: false,
       shippingPartners: {},
       tracking_no: [],
-      tracking_no_id: '',
+      tracking_no_id: "",
       orderDeliveryId: "",
       partner: "",
-      orderStatus: "Pending"
+      orderStatus: "Pending",
+      selectedPartner: ""
     };
   },
   computed: {
@@ -140,11 +131,15 @@ export default {
     },
     records() {
       const a = this.$store.state[this.moduleName].records;
-      this.tracking_no=[]
+      this.tracking_no = [];
       a.forEach((data, i) => {
-        this.tracking_no.push(data.delivery.tracking_no)
+        if (data.delivery.tracking_no) {
+          this.tracking_no.push(data.delivery.tracking_no);
+        } else {
+          this.tracking_no.push(null);
+        }
       });
-     
+
       return this.$store.state[this.moduleName].records;
     },
     queriedItems() {
@@ -155,9 +150,12 @@ export default {
   },
   methods: {
     getOrderStatusColor(status) {
-      if (status === "Completed") return "success";
-      if (status === "Failed") return "danger";
-      if (status === "Pending payment") return "warning";
+      if (status === 1) return "success";
+      if (status === 2) return "danger";
+      if (status === 3) return "warning";
+      if (status === 4) return "warning";
+      if (status === 5) return "warning";
+      if (status === 6) return "warning";
     },
     getOrderPaymentStatusColor(orderPayment) {
       var statusInt = 1;
@@ -180,15 +178,8 @@ export default {
     },
     activePromptFn(orderDeliveryId) {
       this.orderDeliveryId = this.records[orderDeliveryId].delivery.id;
-      this.tracking_no_id = this.tracking_no[orderDeliveryId]
+      this.tracking_no_id = this.tracking_no[orderDeliveryId];
       this.activePrompt = true;
-    },
-    async fetchPartners(value) {
-      if (value) {
-        this.partner = value.name;
-      }
-      var a = await this.$api.shippingPartners.getAll();
-      this.shippingPartners = a.data;
     },
     async updateTracking() {
       var res = await this.$api.orderDeliveries.updateOrderDelivery(
@@ -203,7 +194,7 @@ export default {
     showSuccess() {
       this.$vs.notify({
         color: "success",
-        title: "Update racking number",
+        title: "Update tracking number",
         text: "The selected tracking number was successfully updated"
       });
     },
@@ -232,7 +223,6 @@ export default {
   },
   created() {
     this.fetchItems();
-    this.fetchPartners();
   },
   mounted() {
     this.isMounted = true;
@@ -241,6 +231,10 @@ export default {
 </script>
 
 <style lang="scss">
+.vuesax-app-is-ltr .vs-chip--text {
+  margin-left: 0 !important;
+  padding: 0px 10px;
+}
 #data-list-list-view {
   .vs-con-table {
     @media (max-width: 689px) {

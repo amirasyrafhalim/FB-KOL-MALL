@@ -102,6 +102,7 @@ export default {
 		getAll: '/v1/shipping-partners'
 	},
 	orders: {
+		updateOrderPayment: '/v1/order-payments/{id}',
 		getAllOrCreate: '/v1/orders',
 		getOneOrUpdateOrDelete: '/v1/orders/{id}',
 		updateDelivery: '/v1/order-deliveries/{id}',
