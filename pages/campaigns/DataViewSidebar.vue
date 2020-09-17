@@ -10,10 +10,12 @@
     <component :is="scrollbarTag" class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
 
       <div class="p-6">
-        <vs-input label="Name" v-model="dataName" class="mt-5 w-full" name="item-name"/>
+        <span>Name</span>
+        <vs-input v-model="dataName" class="w-full" name="item-name"/>
       </div>
 
       <div class="px-6 py-2" v-if="Object.entries(this.data).length != 0 ? true : false">
+        <span>Status</span>
         <v-select :options="status" v-model="dataStatus"/>
       </div>
 
