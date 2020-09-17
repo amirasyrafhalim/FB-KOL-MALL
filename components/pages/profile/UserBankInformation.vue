@@ -25,7 +25,7 @@
         </tr>
         <tr>
           <td class="font-semibold pb-6">Status</td>
-          <td class=" pl-6 pb-6">{{ data.status.description }}</td>
+          <td style="color: #4CAF50;" class=" pl-6 pb-6">{{ data.status.description }}</td>
         </tr>
         <tr>
           <td class="font-semibold pb-6">Remark</td>
@@ -56,7 +56,7 @@
         </tr>
       </table>
     </div>
-
+    <span style="color:red;font-size:11px;">*Please contact the customer service if you want to update your bank information.</span>
     <div class="mt-5 float-right mb-5" v-if="records.data == []">
       <vs-button @click="popupActive2 = true" color="primary" type="filled"
         >Add</vs-button
