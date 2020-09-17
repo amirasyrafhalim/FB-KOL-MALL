@@ -10,23 +10,28 @@
     <component :is="scrollbarTag" class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
 
       <div class="px-6 py-2">
+        <span>Shipping Partner</span>
         <v-select :options="partners" v-model="dataShippingPartner" label="name" placeholder="Select Shipping Partner"/>
       </div>
 
       <div class="px-6 py-2">
-        <vs-input label="Name" v-model="dataName" class="mt-5 w-full" name="item-name"/>
+        <span>Name</span>
+        <vs-input v-model="dataName" class="w-full" name="item-name"/>
       </div>
 
       <div class="px-6 py-2">
-        <vs-input label="Fee" v-model="dataFee" class="mt-5 w-full" name="item-fee"/>
+        <span>Fee</span>
+        <vs-input v-model="dataFee" class="w-full" name="item-fee"/>
       </div>
 
       <div class="px-6 py-2">
+        <span>Free Minimum Type</span>
         <v-select :options="FreeMinimumType" v-model="dataFreeMinimumType" placeholder="Select Free Minimum Type"/>
       </div>
 
       <div class="px-6 py-2">
-        <vs-input label="Free Minimum Value" v-model="dataFreeMinimumValue" class="mt-5 w-full" name="item-free-minimum-value"/>
+        <span>Free Minimum Value</span>
+        <vs-input v-model="dataFreeMinimumValue" class="w-full" name="item-free-minimum-value"/>
       </div>
 
     </component>

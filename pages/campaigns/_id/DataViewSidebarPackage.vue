@@ -10,26 +10,31 @@
     <component :is="scrollbarTag" class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
 
       <div class="px-6 py-2">
-        <vs-input label="Name" v-model="dataName" class="w-full" name="item-name"/>
+        <span>Name</span>
+        <vs-input v-model="dataName" class="w-full" name="item-name"/>
       </div>
 
       <div class="px-6 py-2">
+        <span>Sell Method</span>
         <v-select :options="sellMethod" v-model="dataSellMethod"/>
       </div>
 
       <div class="px-6 py-2">
-        <vs-input label="Keyword" v-model="dataKeyword" class="w-full" name="item-keyword"/>
+        <span>Keyword</span>
+        <vs-input v-model="dataKeyword" class="w-full" name="item-keyword"/>
       </div>
 
       <vs-row>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Price" v-model="dataPrice" class="w-full" name="item-price"/>
+            <span>Price</span>
+            <vs-input v-model="dataPrice" class="w-full" name="item-price"/>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Quantity" v-model="dataQuantity" class="w-full" name="item-quantity"/>
+            <span>Quantity</span>
+            <vs-input v-model="dataQuantity" class="w-full" name="item-quantity"/>
           </div>
         </vs-col>
       </vs-row>
@@ -37,33 +42,39 @@
       <vs-row>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Min Per User" v-model="dataMinPerUser" class="w-full" name="item-min-per-user"/>
+            <span>Min Per User</span>
+            <vs-input v-model="dataMinPerUser" class="w-full" name="item-min-per-user"/>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Limit Per User" v-model="dataLimitPerUser" class="w-full" name="item-limit-per-user"/>
+            <span>Limit Per User</span>
+            <vs-input v-model="dataLimitPerUser" class="w-full" name="item-limit-per-user"/>
           </div>
         </vs-col>
       </vs-row>
 
       <div class="px-6 py-2">
+        <span>Product</span>
         <v-select multiple :options="products" v-model="dataProductIds" label="name"/>
       </div>
 
       <div class="px-6 py-2">
+        <span>Status</span>
         <v-select :options="status" v-model="dataStatus"/>
       </div>
 
       <vs-row>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Weight" v-model="dataWeight" class="w-full" name="item-weight"/>
+            <span>Weight</span>
+            <vs-input v-model="dataWeight" class="w-full" name="item-weight"/>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Length" v-model="dataLength" class="w-full" name="item-length"/>
+            <span>Length</span>
+            <vs-input v-model="dataLength" class="w-full" name="item-length"/>
           </div>
         </vs-col>
       </vs-row>
@@ -71,17 +82,20 @@
       <vs-row>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Height" v-model="dataHeight" class="w-full" name="item-height"/>
+            <span>Height</span>
+            <vs-input v-model="dataHeight" class="w-full" name="item-height"/>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <vs-input label="Width" v-model="dataWidth" class="w-full" name="item-width"/>
+            <span>Width</span>
+            <vs-input v-model="dataWidth" class="w-full" name="item-width"/>
           </div>
         </vs-col>
       </vs-row>
 
       <div class="px-6 py-2">
+        <span>Shipping Method</span>
         <v-select :options="shippingMethods" v-model="dataShippingMethod" label="name"/>
       </div>
 
