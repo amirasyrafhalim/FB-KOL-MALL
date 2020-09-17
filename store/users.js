@@ -72,6 +72,7 @@ export const actions = {
     try {
       if (state[params.stateKey].length === 0) {
         let res = await this.$api.enums[params.routeName]();
+        console.log('res', res)
 
         commit("setDynamicStateProperty", {
           key: params.stateKey,

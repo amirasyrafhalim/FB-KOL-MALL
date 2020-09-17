@@ -14,7 +14,7 @@ export default {
 		userStatus: '/v1/enums/userStatus',
 		userVerifyStatus: '/v1/enums/userVerifyStatus',
 		deliveryMethod: '/v1/enums/deliveryMethod',
-		paymentStatus: '/v1/enums/paymentStatus',
+		paymentStatus: '/v1/enums/payment-status',
 		deliveryStatus: '/v1/enums/deliveryStatus',
 		userRole: '/v1/enums/userRole'
 	},
@@ -83,6 +83,7 @@ export default {
 		getAll: '/v1/shipping-partners'
 	},
 	orders: {
+		updateOrderPayment: '/v1/order-payments/{id}',
 		getAllOrCreate: '/v1/orders',
 		getOneOrUpdateOrDelete: '/v1/orders/{id}',
 		updateDelivery: '/v1/order-deliveries/{id}',

@@ -28,13 +28,11 @@ export default {
 			}
 		},
 		handleApiErrors(err) {
-			// console.log(err);
 			this.clearPreviousError();
 			let resBody = err.response;
-			// console.log('resbody', resBody);
 			let code = resBody.data.http_code || resBody.data.status;
 			let errMessage = resBody && resBody.data.error ? resBody.data.error.message : null;
-			alert('handle error');
+
 			if (code == 422) {
 				let errors = resBody.data.error;
 				console.log(errors);
