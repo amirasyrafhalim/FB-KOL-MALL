@@ -10,7 +10,6 @@
 <template>
   <div class="vx-col w-full">
     <div title="Bank Information">
-      <vs-divider></vs-divider>
       <table v-for="(data, i) in records" :key="i">
         <tr>
           <td class="font-semibold pb-6">Bank Name</td>
