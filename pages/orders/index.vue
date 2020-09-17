@@ -13,7 +13,7 @@
         <vs-th sort-key="user.name">Name</vs-th>
         <vs-th sort-key="invoice_no">Invoice Number</vs-th>
         <vs-th sort-key="campaign.name">Campaign Name</vs-th>
-        <vs-th sort-key="order_deliveries.tracking_no">Tracking Number</vs-th>
+        <vs-th sort-key="delivery.tracking_no">Tracking Number</vs-th>
         <vs-th sort-key="total_amount">Total Amount</vs-th>
         <vs-th sort-key="total_amount">Date</vs-th>
         <vs-th sort-key="status">Order Status</vs-th>
@@ -33,10 +33,10 @@
           }}</vs-td>
           <vs-td
             :data="
-              data[indextr].order_deliveries &&
-                data[indextr].order_deliveries.tracking_no
+              data[indextr].delivery &&
+                data[indextr].delivery.tracking_no
             "
-            >{{ tr.order_deliveries && tr.order_deliveries.tracking_no }}</vs-td
+            >{{ tr.delivery && tr.delivery.tracking_no }}</vs-td
           >
 
           <vs-td :data="data[indextr].total_amount">{{
@@ -65,12 +65,11 @@
             <nuxt-link
               :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
             >
-              <vs-button color="success" class="text-xs" type="gradient border"
-                >{{ "View" }}
+              <vs-button color="danger" type="gradient" class="text-xs">{{ "View" }}
               </vs-button>
             </nuxt-link>
             <vs-button
-              v-if="tr.order_deliveries"
+              v-if="tr.delivery"
               color="primary"
               class="text-xs"
               type="gradient border"
@@ -79,7 +78,8 @@
             </vs-button>
           </vs-td>
 
-          <vs-prompt
+        </vs-tr>
+         <vs-prompt
             @cancel="val = ''"
             @accept="updateTracking()"
             @close="close"
@@ -91,19 +91,18 @@
                 :options="shippingPartners"
                 label="name"
                 placeholder="Select Partner"
-                @input="fetchPartners"
+                @input.native="fetchPartners($event.target.value)"
                 v-model="selected"
                 :value="selected"
               ></v-select>
               <vs-input
                 placeholder="Tracking Number"
                 vs-placeholder="Tracking Number"
-                v-model="tracking_no"
+                v-model="tracking_no_id"
                 class="mt-3 w-full"
               />
             </div>
           </vs-prompt>
-        </vs-tr>
       </template>
     </vs-table>
   </div>
@@ -125,7 +124,8 @@ export default {
       itemsPerPage: 4,
       isMounted: false,
       shippingPartners: {},
-      tracking_no: "",
+      tracking_no: [],
+      tracking_no_id: '',
       orderDeliveryId: "",
       partner: "",
       orderStatus: "Pending"
@@ -139,6 +139,12 @@ export default {
       return 0;
     },
     records() {
+      const a = this.$store.state[this.moduleName].records;
+      this.tracking_no=[]
+      a.forEach((data, i) => {
+        this.tracking_no.push(data.delivery.tracking_no)
+      });
+     
       return this.$store.state[this.moduleName].records;
     },
     queriedItems() {
@@ -149,9 +155,9 @@ export default {
   },
   methods: {
     getOrderStatusColor(status) {
-      if (status === "Success") return "success";
+      if (status === "Completed") return "success";
       if (status === "Failed") return "danger";
-      if (status === "Pending") return "warning";
+      if (status === "Pending payment") return "warning";
     },
     getOrderPaymentStatusColor(orderPayment) {
       var statusInt = 1;
@@ -170,11 +176,11 @@ export default {
       if (this.orderStatus === "Pending") return "warning";
     },
     setSelected(value) {
-      console.log(value);
       //  trigger a mutation, or dispatch an action
     },
     activePromptFn(orderDeliveryId) {
-      this.orderDeliveryId = this.records[orderDeliveryId].order_deliveries.id;
+      this.orderDeliveryId = this.records[orderDeliveryId].delivery.id;
+      this.tracking_no_id = this.tracking_no[orderDeliveryId]
       this.activePrompt = true;
     },
     async fetchPartners(value) {
@@ -186,7 +192,7 @@ export default {
     },
     async updateTracking() {
       var res = await this.$api.orderDeliveries.updateOrderDelivery(
-        { tracking_no: this.tracking_no, partner: this.partner },
+        { tracking_no: this.tracking_no_id, partner: this.partner },
         this.orderDeliveryId
       );
       if (res) {

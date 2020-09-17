@@ -1,7 +1,7 @@
 <template>
   <v-app class="layout__default">
     <the-sidebar />
-    <the-toolbar />
+    <!-- <the-toolbar /> -->
     <v-content>
       <v-container fluid class="pa-10">
         <nuxt />
@@ -16,13 +16,13 @@
 
 
 <script>
-import TheToolbar from "@/components/TheToolbar";
+// import TheToolbar from "@/components/TheToolbar";
 import TheSidebar from "@/components/TheSidebar";
 import NotificationMessage from "@/components/NotificationMessage";
 
 export default {
   components: {
-    TheToolbar,
+    // TheToolbar,
     TheSidebar,
     NotificationMessage
   },
