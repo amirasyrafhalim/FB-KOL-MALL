@@ -133,7 +133,8 @@ export default {
       const a = this.$store.state[this.moduleName].records;
       this.tracking_no = [];
       a.forEach((data, i) => {
-        if (data.delivery.tracking_no) {
+        console.log(data.delivery.tracking_no)
+        if (data.delivery) {
           this.tracking_no.push(data.delivery.tracking_no);
         } else {
           this.tracking_no.push(null);
