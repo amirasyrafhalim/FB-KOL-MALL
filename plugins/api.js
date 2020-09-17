@@ -1,4 +1,5 @@
 import BuyerApi from '../services/api/buyerApi';
+import BankApi from '../services/api/bankApi';
 import BuyerOrderApi from '../services/api/buyerOrderApi';
 import CampaignApi from '@/services/api/campaignApi';
 import PackageApi from '@/services/api/packageApi';
@@ -10,6 +11,7 @@ import FacebookApi from '../services/api/facebookApi';
 import MerchantApi from '../services/api/merchantApi';
 import MerchantPageApi from '../services/api/merchantPageApi';
 import MerchantPageTokenApi from '../services/api/merchantPageTokenApi';
+import MerchantBankApi from '../services/api/merchantBanks';
 import MerchantShippingApi from '../services/api/merchantShippingApi';
 import OrderApi from '../services/api/orderApi';
 import ProductApi from '../services/api/productApi';
@@ -26,6 +28,8 @@ import ShippingMethodApi from '../services/api/shippingMethodApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
+		merchantBanks: new MerchantBankApi($axios, app.$helper),
+		banks: new BankApi($axios, app.$helper),
 		campaigns: new CampaignApi($axios, app.$helper),
 		packages: new PackageApi($axios, app.$helper),
 		campaignPackages: new CampaignPackageApi($axios, app.$helper),

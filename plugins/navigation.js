@@ -23,6 +23,14 @@ export default ({route, app}, inject) => {
       title: 'Orders',
       breadcrumb: [{title: 'Orders', url: '/orders'}, {title: 'List', active: true}]
     },
+    userprofile: {
+      title: 'User Profile',
+      breadcrumb: [{title: ' Profile', url: '/userprofile'}, {title: 'Information', active: true}]
+    },
+    userprofileIdEdit: {
+      title: 'Edit',
+      breadcrumb: [{title: 'Profile', url: '/userprofile'}, {title: 'Edit Information', active: true}]
+    },
     merchantPageIdLiveVideo: {
       title: 'Live Videos',
       breadcrumb: [

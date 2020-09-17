@@ -76,15 +76,12 @@
       <!-- Address Col -->
       <div class="vx-col w-full md:w-1/2">
         <!-- Col Content -->
-        <div>
-          <vs-input
-            class="w-full mt-4"
-            label="Address"
-            v-model="formModel.dataAddress"
-          />
+        <div class="mt-4">
+          <label class="vs-input--label">Business Size</label>
+          <vs-textarea class="w-full" v-model="formModel.dataAddress" />
           <span class="text-danger text-sm"></span>
         </div>
-        <div class="mt-4">
+        <div class="mt-2">
           <label class="vs-input--label">Business Size</label>
           <v-select
             name="status"
@@ -158,21 +155,21 @@ export default {
       this.formModel.dataCompany = this.user.merchant.detail.company_name;
       this.formModel.dataPhone = this.user.social.phone_no;
       this.formModel1.payment_method_id =
-      this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+        this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
       this.formModel.dataLogo = this.user.merchant.logo;
       this.formModel1.name = this.user.merchant.name;
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
     },
     async validate() {
+      const obj = {
+        name: this.formModel1.name,
+        payment_method_id: this.formModel1.payment_method_id.code,
+        company_name: this.formModel.dataCompany,
+        business_size: this.formModel.dataBusinessSize.label,
+        address: this.formModel.dataAddress
+      };
       try {
-        const obj = {
-          name: this.formModel1.name,
-          payment_method_id: this.formModel1.payment_method_id.code,
-          company_name: this.formModel.dataCompany,
-          business_size: this.formModel.dataBusinessSize.label,
-          address: this.formModel.dataAddress
-        };
         let res = await this.$api.merchants.update(obj, this.user.id);
         let res1 = await this.$api.merchants.updateDetail(obj, this.user.id);
         if ((res.http_code == 200) & (res1.http_code == 200)) {
@@ -200,7 +197,7 @@ export default {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
     this.formModel.dataPhone = this.user.social.phone_no;
     this.formModel1.payment_method_id =
-    this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+      this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
     this.formModel.dataLogo = this.user.merchant.logo;
     this.formModel1.name = this.user.merchant.name;
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;

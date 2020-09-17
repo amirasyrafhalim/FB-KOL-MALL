@@ -189,17 +189,6 @@
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
             </tr>
             <tr>
-              <td class="font-semibold pb-5">Business Categories</td>
-
-              <ol
-                class="pl-5"
-                v-for="(item, key) in user.merchant.detail.categories"
-                :key="key"
-              >
-                <li>{{ item.name }}</li>
-              </ol>
-            </tr>
-            <tr>
               <td class="font-semibold pb-5">Business Size</td>
 
               <td class="pl-5 pb-5">
@@ -215,6 +204,17 @@
               <template v-if="user.merchant.payment_method_id == 2">
                 <td class="pl-5 pb-5">Offline</td>
               </template>
+            </tr>
+                       <tr>
+              <td class="font-semibold pb-5">Business Categories</td>
+
+              <ol
+                class="pl-5"
+                v-for="(item, key) in user.merchant.detail.categories"
+                :key="key"
+              >
+                <li>{{ item.name }}</li>
+              </ol>
             </tr>
             <!-- <tr>
               <td class="font-semibold pb-5">Merchant Logo</td>

@@ -58,11 +58,19 @@ export default {
 		getAllOrCreate: '/v1/merchants',
 		getDetail: '/v1/merchants/detail',
 		getOneOrUpdateOrDelete: '/v1/merchants/{id}',
-		getOneOrUpdateOrDeleteMerchantDetail: '/v1/merchant-details/{id}'
-	},
+		
+  },
+  merchantDetail:{
+    getOneOrUpdateOrDeleteMerchantDetail: '/v1/merchant-details/{id}'
+  },
 	banks:{
 		getAllOrCreate: '/v1/banks',
-	},
+  },
+  merchantBanks :{
+    getAllOrCreate: '/v1/merchant-banks',
+		getDetail: '/v1/merchant-banks/{id}',
+		getOneOrUpdateOrDelete: '/v1/merchant-banks/{id}',
+  },
 	merchantPages: {
 		getAllOrCreate: '/v1/merchant-pages',
 		getOneOrUpdateOrDelete: '/v1/merchant-pages/{id}',
