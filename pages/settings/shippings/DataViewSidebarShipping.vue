@@ -67,7 +67,7 @@
         dataName: '',
         dataFee: '',
         dataFreeMinimumType: '',
-        dataFreeMinimumValue: '',
+        dataFreeMinimumValue: null,
         dataShippingPartner: '',
         settings: {
           maxScrollbarLength: 60,
@@ -90,7 +90,7 @@
           this.dataShippingPartner = partner.name
           this.dataName = name
           this.dataFee = fee
-          this.dataFreeMinimumType = free_minimum_type.description
+          this.dataFreeMinimumType = free_minimum_type && free_minimum_type.description ? free_minimum_type.description : ''
           this.dataFreeMinimumValue = free_minimum_value
           this.initValues()
         }
@@ -132,7 +132,7 @@
         this.dataName = ''
         this.dataFee  = ''
         this.dataFreeMinimumType = ''
-        this.dataFreeMinimumValue = ''
+        this.dataFreeMinimumValue = null
       },
       submitData() {
         const obj = {

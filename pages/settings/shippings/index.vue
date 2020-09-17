@@ -47,8 +47,9 @@
         <vs-th sort-key="name">Name</vs-th>
         <vs-th sort-key="partner.name">Shipping Partner</vs-th>
         <vs-th sort-key="fee">Fee</vs-th>
-        <vs-th sort-key="free_minimum_type.description">Free Minimum Type</vs-th>
+        <vs-th sort-key="free_minimum_type">Free Minimum Type</vs-th>
         <vs-th sort-key="free_minimum_value">Free Minimum Value</vs-th>
+        <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -68,12 +69,16 @@
             {{ tr.fee }}
           </vs-td>
 
-          <vs-td :data="data[indextr].free_minimum_type.description">
-            {{ tr.free_minimum_type.description }}
+          <vs-td :data="data[indextr].free_minimum_type">
+            {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
           </vs-td>
 
           <vs-td :data="data[indextr].free_minimum_value">
             {{ tr.free_minimum_value }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].created_at">
+            {{ tr.created_at }}
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
