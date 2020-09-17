@@ -19,7 +19,17 @@ export default class MerchantApi extends BaseApi {
   }
 
   update(payload, id) {
+    console.log("aaa")
     return super.update(payload, id);
+
+  }
+  updateDetail(payload, id) {
+    return this.axios.$patch(
+      this.helper.prepareUrl(apiRoutes[this.module].getOneOrUpdateOrDeleteMerchantDetail, {
+        id: id,
+      }),
+      payload
+    );
   }
 
   delete(id) {

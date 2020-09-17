@@ -165,12 +165,12 @@
               <template v-if="!user.social.gender">
                 <td class="pl-5 pb-5">-</td>
               </template>
-              <!-- <template v-if="user.social.gender == 1">
-                <td class="pl-5 pb-5">Male</td>
+              <template v-if="user.social.gender == 1">
+                <td class="pl-5 pb-5">Female</td>
               </template>
               <template v-if="user.social.gender == 2">
-                <td>class="pl-5 pb-5">Female</td>
-              </template>-->
+                <td class="pl-5 pb-5">Male</td>
+              </template>
             </tr>
           </table>
         </vx-card>
@@ -189,14 +189,7 @@
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
             </tr>
             <tr>
-              <td class="font-semibold pb-5">Business Size</td>
-
-              <td class="pl-5 pb-5">
-                {{ user.merchant.detail.business_size }}
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold pb-5">Business Products</td>
+              <td class="font-semibold pb-5">Business Categories</td>
 
               <ol
                 class="pl-5"
@@ -223,7 +216,7 @@
                 <td class="pl-5 pb-5">Offline</td>
               </template>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="font-semibold pb-5">Merchant Logo</td>
 
               <template v-if="!user.merchant.merchant_logo">
@@ -232,7 +225,7 @@
               <template v-else>
                 <td class="pl-5 pb-5">{{user.merchant.merchant_logo}}</td>
               </template>
-            </tr>
+            </tr> -->
             <!-- <tr>
               <td class="font-semibold">Company</td>
               <td class="pl-5">{{ user.merchant_details.company_name }}</td>
