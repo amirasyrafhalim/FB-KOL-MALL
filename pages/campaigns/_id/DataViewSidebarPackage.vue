@@ -96,7 +96,7 @@
 
       <div class="px-6 py-2">
         <span>Shipping Method</span>
-        <v-select :options="shippingMethods" v-model="dataShippingMethod" label="name"/>
+        <v-select multiple :options="shippingMethods" v-model="dataShippingMethod" label="name"/>
       </div>
 
     </component>
@@ -188,7 +188,7 @@
           this.dataLength = shipping.length
           this.dataHeight = shipping.height
           this.dataWidth = shipping.width
-          this.dataShippingMethod = shipping.shipping_method
+          this.dataShippingMethod = shipping.shipping_method_id
           this.initValues()
         }
       }
@@ -266,7 +266,7 @@
           length: this.dataLength,
           height: this.dataHeight,
           width: this.dataWidth,
-          shipping_method_id: this.dataShippingMethod && this.dataShippingMethod.id
+          shipping_method_id: map(this.dataShippingMethod, 'id')
         }
 
         if (this.dataId !== null && this.dataId >= 0) {
