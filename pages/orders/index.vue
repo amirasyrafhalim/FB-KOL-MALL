@@ -23,18 +23,16 @@
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-          <vs-td :data="data[indextr].user && data[indextr].user.name">{{
-            tr.user && tr.user.name
-          }}</vs-td>
+          <vs-td :data="data[indextr].user && data[indextr].user.name">
+            {{ tr.user && tr.user.name }}</vs-td
+          >
 
           <vs-td :data="data[indextr].invoice_no">{{ tr.invoice_no }}</vs-td>
           <vs-td :data="data[indextr].campaign.name">{{
             tr.campaign && tr.campaign.name
           }}</vs-td>
-          <vs-td
-            :data="data[indextr].delivery && data[indextr].delivery.tracking_no"
-          >
-            {{ tr.delivery && tr.delivery.tracking_no }}
+          <vs-td :data="data[indextr].delivery && data[indextr].delivery">
+            {{ (tr.delivery && tr.delivery.tracking_no) || "-" }}
           </vs-td>
 
           <vs-td :data="data[indextr].total_amount">{{
@@ -130,14 +128,15 @@ export default {
       return 0;
     },
     records() {
-      const a = this.$store.state[this.moduleName].records;
+      const record = this.$store.state[this.moduleName].records;
       this.tracking_no = [];
-      a.forEach((data, i) => {
-        console.log(data.delivery.tracking_no)
-        if (data.delivery) {
-          this.tracking_no.push(data.delivery.tracking_no);
-        } else {
-          this.tracking_no.push(null);
+      record.forEach((data, i) => {
+        if (data.delivery && data.delivery.length > 0) {
+          if (data.delivery.tracking_no != null) {
+            this.tracking_no.push(data.delivery.tracking_no);
+          } else {
+            this.tracking_no.push(null);
+          }
         }
       });
 

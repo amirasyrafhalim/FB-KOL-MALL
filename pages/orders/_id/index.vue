@@ -35,7 +35,7 @@
                 <tr>
                   <td style="width:10%; white-space: inherit ">Address</td>
                   <td>:</td>
-                  <td>
+                  <td v-if="record.address">
                     {{
                       record.address.address +
                         " " +
@@ -46,7 +46,7 @@
                         record.address.state +
                         " " +
                         record.address.country_code
-                    }}
+                    }} || {{'-'}}
                   </td>
                 </tr>
               </table>
@@ -70,10 +70,10 @@
                       }}
                     </vs-chip>
                   </h4>
-                  <p>{{ record.delivery.partner }}</p>
-                  <p>{{ record.delivery.tracking_no }}</p>
-                  <p>{{ record.delivery.remark }}</p>
-                  <p>{{ record.delivery.amount }}</p>
+                  <p>{{ record.delivery.partner || null }}</p>
+                  <p>{{ record.delivery.tracking_no || null }}</p>
+                  <p>{{ record.delivery.remark || null }}</p>
+                  <p>{{ record.delivery.amount || null }}</p>
                 </div>
                 <div class="mb-2" v-else>
                   <h4 class="font-bold">
@@ -85,7 +85,7 @@
                       "
                     >
                       {{
-                        record.delivery && record.delivery.status.description
+                        record.delivery.status && record.delivery.status.description || '-'
                       }}
                     </vs-chip>
                   </h4>
@@ -106,10 +106,10 @@
                 <th class="px-0">Total</th>
                 <tr>
                   <td style="width:20%">Package Name:</td>
-                  <td>{{ record.campaign.packages[0].name }}</td>
-                  <td>{{ record.package.quantity + " x" }}</td>
-                  <td>{{ "RM " + record.campaign.packages[0].price }}</td>
-                  <td>{{ "RM " + record.total_amount }}</td>
+                  <td>{{ record.campaign.packages[0].name || null }}</td>
+                  <td>{{ record.package.quantity + " x" || null}}</td>
+                  <td>{{ "RM " + record.campaign.packages[0].price || null }}</td>
+                  <td>{{ "RM " + record.total_amount || null }}</td>
                 </tr>
                 <tr>
                   <td style="width:15%"></td>
@@ -143,18 +143,19 @@
             <vs-col vs-w="6" class="pl-2">
               <!-- <vx-card class="mb-5 h-full"> -->
               <div class="text-right">
-                <table style="width: 100%" v-if="record.delivery">
+                <table style="width: 100%">
                   <tr>
                     <td class="font-semibold">Subtotal Amount</td>
                     <td>:</td>
                     <td class="text-right">
-                      {{ "RM " + record.subtotal_amount }}
+                      RM {{ record.subtotal_amount != null ? record.subtotal_amount : '0.00' }}
                     </td>
                   </tr>
                   <tr>
                     <td class="font-semibold">Tax Amount</td>
                     <td>:</td>
-                    <td class="text-right">{{ "RM " + record.tax_amount }}</td>
+                    {{record.tax_amount}}
+                    <td class="text-right">RM {{ record.tax_amount != null ? record.tax_amount : '0.00' }}</td>
                   </tr>
                   <tr>
                     <td class="font-semibold">Shipping Amount</td>
@@ -162,9 +163,7 @@
                     <td class="text-right">
                       RM
                       {{
-                        record.delivery.amount != null
-                          ? record.delivery.amount
-                          : "0.00"
+                        record.delivery ? record.delivery.amount : "0.00"
                       }}
                     </td>
                   </tr>
@@ -172,20 +171,12 @@
                     <td class="font-semibold">Total Amount</td>
                     <td>:</td>
                     <td class="text-right">
-                      {{ "RM " + record.total_amount }}
+                      RM {{ record.total_amount != null ? record.total_amount : '0.00' }}
                     </td>
                   </tr>
                 </table>
 
-                <h4
-                  vs-w="8"
-                  vs-xs="12"
-                  style="color: grey"
-                  class="text-center"
-                  v-else
-                >
-                  No Record Found
-                </h4>
+               
               </div>
               <!-- </vx-card> -->
             </vs-col>
@@ -387,13 +378,9 @@ export default {
     },
     async updatePaymentStatus() {
       try {
-        console.log(this.selectedStatus.value)
-        console.log(this.record.payment.id)
         let res = await this.$api.orders.updateOrderPayment({ status:  this.selectedStatus.value }, this.record.payment.id);
-        console.log('res', res)
         this.handleApiSuccess(res, "orders");
       } catch (err) {
-        console.log(err)
         this.handleApiErrors(err);
       }   
     },

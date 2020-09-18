@@ -132,7 +132,7 @@ export default {
   },
   asyncData({ app, store }) {
     return {
-      redirectPage: process.env.API_URL_REDIRECT,
+      redirectPage: process.env.API_URL,
       moduleName: "merchantPages",
       headers: [
         { text: app.i18n.t("label.name"), value: "name" },
