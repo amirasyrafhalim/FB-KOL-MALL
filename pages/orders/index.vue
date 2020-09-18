@@ -23,38 +23,36 @@
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-          <vs-td :data="data[indextr].user && data[indextr].user.name">
-            {{ tr.user && tr.user.name }}</vs-td
+          <vs-td>
+            {{ tr.user && tr.user.name || '-' }}</vs-td
           >
 
-          <vs-td :data="data[indextr].invoice_no">{{ tr.invoice_no }}</vs-td>
-          <vs-td :data="data[indextr].campaign.name">{{
-            tr.campaign && tr.campaign.name
-          }}</vs-td>
-          <vs-td :data="data[indextr].delivery && data[indextr].delivery">
+          <vs-td >{{ tr.invoice_no || '-' }}</vs-td>
+          <vs-td> {{ (tr.campaign && tr.campaign.name) || '-'}}</vs-td>
+          <vs-td>
             {{ (tr.delivery && tr.delivery.tracking_no) || "-" }}
           </vs-td>
+          <vs-td :data="data[indextr].total_amount"> {{ tr.total_amount || '-'  }}</vs-td>
 
-          <vs-td :data="data[indextr].total_amount">{{
-            tr.total_amount
-          }}</vs-td>
-
-          <vs-td :data="tr.created_at">
-            {{ tr.created_at }}
+          <vs-td>
+            {{ tr.created_at || '-' }}
           </vs-td>
-          <vs-td :data="data[indextr].status.description">
+          <vs-td>
             <vs-chip
               :color="getOrderStatusColor(tr.status.value)"
               class="payment-status p-2"
               >{{ tr.status && tr.status.description }}</vs-chip
             >
           </vs-td>
-          <vs-td :data="data[indextr].order_payment">
+          <!-- {{tr}} -->
+          <vs-td :data="data[indextr].payment">
             <vs-chip
+            v-if="tr.order_payment"
               :color="getOrderPaymentStatusColor(tr.order_payment)"
               class="p-2 mx-auto"
               >{{ orderStatus }}</vs-chip
             >
+            <p v-else class="text-center"> Not available </p>
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
@@ -116,7 +114,7 @@ export default {
       tracking_no_id: "",
       orderDeliveryId: "",
       partner: "",
-      orderStatus: "Pending",
+      orderStatus: "",
       selectedPartner: ""
     };
   },
@@ -158,14 +156,15 @@ export default {
       if (status === 6) return "warning";
     },
     getOrderPaymentStatusColor(orderPayment) {
+      console.log('orderPayment', orderPayment)
       var statusInt = 1;
       if (orderPayment) {
         if (orderPayment.status == 0) {
-          this.status = "Failed";
+          this.orderStatus = "Failed";
         } else if (orderPayment.status == 1) {
-          this.status = "Pending";
+          this.orderStatus = "Pending";
         } else if (orderPayment.status == 2) {
-          this.status = "Success";
+          this.orderStatus = "Success";
         }
       }
 
