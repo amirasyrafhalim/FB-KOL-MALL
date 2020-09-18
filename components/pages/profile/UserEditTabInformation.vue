@@ -62,11 +62,11 @@
             v-model="formModel.dataCompany"
           />
           <div class="mt-4">
-            <label class="vs-input--label">Payment Methods</label>
+            <label class="vs-input--label">Business Size</label>
             <v-select
               name="status"
-              :options="payment"
-              v-model="formModel1.payment_method_id"
+              :options="business"
+              v-model="formModel.dataBusinessSize"
             />
             <span class="text-danger text-sm"></span>
           </div>
@@ -77,18 +77,43 @@
       <div class="vx-col w-full md:w-1/2">
         <!-- Col Content -->
         <div class="mt-4">
-          <label class="vs-input--label">Business Size</label>
-          <vs-textarea class="w-full" v-model="formModel.dataAddress" />
-          <span class="text-danger text-sm"></span>
-        </div>
-        <div class="mt-2">
-          <label class="vs-input--label">Business Size</label>
-          <v-select
-            name="status"
-            :options="business"
-            v-model="formModel.dataBusinessSize"
+          <vs-input
+            class="w-full mt-4"
+            label="Address"
+            v-model="formModel.dataAddress"
           />
-          <span class="text-danger text-sm"></span>
+        </div>
+        <div class="vx-row">
+          <div class="vx-col w-full md:w-1/2">
+            <vs-input
+              class="w-full mt-4"
+              label="City"
+              v-model="formModel.dataAddress"
+            />
+          </div>
+          <div class="vx-col w-full md:w-1/2">
+            <vs-input
+              class="w-full mt-4"
+              label="State"
+              v-model="formModel.dataAddress"
+            />
+          </div>
+        </div>
+        <div class="vx-row">
+          <div class="vx-col w-full md:w-1/2">
+            <vs-input
+              class="w-full mt-4"
+              label="Postcode"
+              v-model="formModel.dataAddress"
+            />
+          </div>
+          <div class="vx-col w-full md:w-1/2">
+            <vs-input
+              class="w-full mt-4"
+              label="Country"
+              v-model="formModel.dataAddress"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -176,7 +201,8 @@ export default {
           this.$vs.notify({
             title: "Success!",
             text: "Your data has been updated",
-            color: "success"
+            color: "success",
+            position: "bottom-left"
           });
         }
       } catch (err) {
@@ -184,7 +210,8 @@ export default {
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
-            color: "danger"
+            color: "danger",
+            position: "bottom-left"
           });
         }
       }
