@@ -121,10 +121,8 @@
     <!-- Save & Reset Button -->
     <div class="vx-row">
       <div class="vx-col w-full">
-        <div class="mt-8 flex flex-wrap items-center justify-end">
-          <vs-button @click="validate" class="ml-auto mt-2"
-            >Save Changes</vs-button
-          >
+        <div class="mt-8 py-8 flex flex-wrap items-center justify-end">
+          <vs-button @click="validate" class="mt-2">Save Changes</vs-button>
           <vs-button
             class="ml-4 mt-2"
             type="border"
@@ -167,7 +165,11 @@ export default {
         dataDelivery: "",
         dataLogo: "",
         dataBusinessSize: "",
-        dataAddress: ""
+        dataAddress: "",
+        city: "",
+        state_id: 0,
+        postcode_id: 0,
+        country_code: ""
       },
       formModel1: {
         name: "",
@@ -191,30 +193,41 @@ export default {
         name: this.formModel1.name,
         payment_method_id: this.formModel1.payment_method_id.code,
         company_name: this.formModel.dataCompany,
-        business_size: this.formModel.dataBusinessSize.label,
+        business_size:
+          this.formModel.dataBusinessSize &&
+          this.formModel.dataBusinessSize.label,
         address: this.formModel.dataAddress
       };
-      try {
-        let res = await this.$api.merchants.update(obj, this.user.id);
-        let res1 = await this.$api.merchants.updateDetail(obj, this.user.id);
-        if ((res.http_code == 200) & (res1.http_code == 200)) {
-          this.$vs.notify({
-            title: "Success!",
-            text: "Your data has been updated",
-            color: "success",
-            position: "bottom-left"
-          });
+
+      if (this.formModel.dataBusinessSize != null) {
+        try {
+          let res = await this.$api.merchants.update(obj, this.user.id);
+          let res1 = await this.$api.merchants.updateDetail(obj, this.user.id);
+          if ((res.http_code == 200) & (res1.http_code == 200)) {
+            this.$vs.notify({
+              title: "Success!",
+              text: "Your data has been updated",
+              color: "success",
+              position: "bottom-left"
+            });
+          }
+        } catch (err) {
+          if (err) {
+            this.$vs.notify({
+              title: "Failed!",
+              text: "Please insert your data correctly",
+              color: "danger",
+              position: "bottom-left"
+            });
+          }
         }
-      } catch (err) {
-        if (err) {
-          this.$vs.notify({
-            title: "Failed!",
-            text: "Please insert your data correctly",
-            color: "danger",
-            position: "bottom-left"
-          });
-        }
-      }
+      } else
+        this.$vs.notify({
+          title: "Failed!",
+          text: "Please insert your data correctly",
+          color: "danger",
+          position: "bottom-left"
+        });
     }
   },
   // computed: {

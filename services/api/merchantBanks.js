@@ -19,7 +19,6 @@ export default class MerchantApi extends BaseApi {
   }
 
   update(payload, id) {
-    console.log("aaa")
     return super.update(payload, id);
 
   }

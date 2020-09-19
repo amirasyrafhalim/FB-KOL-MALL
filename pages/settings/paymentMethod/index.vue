@@ -2,13 +2,13 @@
   <div class="con-notifications-position">
     <div class="vx-row">
       <div class="vx-col w-full">
-      <div>
-        <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">Payment Methods</h3>
-        <h5 class="font-normal mb-5">
-          Enable and choose your payment methods during checkout
-        </h5>
-      </div>
-      <!-- <div class="vx-col w-full">
+        <div>
+          <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">Payment Methods</h3>
+          <h5 class="font-normal mb-5">
+            Enable and choose your payment methods during checkout
+          </h5>
+        </div>
+        <!-- <div class="vx-col w-full">
       <div class="float-right mb-2">
         <vs-button
           :to="
@@ -58,25 +58,25 @@
 
           <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
             <template v-if="user.merchant.payment_method_id == 1">
-            <span>Xenopay</span>
+              <span>Xenopay</span>
             </template>
             <template v-if="user.merchant.payment_method_id == 2">
-            <span>Offline</span>
+              <span>Offline</span>
             </template>
           </vs-col>
           <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="5">
-            <span>Enabled</span>
+            <span class="text-success">Enabled</span>
           </vs-col>
           <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-         <vs-button
-            @click="popupActive2 = true"
-            color="primary"
-            type="filled"
-            icon-pack="feather"
-            icon="icon-edit"
-            class="mb-3"
-            >Edit</vs-button
-          >
+            <vs-button
+              @click="popupActive2 = true"
+              color="primary"
+              type="filled"
+              icon-pack="feather"
+              icon="icon-edit"
+              class="mb-3"
+              >Edit</vs-button
+            >
           </vs-col>
         </vx-card>
       </div>
@@ -92,7 +92,11 @@
           <span>Payment Method</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <v-select class="w-full"  :options="payment" v-model="formModel.payment_method_id" />
+          <v-select
+            class="w-full"
+            :options="payment"
+            v-model="formModel.payment_method_id"
+          />
         </div>
       </div>
       <div class="vx-row">
@@ -112,7 +116,6 @@
         </div>
       </div>
     </vs-popup>
-
   </div>
 </template>
 
@@ -125,13 +128,13 @@ export default {
   mixins: [formMixin],
   data() {
     return {
-          payment: [
+      payment: [
         { label: "Xenopay", code: 1 },
         { label: "Offline", code: 2 }
       ],
       moduleName: "password",
       formModel: {
-        payment_method_id:""
+        payment_method_id: ""
       },
       popupActive2: false
     };
@@ -147,47 +150,58 @@ export default {
       user: []
     };
   },
-    methods: {
+  methods: {
     reset() {
-      this.formModel1.payment_method_id =
+      this.formModel.payment_method_id =
         this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
     },
     async validate() {
       const obj = {
-        name :this.formModel.name,
-        payment_method_id: this.formModel.payment_method_id.code,
+        payment_method_id:
+          this.formModel.payment_method_id &&
+          this.formModel.payment_method_id.code
       };
-      try {
-        let res = await this.$api.merchants.update(obj, this.user.id);
-        if (res.http_code == 200)  {
-          this.$vs.notify({
-            title: "Success!",
-            text: "Your data has been updated",
-            color: "success",
-             position: "bottom-left"
-          });
+
+      if (this.formModel.payment_method_id != null) {
+        try {
+          let res = await this.$api.merchants.update(obj, this.user.id);
+          if (res.http_code == 200) {
+            this.$vs.notify({
+              title: "Success!",
+              text: "Your data has been updated",
+              color: "success",
+              position: "bottom-left"
+            });
+          }
+          this.popupActive2 = false;
+        } catch (err) {
+          if (err) {
+            this.$vs.notify({
+              title: "Failed!",
+              text: "Please insert your data correctly",
+              color: "danger",
+              position: "bottom-left"
+            });
+          }
         }
-        this.popupActive2 = false
-      } catch (err) {
-        if (err) {
-          this.$vs.notify({
-            title: "Failed!",
-            text: "Please insert your data correctly",
-            color: "danger",
-             position: "bottom-left"
-          });
-        }
-      }
+      } 
+      else 
+        this.$vs.notify({
+          title: "Failed!",
+          text: "Please insert your data correctly",
+          color: "danger",
+          position: "bottom-left"
+        });
     }
   },
   created() {
     this.user = this.$store.state.auth.user;
-    console.log("user", this.user);
+
   },
   mounted() {
-       this.formModel.payment_method_id =
+    this.formModel.payment_method_id =
       this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
-  },
+  }
 };
 </script>
 <style scoped>

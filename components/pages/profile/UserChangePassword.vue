@@ -1,7 +1,12 @@
 <template>
   <div>
     <div>
-      <td class="font-semibold pb-5">Update your password</td>
+      <template v-if="user.has_password == true">
+        <td class="font-semibold pb-5">Update your password</td>
+      </template>
+      <template v-if="user.has_password != true">
+        <td class="font-semibold pb-5">Please set your password</td>
+      </template>
       <vs-input
         type="password"
         class="w-full pb-3"
