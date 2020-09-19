@@ -45,8 +45,8 @@
                         " " +
                         record.address.state +
                         " " +
-                        record.address.country_code
-                    }} || {{'-'}}
+                        record.address.country_code || '-'
+                    }}
                   </td>
                 </tr>
               </table>
@@ -141,7 +141,6 @@
           <vs-row>
             <vs-col vs-w="6" class="pr-2"> </vs-col>
             <vs-col vs-w="6" class="pl-2">
-              <!-- <vx-card class="mb-5 h-full"> -->
               <div class="text-right">
                 <table style="width: 100%">
                   <tr>
@@ -176,9 +175,8 @@
                   </tr>
                 </table>
 
-               
+  
               </div>
-              <!-- </vx-card> -->
             </vs-col>
           </vs-row>
         </vx-card>
@@ -211,7 +209,7 @@
                   {{ record.payment.method == 1 ? "Xenopay" : "Bank Transfer" }}
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td class="font-semibold">Attachment</td>
                 <td>:</td>
                 <td>
@@ -220,7 +218,7 @@
                     :src="record.payment && record.payment.image"
                   ></vs-images>
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td class="font-semibold">Update Time</td>
                 <td>:</td>
@@ -231,7 +229,7 @@
               <tr>
                 <td class="font-semibold">Total Amount</td>
                 <td>:</td>
-                <td>{{ record.payment }}</td>
+                <td>RM {{ record.payment.xenopayPayment.amount }}</td>
               </tr>
             </table>
 
