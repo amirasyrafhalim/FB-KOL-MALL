@@ -40,12 +40,11 @@ export default class OrderApi extends BaseApi {
     );
   }
   updateOrderPayment(payload, id) {
-    return this.axios.$patch(
-      this.helper.prepareUrl(apiRoutes[this.module].updateOrderPayment, {
+    return this.axios.$patch(apiRoutes[this.module].updateOrderPayment, {
         id: id,
       }),
       payload
-    );
+    ;
   }
 
   delete(id) {

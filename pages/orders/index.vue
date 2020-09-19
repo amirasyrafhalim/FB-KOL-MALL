@@ -44,13 +44,12 @@
               >{{ tr.status && tr.status.description }}</vs-chip
             >
           </vs-td>
-          <!-- {{tr}} -->
           <vs-td :data="data[indextr].payment">
             <vs-chip
-            v-if="tr.order_payment"
-              :color="getOrderPaymentStatusColor(tr.order_payment)"
+            v-if="tr.payment"
+              :color="getOrderPaymentStatusColor(tr.payment.status)"
               class="p-2 mx-auto"
-              >{{ orderStatus }}</vs-chip
+              >{{ tr.payment.status.description }}</vs-chip
             >
             <p v-else class="text-center"> Not available </p>
           </vs-td>
@@ -155,22 +154,10 @@ export default {
       if (status === 5) return "warning";
       if (status === 6) return "warning";
     },
-    getOrderPaymentStatusColor(orderPayment) {
-      console.log('orderPayment', orderPayment)
-      var statusInt = 1;
-      if (orderPayment) {
-        if (orderPayment.status == 0) {
-          this.orderStatus = "Failed";
-        } else if (orderPayment.status == 1) {
-          this.orderStatus = "Pending";
-        } else if (orderPayment.status == 2) {
-          this.orderStatus = "Success";
-        }
-      }
-
-      if (this.orderStatus === "Success") return "success";
-      if (this.orderStatus === "Failed") return "danger";
-      if (this.orderStatus === "Pending") return "warning";
+    getOrderPaymentStatusColor(paymentStatus) {
+      if (paymentStatus.value === 0) return "danger";
+      if (paymentStatus.value === 1) return "success";
+      if (paymentStatus.value === 2) return "warning";
     },
     setSelected(value) {
       //  trigger a mutation, or dispatch an action
