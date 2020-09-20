@@ -140,7 +140,7 @@ export default {
     loginWithFacebook() {
       this.$vs.loading();
       window.location.href =
-        process.env.API_URL_REDIRECT + "/v1/auth/fb-redirect";
+        process.env.API_URL + "/v1/auth/fb-redirect";
     },
     registerUser() {
       if (!this.checkLogin()) return;

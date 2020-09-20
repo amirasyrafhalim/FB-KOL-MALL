@@ -49,6 +49,7 @@
         <vs-th sort-key="status.description">Status</vs-th>
         <vs-th sort-key="createdBy.name">Created By</vs-th>
         <vs-th sort-key="updatedBy.name">Updated By</vs-th>
+        <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -81,6 +82,10 @@
 
           <vs-td :data="data[indextr].updatedBy.name">
             {{ tr.updatedBy.name }}
+          </vs-td>
+
+          <vs-td :data="data[indextr].created_at">
+            {{ tr.created_at }}
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h3 class="text-center font-bold mb-1">
-      {{ record.campaign && record.campaign.name + " Campaign" }}
+    <h3 class="text-center font-bold mb-5">
+      {{ record.campaign && record.campaign.name }}
     </h3>
-    <h5 class="text-center mb-5">
+    <!-- <h5 class="text-center mb-5">
       Invoice Number : {{ record && record.invoice_no }}
-    </h5>
+    </h5> -->
 
     <vs-row class="mb-4">
       <vs-col vs-w="12" class="pr-2">
@@ -13,7 +13,10 @@
           <vs-row>
             <vs-col vs-w="8" vs-xs="12">
               <h4 class="font-bold mb-3">Buyer Details</h4>
-              <table style="width:100%; white-space: inherit" v-if="record.detail">
+              <table
+                style="width:100%; white-space: inherit"
+                v-if="record.detail"
+              >
                 <tr>
                   <td style="width:10%; white-space: inherit">Name</td>
                   <td>:</td>
@@ -32,7 +35,7 @@
                 <tr>
                   <td style="width:10%; white-space: inherit ">Address</td>
                   <td>:</td>
-                  <td>
+                  <td v-if="record.address">
                     {{
                       record.address.address +
                         " " +
@@ -42,12 +45,15 @@
                         " " +
                         record.address.state +
                         " " +
-                        record.address.country_code
+                        record.address.country_code || '-'
                     }}
                   </td>
                 </tr>
               </table>
-               <h4 vs-w="8" vs-xs="12" style="color: grey" v-else>No Record Found</h4>
+
+              <h4 vs-w="8" vs-xs="12" style="color: grey" v-else>
+                No Record Found
+              </h4>
             </vs-col>
             <vs-col vs-w="4" vs-xs="12">
               <div v-if="record.delivery">
@@ -64,21 +70,22 @@
                       }}
                     </vs-chip>
                   </h4>
-                  <p>{{ record.delivery.partner }}</p>
-                  <p>{{ record.delivery.tracking_no }}</p>
-                  <p>{{ record.delivery.remark }}</p>
-                  <p>{{ record.delivery.amount }}</p>
+                  <p>{{ record.delivery.partner || null }}</p>
+                  <p>{{ record.delivery.tracking_no || null }}</p>
+                  <p>{{ record.delivery.remark || null }}</p>
+                  <p>{{ record.delivery.amount || null }}</p>
                 </div>
                 <div class="mb-2" v-else>
                   <h4 class="font-bold">
                     <span>{{ "Self Pickup" }}</span>
+                    
                     <vs-chip
                       :color="
-                        getDeliveryStatusColor(record.delivery.status.value)
+                        getStatusColor(record.delivery.status.value)
                       "
                     >
                       {{
-                        record.delivery && record.delivery.status.description
+                        record.delivery.status && record.delivery.status.description || '-'
                       }}
                     </vs-chip>
                   </h4>
@@ -99,10 +106,10 @@
                 <th class="px-0">Total</th>
                 <tr>
                   <td style="width:20%">Package Name:</td>
-                  <td>{{ record.campaign.packages[0].name }}</td>
-                  <td>{{ record.package.quantity + " x" }}</td>
-                  <td>{{ "RM " + record.campaign.packages[0].price }}</td>
-                  <td>{{ "RM " + record.total_amount }}</td>
+                  <td>{{ record.campaign.packages[0].name || null }}</td>
+                  <td>{{ record.package.quantity + " x" || null}}</td>
+                  <td>{{ "RM " + record.campaign.packages[0].price || null }}</td>
+                  <td>{{ "RM " + record.total_amount || null }}</td>
                 </tr>
                 <tr>
                   <td style="width:15%"></td>
@@ -118,27 +125,36 @@
                   </vs-list>
                 </tr>
               </table>
-               <h4 vs-w="8" vs-xs="12" style="color: grey" class="text-center" v-else>No Record Found</h4>
+
+              <h4
+                vs-w="8"
+                vs-xs="12"
+                style="color: grey"
+                class="text-center"
+                v-else
+              >
+                No Record Found
+              </h4>
             </vs-col>
           </vs-row>
           <vs-divider></vs-divider>
           <vs-row>
             <vs-col vs-w="6" class="pr-2"> </vs-col>
             <vs-col vs-w="6" class="pl-2">
-              <!-- <vx-card class="mb-5 h-full"> -->
               <div class="text-right">
-                <table style="width: 100%" v-if="record.delivery">
+                <table style="width: 100%">
                   <tr>
                     <td class="font-semibold">Subtotal Amount</td>
                     <td>:</td>
                     <td class="text-right">
-                      {{ "RM " + record.subtotal_amount }}
+                      RM {{ record.subtotal_amount != null ? record.subtotal_amount : '0.00' }}
                     </td>
                   </tr>
                   <tr>
                     <td class="font-semibold">Tax Amount</td>
                     <td>:</td>
-                    <td class="text-right">{{ "RM " + record.tax_amount }}</td>
+                    {{record.tax_amount}}
+                    <td class="text-right">RM {{ record.tax_amount != null ? record.tax_amount : '0.00' }}</td>
                   </tr>
                   <tr>
                     <td class="font-semibold">Shipping Amount</td>
@@ -146,9 +162,7 @@
                     <td class="text-right">
                       RM
                       {{
-                        record.delivery.amount != null
-                          ? record.delivery.amount
-                          : "0.00"
+                        record.delivery ? record.delivery.amount : "0.00"
                       }}
                     </td>
                   </tr>
@@ -156,13 +170,13 @@
                     <td class="font-semibold">Total Amount</td>
                     <td>:</td>
                     <td class="text-right">
-                      {{ "RM " + record.total_amount }}
+                      RM {{ record.total_amount != null ? record.total_amount : '0.00' }}
                     </td>
                   </tr>
                 </table>
-                 <h4 vs-w="8" vs-xs="12" style="color: grey" class="text-center" v-else>No Record Found</h4>
+
+  
               </div>
-              <!-- </vx-card> -->
             </vs-col>
           </vs-row>
         </vx-card>
@@ -172,7 +186,11 @@
       <vs-col vs-w="12" class="pl-2">
         <vx-card class="mb-5 h-full">
           <div v-if="record.payment">
-            <table style="width: 100%" class="" v-if="record.payment.xenopayPayment">
+            <table
+              style="width: 100%"
+              class=""
+              v-if="record.payment.xenopayPayment"
+            >
               <tr>
                 <td colspan="3">
                   <vs-chip
@@ -191,16 +209,16 @@
                   {{ record.payment.method == 1 ? "Xenopay" : "Bank Transfer" }}
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td class="font-semibold">Attachment</td>
                 <td>:</td>
                 <td>
-                  <v-img
+                  <vs-images
                     width="50%"
                     :src="record.payment && record.payment.image"
-                  ></v-img>
+                  ></vs-images>
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td class="font-semibold">Update Time</td>
                 <td>:</td>
@@ -211,7 +229,7 @@
               <tr>
                 <td class="font-semibold">Total Amount</td>
                 <td>:</td>
-                <td>{{ record.payment }}</td>
+                <td>RM {{ record.payment.xenopayPayment.amount }}</td>
               </tr>
             </table>
 
@@ -227,7 +245,7 @@
               </tr>
               <tr>
                 <td class="font-semibold" style="width: 20%">
-                  Subtotal Amount
+                  Payment Method
                 </td>
                 <td>:</td>
                 <td>
@@ -238,17 +256,17 @@
                 <td class="font-semibold">Attachment</td>
                 <td>:</td>
                 <td>
-                  <v-img
+                  <vs-images
                     width="50%"
                     :src="record.payment && record.payment.image"
-                  ></v-img>
+                  ></vs-images>
                 </td>
               </tr>
               <tr>
                 <td class="font-semibold">Update Time</td>
                 <td>:</td>
                 <td>
-                  {{ record.payment.updated_at }}
+                  {{ record.payment.created_at }}
                 </td>
               </tr>
               <tr>
@@ -256,7 +274,7 @@
                   <vs-button
                     color="danger"
                     type="gradient"
-                    @click="openModel()"
+                    @click="openModal()"
                   >
                     {{ $t("label.updateStatus") }}
                   </vs-button>
@@ -264,10 +282,37 @@
               </tr>
             </table>
           </div>
-          <h4 vs-w="8" vs-xs="12" style="color: grey" class="text-center" v-else>No Payment</h4>
+          <h4
+            vs-w="8"
+            vs-xs="12"
+            style="color: grey"
+            class="text-center"
+            v-else
+          >
+            No Payment
+          </h4>
         </vx-card>
       </vs-col>
     </vs-row>
+
+    <vs-prompt
+      @cancel="val = ''"
+      @accept="updatePaymentStatus()"
+      @close="close"
+      :active.sync="activePrompt"
+      title="Update Payment Status"
+    >
+      <div class="con-exemple-prompt">
+        <v-select
+          :options="paymentEnums"
+          label="description"
+          placeholder="Select status"
+          @input.native="fetchEnumPaymentStatus($event.target.value)"
+          v-model="selectedStatus"
+          :value="selectedStatus"
+        ></v-select>
+      </div>
+    </vs-prompt>
   </div>
 
   <!-- </vs-card> -->
@@ -276,21 +321,33 @@
 <script>
 import getOneMixin from "@/mixins/getOne";
 import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
+import formMixin from "@/mixins/form";
 
 export default {
   name: "index",
   layout: "main",
-  mixins: [getOneMixin],
+  mixins: [getOneMixin, formMixin],
   components: {
     UpdateDeliveryModal
   },
   asyncData() {
     return {
-      moduleName: "orders"
+      moduleName: "orders",
+      activePrompt: false,
+      paymentStatus: [],
+      selectedStatus: ""
     };
   },
+  computed: {
+    paymentEnums() {
+      return this.$store.state[this.moduleName].paymentEnums;
+    }
+  },
+  created() {
+    this.fetchEnumPaymentStatus()
+  },
   methods: {
-    getDeliveryStatusColor(status) {
+    getStatusColor(status) {
       if (status === 2) return "success";
       if (status === 0) return "danger";
       if (status === 1) return "warning";
@@ -300,17 +357,37 @@ export default {
       if (status === 0) return "danger";
       if (status === 2) return "warning";
     },
-    openModal(){
-
+    openModal() {
+       this.activePrompt = true;
     },
-    async updateStatus(status, id) {
-      //add order payment Api file in services folder
-      // try {
-      //   let res = await this.$api.orderPayment.update({ status: status }, id);
-      //   this.handleApiSuccess(res, "merchants");
-      // } catch (err) {
-      //   this.handleApiErrors(err);
-      // }
+      showSuccess() {
+      this.$vs.notify({
+        color: "success",
+        title: "Update Payment Status",
+        text: "The selected tracking number was successfully updated"
+      });
+    },
+    close() {
+      this.$vs.notify({
+        color: "danger",
+        title: "Closed",
+        text: "You close a dialog!"
+      });
+    },
+    async updatePaymentStatus() {
+      try {
+        let res = await this.$api.orders.updateOrderPayment({ status:  this.selectedStatus.value }, this.record.payment.id);
+        this.handleApiSuccess(res, "orders");
+      } catch (err) {
+        this.handleApiErrors(err);
+      }   
+    },
+
+    async fetchEnumPaymentStatus(value) {
+       this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
+      routeName: "paymentStatus",
+      stateKey: "paymentEnums"
+    });
     }
   }
 };

@@ -3,7 +3,7 @@ import { apiRoutes } from "@/config";
 
 export default class MerchantApi extends BaseApi {
   constructor(axios, helper) {
-    super(axios, helper, "merchants");
+    super(axios, helper, "merchantBanks");
   }
 
   getAll(searchQuery) {
@@ -21,14 +21,6 @@ export default class MerchantApi extends BaseApi {
   update(payload, id) {
     return super.update(payload, id);
 
-  }
-  updateDetail(payload, id) {
-    return this.axios.$patch(
-      this.helper.prepareUrl(apiRoutes.merchantDetail.getOneOrUpdateOrDeleteMerchantDetail, {
-        id: id,
-      }),
-      payload
-    );
   }
 
   delete(id) {

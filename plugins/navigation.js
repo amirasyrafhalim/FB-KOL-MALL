@@ -23,6 +23,14 @@ export default ({route, app}, inject) => {
       title: 'Orders',
       breadcrumb: [{title: 'Orders', url: '/orders'}, {title: 'List', active: true}]
     },
+    userprofile: {
+      title: 'User Profile',
+      breadcrumb: [{title: ' Profile', url: '/userprofile'}, {title: 'Information', active: true}]
+    },
+    userprofileIdEdit: {
+      title: 'Edit',
+      breadcrumb: [{title: 'Profile', url: '/userprofile'}, {title: 'Edit Information', active: true}]
+    },
     merchantPageIdLiveVideo: {
       title: 'Live Videos',
       breadcrumb: [
@@ -43,10 +51,17 @@ export default ({route, app}, inject) => {
       title: 'Settings',
       breadcrumb: [{title: 'Settings', url: '/settings'}, {title: 'List', active: true}]
     },
-    settingsShippings: {
-      title: 'Shipping',
+    settingsPaymentMethod: {
+      title: 'Payments',
       breadcrumb: [{title: 'Settings', url: '/settings'}, {
-        title: 'Shipping',
+        title: 'Payment Method',
+        url: '/settings/paymentMethod'
+      }, {title: 'List', active: true}]
+    },
+    settingsShippings: {
+      title: 'Shippings',
+      breadcrumb: [{title: 'Settings', url: '/settings'}, {
+        title: 'Shippings',
         url: '/settings/shippings'
       }, {title: 'List', active: true}]
     }

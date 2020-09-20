@@ -5,7 +5,7 @@ import apiRoutes from "../apiRoutes";
 const appUrl = process.env.APP_URL;
 const facebookAppId = process.env.FACEBOOK_APP_ID;
 const facebookGraphVersion = process.env.FACEBOOK_GRAPH_VERSION;
-const apiUrlRedirect = process.env.API_URL_REDIRECT;
+const apiUrlRedirect = process.env.API_URL;
 
 export default {
   resetOnError: true,

@@ -221,15 +221,16 @@ export default {
 			try {
 				if (state[params.stateKey].length == 0) {
 					let res = await this.$api.enums[params.routeName]();
-
 					commit('setDynamicStateProperty', {
 						key: params.stateKey,
 						value: res.data
 					});
 				}
 			} catch (err) {
-				let resBody = err.response;
-				let errMessage = resBody.data.status_message;
+				let resBody = err;
+				
+				let errMessage = resBody;
+				console.log(errMessage)
 				dispatch(
 					'showSnackbar',
 					{

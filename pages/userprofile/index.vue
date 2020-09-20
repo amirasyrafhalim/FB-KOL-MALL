@@ -33,7 +33,7 @@
             </tr>
             <tr>
               <td class="font-semibold pb-5">Status</td>
-              <p style="color: #4CAF50;" class="pl-5 mb-5">
+              <p class="pl-5 mb-5 text-success">
                 {{ user.status.description }}
               </p>
             </tr>
@@ -189,17 +189,6 @@
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
             </tr>
             <tr>
-              <td class="font-semibold pb-5">Business Categories</td>
-
-              <ol
-                class="pl-5"
-                v-for="(item, key) in user.merchant.detail.categories"
-                :key="key"
-              >
-                <li>{{ item.name }}</li>
-              </ol>
-            </tr>
-            <tr>
               <td class="font-semibold pb-5">Business Size</td>
 
               <td class="pl-5 pb-5">
@@ -215,6 +204,17 @@
               <template v-if="user.merchant.payment_method_id == 2">
                 <td class="pl-5 pb-5">Offline</td>
               </template>
+            </tr>
+                       <tr>
+              <td class="font-semibold pb-5">Business Categories</td>
+
+              <ol
+                class="pl-5"
+                v-for="(item, key) in user.merchant.detail.categories"
+                :key="key"
+              >
+                <li>{{ item.name }}</li>
+              </ol>
             </tr>
             <!-- <tr>
               <td class="font-semibold pb-5">Merchant Logo</td>
@@ -294,7 +294,7 @@ export default {
   },
   created() {
     this.user = this.$store.state.auth.user;
-    console.log("user", this.user);
+
   }
 };
 </script>
