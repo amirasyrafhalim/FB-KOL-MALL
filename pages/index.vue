@@ -92,7 +92,7 @@
         <vx-card title="Revenue vs Orders" class="h-full">
           <template slot="actions">
             <!--feather-icon icon="SettingsIcon" svgClasses="w-6 h-6 text-grey"></feather-icon-->
-            <!--date-range-picker></date-range-picker-->
+
             <v-md-date-range-picker
               class="date-range-picker"
               opens="right"
@@ -118,6 +118,11 @@
       <!-- RADIAL CHART -->
       <div class="vx-col w-full md:w-1/3 mb-base">
         <vx-card title="Order Summary" class="h-full">
+          <template slot="actions">
+            <nuxt-link :to="localePath('orders')">
+              <feather-icon icon="ArrowRightCircleIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
+            </nuxt-link>
+          </template>
           <!-- CHART -->
           <template slot="no-body">
             <div class="mt-10">
