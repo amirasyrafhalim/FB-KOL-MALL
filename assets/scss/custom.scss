@@ -1,0 +1,27 @@
+.date-range-picker {
+	width: 210px;
+
+	.mdrp__activator {
+		.activator-wrapper {
+			label {
+				display: none !important;
+			}
+
+			.text-field {
+				text-align: right;
+				font-family: inherit;
+				font-size: 1rem;
+				border-bottom: 1px solid #dae1e7;
+				width: 200px;
+			}
+
+			.bar {
+				display: none;
+			}
+		}
+	}
+
+	.mdrp__panel.dropdown-menu {
+		z-index: 99 !important;
+	}
+}
