@@ -13,5 +13,6 @@ export default [
 	'@/plugins/navigation',
 	'@/plugins/vue-select',
 	'@/plugins/vuejs-auto-complete',
-	'@/plugins/filters'
+	'@/plugins/filters',
+	'@/plugins/v-md-date-range-picker'
 ];
