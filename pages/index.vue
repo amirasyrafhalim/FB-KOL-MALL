@@ -89,7 +89,7 @@
     <div class="vx-row">
       <!-- LINE CHART -->
       <div class="vx-col w-full md:w-2/3 mb-base">
-        <vx-card title="Revenue vs Orders">
+        <vx-card title="Revenue vs Orders" class="h-full">
           <template slot="actions">
             <!--feather-icon icon="SettingsIcon" svgClasses="w-6 h-6 text-grey"></feather-icon-->
             <!--date-range-picker></date-range-picker-->
@@ -102,23 +102,32 @@
             ></v-md-date-range-picker>
           </template>
           <div slot="no-body" class="p-6 pb-0">
-            <e-charts autoresize :options="salesChart" theme="shine" ref="salesChart" auto-resize />
+            <e-charts
+              v-if="salesChart && salesChart.series"
+              autoresize
+              :options="salesChart"
+              theme="shine"
+              ref="salesChart"
+              auto-resize
+            />
+            <div v-else class="text-center py-8">No data yet</div>
           </div>
         </vx-card>
       </div>
 
       <!-- RADIAL CHART -->
       <div class="vx-col w-full md:w-1/3 mb-base">
-        <vx-card title="Order Summary">
+        <vx-card title="Order Summary" class="h-full">
           <!-- CHART -->
           <template slot="no-body">
             <div class="mt-10">
               <vue-apex-charts
-                v-if="orderSummary"
+                v-if="orderSummary && orderSummary.series"
                 type="donut"
                 :options="orderSummary.chartOptions"
                 :series="orderSummary.series"
               ></vue-apex-charts>
+              <div v-else class="text-center py-8">No data yet</div>
             </div>
           </template>
         </vx-card>
@@ -188,16 +197,9 @@ export default {
         maxScrollbarLength: 60,
         wheelSpeed: 0.6,
       },
-
-      options: null,
-      series: null,
     };
   },
-  watch: {
-    dateRange: function (newVal, oldVal) {
-      console.log(newVal, oldVal);
-    },
-  },
+
   computed: {
     scrollbarTag() {
       return this.$store.getters.scrollbarTag;
@@ -217,8 +219,6 @@ export default {
       start.setDate(new Date().getDate() - 29);
 
       return start;
-
-      // return new Intl.DateTimeFormat("ms-My").format(start);
     },
     filterEndDate() {
       let end = new Date();
@@ -235,9 +235,8 @@ export default {
 
     setTimeout(() => {
       this.fetchSalesChart();
+      this.fetchOrderSummary();
     }, 500);
-
-    this.fetchOrderSummary();
 
     // Subscribers gained - Statistics
     this.subscribersGained = JSON.parse(
