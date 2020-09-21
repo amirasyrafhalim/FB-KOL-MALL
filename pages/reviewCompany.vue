@@ -1,65 +1,64 @@
 <template>
+  <div id="referral_code" class="d-flex flex-column" fluid>
+    <div
+      class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
+      id="page-login"
+    >
+      <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
+        <vs-row vs-justify="center">
+          <vs-col
+            type="block"
+            
+         
+          
+            vs-w="6"
+          >
+            <vs-card class="bg-white">
+              <div slot="header" class="text-center">
+                <img
+                  :src="require('~/assets/img/logo.png')"
+                  alt="content-img"
+                  class="mx-auto card-img-top "
+                />
+              </div>
+              <!-- <div> -->
+              <vx-card :title="$t('label.review')">
+                <vs-input
+                  :label="$t('label.company_name')"
+                  :error-messages="formErrors ? formErrors.company_name : ''"
+                  v-model="formModel.company_name"
+                  class="w-full mb-4"
+                />
 
-  <v-container
-    id="referral_code"
-    class="d-flex flex-column"
-    fluid
-  >
+                <p>{{$t('label.size')}}</p>
+                <v-select
+                class="mb-5 pa-3"
+                  v-model="formModel.business_size"
+                  :options="rangeSize"
+                  :menu-props="{ maxHeight: '400' }"
+                  label="value"
+                  hint="Pick your monthly revenue"
+                ></v-select>
+                 <p>{{$t('label.category')}}</p>
+                <v-select
+                class="mb-5 pa-3"
+                  v-model="formModel.categories"
+                  :options="categories"
+                  :menu-props="{ maxHeight: '400' }"
+                  label="name"
+                  multiple
+                  hint="Pick your categories"
+                ></v-select>
 
-  <vs-row vs-justify="center">
-      <vs-col type="block" vs-justify="center" vs-align="center" class="text-center" vs-w="6">
-        <vs-card class="bg-white">
-          <div slot="header" class="bg-white">
-            <img
-              :src="require('~/assets/img/logo.png')"
-              alt="content-img"
-              class="mx-auto card-img-top "
-            />
-          </div>
-          <!-- <div> -->
-            <vx-card :title=" $t('label.review') ">
-              <vs-input
-                :placeholder="$t('label.company_name')"
-                :error-messages="formErrors ? formErrors.company_name : ''"
-                v-model="formModel.company_name"
-                class="w-full mb-4"
-              />
-
-              <v-autocomplete
-                solo
-                class="border-radius-button"
-                :items="rangeSize"
-                :label="$t('label.size')"
-                :error-messages="formErrors ? formErrors.business_size : ''"
-                item-text="value"
-                item-value="id"
-                v-model="formModel.business_size"
-                @input.native="fetchItems($event.target.value)"
-              ></v-autocomplete>
-
-               <v-autocomplete
-                solo
-                class=" border-radius-button"
-                :items="categories"
-                multiple
-                :label="$t('label.category')"
-                :error-messages="formErrors ? formErrors.categories : ''"
-                item-text="name"
-                item-value="id"
-                v-model="formModel.categories"
-                @input.native="fetchItems($event.target.value)"
-              ></v-autocomplete>
-
-              <vs-button class="mr-4 w-full" @click="next"
-                >Next</vs-button
-              >
-            </vx-card>
-          <!-- </div> -->
-
-        </vs-card>
-      </vs-col>
-    </vs-row>
-  </v-container>
+                <vs-button class="mr-4 w-full" @click="next">Next</vs-button>
+              </vx-card>
+              <!-- </div> -->
+            </vs-card>
+          </vs-col>
+        </vs-row>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -77,15 +76,16 @@ export default {
   asyncData() {
     return {
       rangeSize: [
-        { value: "1-99" },
-        { value: "100-199" },
-        { value: "200-299" },
-        { value: "more than 300" }
+        { value: "0-5000" },
+        { value: "5000-10000" },
+        { value: "10000-35000" },
+        { value: "35000-50000" },
+        { value: "more than 50000" }
       ],
       formModel: {
         company_name: "",
-        business_size:null,
-        categories: [],
+        business_size: null,
+        categories: []
       }
     };
   },
@@ -103,6 +103,7 @@ export default {
     },
     async next() {
       try {
+        this.formModel.business_size = this.formModel.business_size.value
         var res = await this.$api.merchants.create(this.formModel);
         await this.$auth.fetchUser();
         this.handleApiSuccess(res, "/");

@@ -1,5 +1,15 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
+ 
+   <!-- <vs-select
+      class="selectExample"
+      label="Figuras"
+      v-model="selectedStatus"
+      @change="selectOrderStatusFn()"
+      >
+      <vs-select-item :key="item.value" :value="item.value" :text="item.description" v-for="item in orderStatus" />
+    </vs-select> -->
+
     <vs-table
       ref="table"
       v-model="selected"
@@ -9,6 +19,7 @@
       :data="records"
       class="bg-transparent"
     >
+    
       <template slot="thead" class="text-center">
         <vs-th sort-key="user.name">Name</vs-th>
         <vs-th sort-key="invoice_no">Invoice Number</vs-th>
@@ -38,11 +49,7 @@
             {{ tr.created_at || '-' }}
           </vs-td>
           <vs-td>
-            <vs-chip
-              :color="getOrderStatusColor(tr.status.value)"
-              class="payment-status p-2"
-              >{{ tr.status && tr.status.description }}</vs-chip
-            >
+           {{ tr.status && tr.status.description }}
           </vs-td>
           <vs-td :data="data[indextr].payment">
             <vs-chip
@@ -58,7 +65,7 @@
             <nuxt-link
               :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
             >
-              <vs-button color="danger" type="gradient" class="text-xs"
+              <vs-button color="danger" type="border" class="text-xs"
                 >{{ "View" }}
               </vs-button>
             </nuxt-link>
@@ -66,7 +73,7 @@
               v-if="tr.delivery"
               color="primary"
               class="text-xs"
-              type="gradient border"
+              type="border"
               @click="activePromptFn(indextr)"
               >{{ "Tracking Info" }}
             </vs-button>
@@ -96,6 +103,7 @@
 <script>
 import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
 
+
 export default {
   layout: "main",
   components: {
@@ -113,8 +121,25 @@ export default {
       tracking_no_id: "",
       orderDeliveryId: "",
       partner: "",
-      orderStatus: "",
-      selectedPartner: ""
+      orderStatus: [
+    {
+      "value": 0,
+      "key": "Failed",
+      "description": "Failed"
+    },
+    {
+      "value": 1,
+      "key": "Success",
+      "description": "Success"
+    },
+    {
+      "value": 2,
+      "key": "Pending",
+      "description": "Pending"
+    }
+  ],
+      selectedPartner: "",
+      selectedStatus: ""
     };
   },
   computed: {
@@ -146,13 +171,16 @@ export default {
     }
   },
   methods: {
+    selectOrderStatusFn(value) {
+      console.log(value)
+    },
     getOrderStatusColor(status) {
       if (status === 1) return "success";
-      if (status === 2) return "danger";
+      if (status === 2) return "warning";
       if (status === 3) return "warning";
       if (status === 4) return "warning";
-      if (status === 5) return "warning";
-      if (status === 6) return "warning";
+      if (status === 5) return "danger";
+      if (status === 6) return "danger";
     },
     getOrderPaymentStatusColor(paymentStatus) {
       if (paymentStatus.value === 0) return "danger";
