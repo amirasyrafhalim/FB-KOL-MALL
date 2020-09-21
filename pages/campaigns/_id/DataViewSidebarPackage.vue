@@ -158,7 +158,7 @@
         ],
         sellMethod: [
           {label: 'Keyword', code: 1},
-          {label: 'Bidding', code: 2},
+          // {label: 'Bidding', code: 2},
         ],
         status: [
           {label: 'Inactive', code: 0},
@@ -188,7 +188,7 @@
           this.dataLength = shipping.length
           this.dataHeight = shipping.height
           this.dataWidth = shipping.width
-          this.dataShippingMethod = shipping.shipping_method_id
+          this.dataShippingMethod = shipping.shipping_method
           this.initValues()
         }
       }
