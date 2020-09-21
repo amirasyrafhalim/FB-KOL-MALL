@@ -1,7 +1,6 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
- 
-   <!-- <vs-select
+    <!-- <vs-select
       class="selectExample"
       label="Figuras"
       v-model="selectedStatus"
@@ -10,99 +9,110 @@
       <vs-select-item :key="item.value" :value="item.value" :text="item.description" v-for="item in orderStatus" />
     </vs-select> -->
 
-    <vs-table
-      ref="table"
-      v-model="selected"
-      pagination
-      :max-items="itemsPerPage"
-      search
-      :data="records"
-      class="bg-transparent"
-    >
-    
+    <vs-table :data="records">
       <template slot="thead" class="text-center">
-        <vs-th sort-key="user.name">Name</vs-th>
-        <vs-th sort-key="invoice_no">Invoice Number</vs-th>
-        <vs-th sort-key="campaign.name">Campaign Name</vs-th>
-        <vs-th sort-key="delivery.tracking_no">Tracking Number</vs-th>
-        <vs-th sort-key="total_amount">Total Amount</vs-th>
-        <vs-th sort-key="created_at">Date</vs-th>
+        <vs-th sort-key="invoice_no">Invoice No</vs-th>
+        <vs-th sort-key="total_amount">Total Amount (RM)</vs-th>
         <vs-th sort-key="status">Order Status</vs-th>
         <vs-th sort-key="status">Payment Status</vs-th>
+        <vs-th sort-key="created_at">Date Order</vs-th>
         <vs-th sort-key="deliver_at">Action</vs-th>
       </template>
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+        
           <vs-td>
-            {{ tr.user && tr.user.name || '-' }}</vs-td
-          >
-
-          <vs-td >{{ tr.invoice_no || '-' }}</vs-td>
-          <vs-td> {{ (tr.campaign && tr.campaign.name) || '-'}}</vs-td>
-          <vs-td>
-            {{ (tr.delivery && tr.delivery.tracking_no) || "-" }}
+            {{ tr.invoice_no || "-" }}
           </vs-td>
-          <vs-td :data="data[indextr].total_amount"> {{ tr.total_amount || '-'  }}</vs-td>
 
           <vs-td>
-            {{ tr.created_at || '-' }}
+            {{ tr.total_amount || "-" }}
           </vs-td>
+
           <vs-td>
-           {{ tr.status && tr.status.description }}
+            {{ (tr.status && tr.status.description) || "-" }}
           </vs-td>
-          <vs-td :data="data[indextr].payment">
-            <vs-chip
-            v-if="tr.payment"
+          <vs-td class="mx-auto">
+            <div
+              v-if="tr.payment"
               :color="getOrderPaymentStatusColor(tr.payment.status)"
-              class="p-2 mx-auto"
-              >{{ tr.payment.status.description }}</vs-chip
             >
-            <p v-else class="text-center"> Not available </p>
+              {{ tr.payment.status.description }}
+            </div>
+            <p v-else>Not available</p>
+          </vs-td>
+            <vs-td>
+            {{ tr.created_at || "-" }}
           </vs-td>
 
-          <vs-td class="whitespace-no-wrap">
+          <vs-td>
             <nuxt-link
               :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
             >
-              <vs-button color="danger" type="border" class="text-xs"
-                >{{ "View" }}
+              <vs-button color="danger" type="border" icon="visibility">
               </vs-button>
             </nuxt-link>
+
             <vs-button
               v-if="tr.delivery"
               color="primary"
-              class="text-xs"
               type="border"
+              class="ml-2"
               @click="activePromptFn(indextr)"
-              >{{ "Tracking Info" }}
+            >
+            Tracking Info
             </vs-button>
           </vs-td>
+
+          <template class="expand-user text-center" slot="expand">
+            <div class="con-expand-users ml-5 pl-5" style="width:100%">
+              <table>
+                 <tr>
+                  <td width="15%" class="font-bold">Campaign Name</td>
+                  <td width="1%">:</td>
+                  <td>{{ tr.campaign && tr.campaign.name  }}</td>
+                </tr>
+                <tr>
+                  <td class="font-bold">Buyer Name</td>
+                  <td width="1%">:</td>
+                  <td>{{ tr.user && tr.user.name }}</td>
+                </tr>
+                <tr>
+                  <td class="font-bold">Tracking Number</td>
+                  <td width="1%">:</td>
+                  <td>{{ tr.tracking_no || '-' }}</td>
+                </tr>
+                
+              </table>
+            </div>
+          </template>
         </vs-tr>
-        <vs-prompt
-          @cancel="val = ''"
-          @accept="updateTracking()"
-          @close="close"
-          :active.sync="activePrompt"
-          title="Update Tracking Number"
-        >
-          <div class="con-exemple-prompt">
-            <vs-input
-              placeholder="Tracking Number"
-              vs-placeholder="Tracking Number"
-              v-model="tracking_no_id"
-              class="mt-3 w-full"
-            />
-          </div>
-        </vs-prompt>
       </template>
     </vs-table>
+
+    <!-- prompt update tracking number -->
+    <vs-prompt
+      @cancel="val = ''"
+      @accept="updateTracking()"
+      @close="close"
+      :active.sync="activePrompt"
+      title="Update Tracking Number"
+    >
+      <div class="con-exemple-prompt">
+        <vs-input
+          placeholder="Tracking Number"
+          vs-placeholder="Tracking Number"
+          v-model="tracking_no_id"
+          class="mt-3 w-full"
+        />
+      </div>
+    </vs-prompt>
   </div>
 </template>
 
 <script>
 import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
-
 
 export default {
   layout: "main",
@@ -122,22 +132,22 @@ export default {
       orderDeliveryId: "",
       partner: "",
       orderStatus: [
-    {
-      "value": 0,
-      "key": "Failed",
-      "description": "Failed"
-    },
-    {
-      "value": 1,
-      "key": "Success",
-      "description": "Success"
-    },
-    {
-      "value": 2,
-      "key": "Pending",
-      "description": "Pending"
-    }
-  ],
+        {
+          value: 0,
+          key: "Failed",
+          description: "Failed"
+        },
+        {
+          value: 1,
+          key: "Success",
+          description: "Success"
+        },
+        {
+          value: 2,
+          key: "Pending",
+          description: "Pending"
+        }
+      ],
       selectedPartner: "",
       selectedStatus: ""
     };
@@ -172,7 +182,7 @@ export default {
   },
   methods: {
     selectOrderStatusFn(value) {
-      console.log(value)
+      console.log(value);
     },
     getOrderStatusColor(status) {
       if (status === 1) return "success";
@@ -251,123 +261,8 @@ export default {
 }
 #data-list-list-view {
   .vs-con-table {
-    @media (max-width: 689px) {
-      .vs-table--search {
-        margin-left: 0;
-        max-width: unset;
-        width: 100%;
-
-        .vs-table--search-input {
-          width: 100%;
-        }
-      }
-    }
-
-    @media (max-width: 461px) {
-      .items-per-page-handler {
-        display: none;
-      }
-    }
-
-    @media (max-width: 341px) {
-      .data-list-btn-container {
-        width: 100%;
-
-        .dd-actions,
-        .btn-add-new {
-          width: 100%;
-          margin-right: 0 !important;
-        }
-      }
-    }
-
-    .product-name {
-      max-width: 23rem;
-    }
-
-    .vs-table--header {
-      display: flex;
-      flex-wrap: wrap;
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
-
-      > span {
-        display: flex;
-        flex-grow: 1;
-      }
-
-      .vs-table--search {
-        padding-top: 0;
-
-        .vs-table--search-input {
-          padding: 0.9rem 2.5rem;
-          font-size: 1rem;
-
-          & + i {
-            left: 1rem;
-          }
-
-          &:focus + i {
-            left: 1rem;
-          }
-        }
-      }
-    }
-
-    .vs-table {
-      border-collapse: separate;
-      border-spacing: 0 1.3rem;
-      padding: 0 1rem;
-
-      tr {
-        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
-
-        td {
-          padding: 20px;
-
-          &:first-child {
-            border-top-left-radius: 0.5rem;
-            border-bottom-left-radius: 0.5rem;
-          }
-
-          &:last-child {
-            border-top-right-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-          }
-        }
-
-        td.td-check {
-          padding: 20px !important;
-        }
-      }
-    }
-
-    .vs-table--thead {
-      th {
-        padding-top: 0;
-        padding-bottom: 0;
-
-        .vs-table-text {
-          text-transform: uppercase;
-          font-weight: 600;
-        }
-      }
-
-      th.td-check {
-        padding: 0 15px !important;
-      }
-
-      tr {
-        background: none;
-        box-shadow: none;
-      }
-    }
-
     .vs-table--pagination {
       justify-content: center;
-    }
-    .vs-lg-6 {
-      width: 100% !important;
     }
   }
 }
