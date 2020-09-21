@@ -1,13 +1,13 @@
 <template>
   <div>
-    <vs-alert
+    <!--vs-alert
       color="warning"
       class="mb-5"
       v-if="user && user.merchant && user.merchant.has_shipping_method===false"
     >
       You have not set any shipping methods.
       <nuxt-link :to="localePath('settings-shippings')" class="text-warning font-bold">Set now</nuxt-link>.
-    </vs-alert>
+    </vs-alert-->
 
     <div class="vx-row">
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
