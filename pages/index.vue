@@ -223,12 +223,12 @@ export default {
 
       start.setDate(new Date().getDate() - 29);
 
-      return start;
+      return start.toString();
     },
     filterEndDate() {
       let end = new Date();
 
-      return end;
+      return end.toString();
     },
   },
   mounted() {
