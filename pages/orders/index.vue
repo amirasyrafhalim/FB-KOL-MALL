@@ -1,22 +1,16 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
-    <!-- <vs-select
-      class="selectExample"
-      label="Figuras"
-      v-model="selectedStatus"
-      @change="selectOrderStatusFn()"
-      >
-      <vs-select-item :key="item.value" :value="item.value" :text="item.description" v-for="item in orderStatus" />
-    </vs-select> -->
+
+<form-search :module-name="moduleName" />
 
     <vs-table :data="records">
       <template slot="thead" class="text-center">
-        <vs-th sort-key="invoice_no">Invoice No</vs-th>
-        <vs-th sort-key="total_amount">Total Amount (RM)</vs-th>
-        <vs-th sort-key="status">Order Status</vs-th>
-        <vs-th sort-key="status">Payment Status</vs-th>
-        <vs-th sort-key="created_at">Date Order</vs-th>
-        <vs-th sort-key="deliver_at">Action</vs-th>
+        <vs-th sort-key="invoice_no">{{$t('label.invoiceNo')}}</vs-th>
+        <vs-th sort-key="total_amount">{{$t('label.totalAmount')}}</vs-th>
+        <vs-th sort-key="status">{{$t('label.orderStatus')}}</vs-th>
+        <vs-th sort-key="status">{{$t('label.paymentStatus')}}</vs-th>
+        <vs-th sort-key="created_at">{{$t('label.dateOrder')}}</vs-th>
+        <vs-th sort-key="deliver_at">{{$t('label.actions')}}</vs-th>
       </template>
 
       <template slot-scope="{ data }">
@@ -40,7 +34,7 @@
             >
               {{ tr.payment.status.description }}
             </div>
-            <p v-else>Not available</p>
+            <p v-else>{{$t('label.notAvailable')}}</p>
           </vs-td>
             <vs-td>
             {{ tr.created_at || "-" }}
@@ -61,7 +55,7 @@
               class="ml-2"
               @click="activePromptFn(indextr)"
             >
-            Tracking Info
+            {{$t('label.trackingInfo')}}
             </vs-button>
           </vs-td>
 
@@ -69,19 +63,19 @@
             <div class="con-expand-users ml-5 pl-5" style="width:100%">
               <table>
                  <tr>
-                  <td width="15%" class="font-bold">Campaign Name</td>
+                  <td width="15%" class="font-bold">{{$t('label.campaignName')}}</td>
                   <td width="1%">:</td>
                   <td>{{ tr.campaign && tr.campaign.name  }}</td>
                 </tr>
                 <tr>
-                  <td class="font-bold">Buyer Name</td>
+                  <td class="font-bold">{{$t('label.buyerName')}}</td>
                   <td width="1%">:</td>
                   <td>{{ tr.user && tr.user.name }}</td>
                 </tr>
                 <tr>
-                  <td class="font-bold">Tracking Number</td>
+                  <td class="font-bold">{{$t('label.trackingNo')}}</td>
                   <td width="1%">:</td>
-                  <td>{{ tr.tracking_no || '-' }}</td>
+                  <td>{{ (tr.delivery && tr.delivery.tracking_no) || '-' }}</td>
                 </tr>
                 
               </table>
@@ -113,11 +107,13 @@
 
 <script>
 import UpdateDeliveryModal from "@/components/pages/orders/UpdateDeliveryModal";
+import FormSearch from "@/components/pages/orders/FormSearch";
 
 export default {
   layout: "main",
   components: {
-    UpdateDeliveryModal
+    UpdateDeliveryModal,
+    FormSearch
   },
   data() {
     return {
@@ -131,28 +127,12 @@ export default {
       tracking_no_id: "",
       orderDeliveryId: "",
       partner: "",
-      orderStatus: [
-        {
-          value: 0,
-          key: "Failed",
-          description: "Failed"
-        },
-        {
-          value: 1,
-          key: "Success",
-          description: "Success"
-        },
-        {
-          value: 2,
-          key: "Pending",
-          description: "Pending"
-        }
-      ],
       selectedPartner: "",
       selectedStatus: ""
     };
   },
   computed: {
+   
     currentPage() {
       if (this.isMounted) {
         return this.$refs.table.currentx;
@@ -181,9 +161,8 @@ export default {
     }
   },
   methods: {
-    selectOrderStatusFn(value) {
-      console.log(value);
-    },
+
+   
     getOrderStatusColor(status) {
       if (status === 1) return "success";
       if (status === 2) return "warning";

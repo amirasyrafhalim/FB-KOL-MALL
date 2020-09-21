@@ -20,17 +20,17 @@
                 <tr>
                   <td style="width:10%; white-space: inherit">Name</td>
                   <td>:</td>
-                  <td>{{ record.detail.name || "-" }}</td>
+                  <td>{{ (record.detail && record.detail.name) || "-" }}</td>
                 </tr>
                 <tr>
                   <td style="width:10%; white-space: inherit">Email</td>
                   <td>:</td>
-                  <td>{{ record.detail.email || "-" }}</td>
+                  <td>{{ (record.detail && record.detail.email) || "-" }}</td>
                 </tr>
                 <tr>
                   <td style="width:10%; white-space: inherit">Phone No</td>
                   <td>:</td>
-                  <td>{{ record.detail.phone_no || "-" }}</td>
+                  <td>{{ record.detail &&record.detail.phone_no || "-" }}</td>
                 </tr>
                 <tr>
                   <td style="width:10%; white-space: inherit ">Address</td>
@@ -52,12 +52,12 @@
               </table>
 
               <h4 vs-w="8" vs-xs="12" style="color: grey" v-else>
-                No Record Found
+                No Buyer Details
               </h4>
             </vs-col>
             <vs-col vs-w="4" vs-xs="12">
               <div v-if="record.delivery">
-                <div class="mb-2" v-if="record.delivery.method == 1">
+                <div class="mb-2" v-if="record && record.delivery && record.delivery.method.value == 1">
                   <h4 class="font-bold">
                     <span>{{ "Postage" }}</span>
                     <vs-chip
@@ -109,7 +109,7 @@
                   <td>{{ record.campaign.packages[0].name || null }}</td>
                   <td>{{ record.package.quantity + " x" || null}}</td>
                   <td>{{ "RM " + record.campaign.packages[0].price || null }}</td>
-                  <td>{{ "RM " + record.total_amount || null }}</td>
+                  <td>{{ "RM " + record.package.total_amount || null }}</td>
                 </tr>
                 <tr>
                   <td style="width:15%"></td>
@@ -162,7 +162,7 @@
                     <td class="text-right">
                       RM
                       {{
-                        record.delivery ? record.delivery.amount : "0.00"
+                        record.delivery ? record.delivery.amount : "-"
                       }}
                     </td>
                   </tr>

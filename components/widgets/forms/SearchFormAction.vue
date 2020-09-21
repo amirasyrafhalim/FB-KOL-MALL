@@ -1,10 +1,10 @@
 <template>
   <div class="mt-3">
-    <v-btn color="primary" class="mr-3" @click="$emit('search')">
+    <vs-button color="primary" class="mr-3" @click="$emit('search')">
       {{ $t("label.search") }}
-    </v-btn>
-    <v-btn class="mr-3" @click="$emit('reset')">
+    </vs-button>
+    <vs-button class="mr-3" @click="$emit('reset')">
       {{ $t("label.reset") }}
-    </v-btn>
+    </vs-button>
   </div>
 </template>
