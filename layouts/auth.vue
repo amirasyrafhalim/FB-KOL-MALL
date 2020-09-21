@@ -1,23 +1,23 @@
 <template>
-  <v-app class="layouts__login">
+  <div class="layouts__login">
     <div class="layout--full-page bg-img">
-    <v-content>
+    <div>
       <nuxt />
-    </v-content>
+    </div>
     </div>
     <!-- <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay> -->
-    <notification-message />
-  </v-app>
+    <!-- <notification-message /> -->
+  </div>
 </template>
 
 <script>
-import NotificationMessage from "@/components/NotificationMessage";
+// import NotificationMessage from "@/components/NotificationMessage";
 
 export default {
   components: {
-    NotificationMessage
+    // NotificationMessage
   },
   computed: {
     // overlay() {
