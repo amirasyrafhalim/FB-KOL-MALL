@@ -1,10 +1,21 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
 
+    <vs-prompt v-if="shippingMethods.length === 0"
+               color="primary"
+               @accept="acceptAlert" buttonCancel="hidden"
+               type="flat" title="No Shipping Method Found" accept-text="Add Shipping Method"
+               :active.sync="activePrompt">
+      <div class="con-exemple-prompt">
+        Please add shipping method before create the package.
+      </div>
+    </vs-prompt>
+
     <data-view-sidebar-package :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar"
                                @fetchItems="fetchItems" :data="sidebarData"/>
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records"
+              class="bg-transparent">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
@@ -24,9 +35,8 @@
             <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ records.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : records.length }} of {{ queriedItems }}</span>
             <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
           </div>
-          <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
-          <vs-dropdown-menu>
 
+          <vs-dropdown-menu>
             <vs-dropdown-item @click="itemsPerPage=10">
               <span>10</span>
             </vs-dropdown-item>
@@ -63,9 +73,7 @@
           </vs-td>
 
           <vs-td :data="data[indextr].sell_method.description">
-            <!--            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">-->
             {{tr.sell_method.description }}
-            <!--            </vs-chip>-->
           </vs-td>
 
           <vs-td :data="data[indextr].keyword">
@@ -91,8 +99,7 @@
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
-            <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current ml-2"
-                          @click.stop="editData(tr)"/>
+            <vs-button color="warning" type="border" icon="edit" class="ml-2" @click.stop="editData(tr)"></vs-button>
           </vs-td>
 
         </vs-tr>
@@ -113,6 +120,7 @@
     },
     data() {
       return {
+        activePrompt: true,
         moduleName: "packages",
         selected: [],
         itemsPerPage: 10,
@@ -133,12 +141,22 @@
       },
       queriedItems() {
         return this.$refs.table ? this.$refs.table.queriedResults.length : this.records.length
-      }
+      },
+      shippingMethods() {
+        return this.$store.state.shippingMethods.records;
+      },
     },
     methods: {
+      acceptAlert(color) {
+        this.$router.push({path: this.localePath({name: 'settings'})});
+      },
       fetchItems(page = 1) {
         let params = {page: page, campaign_id: this.$route.params.id};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
+      },
+      fetchShippingMethods(page = 1) {
+        let params = {page: page};
+        this.$store.dispatch("shippingMethods/fetchItems", params);
       },
       addNewData() {
         this.sidebarData = {}
@@ -158,6 +176,7 @@
     },
     created() {
       this.fetchItems();
+      this.fetchShippingMethods();
     },
     mounted() {
       this.isMounted = true

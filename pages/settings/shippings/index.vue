@@ -4,7 +4,8 @@
     <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems"
                        :data="sidebarData"/>
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records"
+              class="bg-transparent">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
@@ -47,8 +48,7 @@
         <vs-th sort-key="name">Name</vs-th>
         <vs-th sort-key="partner.name">Shipping Partner</vs-th>
         <vs-th sort-key="fee">Fee</vs-th>
-        <vs-th sort-key="free_minimum_type">Free Minimum Type</vs-th>
-        <vs-th sort-key="free_minimum_value">Free Minimum Value</vs-th>
+        <vs-th sort-key="free_minimum_type">Free Minimum</vs-th>
         <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
       </template>
@@ -70,11 +70,14 @@
           </vs-td>
 
           <vs-td :data="data[indextr].free_minimum_type">
-            {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
-          </vs-td>
-
-          <vs-td :data="data[indextr].free_minimum_value">
-            {{ tr.free_minimum_value }}
+            <div v-if="tr.free_minimum_type.value == 1">
+              {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
+              equal or more than RM {{ tr.free_minimum_value }}
+            </div>
+            <div v-else>
+              {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
+              equal or more than {{ Math.trunc(tr.free_minimum_value) }}
+            </div>
           </vs-td>
 
           <vs-td :data="data[indextr].created_at">
@@ -82,10 +85,10 @@
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
-            <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current ml-2"
-                          @click.stop="editData(tr)"/>
-            <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2"
-                          @click.stop="confirmDeleteRecord(tr.id)"/>
+
+            <vs-button color="warning" type="border" icon="edit" class="ml-2" @click.stop="editData(tr)"></vs-button>
+            <vs-button color="danger" type="border" icon="delete_outline" class="ml-2"
+                       @click.stop="confirmDeleteRecord(tr.id)"></vs-button>
           </vs-td>
 
         </vs-tr>
