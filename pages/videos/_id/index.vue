@@ -44,7 +44,6 @@
             </vx-card>
 
             <vx-card class="mx-auto mt-3" v-for="(item, index) in orders" v-bind:key="index">
-              {{item}}
               <h5 class="mb-2">#{{item.invoice_no}}</h5>
               <div class="text--primary">
                 <strong v-if="item.user">{{ item.user.name }}</strong>
