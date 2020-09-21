@@ -16,6 +16,7 @@
         </vs-row>
       </vs-button >
     </div>
+  
 
     <vs-divider>OR</vs-divider>
 
@@ -86,7 +87,6 @@ export default {
   },
   methods: {
     checkLogin() {
-      console.log("auth", this.$store.state);
       // If user is already logged in notify
       if (this.$store.state.auth.isUserLoggedIn) {
         // Close animation if passed as payload
