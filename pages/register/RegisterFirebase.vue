@@ -10,7 +10,7 @@
         class="mr-1"
       />
        <span class="my-auto">
-          {{ $t("label.loginWithFacebook") }}
+          {{ $t("label.signUpWithFacebook") }}
         </span>
           </vs-col>
         </vs-row>
