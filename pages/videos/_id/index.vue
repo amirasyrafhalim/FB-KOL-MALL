@@ -44,11 +44,14 @@
             </vx-card>
 
             <vx-card class="mx-auto mt-3" v-for="(item, index) in orders" v-bind:key="index">
+              {{item}}
               <h5 class="mb-2">#{{item.invoice_no}}</h5>
               <div class="text--primary">
                 <strong v-if="item.user">{{ item.user.name }}</strong>
                 <strong v-else>A buyer</strong> ordered
-                <strong v-if="item.order_packages">{{ item.order_packages.package.name }}</strong>
+                <strong
+                  v-if="item.package && item.package.package"
+                >{{ item.package.package.name }}</strong>
                 <strong v-else>an item</strong>
               </div>
               <p class="text-grey text-sm">{{ item.created_at }}</p>
