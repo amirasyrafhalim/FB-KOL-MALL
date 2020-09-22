@@ -237,10 +237,7 @@ export default {
       this.formModel1.name = this.user.merchant.name;
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
-      this.formModel.city = this.user.merchant.detail.address;
-      this.formModel.postcode_id = this.user.merchant.detail.postcode_id.code;
-      this.formModel.state_id = this.user.merchant.detail.state_id.name;
-      this.formModel.country_code = this.user.merchant.detail.country_code.name;
+      this.formModel.city = this.user.merchant.detail.city;
     },
     async validate() {
       const obj = {
