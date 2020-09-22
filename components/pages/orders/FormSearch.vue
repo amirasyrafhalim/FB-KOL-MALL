@@ -1,118 +1,27 @@
 <template>
-  <div>
-        <!-- <v-card class=" components__campaigns-form-search mb-2 mt-2 radius" outlined>
-      <v-card-text>
-        <v-row>
-          <!-<v-col sm="6" md="4">
-            <v-autocomplete
-              :items="merchants"
-              item-text="name"
-              item-value="id"
-              v-model="formModel.merchant_id"
-              clearable
-              @change="searchItem($event)"
-            ></v-autocomplete>
-          </v-col> -->
-        <!-- <v-col sm="6" md="4">
-            <v-autocomplete
-              :items="campaigns"
-              :label="$t('menuTitle.campaign')"
-              item-text="name"
-              item-value="id"
-              v-model="formModel.campaign_id"
-              @change="searchItem($event)"
-              clearable
-            ></v-autocomplete>
-          </v-col> -->
-        <!-- </v-row>
-      </v-card-text>
-    </v-card>  -->
-        <!-- <v-card class="components__campaigns-form-search mb-5">
-      <v-card-text class="pt-0">
-        <v-row>
-          <v-col sm="6" md="4">
-            <v-select
-              :items="formModel.delivery_method"
-              :label="$t('label.deliveryMethod')"
-              item-text="description"
-              item-value="value"
-              hide-details
-              clearable
-              @change="searchItem($event)"
-            ></v-select>
-          </v-col>
-             <v-col sm="6" md="4">
-            <v-select
-              :items="paymentEnums"
-              :label="$t('label.paymentStatus')"
-              item-text="description"
-              item-value="value"
-              hide-details
-              v-model="formModel.payment_status"
-              clearable
-              @change="searchItem($event)"
-            ></v-select>
-          </v-col>  
-           <v-col sm="6" md="4">
-            <v-select
-              :items="deliveryEnums"
-              :label="$t('label.deliveryStatus')"
-              item-text="description"
-              item-value="value"
-              hide-details
-              v-model="formModel.delivery_status"
-              clearable
-              @change="searchItem($event)"
-            ></v-select>
-          </v-col> 
-        </v-row>
-        <search-form-action
-          v-on:search="searchItem()"
-          v-on:reset="resetItem()"
-        ></search-form-action>
-      </v-card-text>
-    </v-card> -->
-        <v-row>
-          <v-col sm="6" md="4">
-            <v-text-field
-              :label="$t('label.orderCode')"
-              v-model="formModel.code"
-              hide-details
-              elevation="20"
-              solo
-              dense
-              class="border-radius-button"
-            ></v-text-field>
-          </v-col>
-          <v-col sm="6" md="4">
-            <v-text-field
-              :label="$t('label.invoiceNo')"
-              v-model="formModel.invoice_no"
-              hide-details
-              elevation="20"
-              solo
-              dense
-              class="border-radius-button"
-            ></v-text-field>
-          </v-col>
-          <!-- <v-col sm="6" md="4">
-            <v-text-field
-              :label="$t('label.trackingNo')"
-              v-model="formModel.tracking_no"
-              hide-details
-              elevation="20"
-              solo
-              dense
-            ></v-text-field>
-          </v-col> -->
-          <v-spacer></v-spacer>
-          <div class="float-right">
-            <search-form-action
-              v-on:search="searchItem()"
-              v-on:reset="resetItem()"
-            ></search-form-action>
-          </div>
-        </v-row>
+  <div class="mb-5 " >
+      <div class="vx-row">
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.name')}}</label>
+          <vs-input class="w-full" v-model="formModel.buyer_name" />
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.invoiceNo')}}</label>
+          <vs-input class="w-full" v-model="formModel.invoice_no" />
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.paymentStatus')}}</label>
+         <v-select style="background: white" :options="paymentEnums" label="description" @input="searchItem($event, 'payment_status')" v-model="formModel.payment_status">
+        </v-select>
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.orderStatus')}}</label>
+         <v-select style="background: white" :options="orderStatusEnums" label="description" @input="searchItem($event, 'order_status')" v-model="formModel.order_status">
+        </v-select>
+        </div>
+      </div>
+       <search-form-action v-on:search="searchItem()" v-on:reset="resetItem()"> </search-form-action>
+  
   </div>
 </template>
 
@@ -128,64 +37,49 @@ export default {
   data() {
     return {
       formModel: {
-        // code: null,
-        // invoice_no: null,
-        // tracking_no: null,
-        // merchant_name: null,
-        // delivery_method:[
-        //   { description: 'Delivery', value: 1 },
-        //   { description: 'Self Pickup', value: 2 },
-        // ],
+        invoice_no: null,
+        buyer_name: null,
+        order_status: null,
+        payment_status: null
       }
     };
   },
   created() {
-    // this.initialize();
-    // this.fetchMerchants();
-    this.fetchCampaigns();
+    this.initialize();
   },
   computed: {
-    deliveryMethodsEnums() {
-      let a = this.$store.state[this.moduleName].records;
-      console.log("hehehehe", a);
+    orderStatusEnums() {
+      return this.$store.state[this.moduleName].statusEnums;
     },
-    // paymentEnums() {
-    //   return this.$store.state[this.moduleName].paymentEnums;
-    // },
-    // deliveryEnums() {
-    //   return this.$store.state[this.moduleName].deliveryEnums;
-    // },
-    records() {
-      return this.$store.state[this.moduleName].records;
-    },
-    // merchants() {
-    //   return this.$store.state.merchants.records;
-    // },
-    campaigns() {
-      return this.$store.state.campaigns.records;
+    paymentEnums() {
+      return this.$store.state[this.moduleName].paymentEnums;
     }
   },
   methods: {
-    // initialize() {
-    //   this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
-    //     routeName: "deliveryMethod",
-    //     stateKey: "deliveryMethodsEnums"
-    //   });
-    //   this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
-    //     routeName: "paymentStatus",
-    //     stateKey: "paymentEnums"
-    //   });
-    //   this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
-    //     routeName: "deliveryStatus",
-    //     stateKey: "deliveryEnums"
-    //   });
-    // },
-    async searchItem(data) {
-      await this.fetchCampaigns(data);
-      await this.$store.dispatch(this.moduleName + "/fetchItems", {
-        ...this.formModel
+    initialize() {
+      this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
+        routeName: "orderStatus",
+        stateKey: "statusEnums"
       });
-      // await this.$store.dispatch(this.moduleName + "/resetPagination");
+      this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
+        routeName: "paymentStatus",
+        stateKey: "paymentEnums"
+      });
+    },
+    async searchItem(data, field) {
+      var a = {}
+
+      a.buyer_name = this.formModel.buyer_name;
+      a.invoice_no = this.formModel.invoice_no;
+      if(field == 'order_status') {
+         a.status = data.value;
+      } else if (field =='payment_status') {
+        a.payment_status = data.value;
+      }
+
+      await this.$store.dispatch(this.moduleName + "/fetchItems",a
+      );
+      await this.$store.dispatch(this.moduleName + "/resetPagination");
     },
     resetItem() {
       this.$helper.clearSearchForm(this.formModel);
@@ -193,16 +87,6 @@ export default {
         ...this.formModel
       });
       this.$store.dispatch(this.moduleName + "/resetPagination");
-    },
-    // fetchMerchants(value) {
-    //   this.$store.dispatch(`merchants/fetchItems`, {
-    //     code: value
-    //   });
-    // },
-    fetchCampaigns(value) {
-      this.$store.dispatch(`campaigns/fetchItems`, {
-        merchant_id: value
-      });
     }
   }
 };

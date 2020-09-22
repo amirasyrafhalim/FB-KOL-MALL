@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     merchantPage() {
-      return this.$store.state[this.moduleName].records;
+      return this.$store.state[this.moduleName].record;
     },
     liveVideos() {
       var video = this.$store.state[this.moduleName].liveVideos;
@@ -106,7 +106,9 @@ export default {
   },
   created() {
     this.initialize();
-    this.fetchMerchantPage();
+    this.fetchMerchantPage(this.$route.params.id).then(() => {
+      // console.log(this.merchantPage);
+    });
   },
   methods: {
     initialize() {
@@ -116,9 +118,9 @@ export default {
         this.$route.params.id
       );
     },
-    async fetchMerchantPage() {
+    async fetchMerchantPage(id) {
       try {
-        await this.$store.dispatch(this.moduleName + "/fetchItems");
+        await this.$store.dispatch(this.moduleName + "/fetchItem", id);
       } catch (err) {
         console.log(err);
       }
@@ -150,6 +152,22 @@ export default {
           color: "warning",
           title: "Warning",
           text: "Please add campaign first.",
+          position: "bottom-left",
+        });
+        return;
+      }
+
+      if (
+        this.merchantPage &&
+        this.merchantPage.merchant &&
+        this.merchantPage.merchant.has_shipping_method === false
+      ) {
+        this.$vs.notify({
+          color: "danger",
+          title: "Missing Shipping Methods",
+          position: "bottom-left",
+          text:
+            "Please add shipping method to continue. Go to Settings > Shippings.",
         });
         return;
       }

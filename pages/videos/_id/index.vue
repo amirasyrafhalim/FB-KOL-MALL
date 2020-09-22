@@ -48,7 +48,9 @@
               <div class="text--primary">
                 <strong v-if="item.user">{{ item.user.name }}</strong>
                 <strong v-else>A buyer</strong> ordered
-                <strong v-if="item.order_packages">{{ item.order_packages.package.name }}</strong>
+                <strong
+                  v-if="item.package && item.package.package"
+                >{{ item.package.package.name }}</strong>
                 <strong v-else>an item</strong>
               </div>
               <p class="text-grey text-sm">{{ item.created_at }}</p>

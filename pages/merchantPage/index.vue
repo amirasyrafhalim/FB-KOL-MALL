@@ -161,7 +161,6 @@ export default {
   methods: {
     initialize() {
       this.user = this.$store.state.auth.user;
-      console.log(this.user);
     },
     async fetchMerchantPage() {
       try {

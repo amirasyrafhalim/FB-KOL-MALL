@@ -97,12 +97,12 @@ export default {
 		getAllOrCreate: '/v1/buyers',
 		getOneOrUpdateOrDelete: '/v1/buyers/{id}'
 	},
-	shippingPartners: {
-		getAll: '/v1/shipping-partners'
-	},
+	// shippingPartners: {
+	// 	getAll: '/v1/shipping-partners'
+	// },
 	orders: {
-		updateOrderPayment: '/v1/order-payments/{id}',
 		getAllOrCreate: '/v1/orders',
+		updateOrderPayment: '/v1/order-payments/{id}',
 		getOneOrUpdateOrDelete: '/v1/orders/{id}',
 		updateDelivery: '/v1/order-deliveries/{id}',
 		updatePickup: '/v1/orders/{id}/updatePickup'
@@ -132,10 +132,10 @@ export default {
 		getAllOrCreate: '/v1/videos',
 		getOneOrUpdateOrDelete: '/v1/videos/{id}'
 	},
-	dashboard: {
-		getSalesSummary: '/v1/dashboard/sales-summary',
-		getSalesChart: '/v1/dashboard/sales-chart'
-	},
+	// dashboard: {
+	// 	getSalesSummary: '/v1/dashboard/sales-summary',
+	// 	getSalesChart: '/v1/dashboard/sales-chart'
+	// },
 	categories: {
 		getAllOrCreate: '/v1/categories',
 		getOneOrUpdateOrDelete: '/v1/campaigns/{id}'
