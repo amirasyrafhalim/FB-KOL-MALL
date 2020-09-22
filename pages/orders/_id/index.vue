@@ -366,7 +366,9 @@ export default {
   },
   methods: {
        openAttachment() {
-         window.location.href= this.record.payment.image
+         var a = this.record.payment.image;
+         window.open( a, '_blank' );
+        //  window.location.href= this.record.payment.image
        },
     getDeliveryStatusColor(status) {
       if (status === 1) return "success";
