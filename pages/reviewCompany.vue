@@ -6,13 +6,7 @@
     >
       <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
         <vs-row vs-justify="center">
-          <vs-col
-            type="block"
-            
-         
-          
-            vs-w="6"
-          >
+          <vs-col type="block" vs-w="6">
             <vs-card class="bg-white">
               <div slot="header" class="text-center">
                 <img
@@ -30,18 +24,18 @@
                   class="w-full mb-4"
                 />
 
-                <p>{{$t('label.size')}}</p>
+                <p>{{ $t("label.size") }}</p>
                 <v-select
-                class="mb-5 pa-3"
+                  class="mb-5 pa-3"
                   v-model="formModel.business_size"
                   :options="rangeSize"
                   :menu-props="{ maxHeight: '400' }"
                   label="value"
                   hint="Pick your monthly revenue"
                 ></v-select>
-                 <p>{{$t('label.category')}}</p>
+                <p>{{ $t("label.category") }}</p>
                 <v-select
-                class="mb-5 pa-3"
+                  class="mb-5 pa-3"
                   v-model="formModel.categories"
                   :options="categories"
                   :menu-props="{ maxHeight: '400' }"
@@ -75,7 +69,7 @@ export default {
   },
   asyncData() {
     return {
-      rangeSize: '',
+      rangeSize: "",
       formModel: {
         company_name: "",
         business_size: null,
@@ -90,16 +84,28 @@ export default {
   },
   created() {
     this.fetchItems();
-    this.rangeSize = this.$store.state.monthlyRevenue
+    this.rangeSize = this.$store.state.monthlyRevenue;
   },
   methods: {
     fetchItems(value) {
       this.$store.dispatch("categories/fetchItems");
     },
     async next() {
+      const categories = this.formModel.categories;
+      var payload = {
+        company_name: this.formModel.company_name || "",
+        business_size: this.formModel.business_size.value || "",
+        categories: []
+      };
+
+      if (categories.length > 0) {
+        categories.forEach(element => {
+          payload.categories.push(element.id);
+        });
+      }
+      console.log(payload);
       try {
-        this.formModel.business_size = this.formModel.business_size.value
-        var res = await this.$api.merchants.create(this.formModel);
+        var res = await this.$api.merchants.create(payload);
         await this.$auth.fetchUser();
         this.handleApiSuccess(res, "/");
       } catch (err) {
