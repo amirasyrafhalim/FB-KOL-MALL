@@ -1,52 +1,27 @@
 <template>
-  <div class="mb-5">
-    <vs-row class="">
-      <vs-col vs-w="3" vs-xs="12" vs-sm="4" vs-md="4">
-        <p>{{$t('label.orderStatus')}}</p>
-        <v-select
-          :options="orderStatusEnums"
-          label="description"
-          @input="searchItem($event, 'order_status')"
-          v-model="formModel.order_status"
-        >
+  <div class="mb-5 " >
+      <div class="vx-row">
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.name')}}</label>
+          <vs-input class="w-full" v-model="formModel.buyer_name" />
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.invoiceNo')}}</label>
+          <vs-input class="w-full" v-model="formModel.invoice_no" />
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.paymentStatus')}}</label>
+         <v-select style="background: white" :options="paymentEnums" label="description" @input="searchItem($event, 'payment_status')" v-model="formModel.payment_status">
         </v-select>
-      </vs-col>
-
-      <vs-col vs-w="3" vs-xs="12" vs-sm="4" vs-md="4">
-        <p>{{$t('label.paymentStatus')}}</p>
-        <v-select
-          :options="paymentEnums"
-          label="description"
-          @input="searchItem($event, 'payment_status')"
-          v-model="formModel.payment_status"
-        >
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.orderStatus')}}</label>
+         <v-select style="background: white" :options="orderStatusEnums" label="description" @input="searchItem($event, 'order_status')" v-model="formModel.order_status">
         </v-select>
-      </vs-col>
-
-      <vs-col vs-w="3" vs-xs="12" vs-sm="4" vs-md="4">
-        <vs-input
-          :label="$t('label.name')"
-          v-model="formModel.buyer_name"
-          class="border-radius-button"
-        ></vs-input>
-      </vs-col>
-
-      <vs-col vs-w="3" vs-xs="12" vs-sm="4" vs-md="4">
-        <vs-input
-          :label="$t('label.invoiceNo')"
-          v-model="formModel.invoice_no"
-          class="border-radius-button"
-        ></vs-input>
-      </vs-col>
-    </vs-row>
-    <vs-row>
-      <div>
-        <search-form-action
-          v-on:search="searchItem()"
-          v-on:reset="resetItem()"
-        ></search-form-action>
+        </div>
       </div>
-    </vs-row>
+       <search-form-action v-on:search="searchItem()" v-on:reset="resetItem()"> </search-form-action>
+  
   </div>
 </template>
 
@@ -92,10 +67,18 @@ export default {
       });
     },
     async searchItem(data, field) {
-      this.formModel[field] = data.value;
-      await this.$store.dispatch(this.moduleName + "/fetchItems", {
-        ...this.formModel
-      });
+      var a = {}
+
+      a.buyer_name = this.formModel.buyer_name;
+      a.invoice_no = this.formModel.invoice_no;
+      if(field == 'order_status') {
+         a.status = data.value;
+      } else if (field =='payment_status') {
+        a.payment_status = data.value;
+      }
+
+      await this.$store.dispatch(this.moduleName + "/fetchItems",a
+      );
       await this.$store.dispatch(this.moduleName + "/resetPagination");
     },
     resetItem() {

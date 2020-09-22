@@ -162,15 +162,7 @@ export default {
   },
   methods: {
 
-   
-    getOrderStatusColor(status) {
-      if (status === 1) return "success";
-      if (status === 2) return "warning";
-      if (status === 3) return "warning";
-      if (status === 4) return "warning";
-      if (status === 5) return "danger";
-      if (status === 6) return "danger";
-    },
+
     getOrderPaymentStatusColor(paymentStatus) {
       if (paymentStatus.value === 0) return "danger";
       if (paymentStatus.value === 1) return "success";

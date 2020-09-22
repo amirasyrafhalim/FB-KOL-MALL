@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3">
+  <div class="mt-3" style="text-align: end">
     <vs-button color="primary" class="mr-3" @click="$emit('search')">
       {{ $t("label.search") }}
     </vs-button>

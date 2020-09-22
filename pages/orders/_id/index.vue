@@ -60,20 +60,34 @@
                 <div class="mb-2" v-if="record && record.delivery && record.delivery.method.value == 1">
                   <h4 class="font-bold">
                     <span>{{ "Postage" }}</span>
-                    <vs-chip
-                      :color="
-                        getDeliveryStatusColor(record.delivery.status.value)
-                      "
-                    >
-                      {{
-                        record.delivery && record.delivery.status.description
-                      }}
+                    <vs-chip :color=" getDeliveryStatusColor(record.delivery.status.value) ">
+                      {{  record.delivery && record.delivery.status.description }}
                     </vs-chip>
                   </h4>
-                  <p>{{ record.delivery.partner || null }}</p>
-                  <p>{{ record.delivery.tracking_no || null }}</p>
-                  <p>{{ record.delivery.remark || null }}</p>
-                  <p>{{ record.delivery.amount || null }}</p>
+                  <table style="width:100%; white-space: inherit" v-if="record.delivery" >
+                <tr v-if="record.delivery.partner">
+                  <td style="width:20%; white-space: inherit">Partner Name</td>
+                  <td style="width:1%">:</td>
+                  <td>{{record.delivery.partner || null }}</td>
+                </tr>
+                <tr v-if="record.delivery.tracking_no">
+                  <td style="white-space: inherit">Tracking No</td>
+                  <td>:</td>
+                  <td>{{ record.delivery.tracking_no || null }}</td>
+                </tr>
+                <tr v-if="record.delivery.remark">
+                  <td style="white-space: inherit">Remark</td>
+                  <td>:</td>
+                  <td>{{ record.delivery.remark || null }}</td>
+                </tr>
+                <tr v-if="record.delivery.amount">
+                  <td style="white-space: inherit">Fee</td>
+                  <td>:</td>
+                  <td>{{ record.delivery.amount || null }}</td>
+                </tr>
+                  </table>
+
+          
                 </div>
                 <div class="mb-2" v-else>
                   <h4 class="font-bold">
@@ -347,6 +361,14 @@ export default {
     this.fetchEnumPaymentStatus()
   },
   methods: {
+       
+    getDeliveryStatusColor(status) {
+      if (status === 1) return "success";
+      if (status === 2) return "warning";
+      if (status === 3) return "warning";
+      if (status === 4) return "danger";
+    },
+
     getStatusColor(status) {
       if (status === 2) return "success";
       if (status === 0) return "danger";
