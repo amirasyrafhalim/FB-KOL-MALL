@@ -152,7 +152,7 @@
               <template v-if="user.social.phone_no">
                 <td class="pl-5 pb-5">{{ user.social.phone_no }}</td>
               </template>
-              <template v-if="!user.social.phone_no">
+              <template v-if="user.social.phone_no == null">
                 <td class="pl-5 pb-5">-</td>
               </template>
             </tr>
@@ -183,11 +183,11 @@
 
               <td class="pl-5 pb-5">{{ user.merchant.detail.company_name }}</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="font-semibold pb-5">Role</td>
 
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
-            </tr>
+            </tr> -->
             <tr>
               <td class="font-semibold pb-5">Business Size</td>
 
@@ -198,16 +198,38 @@
             <tr>
               <td class="font-semibold pb-5">Payment Method</td>
 
-              <template v-if="user.merchant.payment_method_id == 1">
-                <td class="pl-5 pb-5">Xenopay</td>
+              <!-- <template v-if="user.merchant.payment_method_id == null">
+                <td class="pl-5 pb-5">-</td>
               </template>
-              <template v-if="user.merchant.payment_method_id == 2">
-                <td class="pl-5 pb-5">Offline</td>
+              <template v-for="(data, key) in user.merchant.payment_method_id" >
+               <td class="pl-5 pb-5" :key="key" v-if="data == 1 && 1">Xenopay</td>
               </template>
-            </tr>
-                       <tr>
-              <td class="font-semibold pb-5">Business Categories</td>
+                <template v-for="(data, key) in user.merchant.payment_method_id" >
+                <td class="pl-5 pb-5" :key="key" v-if="data == 2 && 2">Offline</td>
+               </template>
+               <template v-for="(data, key) in user.merchant.payment_method_id" >
+                <td class="pl-5 pb-5"  :key="key" v-if="data == 2 && 2 && data == 1 "><p >Xenopay</p><p> Offline</p></td>
+               </template> -->
 
+                  
+                <ol
+                  v-for="(item, index) in user.merchant.payment_method_id"
+                  :key="index"
+                  style="display: inline;"
+                >
+        
+                  <template v-if="item == 1">
+                    <li class="pl-5">Xenopay</li>
+                  </template>
+                  <template v-if="item == 2">
+                    <li class="pl-5">Offline</li>
+                  </template>
+                </ol>
+            </tr>
+
+            <tr>
+              <td class="font-semibold pt-3 ">Business Categories</td>
+              <td class="pt-3">
               <ol
                 class="pl-5"
                 v-for="(item, key) in user.merchant.detail.categories"
@@ -215,6 +237,7 @@
               >
                 <li>{{ item.name }}</li>
               </ol>
+              </td>
             </tr>
             <!-- <tr>
               <td class="font-semibold pb-5">Merchant Logo</td>
@@ -294,7 +317,6 @@ export default {
   },
   created() {
     this.user = this.$store.state.auth.user;
-
   }
 };
 </script>

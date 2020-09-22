@@ -17,8 +17,9 @@ export const mutations = {
 
 export const actions = {
   ...BaseVuex.actions,
-  async fetchDetail({ commit, dispatch, state }) {
+  async fetchDetail({ commit, dispatch, state },params) {
     try {
+      console.log("hmmm",params)
       let res = await this.$api[state.moduleName].getDetail();
       commit("setRecord", res.data);
     } catch (err) {

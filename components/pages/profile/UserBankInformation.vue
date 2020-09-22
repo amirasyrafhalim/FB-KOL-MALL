@@ -16,7 +16,7 @@
         >
           <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">Add Bank Information</h3>
           <h5 class="font-normal">
-            Fill in the required info correctly to ensure success 
+            Fill in the required info correctly to ensure success
           </h5>
           <h5 class="sm:mx-0 mx-4 mb-6 font-normal">receiving of payment.</h5>
         </div>
@@ -45,12 +45,6 @@
           <tr>
             <td class="font-semibold pb-6">Account No.</td>
             <td class=" pl-6 pb-6">{{ data.account_no }}</td>
-          </tr>
-          <tr>
-            <td class="font-semibold pb-6">Status</td>
-            <td style="color: #4CAF50;" class=" pl-6 pb-6">
-              {{ data.status.description }}
-            </td>
           </tr>
           <tr>
             <td class="font-semibold pb-6">Remark</td>
@@ -101,7 +95,7 @@
           <vs-input class="w-full" v-model="formModel.accountno" />
         </div>
       </div>
-      <div class="vx-row mb-6">
+      <!-- <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
           <span>Status</span>
         </div>
@@ -112,7 +106,7 @@
             v-model="formModel.status"
           />
         </div>
-      </div>
+      </div> -->
       <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
           <span>Remark</span>
@@ -121,6 +115,32 @@
           <vs-textarea class="w-full" v-model="formModel.remark" />
         </div>
       </div>
+      <!-- <div class="vx-row mb-6"> -->
+        <!-- <div class="vx-col sm:w-1/3 w-full">
+          <span>Bank Statement</span>
+          <input
+            type="file"
+            class="hidden"
+            ref="updateImgInput"
+            accept="image/*"
+          />
+        </div> -->
+        <!-- <div class="upload-img vx-col sm:w-2/3 w-full">
+          <input
+            type="file"
+            class="hidden"
+            ref="uploadImgInput"
+            @change="updateCurrImg"
+            accept="image/*"
+          />
+          <vs-button
+            @click="$refs.uploadImgInput.click()"
+            color="success"
+            type="gradient"
+            >Upload Image</vs-button
+          >
+        </div> -->
+      <!-- </div> -->
       <div class="vx-row">
         <div class="vx-col w-full">
           <div class="mt-8 flex flex-wrap items-center justify-end">
@@ -169,6 +189,8 @@
 export default {
   data() {
     return {
+      
+      dataImg: "",
       moduleName: "merchantBanks",
       status: [
         { label: "Active", code: 1 },
@@ -181,7 +203,8 @@ export default {
         accountno: "",
         name: "",
         remark: "",
-        status: ""
+        status: 1,
+        image: ""
       }
     };
   },
@@ -194,14 +217,25 @@ export default {
     }
   },
   methods: {
+
+    updateCurrImg(input) {
+      if (input.target.files && input.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.formModel.image = e.target.result;
+        };
+        reader.readAsDataURL(input.target.files[0]);
+      }
+    },
     async validate() {
       const obj = {
         bank_id: this.formModel.bank_id.id,
         merchant_id: this.$auth.state.user.merchant.id,
         name: this.formModel.name,
         account_no: this.formModel.accountno,
-        status: this.formModel.status.code,
-        remark: this.formModel.remark
+        status: this.formModel.status,
+        remark: this.formModel.remark,
+        image: this.formModel.image.replace(/^data:(.*;base64,)?/, "")
       };
       try {
         let res = await this.$api.merchantBanks.create(obj, this.user.id);
@@ -210,17 +244,17 @@ export default {
             title: "Success!",
             text: "Your data has been updated",
             color: "success",
-             position: "bottom-left"
+            position: "bottom-left"
           });
         }
-        this.popupActive2 = false
+        this.popupActive2 = false;
       } catch (err) {
         if (err) {
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
             color: "danger",
-             position: "bottom-left"
+            position: "bottom-left"
           });
         }
       }
@@ -230,7 +264,7 @@ export default {
       this.$store.dispatch("banks/fetchItems", params);
     },
     fetchUser(merchantId) {
-      let params = { merchantId: this.$route.params.id };
+      let params = { merchantId: this.$store.state.auth.user.merchant.id };
       this.$store.dispatch("merchantBanks/fetchItems", params);
     },
     reset() {
@@ -244,6 +278,7 @@ export default {
     }
   },
   created() {
+   
     this.fetchUser();
     this.fetchBank();
     this.user = this.$store.state.auth.user;
