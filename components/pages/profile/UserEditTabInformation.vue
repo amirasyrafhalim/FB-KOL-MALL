@@ -232,12 +232,15 @@ export default {
       this.formModel.dataCompany = this.user.merchant.detail.company_name;
       this.formModel.dataPhone = this.user.social.phone_no;
       this.formModel1.payment_method_id =
-        this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+      this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
       this.formModel.dataLogo = this.user.merchant.logo;
       this.formModel1.name = this.user.merchant.name;
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
       this.formModel.city = this.user.merchant.detail.city;
+      this.formModel.state_id = this.user.merchant.detail.state.name;
+      this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
+      this.formModel.country_code = this.user.merchant.detail.country.name;
     },
     async validate() {
       const obj = {
@@ -298,6 +301,9 @@ export default {
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
+    this.formModel.state_id = this.user.merchant.detail.state.name;
+    this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
+    this.formModel.country_code = this.user.merchant.detail.country.name;
   },
 
   created() {
