@@ -76,7 +76,14 @@ const state = {
 
 	// Can be used to get current window with
 	// Note: Above breakpoint state is for internal use of sidebar & navbar component
-	windowWidth: null
+	windowWidth: null,
+	monthlyRevenue : [
+		{ value: "0-5000" },
+        { value: "5000-10000" },
+        { value: "10000-35000" },
+        { value: "35000-50000" },
+        { value: "more than 50000" }
+	]
 };
 
 export default state;

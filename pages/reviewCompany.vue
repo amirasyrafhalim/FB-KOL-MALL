@@ -75,13 +75,7 @@ export default {
   },
   asyncData() {
     return {
-      rangeSize: [
-        { value: "0-5000" },
-        { value: "5000-10000" },
-        { value: "10000-35000" },
-        { value: "35000-50000" },
-        { value: "more than 50000" }
-      ],
+      rangeSize: '',
       formModel: {
         company_name: "",
         business_size: null,
@@ -96,6 +90,7 @@ export default {
   },
   created() {
     this.fetchItems();
+    this.rangeSize = this.$store.state.monthlyRevenue
   },
   methods: {
     fetchItems(value) {
