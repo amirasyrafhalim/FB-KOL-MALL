@@ -6,7 +6,6 @@ export default {
 		logout: '/v1/auth/logout',
 		user: '/v1/me'
 	},
-
 	campaigns: {
 		getAllOrCreate: '/v1/campaigns',
 		getOneOrUpdateOrDelete: '/v1/campaigns/{id}',
@@ -19,7 +18,6 @@ export default {
 		orderLog: '/v1/campaigns/orderLog/{id}',
 		streamRefresh: '/v1/campaigns/streamRefresh/{id}'
 	},
-
 	categories: {
 		getAllOrCreate: '/v1/categories',
 		getOneOrUpdateOrDelete: '/v1/campaigns/{id}'
@@ -28,7 +26,6 @@ export default {
 		getAllOrCreate: '/v1/packages',
 		getOneOrUpdateOrDelete: '/v1/packages/{id}'
 	},
-
 	campaignShippings: {
 		getAllOrCreate: '/v1/package-shipping',
 		getOneOrUpdateOrDelete: '/v1/campaigns/{campaignId}/campaignShippings/{id}'
@@ -60,7 +57,6 @@ export default {
 	},
 	merchants: {
 		getAllOrCreate: '/v1/merchants',
-		getDetail: '/v1/merchants/{id}',
 		getOneOrUpdateOrDelete: '/v1/merchants/{id}'
 	},
 	merchantDetail: {
@@ -92,10 +88,14 @@ export default {
 		getAllOrCreate: '/v1/merchantShippings',
 		getOneOrUpdateOrDelete: '/v1/merchantShippings/{id}'
 	},
-	dropdown: {
-		getAllCountry: '/v1/dropdown/countries',
-		getAllPostcode: '/v1/dropdown/postcodes',
-		getAllState: '/v1/dropdown/states'
+	countries:{
+		getAllOrCreate: '/v1/countries',
+	},
+	states:{
+		getAllOrCreate: '/v1/states'
+	},
+	postcodes:{
+		getAllOrCreate: '/v1/postcodes',
 	},
 	buyers: {
 		getAllOrCreate: '/v1/buyers',

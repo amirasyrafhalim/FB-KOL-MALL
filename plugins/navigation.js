@@ -52,7 +52,7 @@ export default ({route, app}, inject) => {
       breadcrumb: [{title: 'Settings', url: '/settings'}, {title: 'List', active: true}]
     },
     settingsPaymentMethod: {
-      title: 'Payments',
+      title: 'Payment Method',
       breadcrumb: [{title: 'Settings', url: '/settings'}, {
         title: 'Payment Method',
         url: '/settings/paymentMethod'

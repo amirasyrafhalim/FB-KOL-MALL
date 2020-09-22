@@ -29,7 +29,7 @@
           label="Merchant Information"
           icon-pack="feather"
           icon="icon-info"
-          style="height:55vh;"
+          style="height:90vh;"
         >
           <div class="tab-text">
             <UserEditTabInformation />

@@ -62,9 +62,9 @@ export default {
     return {
       moduleName: "password",
       formModel: {
-        current_password: null,
-        new_confirm_password: null,
-        new_password: null
+        current_password: "",
+        new_confirm_password: "",
+        new_password: ""
       }
     };
   },
@@ -84,7 +84,8 @@ export default {
           this.$vs.notify({
             title: "Success!",
             text: "Your password has been updated",
-            color: "success"
+            color: "success",
+                position: "bottom-left"
           });
           this.popupActive2 = false;
         }
@@ -93,7 +94,8 @@ export default {
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
-            color: "danger"
+            color: "danger",
+                position: "bottom-left"
           });
         }
       }

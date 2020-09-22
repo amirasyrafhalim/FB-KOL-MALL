@@ -1,6 +1,6 @@
 import BaseApi from "./baseApi";
 
-export default class CategoryApi extends BaseApi {
+export default class BankApi extends BaseApi {
   constructor(axios, helper) {
     super(axios, helper, "banks");
   }

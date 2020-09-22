@@ -9,5 +9,5 @@ export default [
 			broadcaster: 'socket.io',
 			host: broadcastServerUrl
 		}
-	]
+	],
 ];
