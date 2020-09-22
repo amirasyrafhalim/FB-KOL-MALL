@@ -9,6 +9,7 @@
 
 <template>
   <div id="user-edit-tab-info">
+    <div>
     <div class="vx-row">
       <div class="vx-col w-full md:w-1/2">
         <!-- Col Header -->
@@ -62,7 +63,7 @@
             v-model="formModel.dataCompany"
           />
           <div class="mt-4">
-            <label class="vs-input--label">Business Size</label>
+            <label class="vs-input--label">Business Size (Monthly Revenue)</label>
             <v-select
               name="status"
               :options="business"
@@ -83,43 +84,56 @@
             v-model="formModel.dataAddress"
           />
         </div>
+
         <div class="vx-row">
           <div class="vx-col w-full md:w-1/2">
+          <div class="mt-4">
             <vs-input
-              class="w-full mt-4"
               label="City"
-              v-model="formModel.dataAddress"
+              v-model="formModel.city"
             />
           </div>
+          </div>
           <div class="vx-col w-full md:w-1/2">
-            <vs-input
-              class="w-full mt-4"
-              label="State"
-              v-model="formModel.dataAddress"
+          <div class="mt-4">
+          <label class="vs-input--label">State</label>
+            <v-select
+               :options="states"
+              label="name"
+              v-model="formModel.state_id"
+              @input.native="getStates($event.target.value)"
             />
+          </div>
           </div>
         </div>
         <div class="vx-row">
           <div class="vx-col w-full md:w-1/2">
-            <vs-input
-              class="w-full mt-4"
-              label="Postcode"
-              v-model="formModel.dataAddress"
+          <div class="mt-4">
+          <label class="vs-input--label">Postcode</label>
+            <v-select
+              :options="postcodes"
+              label="code"
+              v-model="formModel.postcode_id"
+              @input.native="getPostcodes($event.target.code)"
             />
           </div>
+          </div>
           <div class="vx-col w-full md:w-1/2">
-            <vs-input
-              class="w-full mt-4"
-              label="Country"
-              v-model="formModel.dataAddress"
+          <div class="mt-4">
+          <label class="vs-input--label mt-4">Country</label>
+            <v-select
+             :options="countries"
+              label="name"
+              v-model="formModel.country_code"
+             @input.native="getCountries($event.target.value)"
             />
+          </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Save & Reset Button -->
-    <div class="vx-row">
+    </div>
+       <div class="vx-row">
       <div class="vx-col w-full">
         <div class="mt-8 py-8 flex flex-wrap items-center justify-end">
           <vs-button @click="validate" class="mt-2">Save Changes</vs-button>
@@ -139,23 +153,28 @@
 <script>
 import vSelect from "vue-select";
 import { mapState } from "vuex";
+import { debounce, isEmpty } from 'lodash'
 export default {
   layout: "main",
   components: {
     vSelect
   },
-  props: {},
   data() {
     return {
+      countries : [],
+      states : [],
+      postcodes : [],
       payment: [
         { label: "Xenopay", code: 1 },
         { label: "Offline", code: 2 }
       ],
       business: [
-        { label: "0-5" },
-        { label: "6-10" },
-        { label: "11-15" },
-        { label: "16-20" }
+        { label: "I'm getting started" },
+        { label: "< 500 MYR" },
+        { label: "500 MYR - 5,000 MYR" },
+        { label: "5,000 MYR - 25,000 MYR" },
+        { label: "25,000 MYR - 100,000 MYR" },
+        { label: "25,000 MYR - 100,000 MYR" },
       ],
       formModel: {
         dataCompany: "",
@@ -167,8 +186,8 @@ export default {
         dataBusinessSize: "",
         dataAddress: "",
         city: "",
-        state_id: 0,
-        postcode_id: 0,
+        state_id: "",
+        postcode_id: "",
         country_code: ""
       },
       formModel1: {
@@ -178,6 +197,37 @@ export default {
     };
   },
   methods: {
+    async getCountries(code) {
+    try {
+      const { data } = await this.$api.dropdown.getAllCountry();
+      this.countries = data
+    } catch (error) {
+      console.error('[API Service] Get Postcodes Error:', error)
+    }
+  },
+  
+  async getStates(name) {
+    try {
+      const { data } = await this.$api.dropdown.getAllState({
+        countryCode: 'MY',
+        name
+      })
+      this.states = data
+    } catch (error) {
+      console.error('[API Service] Get States Error:', error)
+    }
+  },
+
+  async getPostcodes(code) {
+    try {
+      const { data } = await this.$api.dropdown.getAllPostcode({
+        code
+      })
+      this.postcodes = data
+    } catch (error) {
+      console.error('[API Service] Get Postcodes Error:', error)
+    }
+  },
     reset_data() {
       this.formModel.dataCompany = this.user.merchant.detail.company_name;
       this.formModel.dataPhone = this.user.social.phone_no;
@@ -187,6 +237,10 @@ export default {
       this.formModel1.name = this.user.merchant.name;
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
+      this.formModel.city = this.user.merchant.detail.address;
+      this.formModel.postcode_id = this.user.merchant.detail.postcode_id.code;
+      this.formModel.state_id = this.user.merchant.detail.state_id.name;
+      this.formModel.country_code = this.user.merchant.detail.country_code.name;
     },
     async validate() {
       const obj = {
@@ -196,14 +250,18 @@ export default {
         business_size:
           this.formModel.dataBusinessSize &&
           this.formModel.dataBusinessSize.label,
-        address: this.formModel.dataAddress
+        address: this.formModel.dataAddress,
+        city : this.formModel.city,
+        state_id : this.formModel.state_id.id,
+        postcode_id : this.formModel.postcode_id.id,
+        country_code : this.formModel.country_code.code
       };
 
       if (this.formModel.dataBusinessSize != null) {
         try {
-          let res = await this.$api.merchants.update(obj, this.user.id);
-          let res1 = await this.$api.merchants.updateDetail(obj, this.user.id);
-          if ((res.http_code == 200) & (res1.http_code == 200)) {
+          let res = await this.$api.merchants.update(obj, this.user.merchant.id);
+          let res1 = await this.$api.merchants.updateDetail(obj, this.user.merchant.detail.id);
+          if (res.http_code == 200 && res1.http_code == 200) {
             this.$vs.notify({
               title: "Success!",
               text: "Your data has been updated",
@@ -242,8 +300,16 @@ export default {
     this.formModel1.name = this.user.merchant.name;
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
+    this.formModel.city = this.user.merchant.detail.city;
   },
+
   created() {
+      this.getStates = debounce(this.getStates, 500)
+    this.getPostcodes = debounce(this.getPostcodes, 500)
+    this.getCountries = debounce(this.getCountries, 500)
+    this.getCountries()
+    this.getStates()
+    this.getPostcodes()
     this.user = this.$store.state.auth.user;
   }
 };

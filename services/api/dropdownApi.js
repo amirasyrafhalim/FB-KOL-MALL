@@ -7,7 +7,7 @@ export default class DropdownApi extends BaseApi {
   }
 
   getAllCountry(searchQuery) {
-    let url = apiRoutes[this.module].getAllCountry;
+    let url = apiRoutes.countries.getAllOrCreate;
 		if (searchQuery) {
 			url += '?' + searchQuery;
 		}
@@ -16,7 +16,7 @@ export default class DropdownApi extends BaseApi {
   }
 
   getAllState(searchQuery) {
-    let url = apiRoutes[this.module].getAllState;
+    let url = apiRoutes.states.getAllOrCreate;
 		if (searchQuery) {
 			url += '?' + searchQuery;
 		}
@@ -24,7 +24,7 @@ export default class DropdownApi extends BaseApi {
   }
 
   getAllPostcode(searchQuery) {
-    let url = apiRoutes[this.module].getAllPostcode;
+    let url = apiRoutes.postcodes.getAllOrCreate;
 		if (searchQuery) {
 			url += '?' + searchQuery;
 		}
