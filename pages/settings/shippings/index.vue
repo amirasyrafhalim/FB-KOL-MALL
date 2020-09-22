@@ -47,7 +47,7 @@
       <template slot="thead">
         <vs-th sort-key="name">Name</vs-th>
         <vs-th sort-key="partner.name">Shipping Partner</vs-th>
-        <vs-th sort-key="fee">Fee</vs-th>
+        <vs-th sort-key="fee">Fee (RM)</vs-th>
         <vs-th sort-key="free_minimum_type">Free Minimum</vs-th>
         <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
