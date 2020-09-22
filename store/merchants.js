@@ -20,7 +20,7 @@ export const actions = {
   async fetchDetail({ commit, dispatch, state },params) {
     try {
       console.log("hmmm",params)
-      let res = await this.$api[state.moduleName].getDetail();
+      let res = await this.$api[state.moduleName].getOneOrUpdateOrDelete();
       commit("setRecord", res.data);
     } catch (err) {
       let resBody = err.response;

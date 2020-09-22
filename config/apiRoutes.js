@@ -150,7 +150,7 @@ export default {
 	},
 	merchants: {
 		getAllOrCreate: '/v1/merchants',
-		getDetail: '/v1/merchants/{id}',
+		getDetail: '/v1/merchants/detail',
 		getOneOrUpdateOrDelete: '/v1/merchants/{id}'
 	},
 	merchantPages: {
