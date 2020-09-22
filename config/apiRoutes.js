@@ -60,7 +60,7 @@ export default {
 	},
 	merchants: {
 		getAllOrCreate: '/v1/merchants',
-		getDetail: '/v1/merchants/{id}',
+		getDetail: '/v1/merchants/detail',
 		getOneOrUpdateOrDelete: '/v1/merchants/{id}'
 	},
 	merchantDetail: {
@@ -93,9 +93,9 @@ export default {
 		getOneOrUpdateOrDelete: '/v1/merchantShippings/{id}'
 	},
 	dropdown: {
-		getAllCountry: '/v1/dropdown/countries',
-		getAllPostcode: '/v1/dropdown/postcodes',
-		getAllState: '/v1/dropdown/states'
+		getAllCountry: '/v1/countries',
+		getAllPostcode: '/v1/postcodes',
+		getAllState: '/v1/states'
 	},
 	buyers: {
 		getAllOrCreate: '/v1/buyers',
