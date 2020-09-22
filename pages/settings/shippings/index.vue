@@ -70,11 +70,11 @@
           </vs-td>
 
           <vs-td :data="data[indextr].free_minimum_type">
-            <div v-if="tr.free_minimum_type.value == 1">
+            <div v-if="tr.free_minimum_type && tr.free_minimum_type.value == 1">
               {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
               equal or more than RM {{ tr.free_minimum_value }}
             </div>
-            <div v-else>
+            <div v-if="tr.free_minimum_type && tr.free_minimum_type.value == 2">
               {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
               equal or more than {{ Math.trunc(tr.free_minimum_value) }}
             </div>
