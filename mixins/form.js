@@ -22,7 +22,7 @@ export default {
 				color: 'success',
 				title: 'Success',
 				position: "bottom-left",
-				text: this.$t('message.successSubmit')
+				text: res.message || this.$t('message.successSubmit')
 			});
 			if (redirectRoute) {
 				this.$router.push({ path: this.localePath(redirectRoute) });
@@ -36,7 +36,7 @@ export default {
 
 			if (code == 422) {
 				let errors = resBody.data.errors;
-				this.errorMessage = this.$t('message.invalidInput');
+				this.errorMessage = errMessage || this.$t('message.invalidInput');
 				this.formErrors = errors;
 			} else if (code == 400) {
 				// this.$store.dispatch('showSnackbar', {
