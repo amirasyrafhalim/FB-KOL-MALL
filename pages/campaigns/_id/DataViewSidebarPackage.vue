@@ -183,7 +183,7 @@ export default {
       ],
       sellMethod: [
         { label: "Keyword", code: 1 },
-        // {label: 'Bidding', code: 2},
+        {label: 'Bidding', code: 2},
       ],
       status: [
         { label: "Inactive", code: 0 },
