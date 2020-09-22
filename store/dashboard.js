@@ -6,7 +6,8 @@ export const state = () => ({
 		moduleName: 'dashboard',
 		statusEnums: [],
 		salesSummary: null,
-		salesChart: null
+		salesChart: null,
+		orderSummary: null
 	}
 });
 
@@ -17,6 +18,9 @@ export const mutations = {
 	},
 	setSalesChart(state, item) {
 		state.salesChart = item;
+	},
+	setOrderSummary(state, item) {
+		state.orderSummary = item;
 	}
 };
 
@@ -50,6 +54,26 @@ export const actions = {
 			let res = await this.$api[state.moduleName].getSalesChart(this.$helper.stringifyParams(params));
 
 			commit('setSalesChart', res.data);
+		} catch (err) {
+			let resBody = err;
+			let errMessage = resBody;
+
+			this.$vs.notify({
+				color: 'error',
+				title: 'Error',
+				text: errMessage || this.app.i18n.t('message.unknownError')
+			});
+		} finally {
+			commit('setIsFetching', false);
+		}
+	},
+	async fetchOrderSummary({ commit, dispatch, state }, params) {
+		commit('setIsFetching', true);
+
+		try {
+			let res = await this.$api[state.moduleName].getOrderSummary(this.$helper.stringifyParams(params));
+
+			commit('setOrderSummary', res.data);
 		} catch (err) {
 			let resBody = err;
 			let errMessage = resBody;

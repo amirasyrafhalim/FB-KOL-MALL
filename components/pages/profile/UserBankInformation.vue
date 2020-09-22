@@ -8,61 +8,61 @@
 ========================================================================================== -->
 
 <template>
-  <div class="vx-col w-full">
-    <div title="Bank Information">
-      <vs-divider></vs-divider>
-      <table v-for="(data, i) in records" :key="i">
-        <tr>
-          <td class="font-semibold pb-6">Bank Name</td>
-          <td class="pl-6 pb-6">{{ data.bank.name }}</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Name</td>
-          <td class="pl-6 pb-6">{{ data.name }}</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Account No.</td>
-          <td class=" pl-6 pb-6">{{ data.account_no }}</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Status</td>
-          <td class=" pl-6 pb-6">{{ data.status.description }}</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Remark</td>
-          <td class="pl-6 pb-6">{{ data.remark }}</td>
-        </tr>
-      </table>
+  <div>
+    <div class="vx-col w-full">
+      <div title="Bank Information" v-if="records.length === 0">
+        <div
+          class="vx-col flex items-center justify-center flex-col sm:w-1/2 md:w-3/5 lg:w-3/4 xl:w-1/2 mx-auto text-center"
+        >
+          <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">Add Bank Information</h3>
+          <h5 class="font-normal">
+            Fill in the required info correctly to ensure success 
+          </h5>
+          <h5 class="sm:mx-0 mx-4 mb-6 font-normal">receiving of payment.</h5>
+        </div>
 
-      <table v-if="records.data == []">
-        <tr>
-          <td class="font-semibold pb-6">Bank Name</td>
-          <td class="pl-6 pb-6">Empty</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Name</td>
-          <td class="pl-6 pb-6">Empty</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Account No.</td>
-          <td class=" pl-6 pb-6">Empty</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Status</td>
-          <td class=" pl-6 pb-6">Empty</td>
-        </tr>
-        <tr>
-          <td class="font-semibold pb-6">Remark</td>
-          <td class="pl-6 pb-6">Empty</td>
-        </tr>
-      </table>
-    </div>
+        <div class="mt-5 flex items-center justify-center mb-5">
+          <vs-button
+            @click="popupActive2 = true"
+            color="primary"
+            type="filled"
+            size="large"
+            >Add Bank Information</vs-button
+          >
+        </div>
+      </div>
 
-    <div class="mt-5 float-right mb-5" v-if="records.data == []">
-      <vs-button @click="popupActive2 = true" color="primary" type="filled"
-        >Add</vs-button
-      >
-      <vs-button type="border" color="danger">Delete</vs-button>
+      <div v-else>
+        <table v-for="(data, i) in records" :key="i">
+          <tr>
+            <td class="font-semibold pb-6">Bank Name</td>
+            <td class="pl-6 pb-6">{{ data.bank.name }}</td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-6">Name</td>
+            <td class="pl-6 pb-6">{{ data.name }}</td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-6">Account No.</td>
+            <td class=" pl-6 pb-6">{{ data.account_no }}</td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-6">Status</td>
+            <td style="color: #4CAF50;" class=" pl-6 pb-6">
+              {{ data.status.description }}
+            </td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-6">Remark</td>
+            <td class="pl-6 pb-6">{{ data.remark }}</td>
+          </tr>
+        </table>
+
+        <p style="color:red;font-size:11px;">
+          *Please contact the customer service if you want to update your bank
+          information..
+        </p>
+      </div>
     </div>
 
     <vs-popup
@@ -190,8 +190,7 @@ export default {
       return this.$store.state.banks.records;
     },
     records() {
-      console.log("hehehe", this.a);
-      return (this.a = this.$store.state.merchantBanks.records);
+      return this.$store.state.merchantBanks.records;
     }
   },
   methods: {
@@ -210,15 +209,18 @@ export default {
           this.$vs.notify({
             title: "Success!",
             text: "Your data has been updated",
-            color: "success"
+            color: "success",
+             position: "bottom-left"
           });
         }
+        this.popupActive2 = false
       } catch (err) {
         if (err) {
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
-            color: "danger"
+            color: "danger",
+             position: "bottom-left"
           });
         }
       }
@@ -245,7 +247,6 @@ export default {
     this.fetchUser();
     this.fetchBank();
     this.user = this.$store.state.auth.user;
-    console.log("userss", this.user);
   }
 };
 </script>

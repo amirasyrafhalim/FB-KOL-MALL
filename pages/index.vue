@@ -1,12 +1,21 @@
 <template>
   <div>
+    <!--vs-alert
+      color="warning"
+      class="mb-5"
+      v-if="user && user.merchant && user.merchant.has_shipping_method===false"
+    >
+      You have not set any shipping methods.
+      <nuxt-link :to="localePath('settings-shippings')" class="text-warning font-bold">Set now</nuxt-link>.
+    </vs-alert-->
+
     <div class="vx-row">
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <vx-card
           slot="no-body"
           class="text-center greet-user h-full"
           card-background="linear-gradient(120deg, #633CD2, #8A2FA1, #982B8F)"
-          v-if="this.$auth.loggedIn && this.$auth.user && this.$auth.user.merchant"
+          v-if="this.$auth.loggedIn && this.$auth.user && this.$auth.user.merchant && this.$auth.user.merchant.has_pages === true"
         >
           <feather-icon
             icon="VideoIcon"
@@ -19,10 +28,11 @@
           >Go to live videos to start selling now.</p>
 
           <vs-button
+            v-if="this.$auth.user.merchant.pages[0]"
             color="danger"
             type="relief"
             class="mt-2"
-            :to="localePath({name: 'merchantPage-id-liveVideo', params:{id:this.$auth.user.merchant.id}})"
+            :to="localePath({name: 'merchantPage-id-liveVideo', params:{id:this.$auth.user.merchant.pages[0].id}})"
           >LIVE VIDEOS</vs-button>
         </vx-card>
         <vx-card
@@ -89,70 +99,52 @@
     <div class="vx-row">
       <!-- LINE CHART -->
       <div class="vx-col w-full md:w-2/3 mb-base">
-        <vx-card title="Revenue">
+        <vx-card title="Revenue vs Orders" class="h-full">
           <template slot="actions">
-            <feather-icon icon="SettingsIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
+            <!--feather-icon icon="SettingsIcon" svgClasses="w-6 h-6 text-grey"></feather-icon-->
+
+            <v-md-date-range-picker
+              class="date-range-picker"
+              opens="right"
+              @change="onDateRangeChange"
+              :startDate="filterStartDate"
+              :endDate="filterEndDate"
+            ></v-md-date-range-picker>
           </template>
           <div slot="no-body" class="p-6 pb-0">
-            <div class="flex" v-if="salesChart && salesChart.analyticsData">
-              <div class="mr-6">
-                <p class="mb-1 font-semibold">This Month</p>
-                <p class="text-3xl text-success">
-                  <sup class="text-base mr-1">RM</sup>
-                  {{ salesChart.analyticsData.thisMonth.toLocaleString() }}
-                </p>
-              </div>
-              <div>
-                <p class="mb-1 font-semibold">Last Month</p>
-                <p class="text-3xl">
-                  <sup class="text-base mr-1">RM</sup>
-                  {{ salesChart.analyticsData.lastMonth.toLocaleString() }}
-                </p>
-              </div>
-            </div>
-            <vue-apex-charts
+            <e-charts
               v-if="salesChart && salesChart.series"
-              type="line"
-              height="266"
-              :options="analyticsData.revenueComparisonLine.chartOptions"
-              :series="salesChart.series"
+              autoresize
+              :options="salesChart"
+              theme="shine"
+              ref="salesChart"
+              auto-resize
             />
+            <div v-else class="text-center py-8">No data yet</div>
           </div>
         </vx-card>
       </div>
 
       <!-- RADIAL CHART -->
       <div class="vx-col w-full md:w-1/3 mb-base">
-        <vx-card title="Goal Overview">
+        <vx-card title="Order Summary" class="h-full">
           <template slot="actions">
-            <feather-icon icon="HelpCircleIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
+            <nuxt-link :to="localePath('orders')">
+              <feather-icon icon="ArrowRightCircleIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
+            </nuxt-link>
           </template>
-
           <!-- CHART -->
           <template slot="no-body">
             <div class="mt-10">
               <vue-apex-charts
-                type="radialBar"
-                height="240"
-                :options="analyticsData.goalOverviewRadialBar.chartOptions"
-                :series="goalOverview.series"
-              />
+                v-if="orderSummary && orderSummary.series"
+                type="donut"
+                :options="orderSummary.chartOptions"
+                :series="orderSummary.series"
+              ></vue-apex-charts>
+              <div v-else class="text-center py-8">No data yet</div>
             </div>
           </template>
-
-          <!-- DATA -->
-          <div class="flex justify-between text-center mt-6" slot="no-body-bottom">
-            <div
-              class="w-1/2 border border-solid d-theme-border-grey-light border-r-0 border-b-0 border-l-0"
-            >
-              <p class="mt-4">Completed</p>
-              <p class="mb-4 text-3xl font-semibold">786,617</p>
-            </div>
-            <div class="w-1/2 border border-solid d-theme-border-grey-light border-r-0 border-b-0">
-              <p class="mt-4">In Progress</p>
-              <p class="mb-4 text-3xl font-semibold">13,561</p>
-            </div>
-          </div>
         </vx-card>
       </div>
     </div>
@@ -165,6 +157,17 @@ import VueApexCharts from "vue-apexcharts";
 import StatisticsCardLine from "@/components/statistics-cards/StatisticsCardLine.vue";
 import analyticsData from "@/components/ui-elements/card/analyticsData.js";
 import ChangeTimeDurationDropdown from "@/components/ChangeTimeDurationDropdown.vue";
+import debounce from "lodash/debounce";
+import ECharts from "vue-echarts/components/ECharts";
+import "echarts/lib/component/tooltip";
+import "echarts/lib/component/toolbox";
+import "echarts/lib/component/legend";
+import "echarts/lib/component/axisPointer";
+import "echarts/lib/chart/line";
+import "echarts/lib/chart/bar";
+import theme from "@/assets/echart-theme.json";
+
+ECharts.registerTheme("shine", theme);
 
 export default {
   layout: "main",
@@ -173,10 +176,20 @@ export default {
     StatisticsCardLine,
     VuePerfectScrollbar,
     ChangeTimeDurationDropdown,
+    ECharts,
   },
   data() {
     return {
       moduleName: "dashboard",
+      //dateRange: null,
+      // dateRange: {
+      //   startDate: "2020-09-01",
+      //   endDate: "2020-09-18",
+      // },
+      filter: {
+        date_range: null,
+      },
+
       subscribersGained: {},
       revenueGenerated: {},
       quarterlySales: {},
@@ -201,6 +214,7 @@ export default {
       },
     };
   },
+
   computed: {
     scrollbarTag() {
       return this.$store.getters.scrollbarTag;
@@ -211,6 +225,24 @@ export default {
     salesChart() {
       return this.$store.state[this.moduleName].salesChart;
     },
+    orderSummary() {
+      return this.$store.state[this.moduleName].orderSummary;
+    },
+    filterStartDate() {
+      let start = new Date();
+
+      start.setDate(new Date().getDate() - 29);
+
+      return start.toString();
+    },
+    filterEndDate() {
+      let end = new Date();
+
+      return end.toString();
+    },
+    user() {
+      return this.$auth.user;
+    },
   },
   mounted() {
     // const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS;
@@ -218,7 +250,12 @@ export default {
   },
   created() {
     this.fetchSalesSummary();
-    this.fetchSalesChart();
+
+    setTimeout(() => {
+      this.fetchSalesChart();
+      this.fetchOrderSummary();
+    }, 500);
+
     // Subscribers gained - Statistics
     this.subscribersGained = JSON.parse(
       '{"series":[{"name":"Subscribers","data":[28,40,36,52,38,60,55]}],"analyticsData":{"subscribers":92600}}'
@@ -252,21 +289,35 @@ export default {
 
     async fetchSalesChart() {
       try {
-        await this.$store.dispatch(this.moduleName + "/fetchSalesChart");
+        let params = {};
+
+        if (this.filter) {
+          params = this.filter;
+        }
+        await this.$store.dispatch(
+          this.moduleName + "/fetchSalesChart",
+          params
+        );
       } catch (err) {
         console.log(err);
       }
+    },
+
+    async fetchOrderSummary() {
+      try {
+        await this.$store.dispatch(this.moduleName + "/fetchOrderSummary");
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    onDateRangeChange(values) {
+      this.filter.date_range =
+        values[0].format("YYYY-MM-DD") + " - " + values[1].format("YYYY-MM-DD");
+
+      this.fetchSalesChart();
     },
   },
 };
 </script>
 
-<style lang="scss">
-.chat-card-log {
-  height: 400px;
 
-  .chat-sent-msg {
-    background-color: #f2f4f7 !important;
-  }
-}
-</style>

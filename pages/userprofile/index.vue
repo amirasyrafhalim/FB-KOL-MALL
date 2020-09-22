@@ -33,7 +33,7 @@
             </tr>
             <tr>
               <td class="font-semibold pb-5">Status</td>
-              <p style="color: #4CAF50;" class="pl-5 mb-5">
+              <p class="pl-5 mb-5 text-success">
                 {{ user.status.description }}
               </p>
             </tr>
@@ -294,7 +294,7 @@ export default {
   },
   created() {
     this.user = this.$store.state.auth.user;
-    console.log("user", this.user);
+
   }
 };
 </script>
