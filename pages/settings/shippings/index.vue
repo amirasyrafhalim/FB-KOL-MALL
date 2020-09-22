@@ -176,7 +176,8 @@
         this.$vs.notify({
           color: 'success',
           title: 'Shipping Deleted',
-          text: 'The selected shipping was successfully deleted'
+          text: 'The selected shipping was successfully deleted',
+          position: "bottom-left",
         })
       }
     },
