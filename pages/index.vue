@@ -15,7 +15,7 @@
           slot="no-body"
           class="text-center greet-user h-full"
           card-background="linear-gradient(120deg, #633CD2, #8A2FA1, #982B8F)"
-          v-if="this.$auth.loggedIn && this.$auth.user && this.$auth.user.merchant"
+          v-if="this.$auth.loggedIn && this.$auth.user && this.$auth.user.merchant && this.$auth.user.merchant.has_pages === true"
         >
           <feather-icon
             icon="VideoIcon"
@@ -28,10 +28,11 @@
           >Go to live videos to start selling now.</p>
 
           <vs-button
+            v-if="this.$auth.user.merchant.pages[0]"
             color="danger"
             type="relief"
             class="mt-2"
-            :to="localePath({name: 'merchantPage-id-liveVideo', params:{id:this.$auth.user.merchant.id}})"
+            :to="localePath({name: 'merchantPage-id-liveVideo', params:{id:this.$auth.user.merchant.pages[0].id}})"
           >LIVE VIDEOS</vs-button>
         </vx-card>
         <vx-card
