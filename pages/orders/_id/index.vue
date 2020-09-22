@@ -219,7 +219,7 @@
               </tr>
               <tr>
                 <td class="font-semibold" style="width: 20%">
-                  Subtotal Amount
+                  Payment Method
                 </td>
                 <td>:</td>
                 <td>
