@@ -13,6 +13,9 @@
           <vs-row>
             <vs-col vs-w="8" vs-xs="12">
               <h4 class="font-bold mb-3">Buyer Details</h4>
+
+    
+
               <table
                 style="width:100%; white-space: inherit"
                 v-if="record.detail"
@@ -20,17 +23,17 @@
                 <tr>
                   <td style="width:10%; white-space: inherit">Name</td>
                   <td>:</td>
-                  <td>{{ record.detail.name || "-" }}</td>
+                  <td>{{ (record.detail && record.detail.name) || "-" }}</td>
                 </tr>
                 <tr>
                   <td style="width:10%; white-space: inherit">Email</td>
                   <td>:</td>
-                  <td>{{ record.detail.email || "-" }}</td>
+                  <td>{{ (record.detail && record.detail.email) || "-" }}</td>
                 </tr>
                 <tr>
                   <td style="width:10%; white-space: inherit">Phone No</td>
                   <td>:</td>
-                  <td>{{ record.detail.phone_no || "-" }}</td>
+                  <td>{{ record.detail &&record.detail.phone_no || "-" }}</td>
                 </tr>
                 <tr>
                   <td style="width:10%; white-space: inherit ">Address</td>
@@ -52,28 +55,42 @@
               </table>
 
               <h4 vs-w="8" vs-xs="12" style="color: grey" v-else>
-                No Record Found
+                No Buyer Details
               </h4>
             </vs-col>
             <vs-col vs-w="4" vs-xs="12">
               <div v-if="record.delivery">
-                <div class="mb-2" v-if="record.delivery.method == 1">
+                <div class="mb-2" v-if="record && record.delivery && record.delivery.method.value == 1">
                   <h4 class="font-bold">
                     <span>{{ "Postage" }}</span>
-                    <vs-chip
-                      :color="
-                        getDeliveryStatusColor(record.delivery.status.value)
-                      "
-                    >
-                      {{
-                        record.delivery && record.delivery.status.description
-                      }}
+                    <vs-chip :color=" getDeliveryStatusColor(record.delivery.status.value) ">
+                      {{  record.delivery && record.delivery.status.description }}
                     </vs-chip>
                   </h4>
-                  <p>{{ record.delivery.partner || null }}</p>
-                  <p>{{ record.delivery.tracking_no || null }}</p>
-                  <p>{{ record.delivery.remark || null }}</p>
-                  <p>{{ record.delivery.amount || null }}</p>
+                  <table style="width:100%; white-space: inherit" v-if="record.delivery" >
+                <tr v-if="record.delivery.partner">
+                  <td style="width:20%; white-space: inherit">Partner Name</td>
+                  <td style="width:1%">:</td>
+                  <td>{{record.delivery.partner || null }}</td>
+                </tr>
+                <tr v-if="record.delivery.tracking_no">
+                  <td style="white-space: inherit">Tracking No</td>
+                  <td>:</td>
+                  <td>{{ record.delivery.tracking_no || null }}</td>
+                </tr>
+                <tr v-if="record.delivery.remark">
+                  <td style="white-space: inherit">Remark</td>
+                  <td>:</td>
+                  <td>{{ record.delivery.remark || null }}</td>
+                </tr>
+                <tr v-if="record.delivery.amount">
+                  <td style="white-space: inherit">Fee</td>
+                  <td>:</td>
+                  <td>{{ record.delivery.amount || null }}</td>
+                </tr>
+                  </table>
+
+          
                 </div>
                 <div class="mb-2" v-else>
                   <h4 class="font-bold">
@@ -109,7 +126,7 @@
                   <td>{{ record.campaign.packages[0].name || null }}</td>
                   <td>{{ record.package.quantity + " x" || null}}</td>
                   <td>{{ "RM " + record.campaign.packages[0].price || null }}</td>
-                  <td>{{ "RM " + record.total_amount || null }}</td>
+                  <td>{{ "RM " + record.package.total_amount || null }}</td>
                 </tr>
                 <tr>
                   <td style="width:15%"></td>
@@ -162,7 +179,7 @@
                     <td class="text-right">
                       RM
                       {{
-                        record.delivery ? record.delivery.amount : "0.00"
+                        record.delivery ? record.delivery.amount : "-"
                       }}
                     </td>
                   </tr>
@@ -255,11 +272,12 @@
               <tr>
                 <td class="font-semibold">Attachment</td>
                 <td>:</td>
-                <td>
-                  <vs-images
+                <td @click="openAttachment" style="cursor: pointer;">
+                  <vs-chip style="float: left!important">{{record.payment && record.payment.image}}</vs-chip>
+                  <!-- <vs-images
                     width="50%"
                     :src="record.payment && record.payment.image"
-                  ></vs-images>
+                  ></vs-images> -->
                 </td>
               </tr>
               <tr>
@@ -347,6 +365,18 @@ export default {
     this.fetchEnumPaymentStatus()
   },
   methods: {
+       openAttachment() {
+         var a = this.record.payment.image;
+         window.open( a, '_blank' );
+        //  window.location.href= this.record.payment.image
+       },
+    getDeliveryStatusColor(status) {
+      if (status === 1) return "success";
+      if (status === 2) return "warning";
+      if (status === 3) return "warning";
+      if (status === 4) return "danger";
+    },
+
     getStatusColor(status) {
       if (status === 2) return "success";
       if (status === 0) return "danger";
@@ -377,8 +407,10 @@ export default {
     async updatePaymentStatus() {
       try {
         let res = await this.$api.orders.updateOrderPayment({ status:  this.selectedStatus.value }, this.record.payment.id);
+        console.log('res', res)
         this.handleApiSuccess(res, "orders");
       } catch (err) {
+        console.log('err', err)
         this.handleApiErrors(err);
       }   
     },

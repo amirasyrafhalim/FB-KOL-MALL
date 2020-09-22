@@ -7,6 +7,7 @@ export const state = () => ({
     deliveryMethodsEnums:[],
     paymentEnums:[],
     deliveryEnums:[],
+    statusEnums:[],
   },
 });
 
