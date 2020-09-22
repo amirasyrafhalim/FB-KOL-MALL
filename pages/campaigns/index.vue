@@ -82,7 +82,7 @@
 
           <vs-td :data="data[indextr].updatedBy.name">
             {{ tr.updatedBy.name }}
-          </vs-td>
+          </vs-td> 
 
           <vs-td :data="data[indextr].created_at">
             {{ tr.created_at }}

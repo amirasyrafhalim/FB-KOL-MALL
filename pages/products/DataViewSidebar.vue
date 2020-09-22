@@ -26,6 +26,7 @@
         <div class="img-container w-64 mx-auto flex items-center justify-center">
           <img :src="dataImg" alt="img" class="responsive" />
         </div>
+        
 
         <!-- Image upload Buttons -->
         <div class="modify-img flex justify-between mt-5">
@@ -35,22 +36,31 @@
 
       <div class="p-6 py-2">
         <span>Name</span>
-        <vs-input v-model="dataName" class="w-full" name="item-name" />
+        <vs-input
+          v-model="dataName"
+          class="w-full"
+          name="item-name"
+        />
+         <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors ? this.formErrors.name : '' }}</span>
       </div>
+      
 
       <div class="p-6 py-2">
         <span>Description</span>
         <vs-textarea v-model="dataDescription" class="w-full" name="item-description" />
+          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.description : ''">{{ this.formErrors ? this.formErrors.description : '' }}</span>
       </div>
 
       <div class="px-6 py-2" label="Status">
         <span>Status</span>
         <v-select :options="status" v-model="dataStatus" />
+          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors ? this.formErrors.status : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Category</span>
         <v-select :options="category" v-model="dataCategory" label="name" />
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.category_id : ''">{{ this.formErrors ? this.formErrors.category_id : '' }}</span>
       </div>
 
       <div class="upload-img px-6 py-2">
@@ -79,8 +89,10 @@
 <script>
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import map from "lodash/map";
+import formMixin from "@/mixins/form";
 
 export default {
+  mixins: [formMixin],
   props: {
     isSidebarActive: {
       type: Boolean,
@@ -176,9 +188,11 @@ export default {
     },
     async submitData() {
       function isValidURL(string) {
-        if(string) {
-          var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-        }        
+        if (string) {
+          var res = string.match(
+            /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+          );
+        }
         return res !== null;
       }
 
@@ -200,10 +214,8 @@ export default {
                 })
             );
 
-        toDataURL(
-          this.dataImg
-        ).then((dataUrl) => {
-         var dataImage = dataUrl.replace(/^data:(.*;base64,)?/, "");
+        toDataURL(this.dataImg).then((dataUrl) => {
+          var dataImage = dataUrl.replace(/^data:(.*;base64,)?/, "");
         });
       }
 
@@ -226,50 +238,25 @@ export default {
         try {
           let res = await this.$api.products.update(obj, this.dataId);
           if (res.http_code == 200) {
-            this.$vs.notify({
-              title: "Success!",
-              text: "Your product has been updated",
-              color: "success",
-              position: "bottom-left",
-            });
-            this.popupActive2 = false;
+            this.handleApiSuccess(res, this.redirectRoute);
+            this.popupActive2 = false; 
+            this.$emit('closeSidebar')
           }
         } catch (err) {
-          if (err) {
-            this.$vs.notify({
-              title: "Failed!",
-              text: "Please insert your data correctly",
-              color: "danger",
-              position: "bottom-left",
-            });
-          }
+          this.handleApiErrors(err);
         }
       } else {
         try {
           let res = await this.$api.products.create(obj);
           if (res.http_code == 201) {
-            this.$vs.notify({
-              title: "Success!",
-              text: "Your product has been created",
-              color: "success",
-              position: "bottom-left",
-            });
+            this.handleApiSuccess(res, this.redirectRoute);
             this.popupActive2 = false;
           }
         } catch (err) {
-          if (err) {
-            this.$vs.notify({
-              title: "Failed!",
-              text: "Please insert your data correctly",
-              color: "danger",
-              position: "bottom-left",
-            });
-          }
+          this.handleApiErrors(err);
         }
       }
       this.$emit("fetchItems");
-      this.$emit("closeSidebar");
-      this.initValues();
     },
 
     updateCurrImg(input) {

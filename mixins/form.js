@@ -21,7 +21,8 @@ export default {
 			this.$vs.notify({
 				color: 'success',
 				title: 'Success',
-				text: res.message || this.$t('message.successSubmit')
+				position: "bottom-left",
+				text: this.$t('message.successSubmit')
 			});
 			if (redirectRoute) {
 				this.$router.push({ path: this.localePath(redirectRoute) });
@@ -30,12 +31,11 @@ export default {
 		handleApiErrors(err) {
 			this.clearPreviousError();
 			let resBody = err.response;
-			let code = resBody.data.http_code || resBody.data.status;
+			let code = resBody.data.http_code;
 			let errMessage = resBody && resBody.data.error ? resBody.data.error.message : null;
 
 			if (code == 422) {
-				let errors = resBody.data.error;
-				console.log(errors);
+				let errors = resBody.data.errors;
 				this.errorMessage = this.$t('message.invalidInput');
 				this.formErrors = errors;
 			} else if (code == 400) {
@@ -46,6 +46,7 @@ export default {
 				this.$vs.notify({
 					color: 'danger',
 					title: 'Error',
+					position: "bottom-left",
 					text: errMessage || this.$t('message.errorSubmit')
 				});
 			} else {
@@ -56,6 +57,7 @@ export default {
 				this.$vs.notify({
 					color: 'danger',
 					title: 'Error',
+					position: "bottom-left",
 					text: errMessage || this.$t('message.unknownError')
 				});
 			}

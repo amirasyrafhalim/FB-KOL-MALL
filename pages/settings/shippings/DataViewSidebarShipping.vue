@@ -1,39 +1,62 @@
 <template>
-  <vs-sidebar click-not-close position-right parent="body" default-index="1" color="primary"
-              class="add-new-data-sidebar items-no-padding" spacer v-model="isSidebarActiveLocal">
+  <vs-sidebar
+    click-not-close
+    position-right
+    parent="body"
+    default-index="1"
+    color="primary"
+    class="add-new-data-sidebar items-no-padding"
+    spacer
+    v-model="isSidebarActiveLocal"
+  >
     <div class="mt-6 flex items-center justify-between px-6">
       <h4>{{ Object.entries(this.data).length === 0 ? "ADD NEW" : "UPDATE" }} SHIPPING</h4>
       <feather-icon icon="XIcon" @click.stop="isSidebarActiveLocal = false" class="cursor-pointer"></feather-icon>
     </div>
     <vs-divider class="mb-0"></vs-divider>
 
-    <component :is="scrollbarTag" class="scroll-area--data-list-add-new" :settings="settings" :key="$vs.rtl">
-
+    <component
+      :is="scrollbarTag"
+      class="scroll-area--data-list-add-new"
+      :settings="settings"
+      :key="$vs.rtl"
+    >
       <div class="px-6 py-2">
         <span>Shipping Partner</span>
-        <v-select :options="partners" v-model="dataShippingPartner" label="name" placeholder="Select Shipping Partner"/>
+        <v-select
+          :options="partners"
+          v-model="dataShippingPartner"
+          label="name"
+          placeholder="Select Shipping Partner"
+        />
+         <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.shipping_partner_id : ''">{{ this.formErrors ? this.formErrors.shipping_partner_id : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Name</span>
-        <vs-input v-model="dataName" class="w-full" name="item-name"/>
+        <vs-input v-model="dataName" class="w-full" name="item-name" />
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors ? this.formErrors.name : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Fee</span>
-        <vs-input v-model="dataFee" class="w-full" name="item-fee"/>
+        <vs-input v-model="dataFee" class="w-full" name="item-fee" />
+                 <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.fee : ''">{{ this.formErrors ? this.formErrors.fee : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Free Minimum Type</span>
-        <v-select :options="FreeMinimumType" v-model="dataFreeMinimumType" placeholder="Select Free Minimum Type"/>
+        <v-select
+          :options="FreeMinimumType"
+          v-model="dataFreeMinimumType"
+          placeholder="Select Free Minimum Type"
+        />
       </div>
 
       <div class="px-6 py-2">
         <span>Free Minimum Value</span>
-        <vs-input v-model="dataFreeMinimumValue" class="w-full" name="item-free-minimum-value"/>
+        <vs-input v-model="dataFreeMinimumValue" class="w-full" name="item-free-minimum-value" />
       </div>
-
     </component>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
@@ -45,8 +68,10 @@
 
 <script>
   import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+  import formMixin from "@/mixins/form";
 
   export default {
+    mixins: [formMixin],
     props: {
       isSidebarActive: {
         type: Boolean,
@@ -134,7 +159,7 @@
         this.dataFreeMinimumType = ''
         this.dataFreeMinimumValue = null
       },
-      submitData() {
+      async submitData() {
         const obj = {
           merchant_id: this.$auth.state.user.merchant.id,
           shipping_partner_id: this.dataShippingPartner.id,
@@ -144,52 +169,65 @@
           free_minimum_value: this.dataFreeMinimumValue
         }
         if (this.dataId !== null && this.dataId >= 0) {
-          this.$api.shippingMethods.update(obj, this.dataId).catch(err => {
-            console.error(err)
-          })
+           try {
+          let res = await this.$api.shippingMethods.update(obj, this.dataId);
+          if (res.http_code == 200) {
+            this.handleApiSuccess(res, this.redirectRoute);
+            this.popupActive2 = false;
+            this.$emit("closeSidebar");
+          }
+        } catch (err) {
+          this.handleApiErrors(err);
+        }
         } else {
-          this.$api.shippingMethods.create(obj);
+            try {
+          let res = await this.$api.shippingMethods.create(obj);
+          if (res.http_code == 201) {
+            this.handleApiSuccess(res, this.redirectRoute);
+            this.popupActive2 = false;
+          }
+        } catch (err) {
+          this.handleApiErrors(err);
+        }
         }
         this.$emit('fetchItems')
-        this.$emit('closeSidebar')
-        this.initValues()
       },
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .add-new-data-sidebar {
-    ::v-deep .vs-sidebar--background {
-      z-index: 52010;
-    }
+.add-new-data-sidebar {
+  ::v-deep .vs-sidebar--background {
+    z-index: 52010;
+  }
 
-    ::v-deep .vs-sidebar {
-      z-index: 52010;
-      width: 400px;
-      max-width: 90vw;
+  ::v-deep .vs-sidebar {
+    z-index: 52010;
+    width: 400px;
+    max-width: 90vw;
 
-      .img-upload {
-        margin-top: 2rem;
+    .img-upload {
+      margin-top: 2rem;
 
-        .con-img-upload {
-          padding: 0;
-        }
+      .con-img-upload {
+        padding: 0;
+      }
 
-        .con-input-upload {
-          width: 100%;
-          margin: 0;
-        }
+      .con-input-upload {
+        width: 100%;
+        margin: 0;
       }
     }
   }
+}
 
-  .scroll-area--data-list-add-new {
-    // height: calc(var(--vh, 1vh) * 100 - 4.3rem);
-    height: calc(var(--vh, 1vh) * 100 - 16px - 45px - 82px);
+.scroll-area--data-list-add-new {
+  // height: calc(var(--vh, 1vh) * 100 - 4.3rem);
+  height: calc(var(--vh, 1vh) * 100 - 16px - 45px - 82px);
 
-    &:not(.ps) {
-      overflow-y: auto;
-    }
+  &:not(.ps) {
+    overflow-y: auto;
   }
+}
 </style>
