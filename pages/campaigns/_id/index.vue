@@ -3,11 +3,11 @@
 
     <vs-prompt v-if="shippingMethods.length === 0"
                color="primary"
-               @accept="acceptAlert" buttonCancel="hidden"
-               type="flat" title="No Shipping Method Found" accept-text="Add Shipping Method"
-               :active.sync="activePrompt">
+               @accept="acceptAlert" button-cancel="hidden"
+               type="flat" title="Missing Shipping Method" accept-text="Add Now"
+               :active.sync="activePrompt" >
       <div class="con-exemple-prompt">
-        Please add shipping method before create the package.
+        Please set shipping method first before create the package.
       </div>
     </vs-prompt>
 
