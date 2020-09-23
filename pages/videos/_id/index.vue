@@ -86,7 +86,7 @@ export default {
   created() {
     setTimeout(() => {
       this.fetchOrders();
-    }, 2000);
+    }, 1000);
   },
   methods: {
     subscribeNewOrder() {
@@ -115,9 +115,9 @@ export default {
         path: `/merchantkPage/${item.merchant_page_id}/liveVideo`,
       });
     },
-    async fetchOrders() {
+    fetchOrders() {
       try {
-        await this.$store.dispatch("orders/fetchItems", {
+        this.$store.dispatch("orders/fetchItems", {
           video_id: this.record.id,
           sort: "-created_at",
         });
@@ -125,6 +125,11 @@ export default {
         console.log(err);
       }
     },
+  },
+  beforeMount() {
+    console.log("beforeMount");
+    this.$store.commit("orders/setRecords", []);
+    this.newOrders = [];
   },
 };
 </script>
