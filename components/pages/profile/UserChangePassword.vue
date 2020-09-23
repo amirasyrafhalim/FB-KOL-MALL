@@ -57,7 +57,9 @@
 </template>
 
 <script>
+
 export default {
+
   data() {
     return {
       moduleName: "password",
@@ -108,87 +110,3 @@ export default {
 };
 </script>
 
-<tr>
-              <td class="font-semibold pb-5">Password</td>
-              <div class="vx-col w-full flex pb-3 mt-3 pl-5" id="account-manage-buttons">
-                <div class="demo-alignment">
-                  <vs-button
-                    @click="popupActive2 = true"
-                    color="primary"
-                    type="filled"
-                    class="my-2 mb-4 mt-3"
-                  >Change Password</vs-button>
-
-                  <vs-popup
-                    classContent="popup-example"
-                    title="Enter your new password"
-                    :active.sync="popupActive2"
-                  >
-                    <div class="vx-row mb-6">
-                      <div class="vx-col sm:w-1/3 w-full">
-                        <span>Current Password</span>
-                      </div>
-                      <div class="vx-col sm:w-2/3 w-full">
-                        <vs-input
-                          type="password"
-                          class="w-full"
-                          icon-pack="feather"
-                          icon="icon-lock"
-                          icon-no-border
-                          v-model="formModel.current_password"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="vx-row mb-6">
-                      <div class="vx-col sm:w-1/3 w-full">
-                        <span>New Password</span>
-                      </div>
-                      <div class="vx-col sm:w-2/3 w-full">
-                        <vs-input
-                          type="password"
-                          class="w-full"
-                          icon-pack="feather"
-                          icon="icon-lock"
-                          icon-no-border
-                          v-model="formModel.new_password"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="vx-row mb-6">
-                      <div class="vx-col sm:w-1/3 w-full">
-                        <span>Confirm New Password</span>
-                      </div>
-                      <div class="vx-col sm:w-2/3 w-full">
-                        <vs-input
-                          type="password"
-                          class="w-full"
-                          icon-pack="feather"
-                          icon="icon-lock"
-                          icon-no-border
-                          v-model="formModel.new_confirm_password"
-                        />
-                      </div>
-                    </div>
-                    <div class="float-right">
-                      <vs-button
-                        class="primary mt-4"
-                        color="rgb(6, 137, 219)"
-                        @click="validate"
-                        type="filled"
-                      >SUBMIT</vs-button>
-                      <vs-button
-                        class="mt-4"
-                        color="warning"
-                        type="filled"
-                        @click="
-                          formModel.new_confirm_password = formModel.new_password = formModel.current_password =
-                            ''
-                        "
-                      >Reset</vs-button>
-                    </div>
-                  </vs-popup>
-                </div>
-              </div>
-            </tr>

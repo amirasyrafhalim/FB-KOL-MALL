@@ -248,6 +248,8 @@ export default {
           });
         }
         this.popupActive2 = false;
+        this.fetchUser();
+        this.$router.push("/userprofile/" + this.$store.state.auth.user.id + "/edit");
       } catch (err) {
         if (err) {
           this.$vs.notify({

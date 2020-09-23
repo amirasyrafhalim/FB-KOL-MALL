@@ -20,7 +20,7 @@
         </a>
       </div>
 
-      <!--div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+        <!-- <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <a :href="localePath({ name: 'settings-paymentMethod' })">
           <vx-card
             slot="no-body"
@@ -36,7 +36,8 @@
               Set up and edit your payment method</p>
           </vx-card>
         </a>
-      </div-->
+      </div> -->
+
     </div>
   </div>
 </template>
