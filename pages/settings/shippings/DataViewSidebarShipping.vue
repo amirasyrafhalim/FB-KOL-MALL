@@ -57,6 +57,11 @@
         <span>Free Minimum Value</span>
         <vs-input v-model="dataFreeMinimumValue" class="w-full" name="item-free-minimum-value" />
       </div>
+
+      <div class="px-6 py-2">
+        <span>Status</span>
+        <v-select :options="status" v-model="dataStatus"/>
+      </div>
     </component>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
@@ -91,6 +96,7 @@
         dataId: null,
         dataName: '',
         dataFee: '',
+        dataStatus: '',
         dataFreeMinimumType: '',
         dataFreeMinimumValue: null,
         dataShippingPartner: '',
@@ -102,6 +108,10 @@
           {label: 'Price', code: 1},
           {label: 'Quantity', code: 2},
         ],
+        status: [
+          {label: 'Inactive', code: 0},
+          {label: 'Active', code: 1},
+        ],
       }
     },
     watch: {
@@ -110,11 +120,12 @@
         if (Object.entries(this.data).length === 0) {
           this.initValues()
         } else {
-          const {id, name, fee, free_minimum_type, free_minimum_value, partner} = JSON.parse(JSON.stringify(this.data))
+          const {id, name, fee, free_minimum_type, free_minimum_value, status, partner} = JSON.parse(JSON.stringify(this.data))
           this.dataId = id
           this.dataShippingPartner = partner.name
           this.dataName = name
           this.dataFee = fee
+          this.dataStatus = status && status.description ? status.description : ''
           this.dataFreeMinimumType = free_minimum_type && free_minimum_type.description ? free_minimum_type.description : ''
           this.dataFreeMinimumValue = free_minimum_value
           this.initValues()
@@ -156,6 +167,7 @@
         this.dataShippingPartner = ''
         this.dataName = ''
         this.dataFee  = ''
+        this.dataStatus = ''
         this.dataFreeMinimumType = ''
         this.dataFreeMinimumValue = null
       },
@@ -165,6 +177,7 @@
           shipping_partner_id: this.dataShippingPartner.id,
           name: this.dataName,
           fee: this.dataFee,
+          status: this.dataStatus.code,
           free_minimum_type: this.dataFreeMinimumType.code,
           free_minimum_value: this.dataFreeMinimumValue
         }
