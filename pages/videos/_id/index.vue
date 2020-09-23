@@ -126,8 +126,8 @@ export default {
       }
     },
   },
-  destroyed() {
-    console.log("destroyed");
+  beforeMount() {
+    console.log("beforeMount");
     this.$store.commit("orders/setRecords", []);
     this.newOrders = [];
   },
