@@ -137,6 +137,7 @@ export default {
           if (res.http_code == 201) {
             this.handleApiSuccess(res, this.redirectRoute);
             this.popupActive2 = false;
+            this.$emit('closeSidebar')
           }
         } catch (err) {
           this.handleApiErrors(err);

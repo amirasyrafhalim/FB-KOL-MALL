@@ -15,9 +15,7 @@
           class="vx-col flex items-center justify-center flex-col sm:w-1/2 md:w-3/5 lg:w-3/4 xl:w-1/2 mx-auto text-center"
         >
           <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">Add Bank Information</h3>
-          <h5 class="font-normal">
-            Fill in the required info correctly to ensure success
-          </h5>
+          <h5 class="font-normal">Fill in the required info correctly to ensure success</h5>
           <h5 class="sm:mx-0 mx-4 mb-6 font-normal">receiving of payment.</h5>
         </div>
 
@@ -27,8 +25,7 @@
             color="primary"
             type="filled"
             size="large"
-            >Add Bank Information</vs-button
-          >
+          >Add Bank Information</vs-button>
         </div>
       </div>
 
@@ -44,7 +41,7 @@
           </tr>
           <tr>
             <td class="font-semibold pb-6">Account No.</td>
-            <td class=" pl-6 pb-6">{{ data.account_no }}</td>
+            <td class="pl-6 pb-6">{{ data.account_no }}</td>
           </tr>
           <tr>
             <td class="font-semibold pb-6">Remark</td>
@@ -59,22 +56,17 @@
       </div>
     </div>
 
-    <vs-popup
-      classContent="popup-example"
-      title="Add Bank Information"
-      :active.sync="popupActive2"
-    >
+    <vs-popup classContent="popup-example" title="Add Bank Information" :active.sync="popupActive2">
       <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
           <span>Bank Name</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-          <v-select
-            name="status"
-            :options="bank"
-            label="name"
-            v-model="formModel.bank_id"
-          />
+          <v-select name="status" :options="bank" label="name" v-model="formModel.bank_id" />
+          <span
+            class="text-danger text-sm"
+            :error-messages="formErrors ? formErrors.bank_id : ''"
+          >{{ this.formErrors.bank_id ? this.formErrors.bank_id[0] : '' }}</span>
         </div>
       </div>
 
@@ -84,6 +76,10 @@
         </div>
         <div class="vx-col sm:w-2/3 w-full">
           <vs-input class="w-full" icon-no-border v-model="formModel.name" />
+          <span
+            class="text-danger text-sm"
+            :error-messages="formErrors ? formErrors.name : ''"
+          >{{ this.formErrors.name ? this.formErrors.name[0] : '' }}</span>
         </div>
       </div>
 
@@ -93,6 +89,10 @@
         </div>
         <div class="vx-col sm:w-2/3 w-full">
           <vs-input class="w-full" v-model="formModel.accountno" />
+          <span
+            class="text-danger text-sm"
+            :error-messages="formErrors ? formErrors.account_no : ''"
+          >{{ this.formErrors.account_no ? this.formErrors.account_no[0] : '' }}</span>
         </div>
       </div>
       <!-- <div class="vx-row mb-6">
@@ -106,7 +106,7 @@
             v-model="formModel.status"
           />
         </div>
-      </div> -->
+      </div>-->
       <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
           <span>Remark</span>
@@ -116,7 +116,7 @@
         </div>
       </div>
       <!-- <div class="vx-row mb-6"> -->
-        <!-- <div class="vx-col sm:w-1/3 w-full">
+      <!-- <div class="vx-col sm:w-1/3 w-full">
           <span>Bank Statement</span>
           <input
             type="file"
@@ -124,8 +124,8 @@
             ref="updateImgInput"
             accept="image/*"
           />
-        </div> -->
-        <!-- <div class="upload-img vx-col sm:w-2/3 w-full">
+      </div>-->
+      <!-- <div class="upload-img vx-col sm:w-2/3 w-full">
           <input
             type="file"
             class="hidden"
@@ -139,21 +139,13 @@
             type="gradient"
             >Upload Image</vs-button
           >
-        </div> -->
+      </div>-->
       <!-- </div> -->
       <div class="vx-row">
         <div class="vx-col w-full">
           <div class="mt-8 flex flex-wrap items-center justify-end">
-            <vs-button class="ml-auto mt-2" @click="validate"
-              >Save Changes</vs-button
-            >
-            <vs-button
-              class="ml-4 mt-2"
-              type="border"
-              color="warning"
-              @click="reset"
-              >Reset</vs-button
-            >
+            <vs-button class="ml-auto mt-2" @click="validate">Save Changes</vs-button>
+            <vs-button class="ml-4 mt-2" type="border" color="warning" @click="reset">Reset</vs-button>
           </div>
         </div>
       </div>
@@ -179,22 +171,23 @@
         </div>
         <vs-input class="w-full mt-4" label="Remark" />
       </div>
-    </div> -->
+    </div>-->
 
     <!-- Save & Reset Button -->
   </div>
 </template>
 
 <script>
+import formMixin from "@/mixins/form";
 export default {
+  mixins: [formMixin],
   data() {
     return {
-      
       dataImg: "",
       moduleName: "merchantBanks",
       status: [
         { label: "Active", code: 1 },
-        { label: "Inactive", code: 2 }
+        { label: "Inactive", code: 2 },
       ],
       popupActive2: false,
       merchant_id: this.$auth.state.user.merchant.id,
@@ -204,8 +197,8 @@ export default {
         name: "",
         remark: "",
         status: 1,
-        image: ""
-      }
+        image: "",
+      },
     };
   },
   computed: {
@@ -214,14 +207,13 @@ export default {
     },
     records() {
       return this.$store.state.merchantBanks.records;
-    }
+    },
   },
   methods: {
-
     updateCurrImg(input) {
       if (input.target.files && input.target.files[0]) {
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.formModel.image = e.target.result;
         };
         reader.readAsDataURL(input.target.files[0]);
@@ -235,29 +227,23 @@ export default {
         account_no: this.formModel.accountno,
         status: this.formModel.status,
         remark: this.formModel.remark,
-        image: this.formModel.image.replace(/^data:(.*;base64,)?/, "")
+        image: this.formModel.image.replace(/^data:(.*;base64,)?/, ""),
       };
       try {
         let res = await this.$api.merchantBanks.create(obj, this.user.id);
         if (res.http_code == 201) {
-          this.$vs.notify({
-            title: "Success!",
-            text: "Your data has been updated",
-            color: "success",
-            position: "bottom-left"
-          });
+          this.handleApiSuccess(res, this.redirectRoute);
+          this.popupActive2 = false;
+          this.$emit("closeSidebar");
         }
         this.popupActive2 = false;
         this.fetchUser();
-        this.$router.push("/userprofile/" + this.$store.state.auth.user.id + "/edit");
+        this.$router.push(
+          "/userprofile/" + this.$store.state.auth.user.id + "/edit"
+        );
       } catch (err) {
         if (err) {
-          this.$vs.notify({
-            title: "Failed!",
-            text: "Please insert your data correctly",
-            color: "danger",
-            position: "bottom-left"
-          });
+           this.handleApiErrors(err);
         }
       }
     },
@@ -275,16 +261,15 @@ export default {
         accountno: "",
         name: "",
         remark: "",
-        status: ""
+        status: "",
       };
-    }
+    },
   },
   created() {
-   
     this.fetchUser();
     this.fetchBank();
     this.user = this.$store.state.auth.user;
-  }
+  },
 };
 </script>
 <style scoped></style>
