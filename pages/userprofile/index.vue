@@ -177,12 +177,13 @@
       </div>
       
       <div class="vx-col lg:w-1/2 w-full" v-if="user.social != null">
+           <div v-for="(data,key) in records" :key="key">
         <vx-card title="Merchant Information" class="mb-base">
           <table>
             <tr>
               <td class="font-semibold pb-5">Company Name</td>
 
-              <td class="pl-5 pb-5">{{ user.merchant.detail.company_name }}</td>
+              <td class="pl-5 pb-5">{{ data.detail.company_name }}</td>
             </tr>
             <!-- <tr>
               <td class="font-semibold pb-5">Role</td>
@@ -192,7 +193,7 @@
             <tr>
               <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
               <td class="pl-5 pb-5">
-                {{ user.merchant.detail.business_size }}
+                {{ data.detail.business_size }}
               </td>
             </tr>
             <tr>
@@ -213,7 +214,7 @@
 
                   
                 <ol
-                  v-for="(item, index) in user.merchant.payment_method_id"
+                  v-for="(item, index) in data.payment_method_id"
                   :key="index"
                   style="display: inline;"
                 >
@@ -232,7 +233,7 @@
               <td class="pt-3">
               <ol
                 class="pl-5"
-                v-for="(item, key) in user.merchant.detail.categories"
+                v-for="(item, key) in data.detail.categories"
                 :key="key"
               >
                 <li>{{ item.name }}</li>
@@ -255,14 +256,16 @@
             </tr>-->
           </table>
         </vx-card>
+           </div>
       </div>
          <div class="vx-col w-full" v-if="user.social == null">
+           <div v-for="(data,key) in records" :key="key">
         <vx-card title="Merchant Information" class="mb-base">
           <table>
             <tr>
               <td class="font-semibold pb-5">Company Name</td>
 
-              <td class="pl-5 pb-5">{{ user.merchant.detail.company_name }}</td>
+              <td class="pl-5 pb-5">{{ data.detail.company_name }}</td>
             </tr>
             <!-- <tr>
               <td class="font-semibold pb-5">Role</td>
@@ -273,7 +276,7 @@
               <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
 
               <td class="pl-5 pb-5">
-                {{ user.merchant.detail.business_size }}
+                {{ data.detail.business_size }}
               </td>
             </tr>
             <tr>
@@ -294,7 +297,7 @@
 
                   
                 <ol
-                  v-for="(item, index) in user.merchant.payment_method_id"
+                  v-for="(item, index) in data.payment_method_id"
                   :key="index"
                   style="display: inline;"
                 >
@@ -313,7 +316,7 @@
               <td class="pt-3">
               <ol
                 class="pl-5"
-                v-for="(item, key) in user.merchant.detail.categories"
+                v-for="(item, key) in data.detail.categories"
                 :key="key"
               >
                 <li>{{ item.name }}</li>
@@ -336,6 +339,7 @@
             </tr>-->
           </table>
         </vx-card>
+           </div>
       </div>
 
     </div>
@@ -373,6 +377,10 @@ export default {
     };
   },
   methods: {
+    fetchUser(merchantId) {
+      let params = { merchantId: this.$store.state.auth.user.merchant.id };
+      this.$store.dispatch("merchants/fetchItems", params);
+    },
     async validate() {
       try {
         let res = await this.$api.password.updatePassword({
@@ -398,7 +406,13 @@ export default {
     }
   },
   created() {
+    this.fetchUser();
     this.user = this.$store.state.auth.user;
+  },
+  computed:{
+    records() {
+      return this.$store.state.merchants.records;
+    }
   }
 };
 </script>

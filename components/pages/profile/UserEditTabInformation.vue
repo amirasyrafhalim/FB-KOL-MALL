@@ -195,6 +195,11 @@ export default {
     };
   },
   methods: {
+    fetchMerchant(merchantId) {
+      let params = { merchantId: this.$store.state.auth.user.merchant.id };
+      this.$store.dispatch("merchants/fetchItems", params);
+    },
+
     async getCountries(code) {
       try {
         const { data } = await this.$api.dropdown.getAllCountry();
@@ -285,6 +290,7 @@ export default {
               position: "bottom-left"
             });
           }
+          this.fetchMerchant();
         } catch (err) {
           if (err) {
             this.$vs.notify({
@@ -316,9 +322,14 @@ export default {
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
-    this.formModel.state_id = this.user.merchant.detail.state && this.user.merchant.detail.state.name;
-    this.formModel.postcode_id = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code;
-    this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.name;
+    this.formModel.state_id =
+      this.user.merchant.detail.state && this.user.merchant.detail.state.name;
+    this.formModel.postcode_id =
+      this.user.merchant.detail.postcode &&
+      this.user.merchant.detail.postcode.code;
+    this.formModel.country_code =
+      this.user.merchant.detail.country &&
+      this.user.merchant.detail.country.name;
   },
 
   created() {
@@ -328,6 +339,7 @@ export default {
     this.getCountries();
     this.getStates();
     this.getPostcodes();
+    this.fetchMerchant();
     this.user = this.$store.state.auth.user;
   }
 };
