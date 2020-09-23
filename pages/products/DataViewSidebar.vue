@@ -41,26 +41,25 @@
           class="w-full"
           name="item-name"
         />
-         <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors ? this.formErrors.name : '' }}</span>
+         <span class="text-danger text-sm">{{ this.formErrors.name ? this.formErrors.name[0] : ''  }}</span>
       </div>
-      
-
+    
       <div class="p-6 py-2">
         <span>Description</span>
         <vs-textarea v-model="dataDescription" class="w-full" name="item-description" />
-          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.description : ''">{{ this.formErrors ? this.formErrors.description : '' }}</span>
+          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.description : ''">{{ this.formErrors.description ? this.formErrors.description[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2" label="Status">
         <span>Status</span>
         <v-select :options="status" v-model="dataStatus" />
-          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors ? this.formErrors.status : '' }}</span>
+          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Category</span>
         <v-select :options="category" v-model="dataCategory" label="name" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.category_id : ''">{{ this.formErrors ? this.formErrors.category_id : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.category_id : ''">{{ this.formErrors.category_id ? this.formErrors.category_id[0] : '' }}</span>
       </div>
 
       <div class="upload-img px-6 py-2">

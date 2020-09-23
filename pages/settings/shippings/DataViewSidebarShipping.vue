@@ -29,19 +29,19 @@
           label="name"
           placeholder="Select Shipping Partner"
         />
-         <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.shipping_partner_id : ''">{{ this.formErrors ? this.formErrors.shipping_partner_id : '' }}</span>
+         <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.shipping_partner_id : ''">{{ this.formErrors.shipping_partner_id ? this.formErrors.shipping_partner_id[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Name</span>
         <vs-input v-model="dataName" class="w-full" name="item-name" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors ? this.formErrors.name : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors.name ? this.formErrors.name[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Fee</span>
         <vs-input v-model="dataFee" class="w-full" name="item-fee" />
-                 <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.fee : ''">{{ this.formErrors ? this.formErrors.fee : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.fee : ''">{{ this.formErrors.fee ? this.formErrors.fee[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
