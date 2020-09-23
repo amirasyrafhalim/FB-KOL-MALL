@@ -145,7 +145,7 @@
     </vx-card>
     <div class="vx-row">
       <div class="vx-col lg:w-1/2 w-full">
-        <vx-card title="Facebook Information" class="mb-base">
+        <vx-card title="Facebook Information" class="mb-base" v-if="user.social != null">
           <table>
             <tr>
               <td class="font-semibold pb-6">Phone No.</td>
@@ -175,7 +175,8 @@
           </table>
         </vx-card>
       </div>
-      <div class="vx-col lg:w-1/2 w-full">
+      
+      <div class="vx-col lg:w-1/2 w-full" v-if="user.social != null">
         <vx-card title="Merchant Information" class="mb-base">
           <table>
             <tr>
@@ -189,7 +190,87 @@
               <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
             </tr> -->
             <tr>
-              <td class="font-semibold pb-5">Business Size</td>
+              <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
+              <td class="pl-5 pb-5">
+                {{ user.merchant.detail.business_size }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold pb-5">Payment Method</td>
+
+              <!-- <template v-if="user.merchant.payment_method_id == null">
+                <td class="pl-5 pb-5">-</td>
+              </template>
+              <template v-for="(data, key) in user.merchant.payment_method_id" >
+               <td class="pl-5 pb-5" :key="key" v-if="data == 1 && 1">Xenopay</td>
+              </template>
+                <template v-for="(data, key) in user.merchant.payment_method_id" >
+                <td class="pl-5 pb-5" :key="key" v-if="data == 2 && 2">Offline</td>
+               </template>
+               <template v-for="(data, key) in user.merchant.payment_method_id" >
+                <td class="pl-5 pb-5"  :key="key" v-if="data == 2 && 2 && data == 1 "><p >Xenopay</p><p> Offline</p></td>
+               </template> -->
+
+                  
+                <ol
+                  v-for="(item, index) in user.merchant.payment_method_id"
+                  :key="index"
+                  style="display: inline;"
+                >
+        
+                  <template v-if="item == 1">
+                    <li class="pl-5">Xenopay</li>
+                  </template>
+                  <template v-if="item == 2">
+                    <li class="pl-5">Offline</li>
+                  </template>
+                </ol>
+            </tr>
+
+            <tr>
+              <td class="font-semibold pt-3 ">Business Categories</td>
+              <td class="pt-3">
+              <ol
+                class="pl-5"
+                v-for="(item, key) in user.merchant.detail.categories"
+                :key="key"
+              >
+                <li>{{ item.name }}</li>
+              </ol>
+              </td>
+            </tr>
+            <!-- <tr>
+              <td class="font-semibold pb-5">Merchant Logo</td>
+
+              <template v-if="!user.merchant.merchant_logo">
+                <td class="pl-5 pb-5">-</td>
+              </template>
+              <template v-else>
+                <td class="pl-5 pb-5">{{user.merchant.merchant_logo}}</td>
+              </template>
+            </tr> -->
+            <!-- <tr>
+              <td class="font-semibold">Company</td>
+              <td class="pl-5">{{ user.merchant_details.company_name }}</td>
+            </tr>-->
+          </table>
+        </vx-card>
+      </div>
+         <div class="vx-col w-full" v-if="user.social == null">
+        <vx-card title="Merchant Information" class="mb-base">
+          <table>
+            <tr>
+              <td class="font-semibold pb-5">Company Name</td>
+
+              <td class="pl-5 pb-5">{{ user.merchant.detail.company_name }}</td>
+            </tr>
+            <!-- <tr>
+              <td class="font-semibold pb-5">Role</td>
+
+              <td class="pl-5 pb-5">{{ user.roles[0].name }}</td>
+            </tr> -->
+            <tr>
+              <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
 
               <td class="pl-5 pb-5">
                 {{ user.merchant.detail.business_size }}
@@ -256,6 +337,7 @@
           </table>
         </vx-card>
       </div>
+
     </div>
   </div>
 </template>
