@@ -96,22 +96,12 @@
       </template>
     </vs-table>
 
-    <vs-prompt v-if="shippingMethods.length === 0"
-               color="primary"
-               @accept="acceptAlert" button-cancel="hidden"
-               type="flat" title="Missing Shipping Method" accept-text="Add Now"
-               :active.sync="activePrompt">
-      <div class="con-exemple-prompt">
-        Please set shipping method first before create the package.
-      </div>
-    </vs-prompt>
   </div>
 
 </template>
 
 <script>
   import DataViewSidebarPackage from './DataViewSidebarPackage.vue'
-  import isEmpty from "lodash/isEmpty";
 
   export default {
     layout: 'main',
@@ -120,7 +110,6 @@
     },
     data() {
       return {
-        activePrompt: false,
         moduleName: "packages",
         selected: [],
         itemsPerPage: 10,
@@ -141,29 +130,12 @@
       },
       queriedItems() {
         return this.$refs.table ? this.$refs.table.queriedResults.length : this.records.length
-      },
-      shippingMethods() {
-        return this.$store.state.shippingMethods.records;
-      },
+      }
     },
     methods: {
-      fetchMethod() {
-        let method = this.$store.state.shippingMethods.records
-        if (isEmpty(method)) {
-          this.activePrompt = true;
-        }
-      },
-      acceptAlert(color) {
-        this.$router.push({path: this.localePath({name: 'settings'})});
-      },
       fetchItems(page = 1) {
         let params = {page: page, campaign_id: this.$route.params.id};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
-      },
-      async fetchShippingMethods(page = 1) {
-        let params = {page: page};
-        await this.$store.dispatch("shippingMethods/fetchItems", params);
-        await this.fetchMethod();
       },
       addNewData() {
         this.sidebarData = {}
@@ -183,7 +155,6 @@
     },
     created() {
       this.fetchItems();
-      this.fetchShippingMethods();
     },
     mounted() {
       this.isMounted = true

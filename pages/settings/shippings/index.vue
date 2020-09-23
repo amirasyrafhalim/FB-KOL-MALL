@@ -82,7 +82,9 @@
           </vs-td>
 
           <vs-td :data="data[indextr].status">
+            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
             {{ tr.status && tr.status.description }}
+            </vs-chip>
           </vs-td>
 
           <vs-td :data="data[indextr].created_at">
@@ -152,8 +154,6 @@
       getOrderStatusColor(status) {
         if (status === 'Active') return 'success'
         if (status === 'Inactive') return 'danger'
-        if (status === 'Pause') return 'warning'
-        return 'primary'
       },
       toggleDataSidebar(val = false) {
         this.addNewDataSidebar = val
