@@ -316,9 +316,9 @@ export default {
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
-    this.formModel.state_id = this.user.merchant.detail.state.name;
-    this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
-    this.formModel.country_code = this.user.merchant.detail.country.name;
+    this.formModel.state_id = this.user.merchant.detail.state && this.user.merchant.detail.state.name;
+    this.formModel.postcode_id = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code;
+    this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.name;
   },
 
   created() {
