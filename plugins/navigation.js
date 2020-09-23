@@ -22,6 +22,10 @@ export default ({route, app}, inject) => {
     orders: {
       title: 'Orders',
       breadcrumb: [{title: 'Orders', url: '/orders'}, {title: 'List', active: true}]
+    }, 
+    ordersId: {
+      title: 'Details',
+      breadcrumb: [{title: 'Orders', url: '/orders'}, {title: 'Details', active: true}]
     },
     userprofile: {
       title: 'User Profile',
