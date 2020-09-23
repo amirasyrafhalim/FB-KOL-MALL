@@ -65,13 +65,13 @@
         <tbody>
           <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
             <vs-td class="img-container" style="width: 50px;margin: auto;">
-              <img :src="tr.image" class="product-img" style="width: 50px;" />
+              <img :src="tr.image || '/default_product.png'" class="product-img" style="width: 50px;" />
             </vs-td>
 
             <vs-td :data="data[indextr].name">{{ tr.name }}</vs-td>
 
             <vs-td :data="data[indextr].description">
-              <div style="text-overflow: ellipsis; width: 250px !important; white-space: nowrap; overflow: hidden">{{ tr.description }}</div>
+              <div style="text-overflow: ellipsis; width: 200px !important; white-space: nowrap; overflow: hidden">{{ tr.description }}</div>
             </vs-td>
 
             <vs-td :data="data[indextr].category">
@@ -90,7 +90,7 @@
             </vs-td>
 
             <vs-td class="whitespace-no-wrap">
-              <vs-button color="warning" type="border" icon="edit" @click.stop="editData(tr)"></vs-button>
+              <vs-button class="ml-2" color="warning" type="border" icon="edit" @click.stop="editData(tr)"></vs-button>
               <vs-button
                 color="danger"
                 type="border"
@@ -183,6 +183,7 @@ export default {
       });
     },
     editData(data) {
+      this.fetchItems();
       this.sidebarData = data;
       this.toggleDataSidebar(true);
     },

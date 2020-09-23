@@ -26,7 +26,6 @@
         <div class="img-container w-64 mx-auto flex items-center justify-center">
           <img :src="dataImg" alt="img" class="responsive" />
         </div>
-        
 
         <!-- Image upload Buttons -->
         <div class="modify-img flex justify-between mt-5">
@@ -36,30 +35,39 @@
 
       <div class="p-6 py-2">
         <span>Name</span>
-        <vs-input
-          v-model="dataName"
-          class="w-full"
-          name="item-name"
-        />
-         <span class="text-danger text-sm">{{ this.formErrors.name ? this.formErrors.name[0] : ''  }}</span>
+        <vs-input v-model="dataName" class="w-full" name="item-name" />
+        <span class="text-danger text-sm">{{ this.formErrors.name ? this.formErrors.name[0] : '' }}</span>
       </div>
-    
+
       <div class="p-6 py-2">
         <span>Description</span>
         <vs-textarea v-model="dataDescription" class="w-full" name="item-description" />
-          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.description : ''">{{ this.formErrors.description ? this.formErrors.description[0] : '' }}</span>
-      </div>
-
-      <div class="px-6 py-2" label="Status">
-        <span>Status</span>
-        <v-select :options="status" v-model="dataStatus" />
-          <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.description : ''"
+        >{{ this.formErrors.description ? this.formErrors.description[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Category</span>
         <v-select :options="category" v-model="dataCategory" label="name" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.category_id : ''">{{ this.formErrors.category_id ? this.formErrors.category_id[0] : '' }}</span>
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.category_id : ''"
+        >{{ this.formErrors.category_id ? this.formErrors.category_id[0] : '' }}</span>
+      </div>
+      <div class="px-6 py-2" label="Status">
+        <span>Status</span>
+        <vs-row>
+          <vs-col class="py-2" vs-type="flex">
+            <vs-radio class="py-2" v-model="dataStatus"  vs-name="status" vs-value="1">Active</vs-radio>
+            <vs-radio class="px-6 py-2" v-model="dataStatus"  vs-name="status" vs-value="0">Inactive</vs-radio>
+          </vs-col>
+        </vs-row>
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.status : ''"
+        >{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
       </div>
 
       <div class="upload-img px-6 py-2">
@@ -75,6 +83,12 @@
           color="success"
           type="gradient"
         >Upload Image</vs-button>
+        <div>
+         <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.image : ''"
+        >{{ this.formErrors.image ? this.formErrors.image[0] : '' }}</span>
+        </div>
       </div>
     </component>
 
@@ -111,10 +125,7 @@ export default {
       dataName: "",
       dataDescription: "",
       dataStatus: "",
-      status: [
-        { label: "Active", code: 1 },
-        { label: "Inactive", code: 0 },
-      ],
+      status: 1,
       dataCategory: "",
       dataImg: "",
       settings: {
@@ -143,7 +154,7 @@ export default {
         this.dataName = name;
         this.merchantId = merchant_id;
         this.dataDescription = description;
-        this.dataStatus = status.description;
+        this.dataStatus = status.value;
         this.dataCategory = category;
         this.dataImg = image;
         this.initValues();
@@ -181,7 +192,7 @@ export default {
       this.dataName = "";
       this.merchantId = "";
       this.dataDescription = "";
-      this.dataStatus = "";
+      this.dataStatus = 1;
       this.dataCategory = "";
       this.dataImg = "";
     },
@@ -200,22 +211,7 @@ export default {
       }
 
       if (isValidURL(this.dataImg)) {
-        const toDataURL = (url) =>
-          fetch(url)
-            .then((response) => response.blob())
-            .then(
-              (blob) =>
-                new Promise((resolve, reject) => {
-                  const reader = new FileReader();
-                  reader.onloadend = () => resolve(reader.result);
-                  reader.onerror = reject;
-                  reader.readAsDataURL(blob);
-                })
-            );
-
-        toDataURL(this.dataImg).then((dataUrl) => {
-          var dataImage = dataUrl.replace(/^data:(.*;base64,)?/, "");
-        });
+      var dataImage = ""
       }
 
       var a = map(this.dataCategory, "id");
@@ -230,7 +226,7 @@ export default {
         description: this.dataDescription,
         category_id: e,
         image: dataImage,
-        status: this.dataStatus.code,
+        status: this.dataStatus,
       };
 
       if (this.dataId !== null && this.dataId >= 0) {
@@ -238,8 +234,8 @@ export default {
           let res = await this.$api.products.update(obj, this.dataId);
           if (res.http_code == 200) {
             this.handleApiSuccess(res, this.redirectRoute);
-            this.popupActive2 = false; 
-            this.$emit('closeSidebar')
+            this.popupActive2 = false;
+            this.$emit("closeSidebar");
           }
         } catch (err) {
           this.handleApiErrors(err);
@@ -250,7 +246,7 @@ export default {
           if (res.http_code == 201) {
             this.handleApiSuccess(res, this.redirectRoute);
             this.popupActive2 = false;
-            this.$emit('closeSidebar')
+            this.$emit("closeSidebar");
           }
         } catch (err) {
           this.handleApiErrors(err);
