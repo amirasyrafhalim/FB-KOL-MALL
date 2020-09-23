@@ -55,7 +55,7 @@
               class="ml-2"
               @click="activePromptFn(indextr)"
             >
-            {{$t('label.trackingInfo')}}
+            {{$t('label.updateTracking')}}
             </vs-button>
           </vs-td>
 
@@ -189,6 +189,7 @@ export default {
     showSuccess() {
       this.$vs.notify({
         color: "success",
+        position:'bottom-left',
         title: "Update tracking number",
         text: "The selected tracking number was successfully updated"
       });
@@ -198,6 +199,7 @@ export default {
       this.$vs.notify({
         color: "danger",
         title: "Closed",
+        position:'bottom-left',
         text: "You close a dialog!"
       });
     },

@@ -149,7 +149,7 @@ export default {
 		success: 'Success',
 		summary: 'Summary',
 		taxAmount: 'Tax Amount',
-		trackingInfo: 'Tracking Info',
+		updateTracking: 'Update Tracking',
 		testPageToken: 'Test Page Token',
 		total: 'Total',
 		totalAmount: 'Total Amount (RM)',
