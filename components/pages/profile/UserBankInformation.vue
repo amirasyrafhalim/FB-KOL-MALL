@@ -46,10 +46,10 @@
             <td class="font-semibold pb-6">Account No.</td>
             <td class=" pl-6 pb-6">{{ data.account_no }}</td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td class="font-semibold pb-6">Remark</td>
             <td class="pl-6 pb-6">{{ data.remark }}</td>
-          </tr>
+          </tr> -->
         </table>
 
         <p style="color:red;font-size:11px;">
@@ -75,6 +75,10 @@
             label="name"
             v-model="formModel.bank_id"
           />
+              <span
+            class="text-danger text-sm"
+            :error-messages="formErrors ? formErrors.bank_id : ''"
+          >{{ this.formErrors.bank_id ? this.formErrors.bank_id[0] : '' }}</span>
         </div>
       </div>
 
@@ -84,6 +88,10 @@
         </div>
         <div class="vx-col sm:w-2/3 w-full">
           <vs-input class="w-full" icon-no-border v-model="formModel.name" />
+                <span
+            class="text-danger text-sm"
+            :error-messages="formErrors ? formErrors.name : ''"
+          >{{ this.formErrors.name ? this.formErrors.name[0] : '' }}</span>
         </div>
       </div>
 
@@ -93,6 +101,10 @@
         </div>
         <div class="vx-col sm:w-2/3 w-full">
           <vs-input class="w-full" v-model="formModel.accountno" />
+          <span
+            class="text-danger text-sm"
+            :error-messages="formErrors ? formErrors.account_no : ''"
+          >{{ this.formErrors.account_no ? this.formErrors.account_no[0] : '' }}</span>
         </div>
       </div>
       <!-- <div class="vx-row mb-6">
@@ -107,16 +119,16 @@
           />
         </div>
       </div> -->
-      <div class="vx-row mb-6">
+      <!-- <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
           <span>Remark</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
           <vs-textarea class="w-full" v-model="formModel.remark" />
         </div>
-      </div>
+      </div> -->
       <!-- <div class="vx-row mb-6"> -->
-        <!-- <div class="vx-col sm:w-1/3 w-full">
+      <!-- <div class="vx-col sm:w-1/3 w-full">
           <span>Bank Statement</span>
           <input
             type="file"
@@ -125,7 +137,7 @@
             accept="image/*"
           />
         </div> -->
-        <!-- <div class="upload-img vx-col sm:w-2/3 w-full">
+      <!-- <div class="upload-img vx-col sm:w-2/3 w-full">
           <input
             type="file"
             class="hidden"
@@ -186,10 +198,11 @@
 </template>
 
 <script>
+import formMixin from "@/mixins/form";
 export default {
+  mixins: [formMixin],
   data() {
     return {
-      
       dataImg: "",
       moduleName: "merchantBanks",
       status: [
@@ -217,6 +230,10 @@ export default {
     }
   },
   methods: {
+    fetchMerchant(merchantId) {
+      let params = { merchantId: this.$store.state.auth.user.merchant.id };
+      this.$store.dispatch("merchants/fetchItems", params);
+    },
 
     updateCurrImg(input) {
       if (input.target.files && input.target.files[0]) {
@@ -249,9 +266,13 @@ export default {
         }
         this.popupActive2 = false;
         this.fetchUser();
-        this.$router.push("/userprofile/" + this.$store.state.auth.user.id + "/edit");
+        this.fetchMerchant();
+        this.$router.push(
+          "/userprofile/" + this.$store.state.auth.user.id + "/edit"
+        );
       } catch (err) {
         if (err) {
+          this.handleApiErrors(err);
           this.$vs.notify({
             title: "Failed!",
             text: "Please insert your data correctly",
@@ -280,9 +301,9 @@ export default {
     }
   },
   created() {
-   
     this.fetchUser();
     this.fetchBank();
+    this.fetchMerchant();
     this.user = this.$store.state.auth.user;
   }
 };
