@@ -9,18 +9,17 @@
 
 <template>
   <div id="user-edit-tab-info" class="flex flex-col justify-between h-full">
-
-      <div class="vx-row">
-        <div class="vx-col w-full md:w-1/2">
-          <!-- Col Header -->
-          <!-- <div class="flex items-end">
+    <div class="vx-row">
+      <div class="vx-col w-full md:w-1/2">
+        <!-- Col Header -->
+        <!-- <div class="flex items-end">
           <feather-icon icon="UserIcon" class="mr-2" svgClasses="w-5 h-5" />
           <span class="leading-none font-medium">Information</span>
         </div> -->
 
-          <!-- Col Content -->
-          <div class="mt-4">
-            <!-- 
+        <!-- Col Content -->
+        <div class="mt-4">
+          <!-- 
           <template v-if="formModel.dataLogo">
           <div class="flex flex-wrap items-center mb-base">
             <vs-avatar
@@ -36,7 +35,7 @@
           </div>
           </template> -->
 
-            <!-- <div class="upload-img mx-auto flex items-center justify-center">
+          <!-- <div class="upload-img mx-auto flex items-center justify-center">
             <input
               type="file"
               class="hidden"
@@ -51,111 +50,106 @@
               >Upload Image</vs-button
             >
           </div> -->
-            <vs-input
-              class="w-full mt-4"
-              label="Merchant Name"
-              v-model="formModel1.name"
-            />
+          <vs-input
+            class="w-full mt-4"
+            label="Merchant Name"
+            v-model="formModel1.name"
+          />
 
-            <vs-input
-              class="w-full mt-4"
-              label="Company"
-              v-model="formModel.dataCompany"
+          <vs-input
+            class="w-full mt-4"
+            label="Company"
+            v-model="formModel.dataCompany"
+          />
+          <div class="mt-4">
+            <label class="vs-input--label"
+              >Business Size (Monthly Revenue)</label
+            >
+            <v-select
+              name="status"
+              :options="business"
+              v-model="formModel.dataBusinessSize"
             />
+            <span class="text-danger text-sm"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Col -->
+      <div class="vx-col w-full md:w-1/2">
+        <div class="mt-4">
+          <vs-input
+            class="w-full mt-4"
+            label="Address"
+            v-model="formModel.dataAddress"
+          />
+        </div>
+        <!-- Col Content -->
+        <div class="vx-row">
+          <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
-              <label class="vs-input--label"
-                >Business Size (Monthly Revenue)</label
-              >
+              <label class="vs-input--label">State</label>
               <v-select
-                name="status"
-                :options="business"
-                v-model="formModel.dataBusinessSize"
+                :options="states"
+                label="name"
+                v-model="formModel.state_id"
+                @input="getStates($event)"
               />
-              <span class="text-danger text-sm"></span>
             </div>
+          </div>
+          <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
-              <vs-input
-                class="w-full mt-4"
-                label="Address"
-                v-model="formModel.dataAddress"
+              <vs-input class="w-full" label="City" v-model="formModel.city" />
+            </div>
+          </div>
+        </div>
+        <div class="vx-row">
+          <div class="vx-col w-full md:w-1/2">
+            <div class="mt-4">
+              <label class="vs-input--label">Postcode</label>
+              <v-select
+                :options="postcodes"
+                label="code"
+                v-model="formModel.postcode_id"
+                @input.native="getPostcodes($event)"
+              />
+            </div>
+          </div>
+          <div class="vx-col w-full md:w-1/2">
+            <div class="mt-4">
+              <label class="vs-input--label mt-4">Country</label>
+              <v-select
+                class="select-countries"
+                :options="countries"
+                label="name"
+                v-model="formModel.country_code"
+                @input.native="getCountries($event.target.value)"
               />
             </div>
           </div>
         </div>
-
-        <!-- Address Col -->
-        <div class="vx-col w-full md:w-1/2">
-          <!-- Col Content -->
-          <div class="vx-row">
-            <div class="vx-col w-full md:w-1/2">
-              <div class="mt-4">
-                <label class="vs-input--label">Postcode</label>
-                <v-select
-                  :options="postcodes"
-                  label="code"
-                  v-model="formModel.postcode_id"
-                  @input.native="getPostcodes($event.target.code)"
-                />
-              </div>
-            </div>
-            <div class="vx-col w-full md:w-1/2">
-              <div class="mt-4">
-                <vs-input
-                  class="w-full"
-                  label="City"
-                  v-model="formModel.city"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="vx-row">
-                  <div class="vx-col w-full">
-              <div class="mt-4">
-                <label class="vs-input--label">State</label>
-                <v-select
-                  :options="states"
-                  label="name"
-                  v-model="formModel.state_id"
-                  @input="getStates($event)"
-                />
-              </div>
-            </div>
-            <div class="vx-col w-full">
-              <div class="mt-4">
-                <label class="vs-input--label mt-4">Country</label>
-                <v-select
-                  :options="countries"
-                  label="name"
-                  v-model="formModel.country_code"
-                  @input.native="getCountries($event.target.value)"
-                />
-              </div>
-            </div>
-      
-          </div>
+      </div>
+    </div>
+    <div class="vx-row">
+      <div class="vx-col w-full">
+        <div class="mt-8 flex flex-wrap items-center justify-end">
+          <vs-button class="ml-auto mt-2" @click="validate"
+            >Save Changes</vs-button
+          >
+          <vs-button
+            class="ml-4 mt-2"
+            type="border"
+            color="warning"
+            @click="reset_data"
+            >Reset</vs-button
+          >
         </div>
       </div>
-       <div class="vx-row">
-        <div class="vx-col w-full">
-          <div class="mt-8 flex flex-wrap items-center justify-end">
-            <vs-button class="ml-auto mt-2" @click="validate"
-              >Save Changes</vs-button
-            >
-            <vs-button
-              class="ml-4 mt-2"
-              type="border"
-              color="warning"
-              @click="reset_data"
-              >Reset</vs-button
-            >
-          </div>
-        </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
-
 import vSelect from "vue-select";
 import { mapState } from "vuex";
 import { debounce, isEmpty } from "lodash";
@@ -201,7 +195,6 @@ export default {
     };
   },
   methods: {
-  
     async getCountries(code) {
       try {
         const { data } = await this.$api.dropdown.getAllCountry();
@@ -213,13 +206,13 @@ export default {
 
     async getStates(event) {
       try {
-        console.log(event)
+        console.log(event);
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
         });
         this.states = data;
-        this.getPostcodes(event.id)
+        this.getPostcodes(event.id);
       } catch (error) {
         console.error("[API Service] Get States Error:", error);
       }
@@ -227,11 +220,13 @@ export default {
 
     async getPostcodes(stateId) {
       try {
-        console.log( this.formModel.state_id )
-        const { data } = await this.$api.dropdown.getAllPostcode(this.$helper.stringifyParams({
-          stateId : stateId,   
-        }));
-        console.log('data', data)
+        console.log(this.formModel.state_id);
+        const { data } = await this.$api.dropdown.getAllPostcode(
+          this.$helper.stringifyParams({
+            stateId: stateId
+          })
+        );
+        console.log("data", data);
         this.postcodes = data;
       } catch (error) {
         console.error("[API Service] Get Postcodes Error:", error);
@@ -239,7 +234,6 @@ export default {
     },
     reset_data() {
       this.formModel.dataCompany = this.user.merchant.detail.company_name;
-      this.formModel.dataPhone = this.user.social.phone_no;
       this.formModel1.payment_method_id =
         this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
       this.formModel.dataLogo = this.user.merchant.logo;
@@ -315,7 +309,6 @@ export default {
   // },
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
-    this.formModel.dataPhone = this.user.social.phone_no;
     this.formModel1.payment_method_id =
       this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
     this.formModel.dataLogo = this.user.merchant.logo;
@@ -339,11 +332,7 @@ export default {
   }
 };
 </script>
-<style scoped>
-.v-text-field.v-text-field--solo .v-input__control{
-   height:10px !important;
-   overflow: scroll;
-}
+<style lang="scss" scoped>
 .img-upload {
   margin-top: 2rem;
 }
@@ -355,5 +344,9 @@ export default {
 .con-input-upload {
   width: 100%;
   margin: 0;
+}
+
+.select-countries .vs__dropdown-menu {
+  z-index: 10000;
 }
 </style>
