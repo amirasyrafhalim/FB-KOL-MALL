@@ -265,7 +265,7 @@ export default {
       this.$store.dispatch("products/fetchItems", params);
     },
     fetchShippingMethods(page = 1) {
-      let params = { page: page };
+      let params = { page: page, status: 1};
       this.$store.dispatch("shippingMethods/fetchItems", params);
     },
     initValues() {
