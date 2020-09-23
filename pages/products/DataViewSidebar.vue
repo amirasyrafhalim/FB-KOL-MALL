@@ -83,6 +83,12 @@
           color="success"
           type="gradient"
         >Upload Image</vs-button>
+        <div>
+         <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.image : ''"
+        >{{ this.formErrors.image ? this.formErrors.image[0] : '' }}</span>
+        </div>
       </div>
     </component>
 
