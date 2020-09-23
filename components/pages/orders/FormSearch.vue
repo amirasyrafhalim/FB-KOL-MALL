@@ -1,6 +1,6 @@
 <template>
   <div class="mb-5 " >
-      <div class="vx-row">
+      <div class="vx-row flex-end">
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">{{$t('label.name')}}</label>
           <vs-input class="w-full" v-model="formModel.buyer_name" />
@@ -11,12 +11,12 @@
         </div>
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">{{$t('label.paymentStatus')}}</label>
-         <v-select style="background: white" :options="paymentEnums" label="description" @input="searchItem($event, 'payment_status')" v-model="formModel.payment_status">
+         <v-select style="background: white" :clearable=false :options="paymentEnums" label="description" @input="searchItem($event, 'payment_status')" v-model="formModel.payment_status">
         </v-select>
         </div>
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">{{$t('label.orderStatus')}}</label>
-         <v-select style="background: white" :options="orderStatusEnums" label="description" @input="searchItem($event, 'order_status')" v-model="formModel.order_status">
+         <v-select style="background: white" :clearable=false :options="orderStatusEnums" label="description" @input="searchItem($event, 'order_status')" v-model="formModel.order_status">
         </v-select>
         </div>
       </div>
@@ -95,5 +95,8 @@ export default {
 <style scoped>
 .radius {
   border-radius: 25px !important;
+}
+.flex-end {
+  justify-content: flex-end;
 }
 </style>

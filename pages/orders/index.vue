@@ -3,7 +3,7 @@
 
 <form-search :module-name="moduleName" />
 
-    <vs-table :data="records">
+    <vs-table :data="records"  pagination max-items="15">
       <template slot="thead" class="text-center">
         <vs-th sort-key="invoice_no">{{$t('label.invoiceNo')}}</vs-th>
         <vs-th sort-key="total_amount">{{$t('label.totalAmount')}}</vs-th>
@@ -41,22 +41,27 @@
           </vs-td>
 
           <vs-td>
-            <nuxt-link
+           
+
+     <div class="dropdown-button-container" style="width: 50%">
+      <vs-dropdown>
+        <vs-button class="btn-drop" type="border" color="primary" icon="more_horiz"></vs-button>
+        <vs-dropdown-menu>
+
+         <vs-dropdown-item @click="activePromptFn(indextr)" v-if="tr.delivery">
+            {{$t('label.updateTracking')}}
+          </vs-dropdown-item>
+          <vs-dropdown-item>
+             <nuxt-link style="color: inherit"
               :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
             >
-              <vs-button color="danger" type="border" icon="visibility">
-              </vs-button>
+            {{'View'}}
             </nuxt-link>
-
-            <vs-button
-              v-if="tr.delivery"
-              color="primary"
-              type="border"
-              class="ml-2"
-              @click="activePromptFn(indextr)"
-            >
-            {{$t('label.updateTracking')}}
-            </vs-button>
+          </vs-dropdown-item>
+        </vs-dropdown-menu>
+      </vs-dropdown>
+    </div>
+  
           </vs-td>
 
           <template class="expand-user text-center" slot="expand">
@@ -89,7 +94,6 @@
     <vs-prompt
       @cancel="val = ''"
       @accept="updateTracking()"
-      @close="close"
       :active.sync="activePrompt"
       title="Update Tracking Number"
     >
@@ -195,14 +199,7 @@ export default {
       });
     },
 
-    close() {
-      this.$vs.notify({
-        color: "danger",
-        title: "Closed",
-        position:'bottom-left',
-        text: "You close a dialog!"
-      });
-    },
+    
     fetchItems() {
       this.$store.dispatch(this.moduleName + "/fetchItems");
     },
@@ -238,5 +235,15 @@ export default {
       justify-content: center;
     }
   }
+}
+.dropdown-button-container {
+  display: flex;
+  align-items: center;
+
+  .btnx {
+    border-radius: 5px 0px 0px 5px;
+  }
+
+  
 }
 </style>
