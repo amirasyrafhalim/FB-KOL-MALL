@@ -197,7 +197,7 @@
               </td>
             </tr>
             <tr>
-              <td class="font-semibold pb-5">Payment Method</td>
+             <td class="font-semibold pb-5">{{ $t("label.size") }}</td>
 
               <!-- <template v-if="user.merchant.payment_method_id == null">
                 <td class="pl-5 pb-5">-</td>

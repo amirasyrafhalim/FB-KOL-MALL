@@ -171,7 +171,7 @@ export default {
 		referral: 'Referral Code',
 		review: 'Just a little about your company.',
 		next: 'Next',
-		size: 'What is your business size? (Monthly revenue (RM))',
+		size: 'Business Size (Number of Employees)',
 		retail: 'Do you have any retail store?',
 		website: 'Do you have any website for your store? (URL)',
 		kindProduct: ' What kind of product do you sell / plan to sell?',

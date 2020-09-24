@@ -1,17 +1,15 @@
 <template>
   <div>
-    <h3 class="text-center font-bold mb-5">
+    <h3 class="text-center font-bold">
       {{ record.campaign && record.campaign.name }}
     </h3>
+    <p class="text-center font-semibold mb-5">#{{record.invoice_no}}</p>
     <vs-row class="mb-4">
       <vs-col vs-w="12" class="pr-2">
         <vx-card v-if="record" class="h-full ">
           <vs-row>
             <vs-col vs-w="8" vs-xs="12">
               <h4 class="font-bold mb-3">Buyer Details</h4>
-
-    
-
               <table
                 style="width:100%; white-space: inherit"
                 v-if="record.detail"
@@ -269,12 +267,8 @@
               <tr>
                 <td class="font-semibold">Attachment</td>
                 <td>:</td>
-                <td @click="openAttachment" style="cursor: pointer;">
-                  <vs-chip style="float: left!important">{{record.payment && record.payment.image}}</vs-chip>
-                  <!-- <vs-images
-                    width="50%"
-                    :src="record.payment && record.payment.image"
-                  ></vs-images> -->
+                <td @click="openAttachment" style="cursor: pointer; text-decoration: underline">
+                  {{ 'Attachment 1' }}
                 </td>
               </tr>
               <tr>
