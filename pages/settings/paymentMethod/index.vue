@@ -1,230 +1,320 @@
 <template>
-  <div class="con-notifications-position">
-    <div class="vx-row">
-      <div class="vx-col w-full">
+  <div id="data-list-list-view" class="data-list-container">
+    <div v-if="merchant.payment_method_id == null">
+      <vx-card>
         <div>
-          <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">Payment Methods</h3>
-          <h5 class="font-normal mb-5">
-            Enable and choose your payment methods during checkout
-          </h5>
+          <div class="vx-col w-full">
+            <div
+              class="vx-col flex items-center justify-center flex-col sm:w-1/2 md:w-3/5 lg:w-3/4 xl:w-1/2 mx-auto text-center"
+            >
+              <h3 class="sm:mx-0 mx-4 mb-2 font-semibold">
+                Add Payment Method
+              </h3>
+              <h5 class="font-normal">
+                Enable payment methods to accept offline payment
+              </h5>
+              <h5 class="sm:mx-0 mx-4 mb-6 font-normal">
+                and other payment methods during checkout.
+              </h5>
+            </div>
+
+            <div class="mt-5 flex items-center justify-center mb-5">
+              <div
+                class="flex flex-wrap-reverse items-center data-list-btn-container"
+              >
+                <data-view-sidebar
+                  :isSidebarActive="addNewDataSidebar"
+                  @closeSidebar="toggleDataSidebar"
+                  @fetchItem="fetchItem"
+                  :data="sidebarData"
+                />
+                <vs-button
+                  color="primary"
+                  type="filled"
+                  size="large"
+                  @click="addNewData"
+                >
+                  <span class="ml-2 ">Add Payment Method</span>
+                </vs-button>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- <div class="vx-col w-full">
-      <div class="float-right mb-2">
-        <vs-button
-          :to="
-            localePath({
-              name: 'userprofile-id-edit',
-              params: { id: user.id }
-            })
-          "
-          >Add Payment Method</vs-button
-        >
-      </div>
-      </div> -->
-      </div>
+      </vx-card>
     </div>
 
-    <div class="vx-row match-height">
-      <div class="vx-col w-full mb-base">
-        <vx-card>
-          <vs-col
-            vs-order="1"
-            vs-type="flex"
-            vs-justify="center"
-            vs-align="center"
-            vs-w="3"
-          >
-            Payment Method
-          </vs-col>
-          <vs-col
-            vs-order="2"
-            vs-type="flex"
-            vs-justify="center"
-            vs-align="center"
-            vs-w="5"
-          >
-            Status
-          </vs-col>
-          <vs-col
-            vs-order="1"
-            vs-type="flex"
-            vs-justify="center"
-            vs-align="center"
-            vs-w="4"
-          >
-            Action
-          </vs-col>
-          <vs-divider></vs-divider>
+    <div v-if="merchant.payment_method_id != null">
+      <data-view-sidebar
+        :isSidebarActive="addNewDataSidebar"
+        @closeSidebar="toggleDataSidebar"
+        @fetchItem="fetchItem"
+        :data="sidebarData"
+      />
+      <div class="flex flex-wrap-reverse items-center data-list-btn-container">
+        <div
+          class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
+          @click="addNewData"
+        >
+          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
+          <span class="ml-2 text-base text-primary">Add New</span>
+        </div>
+      </div>
 
-          <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
-            <template v-if="user.merchant.payment_method_id == 1">
-              <span>Xenopay</span>
-            </template>
-            <template v-if="user.merchant.payment_method_id == 2">
-              <span>Offline</span>
-            </template>
-          </vs-col>
-          <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="5">
-            <span class="text-success">Enabled</span>
-          </vs-col>
-          <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-            <vs-button
-              @click="popupActive2 = true"
-              color="primary"
-              type="filled"
-              icon-pack="feather"
-              icon="icon-edit"
-              class="mb-3"
-              >Edit</vs-button
-            >
-          </vs-col>
+      <vs-th>Payment Method</vs-th>
+      <vs-th>Action</vs-th>
+      <div v-for="(item, index) in merchant.payment_method_id" :key="index">
+        <vx-card class="mb-2" v-if="item == 1">
+          <span>Xenopay</span>
+        </vx-card>
+        <vx-card class="mb-2" v-if="item == 2">
+          <span>Offline</span>
         </vx-card>
       </div>
     </div>
-
-    <vs-popup
-      classContent="popup-example"
-      title="Update Payment Method"
-      :active.sync="popupActive2"
-    >
-      <div class="vx-row">
-        <div class="vx-col sm:w-1/3 w-full">
-          <span>Payment Method</span>
-        </div>
-        <div class="vx-col sm:w-2/3 w-full">
-          <v-select
-            class="w-full"
-            :options="payment"
-            v-model="formModel.payment_method_id"
-          />
-        </div>
-      </div>
-      <div class="vx-row">
-        <div class="vx-col w-full">
-          <div class="mt-2 flex flex-wrap items-center justify-end">
-            <vs-button class="ml-auto mt-2" @click="validate"
-              >Save Changes</vs-button
-            >
-            <vs-button
-              class="ml-4 mt-2"
-              type="border"
-              color="warning"
-              @click="reset"
-              >Reset</vs-button
-            >
-          </div>
-        </div>
-      </div>
-    </vs-popup>
   </div>
 </template>
 
 <script>
-import CrudFormAction from "@/components/widgets/forms/CrudFormAction";
-import ForgotPassword from "@/components/pages/profile/ForgotPassword.vue";
-import formMixin from "@/mixins/form";
-import AlertFormError from "@/components/widgets/alerts/AlertFormError";
+import NoPaymentMethod from "@/components/pages/paymentMethod/NoPaymentMethod";
+import DataViewSidebar from "./DataViewSidebar.vue";
+
 export default {
-  mixins: [formMixin],
-  data() {
-    return {
-      payment: [
-        { label: "Xenopay", code: 1 },
-        { label: "Offline", code: 2 }
-      ],
-      moduleName: "password",
-      formModel: {
-        payment_method_id: ""
-      },
-      popupActive2: false
-    };
-  },
   layout: "main",
   components: {
-    CrudFormAction,
-    ForgotPassword,
-    AlertFormError
+    DataViewSidebar,
+    NoPaymentMethod
   },
-  asyncData() {
+
+  data() {
     return {
-      user: []
+      moduleName: "merchants",
+      activeConfirm: false,
+      selected: [],
+      itemsPerPage: 4,
+      isMounted: false,
+      addNewDataSidebar: false,
+      sidebarData: {},
+      payment_method_id: []
     };
   },
-  methods: {
-    reset() {
-      this.formModel.payment_method_id =
-        this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+  computed: {
+    currentPage() {
+      if (this.isMounted) {
+        return this.$refs.table.currentx;
+      }
+      return 0;
     },
-    async validate() {
-      const obj = {
-        payment_method_id:
-          this.formModel.payment_method_id &&
-          this.formModel.payment_method_id.code
-      };
 
-      if (this.formModel.payment_method_id != null) {
-        try {
-          let res = await this.$api.merchants.update(obj, this.user.id);
-          if (res.http_code == 200) {
-            this.$vs.notify({
-              title: "Success!",
-              text: "Your data has been updated",
-              color: "success",
-              position: "bottom-left"
-            });
-          }
-          this.popupActive2 = false;
-        } catch (err) {
-          if (err) {
-            this.$vs.notify({
-              title: "Failed!",
-              text: "Please insert your data correctly",
-              color: "danger",
-              position: "bottom-left"
-            });
-          }
-        }
-      } 
-      else 
-        this.$vs.notify({
-          title: "Failed!",
-          text: "Please insert your data correctly",
-          color: "danger",
-          position: "bottom-left"
-        });
+    merchant() {
+      return this.$store.state.merchants.record;
+    },
+
+    queriedItems() {
+      return this.$refs.table
+        ? this.$refs.table.queriedResults.length
+        : this.records.length;
     }
   },
-  created() {
-    this.user = this.$store.state.auth.user;
+  methods: {
+    async getPaymentMethodEnum() {
+      try {
+        const { data } = await this.$api.enums.paymentMethod();
+        console.log("enumss", data);
+        this.paymentMethodEnums = data;
+      } catch (error) {
+        console.error("[API Service] Get Payment Method Error:", error);
+      }
+    },
 
+    async fetchItem() {
+      await this.$store.dispatch(
+        "merchants/fetchItem",
+        this.$store.state.auth.user.merchant.id
+      );
+    },
+
+    addNewData() {
+      this.sidebarData = {};
+      this.toggleDataSidebar(true);
+    },
+    confirmDeleteRecord(id) {
+      this.$vs.dialog({
+        type: "confirm",
+        color: "danger",
+        title: "Confirm Delete",
+        text: "You are about to delete",
+        accept: this.deleteRecord,
+        parameters: id
+      });
+    },
+    deleteRecord: function(parameters) {
+      // /* Below two lines are just for demo purpose */
+      // this.showDeleteSuccess()
+
+      /* UnComment below lines for enabling true flow if deleting user */
+      this.$store
+        .dispatch(this.moduleName + "/deleteRecord", parameters)
+        .then(() => {
+          this.showDeleteSuccess();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+    showDeleteSuccess() {
+      this.$vs.notify({
+        color: "success",
+        title: "Product Deleted",
+        text: "The selected product was successfully deleted",
+        position: "bottom-left"
+      });
+    },
+    editData(data) {
+      this.sidebarData = data;
+      this.toggleDataSidebar(true);
+    },
+    toggleDataSidebar(val = false) {
+      this.addNewDataSidebar = val;
+    },
+    getOrderStatusColor(status) {
+      if (status === "Active") return "success";
+      if (status === "Inactive") return "danger";
+      return "primary";
+    }
+  },
+
+  created() {
+    this.fetchItem();
+    this.getPaymentMethodEnum();
   },
   mounted() {
-    this.formModel.payment_method_id =
-      this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
+    this.isMounted = true;
   }
 };
 </script>
-<style scoped>
-.v-card__text,
-.v-card__title {
-  word-break: normal !important; /* maybe !important  */
-}
-.dashboard-card {
-  background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 0px 10px #00000019;
-  border-radius: 10px !important;
-  padding: 10px;
-  width: 280px;
-  height: 190px;
-}
-.v-list-item__content {
-  padding: 0 !important;
-}
-.border-radius-image {
-  border-radius: 13px !important;
-}
-.v-list-item__title,
-.v-list-item__subtitle {
-  white-space: normal;
+
+<style lang="scss">
+#data-list-list-view {
+  .vs-con-table {
+    @media (max-width: 689px) {
+      .vs-table--search {
+        margin-left: 0;
+        max-width: unset;
+        width: 100%;
+
+        .vs-table--search-input {
+          width: 100%;
+        }
+      }
+    }
+
+    @media (max-width: 461px) {
+      .items-per-page-handler {
+        display: none;
+      }
+    }
+
+    @media (max-width: 341px) {
+      .data-list-btn-container {
+        width: 100%;
+
+        .dd-actions,
+        .btn-add-new {
+          width: 100%;
+          margin-right: 0 !important;
+        }
+      }
+    }
+
+    .product-name {
+      max-width: 23rem;
+    }
+
+    .vs-table--header {
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
+
+      > span {
+        display: flex;
+        flex-grow: 1;
+      }
+
+      .vs-table--search {
+        padding-top: 0;
+
+        .vs-table--search-input {
+          padding: 0.9rem 2.5rem;
+          font-size: 1rem;
+
+          & + i {
+            left: 1rem;
+          }
+
+          &:focus + i {
+            left: 1rem;
+          }
+        }
+      }
+    }
+
+    .vs-table {
+      border-collapse: separate;
+      border-spacing: 0 1.3rem;
+      padding: 0 1rem;
+
+      tr {
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+
+        td {
+          padding: 20px;
+
+          &:first-child {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+          }
+
+          &:last-child {
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+          }
+        }
+
+        td.td-check {
+          padding: 20px !important;
+        }
+      }
+    }
+
+    .vs-table--thead {
+      th {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        .vs-table-text {
+          text-transform: uppercase;
+          font-weight: 600;
+        }
+      }
+
+      th.td-check {
+        padding: 0 15px !important;
+      }
+
+      tr {
+        background: none;
+        box-shadow: none;
+      }
+    }
+
+    .vs-table--pagination {
+      justify-content: center;
+    }
+  }
+
+  .vs-lg-6 {
+    width: 100% !important;
+  }
 }
 </style>
