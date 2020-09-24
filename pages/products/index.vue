@@ -57,7 +57,7 @@
         <vs-th sort-key="name">Name</vs-th>
         <vs-th sort-key="description">Description</vs-th>
         <vs-th sort-key="quantity">Quantity</vs-th>
-        <vs-th sort-key="price">Price</vs-th>
+        <vs-th sort-key="price">Price (RM)</vs-th>
         <vs-th sort-key="created.name">Category</vs-th>
         <vs-th sort-key="updated.name">Status</vs-th>
         <vs-th sort-key="updated.name">Action</vs-th>
@@ -78,7 +78,7 @@
 
             <vs-td :data="data[indextr].quantity">{{ tr.quantity }}</vs-td>
 
-            <vs-td :data="data[indextr].price">RM{{ tr.price }}</vs-td>
+            <vs-td :data="data[indextr].price">{{ tr.price }}</vs-td>
 
             <vs-td :data="data[indextr].category">
               <div
