@@ -3,10 +3,6 @@
     <h3 class="text-center font-bold mb-5">
       {{ record.campaign && record.campaign.name }}
     </h3>
-    <!-- <h5 class="text-center mb-5">
-      Invoice Number : {{ record && record.invoice_no }}
-    </h5> -->
-
     <vs-row class="mb-4">
       <vs-col vs-w="12" class="pr-2">
         <vx-card v-if="record" class="h-full ">
@@ -122,6 +118,7 @@
                 <th class="px-0">Price</th>
                 <th class="px-0">Total</th>
                 <tr>
+                  
                   <td style="width:20%">Package Name:</td>
                   <td>{{ record.campaign.packages[0].name || null }}</td>
                   <td>{{ record.package.quantity + " x" || null}}</td>
@@ -219,7 +216,7 @@
               </tr>
               <tr>
                 <td class="font-semibold" style="width: 20%">
-                  Subtotal Amount
+                  Payment Method
                 </td>
                 <td>:</td>
                 <td>
@@ -368,7 +365,6 @@ export default {
        openAttachment() {
          var a = this.record.payment.image;
          window.open( a, '_blank' );
-        //  window.location.href= this.record.payment.image
        },
     getDeliveryStatusColor(status) {
       if (status === 1) return "success";

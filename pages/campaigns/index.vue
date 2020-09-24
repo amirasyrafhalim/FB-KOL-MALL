@@ -4,7 +4,8 @@
     <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems"
                        :data="sidebarData"/>
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records" class="bg-transparent">
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records"
+              class="bg-transparent">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
@@ -80,8 +81,9 @@
 
           <vs-td class="whitespace-no-wrap">
             <vs-button :color="colorx" :gradient-color-secondary="colorx2" type="gradient" icon="library_books"
-                       :to="localePath({ name: 'campaigns-id', params: { id: tr.id } })">Package
+                       @click="goToConsole(tr || null)">Package
             </vs-button>
+
             <vs-button color="warning" type="border" icon="edit" class="ml-2" @click.stop="editData(tr)"></vs-button>
             <vs-button color="danger" type="border" icon="delete_outline" class="ml-2"
                        @click.stop="confirmDeleteRecord(tr.id)"></vs-button>
@@ -126,12 +128,19 @@
       },
       queriedItems() {
         return this.$refs.table ? this.$refs.table.queriedResults.length : this.records.length
+      },
+      shippingMethods() {
+        return this.$store.state.shippingMethods.records;
       }
     },
     methods: {
       fetchItems(page = 1) {
         let params = {page: page};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
+      },
+      fetchShippingMethods(page = 1) {
+        let params = {page: page, status: 1};
+        this.$store.dispatch("shippingMethods/fetchItems", params);
       },
       addNewData() {
         this.sidebarData = {}
@@ -175,10 +184,25 @@
           title: 'Campaign Deleted',
           text: 'The selected campaign was successfully deleted'
         })
-      }
+      },
+      goToConsole(item) {
+        if (this.shippingMethods.length === 0) {
+          this.$vs.notify({
+            color: "danger",
+            title: "Missing Shipping Methods",
+            position: "bottom-left",
+            text:
+              "Please add or enable at least one shipping method to continue. Go to Settings > Shippings.",
+          });
+          return;
+        }
+
+        this.$router.push({path: this.localePath({name: 'campaigns-id', params: {id: item.id}})});
+      },
     },
     created() {
       this.fetchItems();
+      this.fetchShippingMethods();
     },
     mounted() {
       this.isMounted = true

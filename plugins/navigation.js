@@ -22,6 +22,10 @@ export default ({route, app}, inject) => {
     orders: {
       title: 'Orders',
       breadcrumb: [{title: 'Orders', url: '/orders'}, {title: 'List', active: true}]
+    }, 
+    ordersId: {
+      title: 'Details',
+      breadcrumb: [{title: 'Orders', url: '/orders'}, {title: 'Details', active: true}]
     },
     userprofile: {
       title: 'User Profile',
@@ -52,7 +56,7 @@ export default ({route, app}, inject) => {
       breadcrumb: [{title: 'Settings', url: '/settings'}, {title: 'List', active: true}]
     },
     settingsPaymentMethod: {
-      title: 'Payments',
+      title: 'Payment Method',
       breadcrumb: [{title: 'Settings', url: '/settings'}, {
         title: 'Payment Method',
         url: '/settings/paymentMethod'
