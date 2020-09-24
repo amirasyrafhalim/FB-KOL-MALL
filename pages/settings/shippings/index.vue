@@ -4,28 +4,29 @@
     <data-view-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" @fetchItems="fetchItems"
                        :data="sidebarData"/>
 
-    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" search :data="records"
+    <div class="vx-card p-6">
+
+    <vs-table ref="table" v-model="selected" pagination :max-items="itemsPerPage" :data="records"
               class="bg-transparent">
 
-      <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
+      <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between mx-0">
 
         <div class="flex flex-wrap-reverse items-center data-list-btn-container">
 
           <div
-            class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
+            class="btn-add-new p-3 mb-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
             @click="addNewData">
             <feather-icon icon="PlusIcon" svgClasses="h-4 w-4"/>
-            <span class="ml-2 text-base text-primary">Add New</span>
+            <span class=" text-base text-primary">Add New</span>
           </div>
         </div>
 
-        <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
+        <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 items-per-page-handler">
           <div
             class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-            <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ records.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : records.length }} of {{ queriedItems }}</span>
+            <span>{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ records.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : records.length }} of {{ queriedItems }}</span>
             <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4"/>
           </div>
-          <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
           <vs-dropdown-menu>
 
             <vs-dropdown-item @click="itemsPerPage=10">
@@ -81,10 +82,11 @@
             </div>
           </vs-td>
 
-          <vs-td :data="data[indextr].status">
-            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
+          <vs-td :data="data[indextr].status" >
+            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status" v-if="tr.status && tr.status.value === 0 || tr.status && tr.status.value === 1">
             {{ tr.status && tr.status.description }}
             </vs-chip>
+
           </vs-td>
 
           <vs-td :data="data[indextr].created_at">
@@ -102,6 +104,8 @@
         </tbody>
       </template>
     </vs-table>
+    </div>
+
   </div>
 
 </template>
@@ -228,6 +232,13 @@
         }
       }
 
+      .vs-con-tbody {
+        background: transparent;
+        border: 2px solid transparent;
+        width: 100%;
+        overflow: auto;
+      }
+
       .product-name {
         max-width: 23rem;
       }
@@ -267,19 +278,19 @@
         padding: 0 1rem;
 
         tr {
-          box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .05);
+          box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 
           td {
             padding: 20px;
 
             &:first-child {
-              border-top-left-radius: .5rem;
-              border-bottom-left-radius: .5rem;
+              border-top-left-radius: 0.5rem;
+              border-bottom-left-radius: 0.5rem;
             }
 
             &:last-child {
-              border-top-right-radius: .5rem;
-              border-bottom-right-radius: .5rem;
+              border-top-right-radius: 0.5rem;
+              border-bottom-right-radius: 0.5rem;
             }
           }
 
@@ -314,10 +325,8 @@
         justify-content: center;
       }
     }
-
     .vs-lg-6 {
       width: 100% !important;
     }
   }
 </style>
-

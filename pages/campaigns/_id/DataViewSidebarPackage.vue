@@ -42,7 +42,7 @@
       <vs-row>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
-            <span>Price</span>
+            <span>Price (RM)</span>
             <vs-input v-model="dataPrice" class="w-full" name="item-price" />
             <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.price : ''">{{ this.formErrors.price ? this.formErrors.price[0] : '' }}</span>
           </div>
@@ -79,10 +79,17 @@
         <!-- <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.product_ids : ''">{{ this.formErrors ? this.formErrors.status.product_ids : '' }}</span> -->
       </div>
 
-      <div class="px-6 py-2">
+      <div class="px-6 py-2" label="Status">
         <span>Status</span>
-        <v-select :options="status" v-model="dataStatus" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
+        <vs-row>
+          <vs-col class="py-2" vs-type="flex">
+            <vs-radio class="py-2" v-model="dataStatus"  vs-name="status" vs-value="1">Active</vs-radio>
+            <vs-radio class="px-6 py-2" v-model="dataStatus"  vs-name="status" vs-value="0">Inactive</vs-radio>
+          </vs-col>
+        </vs-row>
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
       </div>
 
       <vs-row>
@@ -174,6 +181,7 @@ export default {
         maxScrollbarLength: 60,
         wheelSpeed: 0.6,
       },
+      status: 1,
       swatches: [
         ["#CC0000", "#0070C0"],
         ["#FF9900", "#002060"],
@@ -184,10 +192,6 @@ export default {
       sellMethod: [
         { label: "Keyword", code: 1 },
         {label: 'Bidding', code: 2},
-      ],
-      status: [
-        { label: "Inactive", code: 0 },
-        { label: "Active", code: 1 },
       ],
     };
   },
@@ -221,7 +225,7 @@ export default {
         this.dataLimitPerUser = limit_per_user;
         this.dataPrice = price;
         this.dataProductIds = products;
-        this.dataStatus = status.description;
+        this.dataStatus = status.value;
         this.dataWeight = shipping.weight;
         this.dataLength = shipping.length;
         this.dataHeight = shipping.height;
@@ -280,7 +284,7 @@ export default {
       this.dataLimitPerUser = "";
       this.dataPrice = "";
       this.dataProductIds = "";
-      this.dataStatus = "";
+      this.dataStatus = 1;
       this.dataWeight = "";
       this.dataLength = "";
       this.dataHeight = "";
@@ -299,7 +303,7 @@ export default {
         limit_per_user: this.dataLimitPerUser,
         price: this.dataPrice,
         product_ids: map(this.dataProductIds, "id"),
-        status: this.dataStatus.code,
+        status: this.dataStatus,
         weight: this.dataWeight,
         length: this.dataLength,
         height: this.dataHeight,

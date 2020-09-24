@@ -39,7 +39,7 @@
       </div>
 
       <div class="px-6 py-2">
-        <span>Fee</span>
+        <span>Fee (RM)</span>
         <vs-input v-model="dataFee" class="w-full" name="item-fee" />
         <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.fee : ''">{{ this.formErrors.fee ? this.formErrors.fee[0] : '' }}</span>
       </div>
@@ -58,10 +58,19 @@
         <vs-input v-model="dataFreeMinimumValue" class="w-full" name="item-free-minimum-value" />
       </div>
 
-      <div class="px-6 py-2">
+      <div class="px-6 py-2" label="Status">
         <span>Status</span>
-        <v-select :options="status" v-model="dataStatus"/>
+        <vs-row>
+          <vs-col class="py-2" vs-type="flex">
+            <vs-radio class="py-2" v-model="dataStatus"  vs-name="status" vs-value="1">Active</vs-radio>
+            <vs-radio class="px-6 py-2" v-model="dataStatus"  vs-name="status" vs-value="0">Inactive</vs-radio>
+          </vs-col>
+        </vs-row>
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
       </div>
+
     </component>
 
     <div class="flex flex-wrap items-center p-6" slot="footer">
@@ -97,6 +106,7 @@
         dataName: '',
         dataFee: '',
         dataStatus: '',
+        status: 1,
         dataFreeMinimumType: '',
         dataFreeMinimumValue: null,
         dataShippingPartner: '',
@@ -107,10 +117,6 @@
         FreeMinimumType: [
           {label: 'Price', code: 1},
           {label: 'Quantity', code: 2},
-        ],
-        status: [
-          {label: 'Inactive', code: 0},
-          {label: 'Active', code: 1},
         ],
       }
     },
@@ -125,7 +131,7 @@
           this.dataShippingPartner = partner.name
           this.dataName = name
           this.dataFee = fee
-          this.dataStatus = status && status.description ? status.description : ''
+          this.dataStatus = status && status.value
           this.dataFreeMinimumType = free_minimum_type && free_minimum_type.description ? free_minimum_type.description : ''
           this.dataFreeMinimumValue = free_minimum_value
           this.initValues()
@@ -167,7 +173,7 @@
         this.dataShippingPartner = ''
         this.dataName = ''
         this.dataFee  = ''
-        this.dataStatus = ''
+        this.dataStatus = 1;
         this.dataFreeMinimumType = ''
         this.dataFreeMinimumValue = null
       },
@@ -177,7 +183,7 @@
           shipping_partner_id: this.dataShippingPartner.id,
           name: this.dataName,
           fee: this.dataFee,
-          status: this.dataStatus.code,
+          status: this.dataStatus,
           free_minimum_type: this.dataFreeMinimumType.code,
           free_minimum_value: this.dataFreeMinimumValue
         }
