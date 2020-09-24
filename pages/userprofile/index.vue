@@ -2,7 +2,7 @@
   <div class="con-notifications-position">
     <div class="vx-row mb-base">
       <div class="vx-col lg:w-1/2 w-full">
-        <vx-card title="Account" class="">
+        <vx-card title="Account" class="mb-base">
           <!-- Avatar user.user_social.avatar ||  -->
 
           <div class="vx-row">
@@ -86,13 +86,13 @@
           </div>
         </vx-card>
       </div>
-      <div class="vx-col lg:w-1/2 w-full">
-        <vx-card class="h-full flex flex-col justify-center">
+      <div class="vx-col lg:w-1/2 w-full mb-base">
+        <vx-card class="h-full flex flex-col justify-center ">
           <div v-if="user.social == null">
             <div class="text-center">
               <span>
                 Easily connect and synchronize your profile with your Facebook
-                Account
+                Account.
               </span>
               <vs-button
                 color="#3b5998"
@@ -113,18 +113,15 @@
           <div v-if="user.social != null">
             <div class=" text-center ">
               <span>
-                You can now using all facebook features, including page shops
+                You can now using all facebook features, including page shops.
               </span>
-              <vs-button
-                type="filled"
-                color="#3b5998"
-                class="my-auto mt-3"
-              >
+              <vs-button type="filled" color="#3b5998" class="my-auto mt-3">
                 <vs-row>
                   <vs-col vs-type="flex" vs-w="auto">
                     <feather-icon icon="FacebookIcon" class="mr-1" />
-                    <span class="my-auto">Connected as</span>
-                    <span class="my-auto pl-2">{{ user.social.name }}</span>
+                    <span class="my-auto"
+                      >Connected as {{ user.social.name }}</span
+                    >
                   </vs-col>
                 </vs-row>
               </vs-button>
@@ -134,100 +131,113 @@
       </div>
     </div>
 
-      <div class="vx-col w-full" v-if="user.social == null">
-        <vx-card title="Merchant Information" class="mb-base">
-          <table>
-            <tr>
-              <td class="font-semibold pb-5">Company Name</td>
-              <td class="pl-5 pb-5">
-                {{ merchant.detail && merchant.detail.company_name }}
-              </td>
-            </tr>
+    <div class="vx-col w-full" v-if="user.social == null">
+      <vx-card title="Merchant Information" class="mb-base">
+        <table>
+          <tr>
+            <td class="font-semibold pb-5">Company Name</td>
+            <td class="pl-5 pb-5">
+              {{ merchant.detail && merchant.detail.company_name }}
+            </td>
+          </tr>
 
-            <tr>
-              <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
-              <td class="pl-5 pb-5">
-                {{ merchant.detail && merchant.detail.business_size }}
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold pb-5">Payment Method</td>
+          <tr>
+            <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
+            <td class="pl-5 pb-5">
+              {{ merchant.detail && merchant.detail.business_size }}
+            </td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-5">Payment Method</td>
+            <ol
+              v-for="(item, index) in merchant.payment_method_id"
+              :key="index"
+              style="display: inline;"
+            >
+              <template v-if="item == 1">
+                <li class="pl-5">Xenopay</li>
+              </template>
+              <template v-if="item == 2">
+                <li class="pl-5">Offline</li>
+              </template>
+            </ol>
+            <ol>
+              <template v-if="merchant.payment_method_id == null">
+                <li class="pl-5">-</li>
+              </template>
+            </ol>
+          </tr>
+          <tr>
+            <td class="font-semibold pt-3 ">Business Categories</td>
+            <td class="pt-3">
               <ol
-                v-for="(item, index) in merchant.payment_method_id"
-                :key="index"
-                style="display: inline;"
+                class="pl-5"
+                v-for="(item, key) in merchant.detail &&
+                  merchant.detail.categories"
+                :key="key"
               >
-                <template v-if="item == 1">
-                  <li class="pl-5">Xenopay</li>
-                </template>
-                <template v-if="item == 2">
-                  <li class="pl-5">Offline</li>
-                </template>
+                <li>{{ item.name }}</li>
               </ol>
-            </tr>
-            <tr>
-              <td class="font-semibold pt-3 ">Business Categories</td>
-              <td class="pt-3">
-                <ol
-                  class="pl-5"
-                  v-for="(item, key) in merchant.detail &&
-                    merchant.detail.categories"
-                  :key="key"
-                >
-                  <li>{{ item.name }}</li>
-                </ol>
-              </td>
-            </tr>
-          </table>
-        </vx-card>
-      </div>
+            </td>
+          </tr>
+        </table>
+      </vx-card>
+    </div>
 
-      <div class="vx-col w-full" v-if="user.social != null">
-        <vx-card title="Merchant Information" class="mb-base">
-          <table>
-            <tr>
-              <td class="font-semibold pb-5">Company Name</td>
-              <td class="pl-5 pb-5">
-                {{ merchant.detail && merchant.detail.company_name }}
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
-              <td class="pl-5 pb-5">
-                {{ merchant.detail && merchant.detail.business_size }}
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold pb-5">Payment Method</td>
+    <div class="vx-col w-full" v-if="user.social != null">
+      <vx-card title="Merchant Information" class="mb-base">
+        <table>
+          <tr>
+            <td class="font-semibold pb-5">Company Name</td>
+            <td class="pl-5 pb-5">
+              {{ merchant.detail && merchant.detail.company_name }}
+            </td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
+            <td class="pl-5 pb-5">
+              {{ merchant.detail && merchant.detail.business_size }}
+            </td>
+          </tr>
+          <tr>
+            <td class="font-semibold pb-5">Payment Method</td>
+            <ol
+              v-for="(item, index) in merchant.payment_method_id"
+              :key="index"
+              style="display: inline;"
+            >
+              <template v-if="item == 1">
+                <li class="pl-5">Xenopay</li>
+              </template>
+              <template v-if="item == 2">
+                <li class="pl-5">Offline</li>
+              </template>
+              <template v-if="item == 0">
+                <li class="pl-5">-</li>
+              </template>
+            </ol>
+            <ol>
+              <template v-if="merchant.payment_method_id == null">
+                <li class="pl-5">-</li>
+              </template>
+            </ol>
+          </tr>
+          <tr>
+            <td class="font-semibold pt-3 ">Business Categories</td>
+            <td class="pt-3">
               <ol
-                v-for="(item, index) in merchant.payment_method_id"
-                :key="index"
-                style="display: inline;"
+                class="pl-5"
+                v-for="(item, key) in merchant.detail &&
+                  merchant.detail.categories"
+                :key="key"
               >
-                <template v-if="item == 1">
-                  <li class="pl-5">Xenopay</li>
-                </template>
-                <template v-if="item == 2">
-                  <li class="pl-5">Offline</li>
-                </template>
+                <li>{{ item.name }}</li>
               </ol>
-            </tr>
-            <tr>
-              <td class="font-semibold pt-3 ">Business Categories</td>
-              <td class="pt-3">
-                <ol
-                  class="pl-5"
-                  v-for="(item, key) in merchant.detail &&
-                    merchant.detail.categories"
-                  :key="key"
-                >
-                  <li>{{ item.name }}</li>
-                </ol>
-              </td>
-            </tr>
-          </table>
-        </vx-card>
-      </div>
+            </td>
+          </tr>
+        </table>
+      </vx-card>
+    </div>
   </div>
 </template>
 

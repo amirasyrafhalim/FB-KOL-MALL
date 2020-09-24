@@ -209,7 +209,7 @@ export default {
 
     async getStatesNew(event) {
       try {
-        console.log(event);
+
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
@@ -223,7 +223,7 @@ export default {
 
     async getStates(event) {
       try {
-        console.log(event);
+
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
@@ -235,15 +235,13 @@ export default {
       }
     },
 
-    async getPostcodes(stateId) {
+    async getPostcodes(state_id) {
       try {
-        console.log(this.formModel.state_id);
         const { data } = await this.$api.dropdown.getAllPostcode(
           this.$helper.stringifyParams({
-            stateId: stateId
+            state_id: state_id
           })
         );
-        console.log("data", data);
         this.postcodes = data;
       } catch (error) {
         console.error("[API Service] Get Postcodes Error:", error);
@@ -259,7 +257,7 @@ export default {
       this.formModel.dataAddress = this.user.merchant.detail.address;
       this.formModel.city = this.user.merchant.detail.city;
       this.formModel.state_id = this.user.merchant.detail.state.id;
-      this.formModel.postcode_id = this.user.merchant.detail.postcode.id;
+      this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
       this.formModel.country_code = this.user.merchant.detail.country.code;
     },
     async validate() {
@@ -331,7 +329,7 @@ export default {
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
     this.formModel.state_id = this.user.merchant.detail.state.id;
-    this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
+    this.formModel.postcode_id = this.user.merchant.detail.postcode.id;
     this.formModel.country_code = this.user.merchant.detail.country.code;
   },
 
