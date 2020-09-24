@@ -61,8 +61,7 @@
         </vs-dropdown-menu>
       </vs-dropdown>
     </div>
-  
-          </vs-td>
+    </vs-td>
 
           <template class="expand-user text-center" slot="expand">
             <div class="con-expand-users ml-5 pl-5" style="width:100%">
@@ -89,7 +88,6 @@
         </vs-tr>
       </template>
     </vs-table>
-
     <!-- prompt update tracking number -->
     <vs-prompt
       @cancel="val = ''"
@@ -136,7 +134,6 @@ export default {
     };
   },
   computed: {
-   
     currentPage() {
       if (this.isMounted) {
         return this.$refs.table.currentx;
@@ -144,10 +141,11 @@ export default {
       return 0;
     },
     records() {
-      const record = this.$store.state[this.moduleName].records;
-      this.tracking_no = [];
+        this.tracking_no = [];
+       const record = this.$store.state[this.moduleName].records;
+      
       record.forEach((data, i) => {
-        if (data.delivery && data.delivery.length > 0) {
+        if (data.delivery) {
           if (data.delivery.tracking_no != null) {
             this.tracking_no.push(data.delivery.tracking_no);
           } else {
@@ -155,7 +153,6 @@ export default {
           }
         }
       });
-
       return this.$store.state[this.moduleName].records;
     },
     queriedItems() {
@@ -165,8 +162,6 @@ export default {
     }
   },
   methods: {
-
-
     getOrderPaymentStatusColor(paymentStatus) {
       if (paymentStatus.value === 0) return "danger";
       if (paymentStatus.value === 1) return "success";
