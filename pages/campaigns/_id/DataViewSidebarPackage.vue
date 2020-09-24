@@ -24,19 +24,19 @@
       <div class="px-6 py-2">
         <span>Name</span>
         <vs-input v-model="dataName" class="w-full" name="item-name" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors ? this.formErrors.name : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors.name ? this.formErrors.name[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Sell Method</span>
         <v-select :options="sellMethod" v-model="dataSellMethod" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.sell_method : ''">{{ this.formErrors ? this.formErrors.sell_method : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.sell_method : ''">{{ this.formErrors.sell_method ? this.formErrors.sell_method[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2">
         <span>Keyword</span>
         <vs-input v-model="dataKeyword" class="w-full" name="item-keyword" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.keyword : ''">{{ this.formErrors ? this.formErrors.keyword : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.keyword : ''">{{ this.formErrors.keyword ? this.formErrors.keyword[0] : '' }}</span>
       </div>
 
       <vs-row>
@@ -44,14 +44,14 @@
           <div class="px-6 py-2">
             <span>Price</span>
             <vs-input v-model="dataPrice" class="w-full" name="item-price" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.price : ''">{{ this.formErrors ? this.formErrors.price : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.price : ''">{{ this.formErrors.price ? this.formErrors.price[0] : '' }}</span>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
             <span>Quantity</span>
             <vs-input v-model="dataQuantity" class="w-full" name="item-quantity" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.quantity : ''">{{ this.formErrors ? this.formErrors.quantity : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.quantity : ''">{{ this.formErrors.quantity ? this.formErrors.quantity[0] : '' }}</span>
           </div>
         </vs-col>
       </vs-row>
@@ -61,14 +61,14 @@
           <div class="px-6 py-2">
             <span>Min Per User</span>
             <vs-input v-model="dataMinPerUser" class="w-full" name="item-min-per-user" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.min_per_user : ''">{{ this.formErrors ? this.formErrors.min_per_user : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.min_per_user : ''">{{ this.formErrors.min_per_user ? this.formErrors.min_per_user[0] : '' }}</span>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
             <span>Limit Per User</span>
             <vs-input v-model="dataLimitPerUser" class="w-full" name="item-limit-per-user" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.limit_per_user : ''">{{ this.formErrors ? this.formErrors.limit_per_user : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.limit_per_user : ''">{{ this.formErrors.limit_per_user ? this.formErrors.limit_per_user[0] : '' }}</span>
           </div>
         </vs-col>
       </vs-row>
@@ -76,12 +76,13 @@
       <div class="px-6 py-2">
         <span>Product</span>
         <v-select multiple :options="products" v-model="dataProductIds" label="name" />
+        <!-- <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.product_ids : ''">{{ this.formErrors ? this.formErrors.status.product_ids : '' }}</span> -->
       </div>
 
       <div class="px-6 py-2">
         <span>Status</span>
         <v-select :options="status" v-model="dataStatus" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors ? this.formErrors.status : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.status : ''">{{ this.formErrors.status ? this.formErrors.status[0] : '' }}</span>
       </div>
 
       <vs-row>
@@ -89,14 +90,14 @@
           <div class="px-6 py-2">
             <span>Weight</span>
             <vs-input v-model="dataWeight" class="w-full" name="item-weight" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.weight : ''">{{ this.formErrors ? this.formErrors.weight : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.weight : ''">{{ this.formErrors.weight ? this.formErrors.weight[0] : '' }}</span>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
             <span>Length</span>
             <vs-input v-model="dataLength" class="w-full" name="item-length" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.length : ''">{{ this.formErrors ? this.formErrors.length : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.length : ''">{{ this.formErrors.length ? this.formErrors.length[0] : '' }}</span>
           </div>
         </vs-col>
       </vs-row>
@@ -106,14 +107,14 @@
           <div class="px-6 py-2">
             <span>Height</span>
             <vs-input v-model="dataHeight" class="w-full" name="item-height" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.height : ''">{{ this.formErrors ? this.formErrors.height : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.height : ''">{{ this.formErrors.height ? this.formErrors.height[0] : '' }}</span>
           </div>
         </vs-col>
         <vs-col vs-w="6">
           <div class="px-6 py-2">
             <span>Width</span>
             <vs-input v-model="dataWidth" class="w-full" name="item-width" />
-            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.width : ''">{{ this.formErrors ? this.formErrors.width : '' }}</span>
+            <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.width : ''">{{ this.formErrors.width ? this.formErrors.width[0] : '' }}</span>
           </div>
         </vs-col>
       </vs-row>
@@ -121,7 +122,6 @@
       <div class="px-6 py-2">
         <span>Shipping Method</span>
         <v-select multiple :options="shippingMethods" v-model="dataShippingMethod" label="name" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.shipping_method : ''">{{ this.formErrors ? this.formErrors.shipping_method : '' }}</span>
       </div>
     </component>
 
@@ -183,7 +183,7 @@ export default {
       ],
       sellMethod: [
         { label: "Keyword", code: 1 },
-        // {label: 'Bidding', code: 2},
+        {label: 'Bidding', code: 2},
       ],
       status: [
         { label: "Inactive", code: 0 },
@@ -265,7 +265,7 @@ export default {
       this.$store.dispatch("products/fetchItems", params);
     },
     fetchShippingMethods(page = 1) {
-      let params = { page: page };
+      let params = { page: page, status: 1};
       this.$store.dispatch("shippingMethods/fetchItems", params);
     },
     initValues() {
@@ -324,6 +324,7 @@ export default {
           if (res.http_code == 201) {
             this.handleApiSuccess(res, this.redirectRoute);
             this.popupActive2 = false;
+            this.$emit('closeSidebar')
           }
         } catch (err) {
           this.handleApiErrors(err);

@@ -24,7 +24,7 @@
       <div class="p-6">
         <span>Name</span>
         <vs-input v-model="dataName" class="w-full" name="item-name" />
-        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors ? this.formErrors.name : '' }}</span>
+        <span class="text-danger text-sm" :error-messages="formErrors ? formErrors.name : ''">{{ this.formErrors.name ? this.formErrors.name[0] : '' }}</span>
       </div>
 
       <div class="px-6 py-2" v-if="Object.entries(this.data).length != 0 ? true : false">
@@ -137,6 +137,7 @@ export default {
           if (res.http_code == 201) {
             this.handleApiSuccess(res, this.redirectRoute);
             this.popupActive2 = false;
+            this.$emit('closeSidebar')
           }
         } catch (err) {
           this.handleApiErrors(err);

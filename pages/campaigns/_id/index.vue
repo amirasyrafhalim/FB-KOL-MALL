@@ -1,16 +1,5 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
-
-    <vs-prompt v-if="shippingMethods.length === 0"
-               color="primary"
-               @accept="acceptAlert" button-cancel="hidden"
-               type="flat" title="Missing Shipping Method" accept-text="Add Now"
-               :active.sync="activePrompt" >
-      <div class="con-exemple-prompt">
-        Please set shipping method first before create the package.
-      </div>
-    </vs-prompt>
-
     <data-view-sidebar-package :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar"
                                @fetchItems="fetchItems" :data="sidebarData"/>
 
@@ -106,6 +95,7 @@
         </tbody>
       </template>
     </vs-table>
+
   </div>
 
 </template>
@@ -120,7 +110,6 @@
     },
     data() {
       return {
-        activePrompt: true,
         moduleName: "packages",
         selected: [],
         itemsPerPage: 10,
@@ -141,22 +130,12 @@
       },
       queriedItems() {
         return this.$refs.table ? this.$refs.table.queriedResults.length : this.records.length
-      },
-      shippingMethods() {
-        return this.$store.state.shippingMethods.records;
-      },
+      }
     },
     methods: {
-      acceptAlert(color) {
-        this.$router.push({path: this.localePath({name: 'settings'})});
-      },
       fetchItems(page = 1) {
         let params = {page: page, campaign_id: this.$route.params.id};
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
-      },
-      fetchShippingMethods(page = 1) {
-        let params = {page: page};
-        this.$store.dispatch("shippingMethods/fetchItems", params);
       },
       addNewData() {
         this.sidebarData = {}
@@ -176,7 +155,6 @@
     },
     created() {
       this.fetchItems();
-      this.fetchShippingMethods();
     },
     mounted() {
       this.isMounted = true

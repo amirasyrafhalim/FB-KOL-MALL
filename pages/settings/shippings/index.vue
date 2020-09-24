@@ -49,6 +49,7 @@
         <vs-th sort-key="partner.name">Shipping Partner</vs-th>
         <vs-th sort-key="fee">Fee (RM)</vs-th>
         <vs-th sort-key="free_minimum_type">Free Minimum</vs-th>
+        <vs-th sort-key="status">Status</vs-th>
         <vs-th sort-key="created_at">Created At</vs-th>
         <vs-th>Action</vs-th>
       </template>
@@ -78,6 +79,12 @@
               {{ (tr.free_minimum_type && tr.free_minimum_type.description) ? tr.free_minimum_type.description : '' }}
               equal or more than {{ Math.trunc(tr.free_minimum_value) }}
             </div>
+          </vs-td>
+
+          <vs-td :data="data[indextr].status">
+            <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
+            {{ tr.status && tr.status.description }}
+            </vs-chip>
           </vs-td>
 
           <vs-td :data="data[indextr].created_at">
@@ -147,8 +154,6 @@
       getOrderStatusColor(status) {
         if (status === 'Active') return 'success'
         if (status === 'Inactive') return 'danger'
-        if (status === 'Pause') return 'warning'
-        return 'primary'
       },
       toggleDataSidebar(val = false) {
         this.addNewDataSidebar = val

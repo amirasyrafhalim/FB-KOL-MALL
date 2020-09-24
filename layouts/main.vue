@@ -108,6 +108,8 @@
 
 <script>
 import BackToTop from "vue-backtotop";
+import Vue from 'vue';
+import VueIntercom from 'vue-intercom';
 import HNavMenu from "@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue";
 import navMenuItems from "@/layouts/components/vertical-nav-menu/navMenuItems.js";
 import TheNavbarHorizontal from "@/layouts/components/navbar/TheNavbarHorizontal.vue";
@@ -115,6 +117,8 @@ import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue
 import TheFooter from "@/layouts/components/TheFooter.vue";
 import themeConfig from "@/themeConfig.js";
 import VNavMenu from "@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue";
+
+Vue.use(VueIntercom, { appId: process.env.INTERCOM_APP_ID });
 
 export default {
   components: {
@@ -263,9 +267,16 @@ export default {
     },
   },
   mounted() {
+    this.$intercom.boot({
+      user_id: this.$store.state.auth.user.id,
+      name: this.$store.state.auth.user.name,
+      email: this.$store.state.auth.user.email,
+      created_at: this.$store.state.auth.user.created_at
+    });
+
     this.toggleClassInBody(themeConfig.theme);
     this.$store.commit("UPDATE_WINDOW_WIDTH", window.innerWidth);
-
+    
     const vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty("--vh", `${vh}px`);
@@ -292,9 +303,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.handleWindowResize);
     window.removeEventListener("scroll", this.handleScroll);
+    this.$intercom.shutdown()
   },
 };
 </script>
-
-
-

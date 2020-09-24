@@ -14,10 +14,6 @@ export default {
 		},
 		handleApiSuccess(res, redirectRoute) {
 			this.clearPreviousError();
-			// this.$store.dispatch("showSnackbar", {
-			//   text: res.message || this.$t("message.successSubmit"),
-			//   color: "success",
-			// });
 			this.$vs.notify({
 				color: 'success',
 				title: 'Success',
@@ -32,17 +28,12 @@ export default {
 			this.clearPreviousError();
 			let resBody = err.response;
 			let code = resBody.data.http_code;
-			let errMessage = resBody && resBody.data.error ? resBody.data.error.message : null;
-
+			let errMessage = resBody.data.errors ? resBody.data.errors.message : null;
 			if (code == 422) {
 				let errors = resBody.data.errors;
 				this.errorMessage = errMessage || this.$t('message.invalidInput');
 				this.formErrors = errors;
 			} else if (code == 400) {
-				// this.$store.dispatch('showSnackbar', {
-				// 	text: errMessage || this.$t('message.errorSubmit'),
-				// 	color: 'error'
-				// });
 				this.$vs.notify({
 					color: 'danger',
 					title: 'Error',
@@ -50,10 +41,6 @@ export default {
 					text: errMessage || this.$t('message.errorSubmit')
 				});
 			} else {
-				// this.$store.dispatch('showSnackbar', {
-				// 	text: errMessage || this.$t('message.unknownError'),
-				// 	color: 'error'
-				// });
 				this.$vs.notify({
 					color: 'danger',
 					title: 'Error',
