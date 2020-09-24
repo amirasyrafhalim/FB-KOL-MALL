@@ -48,6 +48,24 @@
         >{{ this.formErrors.description ? this.formErrors.description[0] : '' }}</span>
       </div>
 
+      <div class="p-6 py-2">
+        <span>Quantity</span>
+        <vs-input v-model="dataQuantity" class="w-full" name="item-quantity" />
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.quantity : ''"
+        >{{ this.formErrors.quantity ? this.formErrors.quantity[0] : '' }}</span>
+      </div>
+
+      <div class="p-6 py-2">
+        <span>Price</span>
+        <vs-input v-model="dataPrice" class="w-full" name="item-price" />
+        <span
+          class="text-danger text-sm"
+          :error-messages="formErrors ? formErrors.price : ''"
+        >{{ this.formErrors.price ? this.formErrors.price[0] : '' }}</span>
+      </div>
+
       <div class="px-6 py-2">
         <span>Category</span>
         <v-select :options="category" v-model="dataCategory" label="name" />
@@ -125,6 +143,8 @@ export default {
       dataName: "",
       dataDescription: "",
       dataStatus: "",
+      dataQuantity: "",
+      dataPrice: "",
       status: 1,
       dataCategory: "",
       dataImg: "",
@@ -148,12 +168,16 @@ export default {
           description,
           status,
           category,
+          quantity,
+          price,
           image,
         } = JSON.parse(JSON.stringify(this.data));
         this.dataId = id;
         this.dataName = name;
         this.merchantId = merchant_id;
         this.dataDescription = description;
+        this.dataQuantity = quantity;
+        this.dataPrice = price;
         this.dataStatus = status.value;
         this.dataCategory = category;
         this.dataImg = image;
@@ -195,6 +219,8 @@ export default {
       this.dataStatus = 1;
       this.dataCategory = "";
       this.dataImg = "";
+      this.dataQuantity = "";
+      this.dataPrice = "";
     },
     async submitData() {
       function isValidURL(string) {
@@ -227,6 +253,8 @@ export default {
         category_id: e,
         image: dataImage,
         status: this.dataStatus,
+        quantity: this.dataQuantity,
+        price: this.dataPrice
       };
 
       if (this.dataId !== null && this.dataId >= 0) {
