@@ -118,7 +118,7 @@ import TheFooter from "@/layouts/components/TheFooter.vue";
 import themeConfig from "@/themeConfig.js";
 import VNavMenu from "@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue";
 
-Vue.use(VueIntercom, { appId: 'pyvi2s7n' });
+Vue.use(VueIntercom, { appId: process.env.INTERCOM_APP_ID });
 
 export default {
   components: {
