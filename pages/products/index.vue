@@ -78,7 +78,7 @@
 
             <vs-td :data="data[indextr].quantity">{{ tr.quantity }}</vs-td>
 
-            <vs-td :data="data[indextr].price">{{ tr.price }}</vs-td>
+            <vs-td :data="data[indextr].price">RM{{ tr.price }}</vs-td>
 
             <vs-td :data="data[indextr].category">
               <div
