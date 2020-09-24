@@ -56,6 +56,8 @@
         <vs-th sort-key="merchant.name">Image</vs-th>
         <vs-th sort-key="name">Name</vs-th>
         <vs-th sort-key="description">Description</vs-th>
+        <vs-th sort-key="quantity">Quantity</vs-th>
+        <vs-th sort-key="price">Price (RM)</vs-th>
         <vs-th sort-key="created.name">Category</vs-th>
         <vs-th sort-key="updated.name">Status</vs-th>
         <vs-th sort-key="updated.name">Action</vs-th>
@@ -73,6 +75,10 @@
             <vs-td :data="data[indextr].description">
               <div style="text-overflow: ellipsis; width: 200px !important; white-space: nowrap; overflow: hidden">{{ tr.description }}</div>
             </vs-td>
+
+            <vs-td :data="data[indextr].quantity">{{ tr.quantity }}</vs-td>
+
+            <vs-td :data="data[indextr].price">{{ tr.price }}</vs-td>
 
             <vs-td :data="data[indextr].category">
               <div
