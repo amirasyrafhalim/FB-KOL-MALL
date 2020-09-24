@@ -139,7 +139,7 @@
         this.$store.dispatch(this.moduleName + "/fetchItems", params);
       },
       fetchShippingMethods(page = 1) {
-        let params = {page: page};
+        let params = {page: page, status: 1};
         this.$store.dispatch("shippingMethods/fetchItems", params);
       },
       addNewData() {
@@ -192,10 +192,11 @@
             title: "Missing Shipping Methods",
             position: "bottom-left",
             text:
-              "Please add shipping method to continue. Go to Settings > Shippings.",
+              "Please add or enable at least one shipping method to continue. Go to Settings > Shippings.",
           });
           return;
         }
+
         this.$router.push({path: this.localePath({name: 'campaigns-id', params: {id: item.id}})});
       },
     },
