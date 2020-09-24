@@ -62,7 +62,7 @@
             v-model="formModel.dataCompany"
           />
           <div class="mt-4">
-            <label class="vs-input--label">Business Size</label>
+            <label class="vs-input--label">{{ $t("label.size") }}</label>
             <v-select
               name="status"
               :options="business"

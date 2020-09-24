@@ -84,7 +84,7 @@ export default {
   },
   created() {
     this.fetchItems();
-    this.rangeSize = this.$store.state.monthlyRevenue;
+    this.rangeSize = this.$store.state.businessSize;
   },
   methods: {
     fetchItems(value) {

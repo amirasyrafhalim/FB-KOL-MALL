@@ -182,7 +182,7 @@ export default {
     },
     async updateTracking() {
       var res = await this.$api.orderDeliveries.updateOrderDelivery(
-        { tracking_no: this.tracking_no_id, partner: this.partner },
+        { tracking_no: this.tracking_no_id },
         this.orderDeliveryId
       );
       if (res) {
