@@ -1,12 +1,10 @@
 <template>
-  <div id="referral_code" >
-     <div
+ <div
     class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
-    id="page-login"
-  >
+    id="page-login" >
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vs-row vs-justify="center">
-        <vs-col type="block" vs-justify="center" vs-align="center" class="text-center" vs-w="6">
+        <vs-col type="block" vs-justify="center" vs-align="center" class="text-center"  vs-sm="12" vs-md="12" vs-lg="6">
           <vs-card class="bg-white">
             <div slot="header" class="bg-white">
               <img
@@ -41,7 +39,6 @@
       </vs-row>
     </div>
      </div>
-  </div>
 </template>
 
 <script>
