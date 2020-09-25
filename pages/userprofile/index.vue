@@ -21,11 +21,10 @@
             </div>
             <div class="vx-row">
               <div class="vx-col md:w-1/2 w-full">
-                <div class="vx-col flex-1" id="account-info-col-1">
-                  <table>
+                <table>
+                  <div>
                     <tr>
                       <td class="font-semibold pb-6">Name</td>
-
                       <td class="pl-5 pb-5">{{ user.name }}</td>
                     </tr>
                     <tr>
@@ -34,7 +33,7 @@
                       <td class="pl-5 pb-5">{{ user.email }}</td>
                     </tr>
                     <tr>
-                      <td class="font-semibold pb-5">Phone No.</td>
+                      <td class="font-semibold pb-5">Phone</td>
                       <p class="pl-5 mb-5">
                         <template v-if="user.phone_no != null">{{
                           user.phone_no
@@ -45,6 +44,12 @@
                         >
                         <template
                           v-if="user.phone_no == null && user.social == null"
+                          >-</template
+                        >
+                        <template
+                          v-if="
+                            user.social != null && user.social.phone_no == null
+                          "
                           >-</template
                         >
                       </p>
@@ -64,22 +69,22 @@
                         {{ user.status.description }}
                       </p>
                     </tr>
-                  </table>
-
-                  <div class="vx-col w-full flex" id="account-manage-buttons">
-                    <vs-button
-                      icon-pack="feather"
-                      icon="icon-edit"
-                      class="mr-4"
-                      :to="
-                        localePath({
-                          name: 'userprofile-id-edit',
-                          params: { id: user.id }
-                        })
-                      "
-                      >Edit</vs-button
-                    >
                   </div>
+                </table>
+
+                <div class="vx-col w-full flex" id="account-manage-buttons">
+                  <vs-button
+                    icon-pack="feather"
+                    icon="icon-edit"
+                    class="mr-4"
+                    :to="
+                      localePath({
+                        name: 'userprofile-id-edit',
+                        params: { id: user.id }
+                      })
+                    "
+                    >Edit</vs-button
+                  >
                 </div>
               </div>
             </div>
@@ -94,6 +99,8 @@
                 Easily connect and synchronize your profile with your Facebook
                 Account.
               </span>
+            </div>
+            <div class="text-center">
               <vs-button
                 color="#3b5998"
                 class="w-100 my-auto mt-3"
@@ -115,6 +122,8 @@
               <span>
                 You can now using all facebook features, including page shops.
               </span>
+            </div>
+            <div class=" text-center ">
               <vs-button type="filled" color="#3b5998" class="my-auto mt-3">
                 <vs-row>
                   <vs-col vs-type="flex" vs-w="auto">

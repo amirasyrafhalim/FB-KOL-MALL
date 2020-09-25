@@ -60,30 +60,174 @@
         </div>
       </div>
 
-      <vs-th>Payment Method</vs-th>
-      <vs-th>Action</vs-th>
-      <div v-for="(item, index) in merchant.payment_method_id" :key="index">
-        <vx-card class="mb-2" v-if="item == 1">
-          <span>Xenopay</span>
-        </vx-card>
-        <vx-card class="mb-2" v-if="item == 2">
-          <span>Offline</span>
-        </vx-card>
+      <div class="vx-row mb-base">
+        <div
+          v-for="(item, index) in merchant.payment_method_id"
+          :key="index"
+          class="vx-col lg:w-1/2 w-full"
+        >
+          <vx-card class="mb-base" v-if="item == 1">
+            <td class="font-semibold ">Xenopay</td>
+                     <vs-divider class="pb-6"></vs-divider>
+            <div class="flex flex-col justify-center">
+              <div class="mb-5 justify-center vx-row">
+                <div>
+                  <img class="pl-2" :src="'/visa.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/mastercard.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/grab-pay.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/touchngo-ewallet.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/boost.png'" />
+                </div>
+              </div>
+              <div class=" justify-center vx-row">
+                <div>
+                  <img class="pl-2" :src="'/fpx.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/paypal.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/mcash.png'" />
+                </div>
+                <div>
+                  <img class="pl-2" :src="'/maybank-qr.png'" />
+                </div>
+              </div>
+            </div>
+          </vx-card>
+          <vx-card class="mb-base" v-if="item == 2">
+            <td class="font-semibold">Offline</td>
+            <vs-divider ></vs-divider>
+            <div class=" flex items-center justify-center">
+              <vs-button
+                v-if="merchant.has_banks == false"
+                @click="popupActive2 = true"
+                color="primary"
+                type="filled"
+                size="large"
+                >Add Bank Information</vs-button
+              >
+            </div>
+            <div
+              v-if="merchant.has_banks == true"
+            >
+              <div>
+                <table v-for="(data, i) in records" :key="i">
+                  <tr>
+                    <td class="font-semibold pb-6">Bank Name</td>
+                    <td class="pl-6 pb-6">{{ data.bank.name }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold pb-6">Name</td>
+                    <td class="pl-6 pb-6">{{ data.name }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Account No.</td>
+                    <td class="pl-6">{{ data.account_no }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </vx-card>
+        </div>
       </div>
+
+      <vs-popup
+        classContent="popup-example"
+        title="Add Bank Information"
+        :active.sync="popupActive2"
+      >
+        <div class="vx-row mb-6">
+          <div class="vx-col sm:w-1/3 w-full">
+            <span>Bank Name</span>
+          </div>
+          <div class="vx-col sm:w-2/3 w-full">
+            <v-select
+              name="status"
+              :options="bank"
+              label="name"
+              v-model="formModel.bank_id"
+            />
+            <span
+              class="text-danger text-sm"
+              :error-messages="formErrors ? formErrors.bank_id : ''"
+              >{{
+                this.formErrors.bank_id ? this.formErrors.bank_id[0] : ""
+              }}</span
+            >
+          </div>
+        </div>
+        <div class="vx-row mb-6">
+          <div class="vx-col sm:w-1/3 w-full">
+            <span>Name</span>
+          </div>
+          <div class="vx-col sm:w-2/3 w-full">
+            <vs-input class="w-full" icon-no-border v-model="formModel.name" />
+            <span
+              class="text-danger text-sm"
+              :error-messages="formErrors ? formErrors.name : ''"
+              >{{ this.formErrors.name ? this.formErrors.name[0] : "" }}</span
+            >
+          </div>
+        </div>
+        <div class="vx-row mb-6">
+          <div class="vx-col sm:w-1/3 w-full">
+            <span>Account No</span>
+          </div>
+          <div class="vx-col sm:w-2/3 w-full">
+            <vs-input class="w-full" v-model="formModel.accountno" />
+            <span
+              class="text-danger text-sm"
+              :error-messages="formErrors ? formErrors.account_no : ''"
+              >{{
+                this.formErrors.account_no ? this.formErrors.account_no[0] : ""
+              }}</span
+            >
+          </div>
+        </div>
+        <div class="vx-row">
+          <div class="vx-col w-full">
+            <div class="mt-8 flex flex-wrap items-center justify-end">
+              <vs-button class="ml-auto mt-2" @click="validate"
+                >Save Changes</vs-button
+              >
+              <vs-button
+                class="ml-4 mt-2"
+                type="border"
+                color="warning"
+                @click="reset"
+                >Reset</vs-button
+              >
+            </div>
+          </div>
+        </div>
+      </vs-popup>
     </div>
   </div>
 </template>
 
 <script>
 import DataViewSidebar from "./DataViewSidebar.vue";
+import formMixin from "@/mixins/form";
 export default {
   layout: "main",
+  mixins: [formMixin],
   components: {
-    DataViewSidebar,
+    DataViewSidebar
   },
 
   data() {
     return {
+      popupActive2: false,
+      merchant_id: this.$auth.state.user.merchant.id,
       moduleName: "merchants",
       activeConfirm: false,
       selected: [],
@@ -91,10 +235,24 @@ export default {
       isMounted: false,
       addNewDataSidebar: false,
       sidebarData: {},
-      payment_method_id: []
+      payment_method_id: [],
+      formModel: {
+        bank_id: "",
+        accountno: "",
+        name: "",
+        remark: "",
+        status: 1,
+        image: ""
+      }
     };
   },
   computed: {
+    bank() {
+      return this.$store.state.banks.records;
+    },
+    records() {
+      return this.$store.state.merchantBanks.records;
+    },
     currentPage() {
       if (this.isMounted) {
         return this.$refs.table.currentx;
@@ -113,6 +271,54 @@ export default {
     }
   },
   methods: {
+    fetchBank(page = 1) {
+      let params = { page: page };
+      this.$store.dispatch("banks/fetchItems", params);
+    },
+    reset() {
+      this.formModel = {
+        bankname: "",
+        accountno: "",
+        name: "",
+        remark: "",
+        status: ""
+      };
+    },
+    fetchUser(merchant_Id) {
+      let params = { merchant_Id: this.$store.state.auth.user.merchant.id };
+      this.$store.dispatch("merchantBanks/fetchItems", params);
+    },
+    async validate() {
+      const obj = {
+        bank_id: this.formModel.bank_id.id,
+        merchant_id: this.$auth.state.user.merchant.id,
+        name: this.formModel.name,
+        account_no: this.formModel.accountno,
+        status: this.formModel.status,
+        remark: this.formModel.remark,
+        image: this.formModel.image.replace(/^data:(.*;base64,)?/, "")
+      };
+      try {
+        let res = await this.$api.merchantBanks.create(obj, this.user.id);
+        if (res.http_code == 201) {
+          this.handleApiSuccess(res, this.redirectRoute);
+          this.popupActive2 = false;
+          this.$emit("closeSidebar");
+        }
+        this.popupActive2 = false;
+        this.fetchUser();
+      } catch (err) {
+        if (err) {
+          this.handleApiErrors(err);
+          this.$vs.notify({
+            title: "Failed!",
+            text: "Please insert your data correctly",
+            color: "danger",
+            position: "bottom-left"
+          });
+        }
+      }
+    },
     async getPaymentMethodEnum() {
       try {
         const { data } = await this.$api.enums.paymentMethod();
@@ -181,8 +387,11 @@ export default {
   },
 
   created() {
+    this.fetchUser();
+    this.fetchBank();
     this.fetchItem();
     this.getPaymentMethodEnum();
+    this.user = this.$store.state.auth.user;
   },
   mounted() {
     this.isMounted = true;
