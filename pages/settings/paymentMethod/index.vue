@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import NoPaymentMethod from "@/components/pages/paymentMethod/NoPaymentMethod";
 import DataViewSidebar from "./DataViewSidebar.vue";
 
 export default {
