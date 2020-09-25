@@ -59,9 +59,16 @@
     />
     <!-- <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span> -->
 
-    <vs-checkbox v-model="formModel.isTermsConditionAccepted" class="mt-6"
-      >I accept the terms & conditions.</vs-checkbox
-    >
+     <vs-row>
+       <vs-col vs-w="1" >
+          <vs-checkbox v-model="formModel.isTermsConditionAccepted" class="mt-6 w-10"> </vs-checkbox >
+       </vs-col>
+       <vs-col vs-w="10" class="my-auto mb-0 ml-1">
+         <span style="font-size: 12px" class="my-auto">I agree to all KOL Store's <a href="https://kolstore.co/tnc" target="_blank" class="my-auto" style="text-decoration: underline">Terms & Conditions.</a></span>
+       </vs-col>
+     </vs-row>
+   
+     
     <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
     <vs-button
       class="float-right mt-6"
