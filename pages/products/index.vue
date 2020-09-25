@@ -1,5 +1,27 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
+    <form-search :module-name="moduleName" />
+    <!-- <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
+      <div class="vx-row">
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Name</label>
+          <vs-input class="w-full" v-model="name" />
+        </div>
+         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Category</label>
+          <v-select :options="isVerifiedOptions" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Status</label>
+          <v-select :options="statusOptions"  v-model="statusFilter" class="mb-4 md:mb-0" />
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Price</label>
+           <vs-input class="w-full" v-model="name" />
+        </div>
+      </div>
+    </vx-card> -->
+    <div class="vx-card p-6">
     <data-view-sidebar
       :isSidebarActive="addNewDataSidebar"
       @closeSidebar="toggleDataSidebar"
@@ -11,7 +33,6 @@
       v-model="selected"
       pagination
       :max-items="itemsPerPage"
-      search
       :data="records"
       class="bg-transparent"
     >
@@ -25,6 +46,7 @@
             <span class="ml-2 text-base text-primary">Add New</span>
           </div>
         </div>
+        
         <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
           <div
             class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
@@ -52,7 +74,7 @@
         </vs-dropdown>
       </div>
 
-      <template slot="thead">
+      <template slot="thead" >
         <vs-th sort-key="merchant.name">Image</vs-th>
         <vs-th sort-key="name">Name</vs-th>
         <vs-th sort-key="description">Description</vs-th>
@@ -110,15 +132,18 @@
       </template>
     </vs-table>
   </div>
+  </div>
 </template>
 
 <script>
 import DataViewSidebar from "./DataViewSidebar.vue";
+import FormSearch from "@/components/pages/products/FormSearch";
 
 export default {
   layout: "main",
   components: {
-    DataViewSidebar,
+    FormSearch,
+    DataViewSidebar
   },
 
   data() {
@@ -165,6 +190,11 @@ export default {
         accept: this.deleteRecord,
         parameters: id,
       });
+    },
+     resetColFilters () {
+      // Reset Grid Filter
+
+      this.$refs.filterCard.removeRefreshAnimation()
     },
     deleteRecord: function (parameters) {
       // /* Below two lines are just for demo purpose */
@@ -243,6 +273,13 @@ export default {
         }
       }
     }
+
+    .vs-con-tbody {
+    background: transparent;
+    border: 2px solid transparent;
+    width: 100%;
+    overflow: auto;
+}
 
     .product-name {
       max-width: 23rem;
