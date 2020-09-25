@@ -1,23 +1,87 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
+    <form-search :module-name="moduleName" />
 
-<form-search :module-name="moduleName" />
-
-    <vs-table :data="records"  pagination max-items="15">
+    <vs-table
+      ref="table"
+      v-model="selected"
+      pagination
+      :max-items="itemsPerPage"
+      :data="records"
+      class="bg-transparent"
+    >
+      <div
+        slot="header"
+        class="flex flex-wrap-reverse items-center flex-grow justify-between"
+      >
+        <div
+          class="flex flex-wrap-reverse items-center data-list-btn-container"
+        ></div>
+        <vs-dropdown
+          vs-trigger-click
+          class="cursor-pointer mb-4 mr-4 items-per-page-handler"
+        >
+          <div
+            class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
+          >
+            <span class="mr-2"
+              >{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} -
+              {{
+                records.length - currentPage * itemsPerPage > 0
+                  ? currentPage * itemsPerPage
+                  : records.length
+              }}
+              of {{ queriedItems }}</span
+            >
+            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+          </div>
+          <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
+          <vs-dropdown-menu>
+            <vs-dropdown-item @click="itemsPerPage = 10">
+              <span>10</span>
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="itemsPerPage = 20">
+              <span>20</span>
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="itemsPerPage = 30">
+              <span>30</span>
+            </vs-dropdown-item>
+            <vs-dropdown-item @click="itemsPerPage = 40">
+              <span>40</span>
+            </vs-dropdown-item>
+          </vs-dropdown-menu>
+        </vs-dropdown>
+      </div>
       <template slot="thead" class="text-center">
-        <vs-th sort-key="invoice_no">{{$t('label.invoiceNo')}}</vs-th>
-        <vs-th sort-key="total_amount">{{$t('label.totalAmount')}}</vs-th>
-        <vs-th sort-key="status">{{$t('label.orderStatus')}}</vs-th>
-        <vs-th sort-key="status">{{$t('label.paymentStatus')}}</vs-th>
-        <vs-th sort-key="created_at">{{$t('label.dateOrder')}}</vs-th>
-        <vs-th sort-key="deliver_at">{{$t('label.actions')}}</vs-th>
+        <vs-th sort-key="invoice_no">{{ $t("label.invoiceNo") }}</vs-th>
+        <vs-th sort-key="total_amount">{{ $t("label.campaignName") }}</vs-th>
+        <vs-th sort-key="total_amount">{{ $t("label.buyerName") }}</vs-th>
+        <vs-th sort-key="total_amount">{{ $t("label.trackingNo") }}</vs-th>
+        <vs-th sort-key="total_amount">{{ $t("label.totalAmount") }}</vs-th>
+
+        <vs-th sort-key="status">{{ $t("label.orderStatus") }}</vs-th>
+        <vs-th sort-key="status">{{ $t("label.paymentStatus") }}</vs-th>
+        <vs-th sort-key="created_at">{{ $t("label.dateOrder") }}</vs-th>
+        <vs-th sort-key="deliver_at">{{ $t("label.actions") }}</vs-th>
       </template>
 
       <template slot-scope="{ data }">
         <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-        
           <vs-td>
             {{ tr.invoice_no || "-" }}
+          </vs-td>
+          <vs-td>
+            {{ tr.campaign.name || "-" }}
+          </vs-td>
+          <vs-td>
+            {{ tr.detail.name || "-" }}
+          </vs-td>
+         
+           <vs-td v-if="tr.delivery">
+            <p  @click="activePromptFn(indextr)" style="text-decoration: underline">{{ tr.delivery.tracking_no || "Update Tracking Number" }}</p>
+          </vs-td>
+          <vs-td v-else>
+            <p>Not Availble</p>
           </vs-td>
 
           <vs-td>
@@ -34,57 +98,39 @@
             >
               {{ tr.payment.status.description }}
             </div>
-            <p v-else>{{$t('label.notAvailable')}}</p>
+            <p v-else>{{ $t("label.notAvailable") }}</p>
           </vs-td>
-            <vs-td>
+          <vs-td>
             {{ tr.created_at || "-" }}
           </vs-td>
 
-          <vs-td>
+          <vs-td class="whitespace-no-wrap">
+          
            
-
-     <div class="dropdown-button-container" style="width: 50%">
-      <vs-dropdown>
-        <vs-button class="btn-drop" type="border" color="primary" icon="more_horiz"></vs-button>
-        <vs-dropdown-menu>
-
-         <vs-dropdown-item @click="activePromptFn(indextr)" v-if="tr.delivery">
-            {{$t('label.updateTracking')}}
-          </vs-dropdown-item>
-          <vs-dropdown-item>
-             <nuxt-link style="color: inherit"
-              :to="localePath({ name: 'orders-id', params: { id: tr.id } })"
-            >
-            {{'View'}}
-            </nuxt-link>
-          </vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
-    </div>
-    </vs-td>
-
-          <template class="expand-user text-center" slot="expand">
-            <div class="con-expand-users ml-5 pl-5" style="width:100%">
-              <table>
-                 <tr>
-                  <td width="15%" class="font-bold">{{$t('label.campaignName')}}</td>
-                  <td width="1%">:</td>
-                  <td>{{ tr.campaign && tr.campaign.name  }}</td>
-                </tr>
-                <tr>
-                  <td class="font-bold">{{$t('label.buyerName')}}</td>
-                  <td width="1%">:</td>
-                  <td>{{ tr.user && tr.user.name }}</td>
-                </tr>
-                <tr>
-                  <td class="font-bold">{{$t('label.trackingNo')}}</td>
-                  <td width="1%">:</td>
-                  <td>{{ (tr.delivery && tr.delivery.tracking_no) || '-' }}</td>
-                </tr>
-                
-              </table>
-            </div>
-          </template>
+              <nuxt-link style="color: inherit" :to=" localePath({ name: 'orders-id', params: { id: tr.id } })">
+                 <vs-button color="danger" type="border" icon="info" class="ml-2">  </vs-button>
+              </nuxt-link>
+          
+            <!-- <div class="dropdown-button-container" style="width: 50%">
+              <vs-dropdown>
+                <vs-button
+                  class="btn-drop"
+                  type="border"
+                  color="primary"
+                  icon="more_horiz"
+                ></vs-button>
+                <vs-dropdown-menu>
+                  <vs-dropdown-item
+                  
+                    v-if="tr.delivery"
+                  >
+                    {{ $t("label.updateTracking") }}
+                  </vs-dropdown-item>
+                 
+                </vs-dropdown-menu>
+              </vs-dropdown>
+            </div> -->
+          </vs-td>
         </vs-tr>
       </template>
     </vs-table>
@@ -122,7 +168,7 @@ export default {
       moduleName: "orders",
       selected: [],
       activePrompt: false,
-      itemsPerPage: 4,
+      itemsPerPage: 15,
       isMounted: false,
       shippingPartners: {},
       tracking_no: [],
@@ -141,17 +187,19 @@ export default {
       return 0;
     },
     records() {
-        this.tracking_no = [];
-       const record = this.$store.state[this.moduleName].records;
-      
+      this.tracking_no = [];
+      const record = this.$store.state[this.moduleName].records;
+
       record.forEach((data, i) => {
         if (data.delivery) {
-          if (data.delivery.tracking_no != null) {
+
+          if (data.delivery.tracking_no) {
             this.tracking_no.push(data.delivery.tracking_no);
-          } else {
-            this.tracking_no.push(null);
           }
-        }
+        } else {
+            console.log('o')
+            this.tracking_no.push('');
+          }
       });
       return this.$store.state[this.moduleName].records;
     },
@@ -171,8 +219,13 @@ export default {
       //  trigger a mutation, or dispatch an action
     },
     activePromptFn(orderDeliveryId) {
-      this.orderDeliveryId = this.records[orderDeliveryId].delivery.id;
+      console.log('orderDeliveryId', orderDeliveryId)
+      if(this.records[orderDeliveryId].delivery){
+        this.orderDeliveryId = this.records[orderDeliveryId].delivery.id;
+      }
+      
       this.tracking_no_id = this.tracking_no[orderDeliveryId];
+      console.log('this.tracking_no_id', this.tracking_no_id)
       this.activePrompt = true;
     },
     async updateTracking() {
@@ -188,13 +241,12 @@ export default {
     showSuccess() {
       this.$vs.notify({
         color: "success",
-        position:'bottom-left',
+        position: "bottom-left",
         title: "Update tracking number",
         text: "The selected tracking number was successfully updated"
       });
     },
 
-    
     fetchItems() {
       this.$store.dispatch(this.moduleName + "/fetchItems");
     },
@@ -238,7 +290,5 @@ export default {
   .btnx {
     border-radius: 5px 0px 0px 5px;
   }
-
-  
 }
 </style>
