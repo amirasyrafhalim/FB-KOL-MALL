@@ -26,7 +26,7 @@
             <span class="ml-2 text-base text-primary">Add New</span>
           </div>
         </div>
-        
+
         <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
           <div
             class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
@@ -122,7 +122,7 @@ import DataViewSidebar from "./DataViewSidebar.vue";
 export default {
   layout: "main",
   components: {
-    FormSearch,
+    // FormSearch,
     DataViewSidebar
   },
 
