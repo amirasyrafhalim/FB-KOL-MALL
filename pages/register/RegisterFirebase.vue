@@ -6,8 +6,8 @@
         <vs-row>
           <vs-col vs-type="flex" vs-w="auto">
              <feather-icon
-        icon="FacebookIcon"
-        class="mr-1"
+                icon="FacebookIcon"
+                class="mr-1"
       />
        <span class="my-auto">
           {{ $t("label.signUpWithFacebook") }}
@@ -24,8 +24,9 @@
       placeholder="Name"
       v-model="formModel.name"
       class="w-full"
+      :danger-text="formErrors.name ? formErrors.name[0] : ''"
+      :danger="formErrors ? formErrors.name : ''"
     />
-    <!-- <span class="text-danger text-sm">{{ errors.first('displayName') }}</span> -->
 
     <vs-input
       name="email"
@@ -34,9 +35,10 @@
       placeholder="Email"
       v-model="formModel.email"
       class="w-full mt-6"
+      :danger-text="formErrors.email ? formErrors.email[0] : ''"
+      :danger="formErrors ? formErrors.email : ''"
     />
-    <!-- <span class="text-danger text-sm">{{ errors.first('email') }}</span> -->
-
+  
     <vs-input
       ref="password"
       type="password"
@@ -45,8 +47,9 @@
       placeholder="Password"
       v-model="formModel.password"
       class="w-full mt-6"
+      :danger-text="formErrors.password ? formErrors.password[0] : ''"
+      :danger="formErrors ? formErrors.password : ''"
     />
-    <!-- <span class="text-danger text-sm">{{ errors.first('password') }}</span> -->
 
     <vs-input
       type="password"
@@ -56,8 +59,9 @@
       placeholder="Confirm Password"
       v-model="formModel.password_confirmation"
       class="w-full mt-6"
+      :danger-text="formErrors.password ? formErrors.password[0] : ''"
+      :danger="formErrors ? formErrors.password : ''"
     />
-    <!-- <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span> -->
 
     <vs-checkbox v-model="formModel.isTermsConditionAccepted" class="mt-6"
       >I accept the terms & conditions.</vs-checkbox
@@ -73,10 +77,14 @@
 </template>
 
 <script>
+import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 import formMixin from "@/mixins/form";
 
 export default {
   mixins: [formMixin],
+  components: {
+    AlertFormError
+  },
   data() {
     return {
       formModel: {
