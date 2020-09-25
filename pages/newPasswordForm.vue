@@ -9,11 +9,12 @@
                         </div>
                         <div class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center d-theme-dark-bg">
                             <div class="p-8">
-                                <alert-form-error :error-message="errorMessage" />
+                                
                                 <div class="vx-card__title mb-8">
                                     <h4 class="mb-4">Reset Password</h4>
                                     <p>Please enter your new password.</p>
                                 </div>
+
                                 <vs-input
                                   placeholder="New Password"
                                   icon-no-border
@@ -22,11 +23,14 @@
                                   :icon="show1 ? 'icon icon-eye' : 'icon icon-eye-off'"
                                   :type="show1 ? 'password' : 'text'"
                                   :rules="[rules.password]"
-                                  :error-messages="formErrors ? formErrors.password : ''"
                                   hint="At least 8 characters"
                                   v-model="formModel.password"
                                   v-on:icon-click="show1 = !show1"
-                                  class="w-full mb-8" />
+                                  class="w-full mb-8" 
+                                  :danger-text="formErrors.password ? formErrors.password[0] : ''"
+                                  :danger="formErrors ? formErrors.password : ''"
+                                  />
+                                  
                                 <vs-input
                                   placeholder="Confirm New Password"
                                   icon-no-border
@@ -35,25 +39,30 @@
                                   :icon="show2 ? 'icon icon-eye' : 'icon icon-eye-off'"
                                   :type="show2 ? 'password' : 'text'"
                                   :rules="[rules.password, passwordConfirmationRule]"
-                                  :error-messages="
-                                    formErrors ? formErrors.password_comfirmation : ''
-                                  "
                                   hint="At least 8 characters"
                                   v-model="formModel.password_confirmation"
                                   v-on:icon-click="show2 = !show2"
-                                  class="w-full mb-8" />
+                                  class="w-full mb-8" 
+                                  :danger-text="formErrors.password ? formErrors.password[0] : ''"
+                                  :danger="formErrors ? formErrors.password : ''"
+                                  />
+
+                                <alert-form-error :error-message="errorMessage" />
+                                
                                 <vs-button
                                   type="border"
                                   to="/login"
                                   class="px-4 w-full md:w-auto">
                                   Back To Login
-                                  </vs-button>
+                                </vs-button>
+
                                 <vs-button 
                                   class="float-right px-4 w-full md:w-auto mt-3 mb-8 md:mt-0 md:mb-0"
                                   @click="submit"
                                   :loading="loading">
                                   Submit
                                 </vs-button>
+
                             </div>
                         </div>
                     </div>
