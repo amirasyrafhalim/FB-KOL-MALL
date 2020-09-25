@@ -1,26 +1,6 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
-    <form-search :module-name="moduleName" />
-    <!-- <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
-      <div class="vx-row">
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Name</label>
-          <vs-input class="w-full" v-model="name" />
-        </div>
-         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Category</label>
-          <v-select :options="isVerifiedOptions" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Status</label>
-          <v-select :options="statusOptions"  v-model="statusFilter" class="mb-4 md:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Price</label>
-           <vs-input class="w-full" v-model="name" />
-        </div>
-      </div>
-    </vx-card> -->
+    <!-- <form-search :module-name="moduleName" /> -->
     <div class="vx-card p-6">
     <data-view-sidebar
       :isSidebarActive="addNewDataSidebar"
@@ -137,7 +117,7 @@
 
 <script>
 import DataViewSidebar from "./DataViewSidebar.vue";
-import FormSearch from "@/components/pages/products/FormSearch";
+// import FormSearch from "@/components/pages/products/FormSearch";
 
 export default {
   layout: "main",
