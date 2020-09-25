@@ -149,6 +149,7 @@
         set(val) {
           if (!val) {
             this.$emit('closeSidebar')
+            this.formErrors = ''
           }
         }
       },
