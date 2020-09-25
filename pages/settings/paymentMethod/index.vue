@@ -76,12 +76,10 @@
 
 <script>
 import DataViewSidebar from "./DataViewSidebar.vue";
-
 export default {
   layout: "main",
   components: {
     DataViewSidebar,
-    NoPaymentMethod
   },
 
   data() {
