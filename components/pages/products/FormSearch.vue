@@ -1,100 +1,81 @@
 <template>
-  <!-- <v-card class="components__campaigns-form-search mb-5">
-    <v-card-text class="pt-0"> -->
-      <v-row class="components__campaigns-form-search mb-5">
-        <v-col cols="auto">
-          <v-select
-            class="my-2 border-radius-button"
-            dense
-            solo
-            :items="statusEnums"
-            :label="$t('label.category')"
-            item-text="description"
-            item-value="value"
-            hide-details
-            v-model="formModel.category"
-          ></v-select>
-        </v-col>
-        <v-col cols="auto">
-          <v-select
-            class="my-2 border-radius-button"
-            dense
-            solo
-            :items="statusEnums"
-            :label="$t('label.status')"
-            item-text="description"
-            item-value="value"
-            hide-details
-            v-model="formModel.status"
-          ></v-select>
-        </v-col>
-        <v-col cols="auto">
-          <v-text-field
-            hide-details
-            class="my-2 border-radius-button"
-            dense
-            solo
-            type="text"
-            :label="$t('label.keyword')"
-            v-model="formModel.keyword"
-          ></v-text-field>
-        </v-col>
-        <v-col class="my-auto">
-          <v-btn color="primary" class="border-radius-button text-capitalize w-30 large-button" @click="search">
-            {{ $t("label.search") }}
-          </v-btn>
-          <!-- <search-form-action v-on:search="search()" v-on:reset="reset()" ></search-form-action> -->
-        </v-col>
-      </v-row>
-    <!-- </v-card-text>
-  </v-card> -->
+  <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons >
+      <div class="vx-row">
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Name</label>
+          <vs-input class="w-full" v-model="dataName" />
+        </div>
+         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Category</label>
+          <v-select :options="categoryOptions" label="name" v-model="dataCategory" class="mb-4 sm:mb-0" @input="searchItem($event, 'category')"/>
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Status</label>
+          <v-select :options="statusEnums" label="description" v-model="dataStatus" class="mb-4 md:mb-0" @input="searchItem($event, 'status')"/>
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">Price</label>
+           <vs-input class="w-full" v-model="dataPrice" />
+        </div>
+      </div>
+    </vx-card>
 </template>
 
 <script>
-import SearchFormAction from "@/components/widgets/forms/SearchFormAction";
 
 export default {
   name: "FormSearch",
   props: ["moduleName"],
-  components: {
-    SearchFormAction
-  },
   data() {
     return {
-      formModel: {
-        category: null,
-        status: null,
-        keyword: null
-      }
+     dataName: null,
+     dataCategory: null,
+     dataPrice: null,
+     dataStatus: null
     };
   },
+  created() {
+    this.initialize();
+  },
   computed: {
+    categoryOptions() {
+      return this.$store.state.categories.records;
+    },
     statusEnums() {
       return this.$store.state[this.moduleName].statusEnums;
-    }
-  },
-  created() {
-    // this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
-    //   routeName: "productStatus",
-    //   stateKey: "statusEnums"
-    // });
+    },
   },
   methods: {
-    async search() {
-      await this.$store.dispatch(this.moduleName + "/fetchItems", {
-        ...this.formModel
+    initialize() {
+      console.log(this.moduleName)
+      this.$store.dispatch(`${this.moduleName}/fetchEnums`, {
+        routeName: "activeStatus",
+        stateKey: "statusEnums",
       });
+    },
+    async searchItem(data, field) {
+      var a = {};
+
+      a.status = this.dataStatus;
+      if (field == "status") {
+        a.status = data.value;
+      }
+      if (field == "category") {
+        a.category = data.id;
+      }
+
+      await this.$store.dispatch(this.moduleName + "/fetchItems", a);
       await this.$store.dispatch(this.moduleName + "/resetPagination");
     },
-    reset() {
-      this.$helper.clearSearchForm(this.formModel);
-      this.$store.dispatch(this.moduleName + "/fetchItems", {
-        ...this.formModel
-      });
-      this.$store.dispatch(this.moduleName + "/resetPagination");
-    }
-  }
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.radius {
+  border-radius: 25px !important;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+</style>

@@ -215,11 +215,6 @@ export default {
     },
   },
   methods: {
-    fetchMerchant(merchantId) {
-      let params = { merchantId: this.$store.state.auth.user.merchant.id };
-      this.$store.dispatch("merchants/fetchItems", params);
-    },
-
     updateCurrImg(input) {
       if (input.target.files && input.target.files[0]) {
         const reader = new FileReader();
@@ -248,7 +243,6 @@ export default {
         }
         this.popupActive2 = false;
         this.fetchUser();
-        this.fetchMerchant();
         this.$router.push(
           "/userprofile/" + this.$store.state.auth.user.id + "/edit"
         );
@@ -268,8 +262,8 @@ export default {
       let params = { page: page };
       this.$store.dispatch("banks/fetchItems", params);
     },
-    fetchUser(merchantId) {
-      let params = { merchantId: this.$store.state.auth.user.merchant.id };
+    fetchUser(merchant_Id) {
+      let params = { merchant_Id: this.$store.state.auth.user.merchant.id };
       this.$store.dispatch("merchantBanks/fetchItems", params);
     },
     reset() {
@@ -285,7 +279,6 @@ export default {
   created() {
     this.fetchUser();
     this.fetchBank();
-    this.fetchMerchant();
     this.user = this.$store.state.auth.user;
   },
 };

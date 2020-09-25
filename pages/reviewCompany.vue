@@ -1,18 +1,18 @@
 <template>
-  <div id="referral_code" class="d-flex flex-column" fluid>
     <div
-      class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
-      id="page-login"
-    >
-      <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
+    class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center"
+    id="page-login"
+  >
+    <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
         <vs-row vs-justify="center">
-          <vs-col type="block" vs-w="6">
-            <vs-card class="bg-white">
+          <vs-col vs-sm="12" vs-md="12" vs-lg="6">
+            <vs-card >
               <div slot="header" class="text-center">
                 <img
                   :src="require('~/assets/img/logo.png')"
                   alt="content-img"
                   class="mx-auto card-img-top "
+                  
                 />
               </div>
               <!-- <div> -->
@@ -52,7 +52,6 @@
         </vs-row>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -84,7 +83,7 @@ export default {
   },
   created() {
     this.fetchItems();
-    this.rangeSize = this.$store.state.monthlyRevenue;
+    this.rangeSize = this.$store.state.businessSize;
   },
   methods: {
     fetchItems(value) {
@@ -107,7 +106,7 @@ export default {
       try {
         var res = await this.$api.merchants.create(payload);
         await this.$auth.fetchUser();
-        this.handleApiSuccess(res, "/");
+        // this.handleApiSuccess(res, "/");
       } catch (err) {
         this.handleApiErrors(err);
       } finally {
@@ -125,14 +124,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.radius {
-  border-radius: 25px !important;
-}
-
 .background {
   width: 100%;
   height: 100%;
   background: transparent linear-gradient(270deg, #982b8e 0%, #623cd3 100%) 0%
     0% no-repeat padding-box;
+}
+.v-select .vs__dropdown-toggle .vs__search {
+    color: transparent;
+    display: none!important;
 }
 </style>

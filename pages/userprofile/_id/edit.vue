@@ -31,7 +31,7 @@
           icon="icon-info"
           
         >
-          <div class="tab-text" style="height:65vh;">
+          <div class="tab-text">
             <UserEditTabInformation />
           </div>
         </vs-tab>

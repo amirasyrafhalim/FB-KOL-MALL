@@ -9,14 +9,15 @@
           <label class="text-sm opacity-75">{{$t('label.invoiceNo')}}</label>
           <vs-input class="w-full" v-model="formModel.invoice_no" />
         </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">{{$t('label.paymentStatus')}}</label>
-         <v-select style="background: white" :clearable=false :options="paymentEnums" label="description" @input="searchItem($event, 'payment_status')" v-model="formModel.payment_status">
-        </v-select>
-        </div>
+       
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">{{$t('label.orderStatus')}}</label>
-         <v-select style="background: white" :clearable=false :options="orderStatusEnums" label="description" @input="searchItem($event, 'order_status')" v-model="formModel.order_status">
+         <v-select style="background: white" :clearable=false :options="orderStatusEnums" label="description"  v-model="formModel.order_status">
+        </v-select>
+        </div>
+         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+          <label class="text-sm opacity-75">{{$t('label.paymentStatus')}}</label>
+         <v-select style="background: white" :clearable=false :options="paymentEnums" label="description" v-model="formModel.payment_status">
         </v-select>
         </div>
       </div>
@@ -71,11 +72,13 @@ export default {
 
       a.buyer_name = this.formModel.buyer_name;
       a.invoice_no = this.formModel.invoice_no;
-      if(field == 'order_status') {
-         a.status = data.value;
-      } else if (field =='payment_status') {
-        a.payment_status = data.value;
+      if(this.formModel.order_status) {
+         a.status = this.formModel.order_status.value;
+      } else if (this.formModel.payment_status) {
+        a.payment_status = this.formModel.payment_status.value;
       }
+      console.log('b', this.formModel.order_status)
+      console.log('a', a)
 
       await this.$store.dispatch(this.moduleName + "/fetchItems",a
       );
