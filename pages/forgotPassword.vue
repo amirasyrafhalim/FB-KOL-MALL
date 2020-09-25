@@ -18,7 +18,10 @@
                   :rules="emailRules"
                   label-placeholder="Email"
                   required
-                  class="w-full mb-8" />
+                  class="w-full mb-8" 
+                  :danger-text="formErrors.email ? formErrors.email[0] : ''"
+                  :danger="formErrors ? formErrors.email : ''"
+                  />
                 <vs-button
                   type="border"
                   to="/login"
@@ -46,8 +49,10 @@ import AlertFormError from "@/components/widgets/alerts/AlertFormError";
 import formMixin from "@/mixins/form";
 
 export default {
-  components: {AlertFormError},
   mixins: [formMixin],
+  components: {
+    AlertFormError
+  },
   auth: "guest",
   layout: "auth",
   data: () => ({
