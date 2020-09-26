@@ -69,7 +69,7 @@
 
           </vs-td>
 
-          <vs-td :data="data[indextr].status.description">
+          <vs-td :data="data[indextr].status">
             <vs-chip :color="getOrderStatusColor(tr.status.description)" class="product-order-status">
               {{tr.status.description }}
             </vs-chip>
@@ -182,7 +182,8 @@
         this.$vs.notify({
           color: 'success',
           title: 'Campaign Deleted',
-          text: 'The selected campaign was successfully deleted'
+          text: 'The selected campaign was successfully deleted',
+          position: 'bottom-left',
         })
       },
       goToConsole(item) {
