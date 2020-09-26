@@ -11,7 +11,45 @@
   <div id="user-edit-tab-info" class="flex flex-col justify-between h-full">
     <div class="vx-row">
       <div class="vx-col w-full md:w-1/2">
+        <!-- Col Header -->
+        <!-- <div class="flex items-end">
+          <feather-icon icon="UserIcon" class="mr-2" svgClasses="w-5 h-5" />
+          <span class="leading-none font-medium">Information</span>
+        </div> -->
+
+        <!-- Col Content -->
         <div class="mt-4">
+          <!-- 
+          <template v-if="formModel.dataLogo">
+          <div class="flex flex-wrap items-center mb-base">
+            <vs-avatar
+              :src="formModel.dataLogo"
+              size="70px"
+              class="mr-4 mb-4"
+            />
+            <div>
+              <p class="text-sm mt-2">
+                Allowed JPG, GIF or PNG. Max size of 800kB
+              </p>
+            </div>
+          </div>
+          </template> -->
+
+          <!-- <div class="upload-img mx-auto flex items-center justify-center">
+            <input
+              type="file"
+              class="hidden"
+              ref="uploadImgInput"
+              @change="updateCurrImg"
+              accept="image/*"
+            />
+            <vs-button
+              @click="$refs.uploadImgInput.click()"
+              color="success"
+              type="gradient"
+              >Upload Image</vs-button
+            >
+          </div> -->
           <vs-input
             class="w-full mt-4"
             label="Merchant Name"
@@ -27,27 +65,18 @@
             <label class="vs-input--label"
               >Business Size (Monthly Revenue)</label
             >
-            <vs-select
-              class="w-full"
-              autocomplete
+            <v-select
+              name="status"
+              :options="business"
               v-model="formModel.dataBusinessSize"
-            >
-              <vs-select-item
-                :options="business"
-                :key="index"
-                :value="item.label"
-                :text="item.label"
-                v-for="(item, index) in business"
-              />
-            </vs-select>
-
+            />
             <span class="text-danger text-sm"></span>
           </div>
         </div>
       </div>
 
       <!-- Address Col -->
-      <div class="vx-col w-full md:w-1/2 sm:w-1/2">
+      <div class="vx-col w-full md:w-1/2">
         <div class="mt-4">
           <vs-input
             class="w-full mt-4"
@@ -59,7 +88,13 @@
         <div class="vx-row">
           <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
-              <vs-input class="w-full" label="City" v-model="formModel.city" />
+              <label class="vs-input--label">State</label>
+              <v-select
+                :options="states"
+                label="name"
+                v-model="formModel.state_id"
+                @input="getStates($event)"
+              />
             </div>
           </div>
           <div class="vx-col w-full md:w-1/2">
@@ -136,7 +171,7 @@
               </vs-select>
             </div>
           </div>
-          <div class="vx-col w-full md:w-1/2 sm:w-1/2">
+          <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
               <label class="vs-input--label mt-4">Country</label>
               <vs-select
@@ -144,15 +179,8 @@
                 placeholder="Search and Select"
                 autocomplete
                 v-model="formModel.country_code"
-              >
-                <vs-select-item
-                  :options="countries"
-                  :key="index"
-                  :value="item.code"
-                  :text="item.name"
-                  v-for="(item, index) in countries"
-                />
-              </vs-select>
+                @input.native="getCountries($event.target.value)"
+              />
             </div>
           </div>
         </div>
@@ -280,6 +308,7 @@ export default {
 
     async getPostcodes(state_Id) {
       try {
+        console.log(this.formModel.state_id);
         const { data } = await this.$api.dropdown.getAllPostcode(
           this.$helper.stringifyParams({
             state_Id: state_Id
@@ -407,9 +436,8 @@ export default {
   width: 100%;
   margin: 0;
 }
-.select-countries .v-select.vs__search::placeholder,
-.select-countries .v-select.vs__dropdown-toggle,
-.select-countries .v-select.vs__dropdown-menu {
-  max-height: 100px;
+
+.select-countries .vs__dropdown-menu {
+  z-index: 10000;
 }
 </style>
