@@ -89,7 +89,7 @@
             <div class="mt-4">
               <label class="vs-input--label mt-4">Postcode</label>
               <vs-select
-                placeholder="Search and Select"
+                :placeholder= this.user.merchant.detail.postcode.code
                 autocomplete
                 v-model="formModel.postcode_id"
               >
@@ -179,7 +179,7 @@ export default {
         dataBusinessSize: "",
         dataAddress: "",
         city: "",
-        state_id: "",
+        state_id: 0,
         postcode_id: "",
         country_code: ""
       },
@@ -189,6 +189,7 @@ export default {
       }
     };
   },
+
   methods: {
     async fetchMerchant() {
       await this.$store.dispatch(
@@ -222,25 +223,30 @@ export default {
 
     async getStates(event) {
       try {
-
+        console.log('event', event)
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
         });
         this.states = data;
-        this.getPostcodes(event.id);
+        if(event){
+          this.getPostcodes(event.id);
+        }
+        
       } catch (error) {
         console.error("[API Service] Get States Error:", error);
       }
     },
 
-    async getPostcodes(state_id) {
+    async getPostcodes(state_Id) {
       try {
+        console.log("hehehe")
         const { data } = await this.$api.dropdown.getAllPostcode(
           this.$helper.stringifyParams({
-            state_id: state_id
+            state_Id: state_Id,
           })
         );
+        console.log("data",data)
         this.postcodes = data;
       } catch (error) {
         console.error("[API Service] Get Postcodes Error:", error);
@@ -256,23 +262,29 @@ export default {
       this.formModel.dataAddress = this.user.merchant.detail.address;
       this.formModel.city = this.user.merchant.detail.city;
       this.formModel.state_id = this.user.merchant.detail.state.id;
-      this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
+      this.formModel.postcode_id = this.user.merchant.detail.postcode.id;
       this.formModel.country_code = this.user.merchant.detail.country.code;
     },
     async validate() {
-      const obj = {
+    
+      if (this.formModel.postcode_id == '')
+      {
+         var a = this.user.merchant.detail.postcode.id
+      }else
+      {
+        var a = this.formModel.postcode_id
+      }
+        const obj = {
         name: this.formModel1.name,
         payment_method_id: this.formModel1.payment_method_id.code,
         company_name: this.formModel.dataCompany,
-        business_size:
-          this.formModel.dataBusinessSize,
+        business_size:this.formModel.dataBusinessSize,
         address: this.formModel.dataAddress,
         city: this.formModel.city,
         state_id: this.formModel.state_id,
-        postcode_id: this.formModel.postcode_id,
+        postcode_id: a,
         country_code: this.formModel.country_code
       };
-
       if (
         this.formModel.dataBusinessSize != null &&
         this.formModel.country_code != null &&
@@ -328,7 +340,6 @@ export default {
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
     this.formModel.state_id = this.user.merchant.detail.state.id;
-    this.formModel.postcode_id = this.user.merchant.detail.postcode.id;
     this.formModel.country_code = this.user.merchant.detail.country.code;
   },
 
