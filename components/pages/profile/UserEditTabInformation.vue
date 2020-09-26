@@ -62,11 +62,12 @@
               <vs-input class="w-full" label="City" v-model="formModel.city" />
             </div>
           </div>
-          <div class="vx-col w-full md:w-1/2 sm:w-1/2">
+          <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
               <div class="mt-4">
                 <label class="vs-input--label mt-4">State</label>
                 <vs-select
+                class="w-full"
                   placeholder="Search and Select"
                   autocomplete
                   v-model="formModel.state_id"
@@ -85,10 +86,11 @@
           </div>
         </div>
         <div class="vx-row">
-          <div class="vx-col w-full md:w-1/2 sm:w-1/2">
+          <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
               <label class="vs-input--label mt-4">Postcode</label>
               <vs-select
+              class="w-full"
                 :placeholder= this.user.merchant.detail.postcode.code
                 autocomplete
                 v-model="formModel.postcode_id"
@@ -108,6 +110,7 @@
             <div class="mt-4">
               <label class="vs-input--label mt-4">Country</label>
               <vs-select
+              class="w-full"
                 placeholder="Search and Select"
                 autocomplete
                 v-model="formModel.country_code"
