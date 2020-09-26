@@ -317,7 +317,7 @@ export default {
         business_size: this.formModel.dataBusinessSize,
         address: this.formModel.dataAddress,
         city: this.formModel.city,
-        state_id: state,
+        state_id: this.formModel.state_id,
         postcode_id: postcode,
         country_code: this.formModel.country_code
       };
