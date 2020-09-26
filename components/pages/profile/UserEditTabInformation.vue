@@ -298,9 +298,9 @@ export default {
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
       this.formModel.city = this.user.merchant.detail.city;
-      this.formModel.state_id = this.user.merchant.detail.state.id;
-      this.formModel.postcode_id = this.user.merchant.detail.postcode.id;
-      this.formModel.country_code = this.user.merchant.detail.country.code;
+      this.formModel.state_id = this.user.merchant.detail.state && this.user.merchant.detail.state.id;
+      this.formModel.postcode_id = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code;
+      this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.code;
     },
     async validate() {
       if (this.formModel.postcode_id == "") {
