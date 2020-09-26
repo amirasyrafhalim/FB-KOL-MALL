@@ -67,7 +67,7 @@
               <div class="mt-4">
                 <label class="vs-input--label mt-4">State</label>
                 <vs-select
-                class="w-full"
+                  class="w-full"
                   placeholder="Search and Select"
                   autocomplete
                   v-model="formModel.state_id"
@@ -87,16 +87,46 @@
         </div>
         <div class="vx-row">
           <div class="vx-col w-full md:w-1/2">
-            <div class="mt-4">
+            <div
+              class="mt-4"
+              v-if="
+                this.$store.state.auth.user.merchant.detail.postcode ==
+                  null
+              "
+            >
               <label class="vs-input--label mt-4">Postcode</label>
               <vs-select
-              class="w-full"
-                :placeholder= this.user.merchant.detail.postcode.code
+                placeholder="Search and Select"
+                class="w-full"
                 autocomplete
                 v-model="formModel.postcode_id"
               >
                 <vs-select-item
-                  :options="postcodes"
+                  :key="index"
+                  :value="item.id"
+                  :text="item.code"
+                  v-for="(item, index) in postcodes"
+                  @input.native="getPostcodes($event)"
+                />
+              </vs-select>
+            </div>
+            <div
+              class="mt-4"
+              v-if="
+                this.$store.state.auth.user.merchant.detail.postcode !=
+                  null
+              "
+            >
+              <label class="vs-input--label mt-4">Postcode</label>
+              <vs-select
+                :placeholder="
+                  this.$store.state.auth.user.merchant.detail.postcode.code
+                "
+                class="w-full"
+                autocomplete
+                v-model="formModel.postcode_id"
+              >
+                <vs-select-item
                   :key="index"
                   :value="item.id"
                   :text="item.code"
@@ -110,7 +140,7 @@
             <div class="mt-4">
               <label class="vs-input--label mt-4">Country</label>
               <vs-select
-              class="w-full"
+                class="w-full"
                 placeholder="Search and Select"
                 autocomplete
                 v-model="formModel.country_code"
@@ -161,10 +191,6 @@ export default {
       countries: [],
       states: [],
       postcodes: [],
-      payment: [
-        { label: "Xenopay", code: 1 },
-        { label: "Offline", code: 2 }
-      ],
       business: [
         { label: "0-5000" },
         { label: "5000-10000" },
@@ -187,10 +213,15 @@ export default {
         country_code: ""
       },
       formModel1: {
-        name: "",
-        payment_method_id: ""
+        name: ""
       }
     };
+  },
+
+  computed: {
+    records() {
+      return this.$store.state.merchantDetails.record;
+    }
   },
 
   methods: {
@@ -200,7 +231,15 @@ export default {
         this.$store.state.auth.user.merchant.id
       );
     },
-
+    async fetchMerchantDetails() {
+      await this.$store.dispatch(
+        "merchantDetails/fetchItem",
+        this.$store.state.auth.user.merchant.detail.id
+      );
+    },
+    async fetchUser() {
+      await this.$store.dispatch("users/fetchItems");
+    },
     async getCountries(code) {
       try {
         const { data } = await this.$api.dropdown.getAllCountry();
@@ -212,7 +251,6 @@ export default {
 
     async getStatesNew(event) {
       try {
-
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
@@ -226,16 +264,15 @@ export default {
 
     async getStates(event) {
       try {
-        console.log('event', event)
+        console.log("event", event);
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
         });
         this.states = data;
-        if(event){
+        if (event) {
           this.getPostcodes(event.id);
         }
-        
       } catch (error) {
         console.error("[API Service] Get States Error:", error);
       }
@@ -243,13 +280,12 @@ export default {
 
     async getPostcodes(state_Id) {
       try {
-        console.log("hehehe")
         const { data } = await this.$api.dropdown.getAllPostcode(
           this.$helper.stringifyParams({
-            state_Id: state_Id,
+            state_Id: state_Id
           })
         );
-        console.log("data",data)
+        console.log("data", data);
         this.postcodes = data;
       } catch (error) {
         console.error("[API Service] Get Postcodes Error:", error);
@@ -257,8 +293,6 @@ export default {
     },
     reset_data() {
       this.formModel.dataCompany = this.user.merchant.detail.company_name;
-      this.formModel1.payment_method_id =
-        this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
       this.formModel.dataLogo = this.user.merchant.logo;
       this.formModel1.name = this.user.merchant.name;
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
@@ -269,19 +303,15 @@ export default {
       this.formModel.country_code = this.user.merchant.detail.country.code;
     },
     async validate() {
-    
-      if (this.formModel.postcode_id == '')
-      {
-         var a = this.user.merchant.detail.postcode.id
-      }else
-      {
-        var a = this.formModel.postcode_id
+      if (this.formModel.postcode_id == "") {
+        var a = this.user.merchant.detail.postcode.id;
+      } else {
+        var a = this.formModel.postcode_id;
       }
-        const obj = {
+      const obj = {
         name: this.formModel1.name,
-        payment_method_id: this.formModel1.payment_method_id.code,
         company_name: this.formModel.dataCompany,
-        business_size:this.formModel.dataBusinessSize,
+        business_size: this.formModel.dataBusinessSize,
         address: this.formModel.dataAddress,
         city: this.formModel.city,
         state_id: this.formModel.state_id,
@@ -303,6 +333,7 @@ export default {
             obj,
             this.user.merchant.detail.id
           );
+
           if (res.http_code == 200 && res1.http_code == 200) {
             this.$vs.notify({
               title: "Success!",
@@ -310,8 +341,10 @@ export default {
               color: "success",
               position: "bottom-left"
             });
+            location.reload();
+            //           this.fetchMerchant();
+            // this.fetchMerchantDetails()
           }
-          this.fetchMerchant();
         } catch (err) {
           if (err) {
             this.$vs.notify({
@@ -336,14 +369,15 @@ export default {
   // },
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
-    this.formModel1.payment_method_id =
-    this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
     this.formModel1.name = this.user.merchant.name;
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
-    this.formModel.state_id = this.user.merchant.detail.state.id;
-    this.formModel.country_code = this.user.merchant.detail.country.code;
+    this.formModel.state_id =
+      this.user.merchant.detail.state && this.user.merchant.detail.state.id;
+    this.formModel.country_code =
+      this.user.merchant.detail.country &&
+      this.user.merchant.detail.country.code;
   },
 
   created() {
@@ -354,6 +388,7 @@ export default {
     this.getStates();
     this.getPostcodes();
     this.fetchMerchant();
+    this.fetchMerchantDetails();
     this.merchant = this.$store.state.merchants.record;
     this.user = this.$store.state.auth.user;
   }

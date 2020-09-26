@@ -1,6 +1,6 @@
 <template>
   <div class="con-notifications-position">
-    <div class="vx-row mb-base">
+    <div class="vx-row">
       <div class="vx-col lg:w-1/2 w-full">
         <vx-card title="Account" class="mb-base">
           <!-- Avatar user.user_social.avatar ||  -->
