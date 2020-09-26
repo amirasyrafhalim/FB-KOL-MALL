@@ -303,10 +303,13 @@ export default {
       this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.code;
     },
     async validate() {
-      if (this.formModel.postcode_id == "") {
-        var a = this.user.merchant.detail.postcode.id;
-      } else {
-        var a = this.formModel.postcode_id;
+      if (this.formModel.postcode_id == "")
+       {
+        var postcode = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.id;
+      }
+      else 
+       {
+        var postcode = this.formModel.postcode_id;
       }
       const obj = {
         name: this.formModel1.name,
@@ -314,15 +317,14 @@ export default {
         business_size: this.formModel.dataBusinessSize,
         address: this.formModel.dataAddress,
         city: this.formModel.city,
-        state_id: this.formModel.state_id,
-        postcode_id: a,
+        state_id: state,
+        postcode_id: postcode,
         country_code: this.formModel.country_code
       };
       if (
         this.formModel.dataBusinessSize != null &&
         this.formModel.country_code != null &&
-        this.formModel.postcode_id != null &&
-        this.formModel.state_id != null
+        this.formModel.state_id != null && this.formModel.state_id != null
       ) {
         try {
           let res = await this.$api.merchants.update(
@@ -341,7 +343,7 @@ export default {
               color: "success",
               position: "bottom-left"
             });
-            location.reload();
+            // location.reload();
             //           this.fetchMerchant();
             // this.fetchMerchantDetails()
           }
