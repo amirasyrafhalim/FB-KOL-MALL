@@ -303,12 +303,34 @@ export default {
       this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.code;
     },
     async validate() {
+        if (this.formModel.country_code == null)
+       {
+         var country = null;
+        console.log("kalau country null", country)
+      }
+         if (this.formModel.state_id == null)
+       {
+         var state = null;
+        console.log("kalau state null", country)
+      }
+   
       if (this.formModel.postcode_id == "")
        {
         var postcode = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.id;
+        console.log("postcode tak click",postcode)
       }
       else 
        {
+             if (this.formModel.country_code != "")
+        {
+        var country = this.formModel.country_code
+        console.log("kalau country click", country)
+        }
+            if (this.formModel.state_id != "")
+        {
+        var state = this.formModel.state_id
+        console.log("kalau state click", state)
+        }
         var postcode = this.formModel.postcode_id;
       }
       const obj = {
@@ -319,12 +341,13 @@ export default {
         city: this.formModel.city,
         state_id: this.formModel.state_id,
         postcode_id: postcode,
-        country_code: this.formModel.country_code
+        country_code: country,
       };
       if (
-        this.formModel.dataBusinessSize != null &&
-        this.formModel.country_code != null &&
-        this.formModel.state_id != null && this.formModel.state_id != null
+        this.formModel.dataBusinessSize != null 
+        // this.formModel.country_code != null &&
+        // this.formModel.state_id != null && 
+        // this.formModel.state_id != null
       ) {
         try {
           let res = await this.$api.merchants.update(
