@@ -20,6 +20,13 @@
 
     <vs-divider>OR</vs-divider>
 
+    <vs-alert 
+      color="danger" 
+      :active="!validated"
+    >
+      Invalid Credential
+    </vs-alert>
+
     <vs-input
       name="email"
       icon-no-border
@@ -43,6 +50,7 @@
     />
     <!-- <span class="text-danger text-sm">{{ errors.first('password') }}</span> -->
 
+    
     <div class="flex flex-wrap justify-between my-5">
       <!-- <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Remember Me</vs-checkbox> -->
       <router-link to="/forgotPassword">Forgot Password?</router-link>
@@ -71,7 +79,8 @@ export default {
       grant_type: "password",
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
-      scope: "*"
+      scope: "*",
+      validated: true
     };
   },
   created() {
@@ -131,6 +140,7 @@ export default {
         }
       } catch (err) {
         console.log(err);
+        this.validated = false
       } finally {
         this.$vs.loading.close();
       }
