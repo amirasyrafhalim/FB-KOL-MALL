@@ -233,7 +233,7 @@
           </tr>
           <tr>
             <td class="font-semibold pt-3 ">Business Categories</td>
-            <td class="pt-3">
+            <td class="pt-3" v-if=" merchant.detail && merchant.detail.categories != null">
               <ol
                 class="pl-5"
                 v-for="(item, key) in merchant.detail &&
@@ -242,6 +242,9 @@
               >
                 <li>{{ item.name }}</li>
               </ol>
+            </td>
+               <td class="pt-3" v-if="merchant.detail && merchant.detail.categories == null">
+                <p  class="pl-5">-</p>
             </td>
           </tr>
         </table>
