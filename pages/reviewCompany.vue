@@ -86,8 +86,14 @@ export default {
     this.rangeSize = this.$store.state.businessSize;
   },
   methods: {
-    fetchItems(value) {
-      this.$store.dispatch("categories/fetchItems");
+    async fetchItems(value) {
+      await this.$store.dispatch("categories/fetchItems");
+      await this.checkMerchant()
+    },
+    checkMerchant() {
+       if (this.$store.state.auth.user && this.$store.state.auth.user.merchant) {
+        this.$router.push({ path: `/` })
+      }
     },
     async next() {
       const categories = this.formModel.categories;
@@ -102,11 +108,10 @@ export default {
           payload.categories.push(element.id);
         });
       }
-      console.log(payload);
       try {
         var res = await this.$api.merchants.create(payload);
         await this.$auth.fetchUser();
-        // this.handleApiSuccess(res, "/");
+        this.handleApiSuccess(res, "/");
       } catch (err) {
         this.handleApiErrors(err);
       } finally {
@@ -131,7 +136,8 @@ export default {
     0% no-repeat padding-box;
 }
 .v-select .vs__dropdown-toggle .vs__search {
-    color: transparent;
+    color:transparent!important;
+    background: transparent!important;
     display: none!important;
 }
 </style>
