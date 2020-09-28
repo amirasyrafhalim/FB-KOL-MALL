@@ -97,7 +97,7 @@
 </template>
 
 <script>
-  import DataViewSidebar from './DataViewSidebar.vue'
+  import DataViewSidebar from './DataViewSidebar.vue' 
 
   export default {
     layout: 'main',

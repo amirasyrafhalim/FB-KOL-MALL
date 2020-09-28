@@ -143,5 +143,9 @@ export default {
 		getSalesSummary: '/v1/dashboard/sales-summary',
 		getSalesChart: '/v1/dashboard/sales-chart',
 		getOrderSummary: '/v1/dashboard/order-summary'
-	}
+	},
+	bots: {
+		getAllOrCreate: '/v1/bot-responses',
+		getOneOrUpdateOrDelete: '/v1/bot-responses/{id}'
+	},
 };
