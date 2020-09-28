@@ -284,7 +284,6 @@ export default {
           })
         );
         this.postcodes = data
-         console.log("event", event.data)
         this.postcodes = data;
       } catch (error) {
         console.error("[API Service] Get Postcodes Error:", error);
