@@ -26,10 +26,11 @@ import ShippingPartnerApi from '../services/api/shippingPartnerApi';
 import OrderDeliveryApi from '../services/api/orderDeliveryApi';
 import ShippingMethodApi from '../services/api/shippingMethodApi';
 import BotApi from '../services/api/botApi';
-
+import MerchantDetailApi from '../services/api/merchantDetailApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
+		merchantDetails : new MerchantDetailApi($axios, app.$helper),
 		merchantBanks: new MerchantBankApi($axios, app.$helper),
 		banks: new BankApi($axios, app.$helper),
 		campaigns: new CampaignApi($axios, app.$helper),

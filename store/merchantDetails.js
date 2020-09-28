@@ -3,8 +3,7 @@ import BaseVuex from "@/services/baseVuex";
 export const state = () => ({
   ...BaseVuex.state,
   ...{
-    moduleName: "shippingMethods",
-    activeStatus:[],
+    moduleName: "merchantDetails",
   },
 });
 

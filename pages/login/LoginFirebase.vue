@@ -29,7 +29,6 @@
       v-model="email"
       class="w-full"
     />
-    <!-- <span class="text-danger text-sm">{{ errors.first('email') }}</span> -->
 
     <vs-input
       type="password"
@@ -41,7 +40,14 @@
       v-model="password"
       class="w-full mt-6"
     />
-    <!-- <span class="text-danger text-sm">{{ errors.first('password') }}</span> -->
+
+    <vs-alert 
+      color="danger" 
+      :active="!validated"
+      class="mt-4"
+    >
+      Invalid Email or Password
+    </vs-alert>
 
     <div class="flex flex-wrap justify-between my-5">
       <!-- <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Remember Me</vs-checkbox> -->
@@ -71,7 +77,8 @@ export default {
       grant_type: "password",
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
-      scope: "*"
+      scope: "*",
+      validated: true
     };
   },
   created() {
@@ -130,7 +137,7 @@ export default {
           this.$router.push("/referralCode");
         }
       } catch (err) {
-        console.log(err);
+        this.validated = false
       } finally {
         this.$vs.loading.close();
       }

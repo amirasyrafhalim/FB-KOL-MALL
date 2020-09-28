@@ -80,6 +80,9 @@ export default {
   },
 
   methods: {
+      fetchUser() {
+      this.$store.dispatch("users/fetchItems");
+    },
     async validate() {
       try {
         let res = await this.$api.password.updatePassword({
@@ -93,6 +96,7 @@ export default {
                 position: "bottom-left"
           });
         }
+        this.fetchUser();
       } catch (err) {
         if (err) {
             this.handleApiErrors(err);
@@ -107,8 +111,8 @@ export default {
     }
   },
   created() {
+    this.fetchUser();
     this.user = this.$store.state.auth.user;
-    console.log("user", this.user);
   }
 };
 </script>
