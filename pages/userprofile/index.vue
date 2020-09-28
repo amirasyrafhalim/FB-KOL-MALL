@@ -151,7 +151,9 @@
           </tr>
 
           <tr>
-            <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
+            <td class="font-semibold pb-5">{{
+                  $t("label.size")
+                }}</td>
             <td class="pl-5 pb-5">
               {{ merchant.detail && merchant.detail.business_size }}
             </td>
@@ -203,7 +205,9 @@
             </td>
           </tr>
           <tr>
-            <td class="font-semibold pb-5">Monthly Revenue (RM)</td>
+            <td class="font-semibold pb-5">{{
+                  $t("label.size")
+                }}</td>
             <td class="pl-5 pb-5">
               {{ merchant.detail && merchant.detail.business_size }}
             </td>
@@ -244,7 +248,7 @@
               </ol>
             </td>
                <td class="pt-3" v-if="merchant.detail && merchant.detail.categories == null">
-                <p  class="pl-5">-</p>
+                <p>-</p>
             </td>
           </tr>
         </table>

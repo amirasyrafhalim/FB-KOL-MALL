@@ -25,7 +25,9 @@
           />
           <div class="mt-4">
             <label class="vs-input--label"
-              >Business Size (Monthly Revenue)</label
+              >{{
+                  $t("label.size")
+                }}</label
             >
             <vs-select
               class="w-full"
@@ -35,8 +37,8 @@
               <vs-select-item
                 :options="business"
                 :key="index"
-                :value="item.label"
-                :text="item.label"
+                :value="item.value"
+                :text="item.value"
                 v-for="(item, index) in business"
               />
             </vs-select>
@@ -190,13 +192,7 @@ export default {
       countries: [],
       states: [],
       postcodes: [],
-      business: [
-        { label: "0-5000" },
-        { label: "5000-10000" },
-        { label: "10000-35000" },
-        { label: "35000-50000" },
-        { label: "more than 50000" }
-      ],
+      business: "",
       formModel: {
         dataCompany: "",
         dataPhone: "",
@@ -216,14 +212,36 @@ export default {
       }
     };
   },
+  watch:{
+    records:[{
+     handler:"handleRecords",
+     immediate:true,
+    }  
+    ]
+  },
 
   computed: {
     records() {
-      return this.$store.state.merchantDetails.record;
+      return this.$store.state.merchants.record;
     }
   },
 
   methods: {
+    handleRecords(newValue){
+      console.log("new value", newValue)
+    //   let detail = newValue.detail
+     this.formModel.dataCompany = newValue.detail && newValue.detail.company_name;
+    this.formModel1.name = newValue && newValue.name;
+    this.formModel.dataBusinessSize = newValue.detail && newValue.detail.business_size;
+    this.formModel.dataAddress = newValue.detail && newValue.detail.address;
+    this.formModel.city = newValue.detail && newValue.detail.city;
+    this.formModel.state_id =
+      newValue.detail && newValue.detail.state && newValue.detail.state.id;
+    this.formModel.country_code =
+     newValue.detail &&
+       newValue.detail.country &&
+       newValue.detail.country.code;
+    },
     async fetchMerchant() {
       await this.$store.dispatch(
         "merchants/fetchItem",
@@ -360,6 +378,7 @@ export default {
           this.fetchUser();
           this.fetchMerchant();
           this.fetchMerchantDetails();
+           this.$router.go();
         } catch (err) {
           if (err) {
             this.$vs.notify({
@@ -404,6 +423,8 @@ export default {
     this.fetchMerchantDetails();
     this.merchant = this.$store.state.merchants.record;
     this.user = this.$store.state.auth.user;
+    this.business = this.$store.state.businessSize;
+    console.log("business", this.business)
   }
 };
 </script>
