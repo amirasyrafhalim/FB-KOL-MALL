@@ -25,7 +25,7 @@ import DashboardApi from '../services/api/dashboardApi';
 import ShippingPartnerApi from '../services/api/shippingPartnerApi';
 import OrderDeliveriesApi from '../services/api/orderDeliveriesApi';
 import ShippingMethodApi from '../services/api/shippingMethodApi';
-import MerchantDetailApi from '../services/api/merchantDetails';
+import MerchantDetailApi from '../services/api/merchantDetailApi';
 
 export default ({ $axios, app }, inject) => {
 	const api = {
