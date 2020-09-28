@@ -124,14 +124,13 @@
                 class="w-full"
                 autocomplete
                 v-model="formModel.postcode_id"
-                @input-changed="getPostcodes(formModel.state_Id,formModel.postcode_id)"
+                @input-change="getPostcodes($event.target.value)"
               >
                 <vs-select-item
                   :key="index"
                   :value="item.id"
                   :text="item.code"
                   v-for="(item, index) in postcodes"
-                  @input="getPostcodes($event)"
                 />
               </vs-select>
             </div>
