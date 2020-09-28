@@ -4,7 +4,7 @@ export const state = () => ({
   ...BaseVuex.state,
   ...{
     moduleName: "products",
-    statusEnums: [],
+    activeStatus: [],
   },
 });
 
