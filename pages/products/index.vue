@@ -9,8 +9,9 @@
 
     <search></search>
 
-    <div class="vx-card p-6">
+    <div class="vx-card">
       <vs-table
+        stripe
         ref="table"
         v-model="selected"
         pagination
@@ -20,13 +21,13 @@
       >
         <div
           slot="header"
-          class="flex flex-wrap-reverse items-center flex-grow justify-between"
+          class="flex flex-wrap-reverse items-center flex-grow justify-between p-6"
         >
           <div
             class="flex flex-wrap-reverse items-center data-list-btn-container"
           >
             <div
-              class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
+              class="btn-add-new p-3 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
               @click="addNewData"
             >
               <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
@@ -36,7 +37,7 @@
 
           <vs-dropdown
             vs-trigger-click
-            class="cursor-pointer mb-4 mr-4 items-per-page-handler"
+            class="cursor-pointer mr-4 items-per-page-handler"
           >
             <div
               class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
@@ -260,16 +261,16 @@ export default {
 </script>
 
 <style lang="scss">
-  #data-list-list-view {
-    .vs-lg-6 {
-      width: 100% !important;
-    }
+#data-list-list-view {
+  .vs-lg-6 {
+    width: 100% !important;
+  }
 
-    .vs-con-table {
-      .vs-con-tbody {
-        border: none !important;
-      }
+  .vs-con-table {
+    .vs-con-tbody {
+      border: none !important;
     }
   }
+}
 </style>
 
