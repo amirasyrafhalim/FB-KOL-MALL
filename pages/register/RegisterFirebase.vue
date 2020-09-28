@@ -63,16 +63,19 @@
       :danger="formErrors ? formErrors.password : ''"
     />
 
-     <vs-row>
-       <vs-col vs-w="1" >
-          <vs-checkbox v-model="formModel.isTermsConditionAccepted" class="mt-6 w-10"> </vs-checkbox >
-       </vs-col>
-       <vs-col vs-w="10" class="my-auto mb-0 ml-1">
-         <span style="font-size: 12px" class="my-auto">I agree to all KOL Store's <a href="https://kolstore.co/tnc" target="_blank" class="my-auto" style="text-decoration: underline">Terms & Conditions.</a></span>
-       </vs-col>
-     </vs-row>
+    <vs-row>
+      <vs-col vs-w="1" >
+        <vs-checkbox 
+          v-model="formModel.isTermsConditionAccepted"
+          value="true"
+          class="mt-6 w-10">
+        </vs-checkbox >
+      </vs-col>
+      <vs-col vs-w="10" class="my-auto mb-0 ml-1">
+        <span style="font-size: 12px" class="my-auto">I agree to all KOL Store's <a href="https://kolstore.co/tnc" target="_blank" class="my-auto" style="text-decoration: underline">Terms & Conditions.</a></span>
+      </vs-col>
+    </vs-row>
    
-     
     <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
     <vs-button
       class="float-right mt-6"
@@ -99,14 +102,16 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
-        isTermsConditionAccepted: true,
+        isTermsConditionAccepted: false,
         referrer_code: ""
       }
     };
   },
   computed: {
     validateForm() {
-      return true;
+      if (this.formModel.isTermsConditionAccepted) {
+        return true;
+      }
       // return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true
     }
   },
