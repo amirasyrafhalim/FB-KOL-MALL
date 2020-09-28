@@ -6,7 +6,6 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
-
 <template>
   <div id="user-edit-tab-info" class="flex flex-col justify-between h-full">
     <div class="vx-row">
@@ -17,7 +16,6 @@
             label="Merchant Name"
             v-model="formModel1.name"
           />
-
           <vs-input
             class="w-full mt-4"
             label="Company"
@@ -42,12 +40,10 @@
                 v-for="(item, index) in business"
               />
             </vs-select>
-
             <span class="text-danger text-sm"></span>
           </div>
         </div>
       </div>
-
       <!-- Address Col -->
       <div class="vx-col w-full md:w-1/2 sm:w-1/2">
         <div class="mt-4">
@@ -177,7 +173,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import vSelect from "vue-select";
 import { mapState } from "vuex";
@@ -219,13 +214,11 @@ export default {
     }  
     ]
   },
-
   computed: {
     records() {
       return this.$store.state.merchants.record;
     }
   },
-
   methods: {
     handleRecords(newValue){
       console.log("new value", newValue)
@@ -277,7 +270,6 @@ export default {
         console.error("[API Service] Get States Error:", error);
       }
     },
-
     async getStates(event) {
       try {
         const { data } = await this.$api.dropdown.getAllState({
@@ -292,7 +284,6 @@ export default {
         console.error("[API Service] Get States Error:", error);
       }
     },
-
     async getPostcodes(code) {
       try {
         const { data } = await this.$api.dropdown.getAllPostcode(
@@ -330,13 +321,14 @@ export default {
       if (this.formModel.state_id == null) {
         var state = null;
       }
-
+       if (this.formModel.postcode_id == null) {
+        var postcode = null;
+      }
       if (this.formModel.postcode_id == "") {
         var postcode =
           this.user.merchant.detail.postcode &&
           this.user.merchant.detail.postcode.id;
       }
-
       if (this.formModel.country_code != "") {
         var country = this.formModel.country_code;
       }
@@ -346,7 +338,9 @@ export default {
       if (this.formModel.postcode_id != "") {
         var postcode = this.formModel.postcode_id;
       }
-
+       if (this.formModel.postcode_id == (this.user.merchant && this.user.merchant.detail && this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code)) {
+        var postcode = this.user.merchant && this.user.merchant.detail && this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.id
+      }
       const obj = {
         name: this.formModel1.name,
         company_name: this.formModel.dataCompany,
@@ -398,7 +392,6 @@ export default {
         });
     }
   },
-
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
     this.formModel1.name = this.user.merchant.name;
@@ -411,7 +404,6 @@ export default {
       this.user.merchant.detail.country &&
       this.user.merchant.detail.country.code;
   },
-
   created() {
     this.getStates = debounce(this.getStates, 500);
     this.getPostcodes = debounce(this.getPostcodes, 500);
@@ -432,11 +424,9 @@ export default {
 .img-upload {
   margin-top: 2rem;
 }
-
 .con-img-upload {
   padding: 0;
 }
-
 .con-input-upload {
   width: 100%;
   margin: 0;
