@@ -68,18 +68,16 @@
       </div>
 
       <template slot="thead">
-        <vs-th sort-key="merchant.name">id</vs-th>
         <vs-th sort-key="type">Type</vs-th>
         <vs-th sort-key="message">Message</vs-th>
         <vs-th sort-key="created_at">Created At</vs-th>
+        <vs-th sort-key="created_at">Action</vs-th>
       </template>
 
       <template slot-scope="{ data }">
         <tbody>
           <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-            <vs-td :data="data[indextr].merchant_id">{{
-              tr.merchant_id
-            }}</vs-td>
+        
             <vs-td :data="data[indextr].type">{{ newTypeArray[tr.type] }}</vs-td>
             <vs-td :data="data[indextr].message">{{ tr.message }}</vs-td>
             <vs-td :data="data[indextr].created_at">{{ tr.created_at }}</vs-td>
