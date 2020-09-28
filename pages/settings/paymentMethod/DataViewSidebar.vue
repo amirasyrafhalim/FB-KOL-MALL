@@ -23,7 +23,7 @@
     >
          <div class="p-6 py-2">
         <span>Payment Method</span>
-        <v-select multiple :options="payment" v-model="formModel.payment_method_id" class="w-full" name="item-name" />
+        <v-select multiple :options="paymentMethodEnums" label="description" v-model="formModel.payment_method_id" @input="getPaymentMethodEnum($event)" class="w-full" name="item-name" />
       </div>
 
     </component>
@@ -56,20 +56,8 @@ export default {
   },
   data() {
     return {
-      dataId: null,
-      dataName: "",
-      dataDescription: "",
       dataStatus: "",
-        payment: [
-        { label: "Xenopay", code: 1 },
-        { label: "Offline", code: 2 }
-      ],
-      status: [
-        { label: "Active", code: 1 },
-        { label: "Inactive", code: 0 },
-      ],
-      dataCategory: "",
-      dataImg: "",
+        paymentMethodEnums: [],
          formModel: {
         payment_method_id: []
       },
@@ -81,36 +69,38 @@ export default {
   },
 
   watch: {
-    isSidebarActive(val) {
-      if (!val) return;
-      if (Object.entries(this.data).length === 0) {
-        this.initValues();
-      } else {
-        const {
-          id,
-          name,
-          merchant_id,
-          description,
-          status,
-          category,
-          image,
-        } = JSON.parse(JSON.stringify(this.data));
-        this.dataId = id;
-        this.dataName = name;
-        this.merchantId = merchant_id;
-        this.dataDescription = description;
-        this.dataStatus = status.description;
-        this.dataCategory = category;
-        this.dataImg = image;
-        this.initValues();
+   async merchant(val) {
+     this.formModel.payment_method_id = []
+      console.log(this.data)
+     if (!val) return;
+      
+      if(this.paymentMethodEnums.length > 0)
+      {
+ await val.payment_method_id.forEach((data,key)=>{
+        this.formModel.payment_method_id.push(this.paymentMethodEnums[key]);
+      });
       }
+    
+      // if (Object.entries(this.data).length === 0) {
+      //   this.initValues();
+      // } else {
+        // const {
+        //   payment_method_id,
+        // } = JSON.parse(JSON.stringify(val.payment_method_id));
+        // this.payment_method_id = payment_method_id;
+
+      //   this.initValues();
+      // }
     },
   },
   created() {
     this.fetchItem();
+    this.getPaymentMethodEnum();
   },
   computed: {
-
+    merchant(){
+      return this.$store.state.merchants.record
+    },
     isSidebarActiveLocal: {
       get() {
         return this.isSidebarActive;
@@ -130,6 +120,15 @@ export default {
   },
 
   methods: {
+       async getPaymentMethodEnum(event) {
+         console.log("event",event)
+      try {
+        const { data } = await this.$api.enums.paymentMethod();
+        this.paymentMethodEnums = data;
+      } catch (error) {
+        console.error("[API Service] Get Payment Method Error:", error);
+      }
+    },
       async fetchItem() {
       await this.$store.dispatch(
         "merchants/fetchItem",
@@ -139,7 +138,8 @@ export default {
      async validate() {
         var a= []
          this.formModel.payment_method_id.forEach((element,id) => {
-            a.push(element.code)
+           console.log(element)
+            a.push(element.value)
         });
         const obj = {
             payment_method_id : a
@@ -177,14 +177,7 @@ export default {
         });
     },
     initValues() {
-      if (this.data.id) return;
-      this.dataId = null;
-      this.dataName = "";
-      this.merchantId = "";
-      this.dataDescription = "";
-      this.dataStatus = "";
-      this.dataCategory = "";
-      this.dataImg = "";
+      this.payment_method_id = "";
     },
   }
   

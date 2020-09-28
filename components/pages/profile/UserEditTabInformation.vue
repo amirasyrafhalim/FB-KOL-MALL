@@ -11,45 +11,7 @@
   <div id="user-edit-tab-info" class="flex flex-col justify-between h-full">
     <div class="vx-row">
       <div class="vx-col w-full md:w-1/2">
-        <!-- Col Header -->
-        <!-- <div class="flex items-end">
-          <feather-icon icon="UserIcon" class="mr-2" svgClasses="w-5 h-5" />
-          <span class="leading-none font-medium">Information</span>
-        </div> -->
-
-        <!-- Col Content -->
         <div class="mt-4">
-          <!-- 
-          <template v-if="formModel.dataLogo">
-          <div class="flex flex-wrap items-center mb-base">
-            <vs-avatar
-              :src="formModel.dataLogo"
-              size="70px"
-              class="mr-4 mb-4"
-            />
-            <div>
-              <p class="text-sm mt-2">
-                Allowed JPG, GIF or PNG. Max size of 800kB
-              </p>
-            </div>
-          </div>
-          </template> -->
-
-          <!-- <div class="upload-img mx-auto flex items-center justify-center">
-            <input
-              type="file"
-              class="hidden"
-              ref="uploadImgInput"
-              @change="updateCurrImg"
-              accept="image/*"
-            />
-            <vs-button
-              @click="$refs.uploadImgInput.click()"
-              color="success"
-              type="gradient"
-              >Upload Image</vs-button
-            >
-          </div> -->
           <vs-input
             class="w-full mt-4"
             label="Merchant Name"
@@ -65,18 +27,27 @@
             <label class="vs-input--label"
               >Business Size (Monthly Revenue)</label
             >
-            <v-select
-              name="status"
-              :options="business"
+            <vs-select
+              class="w-full"
+              autocomplete
               v-model="formModel.dataBusinessSize"
-            />
+            >
+              <vs-select-item
+                :options="business"
+                :key="index"
+                :value="item.label"
+                :text="item.label"
+                v-for="(item, index) in business"
+              />
+            </vs-select>
+
             <span class="text-danger text-sm"></span>
           </div>
         </div>
       </div>
 
       <!-- Address Col -->
-      <div class="vx-col w-full md:w-1/2">
+      <div class="vx-col w-full md:w-1/2 sm:w-1/2">
         <div class="mt-4">
           <vs-input
             class="w-full mt-4"
@@ -88,43 +59,100 @@
         <div class="vx-row">
           <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
-              <label class="vs-input--label">State</label>
-              <v-select
-                :options="states"
-                label="name"
-                v-model="formModel.state_id"
-                @input="getStates($event)"
-              />
+              <vs-input class="w-full" label="City" v-model="formModel.city" />
             </div>
           </div>
           <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
-              <vs-input class="w-full" label="City" v-model="formModel.city" />
+              <div class="mt-4">
+                <label class="vs-input--label mt-4">State</label>
+                <vs-select
+                  class="w-full"
+                  placeholder="Search and Select"
+                  autocomplete
+                  v-model="formModel.state_id"
+                  @input="getStatesNew($event)"
+                >
+                  <vs-select-item
+                    :options="states"
+                    :key="index"
+                    :value="item.id"
+                    :text="item.name"
+                    v-for="(item, index) in states"
+                  />
+                </vs-select>
+              </div>
             </div>
           </div>
         </div>
         <div class="vx-row">
           <div class="vx-col w-full md:w-1/2">
-            <div class="mt-4">
-              <label class="vs-input--label">Postcode</label>
-              <v-select
-                :options="postcodes"
-                label="code"
+            <div
+              class="mt-4"
+              v-if="
+                this.$store.state.auth.user.merchant.detail.postcode ==
+                  null
+              "
+            >
+              <label class="vs-input--label mt-4">Postcode</label>
+              <vs-select
+                placeholder="Search and Select"
+                class="w-full"
+                autocomplete
                 v-model="formModel.postcode_id"
-                @input.native="getPostcodes($event)"
-              />
+              >
+                <vs-select-item
+                  :key="index"
+                  :value="item.id"
+                  :text="item.code"
+                  v-for="(item, index) in postcodes"
+                  @input.native="getPostcodes($event)"
+                />
+              </vs-select>
+            </div>
+            <div
+              class="mt-4"
+              v-if="
+                this.$store.state.auth.user.merchant.detail.postcode !=
+                  null
+              "
+            >
+              <label class="vs-input--label mt-4">Postcode</label>
+              <vs-select
+                :placeholder="
+                  this.$store.state.auth.user.merchant.detail.postcode.code
+                "
+                class="w-full"
+                autocomplete
+                v-model="formModel.postcode_id"
+              >
+                <vs-select-item
+                  :key="index"
+                  :value="item.id"
+                  :text="item.code"
+                  v-for="(item, index) in postcodes"
+                  @input.native="getPostcodes($event)"
+                />
+              </vs-select>
             </div>
           </div>
-          <div class="vx-col w-full md:w-1/2">
+          <div class="vx-col w-full md:w-1/2 sm:w-1/2">
             <div class="mt-4">
               <label class="vs-input--label mt-4">Country</label>
-              <v-select
-                class="select-countries"
-                :options="countries"
-                label="name"
+              <vs-select
+                class="w-full"
+                placeholder="Search and Select"
+                autocomplete
                 v-model="formModel.country_code"
-                @input.native="getCountries($event.target.value)"
-              />
+              >
+                <vs-select-item
+                  :options="countries"
+                  :key="index"
+                  :value="item.code"
+                  :text="item.name"
+                  v-for="(item, index) in countries"
+                />
+              </vs-select>
             </div>
           </div>
         </div>
@@ -163,10 +191,6 @@ export default {
       countries: [],
       states: [],
       postcodes: [],
-      payment: [
-        { label: "Xenopay", code: 1 },
-        { label: "Offline", code: 2 }
-      ],
       business: [
         { label: "0-5000" },
         { label: "5000-10000" },
@@ -185,16 +209,37 @@ export default {
         dataAddress: "",
         city: "",
         state_id: 0,
-        postcode_id: 0,
+        postcode_id: "",
         country_code: ""
       },
       formModel1: {
-        name: "",
-        payment_method_id: ""
+        name: ""
       }
     };
   },
+
+  computed: {
+    records() {
+      return this.$store.state.merchantDetails.record;
+    }
+  },
+
   methods: {
+    async fetchMerchant() {
+      await this.$store.dispatch(
+        "merchants/fetchItem",
+        this.$store.state.auth.user.merchant.id
+      );
+    },
+    async fetchMerchantDetails() {
+      await this.$store.dispatch(
+        "merchantDetails/fetchItem",
+        this.$store.state.auth.user.merchant.detail.id
+      );
+    },
+    async fetchUser() {
+      await this.$store.dispatch("users/fetchItems");
+    },
     async getCountries(code) {
       try {
         const { data } = await this.$api.dropdown.getAllCountry();
@@ -204,26 +249,40 @@ export default {
       }
     },
 
-    async getStates(event) {
+    async getStatesNew(event) {
       try {
-        console.log(event);
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
         });
         this.states = data;
-        this.getPostcodes(event.id);
+        this.getPostcodes(event);
       } catch (error) {
         console.error("[API Service] Get States Error:", error);
       }
     },
 
-    async getPostcodes(stateId) {
+    async getStates(event) {
       try {
-        console.log(this.formModel.state_id);
+        console.log("event", event);
+        const { data } = await this.$api.dropdown.getAllState({
+          countryCode: "MY",
+          name
+        });
+        this.states = data;
+        if (event) {
+          this.getPostcodes(event.id);
+        }
+      } catch (error) {
+        console.error("[API Service] Get States Error:", error);
+      }
+    },
+
+    async getPostcodes(state_Id) {
+      try {
         const { data } = await this.$api.dropdown.getAllPostcode(
           this.$helper.stringifyParams({
-            stateId: stateId
+            state_Id: state_Id
           })
         );
         console.log("data", data);
@@ -234,39 +293,55 @@ export default {
     },
     reset_data() {
       this.formModel.dataCompany = this.user.merchant.detail.company_name;
-      this.formModel1.payment_method_id =
-        this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
       this.formModel.dataLogo = this.user.merchant.logo;
       this.formModel1.name = this.user.merchant.name;
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
       this.formModel.city = this.user.merchant.detail.city;
-      this.formModel.state_id = this.user.merchant.detail.state.name;
-      this.formModel.postcode_id = this.user.merchant.detail.postcode.code;
-      this.formModel.country_code = this.user.merchant.detail.country.name;
+      this.formModel.state_id = this.user.merchant.detail.state && this.user.merchant.detail.state.id;
+      this.formModel.postcode_id = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code;
+      this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.code;
     },
     async validate() {
+        if (this.formModel.country_code == null)
+       {
+         var country = null;
+      }
+         if (this.formModel.state_id == null)
+       {
+         var state = null;
+      }
+   
+      if (this.formModel.postcode_id == "")
+       {
+        var postcode = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.id;
+      }
+     
+             if (this.formModel.country_code != "")
+        {
+        var country = this.formModel.country_code
+        }
+            if (this.formModel.state_id != "")
+        {
+        var state = this.formModel.state_id
+        }
+        if (this.formModel.postcode_id != ""){
+        var postcode = this.formModel.postcode_id;
+        }
+       
+      
       const obj = {
         name: this.formModel1.name,
-        payment_method_id: this.formModel1.payment_method_id.code,
         company_name: this.formModel.dataCompany,
-        business_size:
-          this.formModel.dataBusinessSize &&
-          this.formModel.dataBusinessSize.label,
+        business_size: this.formModel.dataBusinessSize,
         address: this.formModel.dataAddress,
         city: this.formModel.city,
-        state_id: this.formModel.state_id && this.formModel.state_id.id,
-        postcode_id:
-          this.formModel.postcode_id && this.formModel.postcode_id.id,
-        country_code:
-          this.formModel.country_code && this.formModel.country_code.code
+        state_id: state,
+        postcode_id: postcode,
+        country_code: country,
       };
-
       if (
-        this.formModel.dataBusinessSize != null &&
-        this.formModel.country_code != null &&
-        this.formModel.postcode_id != null &&
-        this.formModel.state_id != null
+        this.formModel.dataBusinessSize != null 
       ) {
         try {
           let res = await this.$api.merchants.update(
@@ -277,6 +352,7 @@ export default {
             obj,
             this.user.merchant.detail.id
           );
+
           if (res.http_code == 200 && res1.http_code == 200) {
             this.$vs.notify({
               title: "Success!",
@@ -284,6 +360,9 @@ export default {
               color: "success",
               position: "bottom-left"
             });
+            // location.reload();
+            //           this.fetchMerchant();
+            // this.fetchMerchantDetails()
           }
         } catch (err) {
           if (err) {
@@ -309,16 +388,15 @@ export default {
   // },
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
-    this.formModel1.payment_method_id =
-      this.user.merchant.payment_method_id == 2 ? "Offline" : "Xenopay";
-    this.formModel.dataLogo = this.user.merchant.logo;
     this.formModel1.name = this.user.merchant.name;
     this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
     this.formModel.dataAddress = this.user.merchant.detail.address;
     this.formModel.city = this.user.merchant.detail.city;
-    this.formModel.state_id =  this.user.merchant.detail.state && this.user.merchant.detail.state.name;
-    this.formModel.postcode_id = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code;
-    this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.name;
+    this.formModel.state_id =
+      this.user.merchant.detail.state && this.user.merchant.detail.state.id;
+    this.formModel.country_code =
+      this.user.merchant.detail.country &&
+      this.user.merchant.detail.country.code;
   },
 
   created() {
@@ -328,6 +406,9 @@ export default {
     this.getCountries();
     this.getStates();
     this.getPostcodes();
+    this.fetchMerchant();
+    this.fetchMerchantDetails();
+    this.merchant = this.$store.state.merchants.record;
     this.user = this.$store.state.auth.user;
   }
 };
@@ -345,8 +426,9 @@ export default {
   width: 100%;
   margin: 0;
 }
-
-.select-countries .vs__dropdown-menu {
-  z-index: 10000;
+.select-countries .v-select.vs__search::placeholder,
+.select-countries .v-select.vs__dropdown-toggle,
+.select-countries .v-select.vs__dropdown-menu {
+  max-height: 100px;
 }
 </style>
