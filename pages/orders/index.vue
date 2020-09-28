@@ -1,7 +1,6 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
     <form-search :module-name="moduleName" />
-
     <vs-table
       ref="table"
       v-model="selected"
@@ -105,31 +104,9 @@
           </vs-td>
 
           <vs-td class="whitespace-no-wrap">
-          
-           
               <nuxt-link style="color: inherit" :to=" localePath({ name: 'orders-id', params: { id: tr.id } })">
                  <vs-button color="danger" type="border" icon="info" class="ml-2">  </vs-button>
               </nuxt-link>
-          
-            <!-- <div class="dropdown-button-container" style="width: 50%">
-              <vs-dropdown>
-                <vs-button
-                  class="btn-drop"
-                  type="border"
-                  color="primary"
-                  icon="more_horiz"
-                ></vs-button>
-                <vs-dropdown-menu>
-                  <vs-dropdown-item
-                  
-                    v-if="tr.delivery"
-                  >
-                    {{ $t("label.updateTracking") }}
-                  </vs-dropdown-item>
-                 
-                </vs-dropdown-menu>
-              </vs-dropdown>
-            </div> -->
           </vs-td>
         </vs-tr>
       </template>
@@ -197,7 +174,6 @@ export default {
             this.tracking_no.push(data.delivery.tracking_no);
           }
         } else {
-            console.log('o')
             this.tracking_no.push('');
           }
       });
@@ -225,7 +201,6 @@ export default {
       }
       
       this.tracking_no_id = this.tracking_no[orderDeliveryId];
-      console.log('this.tracking_no_id', this.tracking_no_id)
       this.activePrompt = true;
     },
     async updateTracking() {
@@ -291,4 +266,68 @@ export default {
     border-radius: 5px 0px 0px 5px;
   }
 }
+ #data-list-list-view {
+    .vs-con-table {
+      @media (max-width: 689px) {
+        .vs-table--search {
+          margin-left: 0;
+          max-width: unset;
+          width: 100%;
+
+          .vs-table--search-input {
+            width: 100%;
+          }
+        }
+      }
+
+      @media (max-width: 461px) {
+        .items-per-page-handler {
+          display: none;
+        }
+      }
+
+      @media (max-width: 341px) {
+        .data-list-btn-container {
+          width: 100%;
+
+          .dd-actions,
+          .btn-add-new {
+            width: 100%;
+            margin-right: 0 !important;
+          }
+        }
+      }
+      .vs-table {
+        border-collapse: separate;
+        border-spacing: 0 1.3rem;
+        padding: 0 1rem;
+
+        tr {
+          box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .05);
+
+          td {
+            padding: 20px;
+
+            &:first-child {
+              border-top-left-radius: .5rem;
+              border-bottom-left-radius: .5rem;
+            }
+
+            &:last-child {
+              border-top-right-radius: .5rem;
+              border-bottom-right-radius: .5rem;
+            }
+          }
+
+          td.td-check {
+            padding: 20px !important;
+          }
+        }
+      }
+    }
+
+    .vs-lg-6 {
+      width: 100% !important;
+    }
+  }
 </style>
