@@ -2,7 +2,11 @@
   <div class="clearfix">
     <div class="social-login-buttons flex flex-wrap items-center mt-4">
       <!-- facebook -->
-      <vs-button color="#3b5998" class="w-full" @click="loginWithFacebook">
+      <vs-button
+        color="#3b5998"
+        class="w-full"
+        @click="loginWithFacebook"
+        :disabled="!validateForm">
         <vs-row>
           <vs-col vs-type="flex" vs-w="auto">
              <feather-icon
