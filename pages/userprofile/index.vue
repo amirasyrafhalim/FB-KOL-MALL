@@ -35,23 +35,24 @@
                     <tr>
                       <td class="font-semibold pb-5">Phone</td>
                       <p class="pl-5 mb-5">
-                        <template v-if="user.phone_no != null">{{
-                          user.phone_no
-                        }}</template>
+
                         <template
-                          v-if="user.phone_no == null && user.social != null"
-                          >{{ user.social.phone_no }}</template
+                          v-if="user.phone_no != null && user.social == null"
+                          >{{ user.phone_no }}</template
                         >
                         <template
+                          v-if="user.phone_no == null && user.social != null && user.social.phone_no != null"
+                          >{{user.social.phone_no}}</template
+                        >
+                          <template
                           v-if="user.phone_no == null && user.social == null"
                           >-</template
                         >
-                        <template
-                          v-if="
-                            user.social != null && user.social.phone_no == null
-                          "
+                          <template
+                          v-if="user.phone_no == null && user.social != null && user.social.phone_no == null "
                           >-</template
                         >
+                     
                       </p>
                     </tr>
                     <tr>
