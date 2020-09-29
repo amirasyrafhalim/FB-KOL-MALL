@@ -68,7 +68,11 @@ export default ({route, app}, inject) => {
         title: 'Shippings',
         url: '/settings/shippings'
       }, {title: 'List', active: true}]
-    }
+    },
+    bot: {
+      title: 'Bot Message',
+      breadcrumb: [{title: 'Bot', url: '/bots'}, {title: 'List', active: true}]
+    },
   };
 
   inject('navigation', navigation);

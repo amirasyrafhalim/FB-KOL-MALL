@@ -1,7 +1,7 @@
 import BaseApi from "./baseApi";
 import { apiRoutes } from "@/config";
 
-export default class OrderDeliveriesApi extends BaseApi {
+export default class OrderDeliveryApi extends BaseApi {
   constructor(axios, helper) {
     super(axios, helper, "orderDeliveries");
   }

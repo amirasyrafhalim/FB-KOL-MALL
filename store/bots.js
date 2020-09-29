@@ -2,9 +2,9 @@ import BaseVuex from "@/services/baseVuex";
 
 export const state = () => ({
   ...BaseVuex.state,
+  botEnums:[],
   ...{
-    moduleName: "shippingMethods",
-    activeStatus:[],
+    moduleName: "bots",
   },
 });
 
