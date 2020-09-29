@@ -70,14 +70,14 @@
             {{ tr.invoice_no || "-" }}
           </vs-td>
           <vs-td>
-            {{ tr.campaign.name || "-" }}
+            {{ (tr.campaign && tr.campaign.name) || "-" }}
           </vs-td>
           <vs-td>
-            {{ tr.detail.name || "-" }}
+            {{ (tr.detail && tr.detail.name) || "-" }}
           </vs-td>
          
            <vs-td v-if="tr.delivery">
-            <p  @click="activePromptFn(indextr)" style="text-decoration: underline">{{ tr.delivery.tracking_no || "Update Tracking Number" }}</p>
+            <p  @click="activePromptFn(indextr)" style="text-decoration: underline">{{ (tr.delivery && tr.delivery.tracking_no) || "Update Tracking Number" }}</p>
           </vs-td>
           <vs-td v-else>
             <p>Not Availble</p>
@@ -95,7 +95,7 @@
               v-if="tr.payment"
               :color="getOrderPaymentStatusColor(tr.payment.status)"
             >
-              {{ tr.payment.status.description }}
+              {{ (tr.payment.status && tr.payment.status.description) || '-' }}
             </div>
             <p v-else>{{ $t("label.notAvailable") }}</p>
           </vs-td>
