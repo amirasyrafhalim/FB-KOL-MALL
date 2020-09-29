@@ -45,7 +45,7 @@
         </div>
       </div>
       <!-- Address Col -->
-      <div class="vx-col w-full md:w-1/2 sm:w-1/2">
+      <div class="vx-col w-full md:w-1/2">
         <div class="mt-4">
           <vs-input
             class="w-full mt-4"
@@ -108,16 +108,14 @@
                 />
               </vs-select>
             </div>
-            <div
+              <div
               class="mt-4"
-              v-if="
-                this.$store.state.auth.user.merchant.detail.postcode != null
-              "
+
             >
               <label class="vs-input--label mt-4">Postcode</label>
               <vs-select
                 :placeholder="
-                  this.$store.state.auth.user.merchant.detail.postcode.code
+                this.merchant.detail && this.merchant.detail.postcode && this.merchant.detail.postcode.code
                 "
                 class="w-full"
                 autocomplete
@@ -133,7 +131,7 @@
               </vs-select>
             </div>
           </div>
-          <div class="vx-col w-full md:w-1/2 sm:w-1/2">
+          <div class="vx-col w-full md:w-1/2">
             <div class="mt-4">
               <label class="vs-input--label mt-4">Country</label>
               <vs-select
@@ -315,15 +313,7 @@ export default {
         this.user.merchant.detail.country.code;
     },
     async validate() {
-      if (this.formModel.country_code == null) {
-        var country = null;
-      }
-      if (this.formModel.state_id == null) {
-        var state = null;
-      }
-       if (this.formModel.postcode_id == null) {
-        var postcode = null;
-      }
+
       if (this.formModel.postcode_id == "") {
         var postcode =
           this.user.merchant.detail.postcode &&
@@ -351,7 +341,7 @@ export default {
         postcode_id: postcode,
         country_code: country
       };
-      if (this.formModel.dataBusinessSize != null) {
+      if (this.formModel.dataBusinessSize != null && this.formModel.dataAddress != null && this.formModel.city != null ) {
         try {
           let res = await this.$api.merchants.update(
             obj,
@@ -372,7 +362,7 @@ export default {
           this.fetchUser();
           this.fetchMerchant();
           this.fetchMerchantDetails();
-           this.$router.go();
+          //  this.$router.go();
         } catch (err) {
           if (err) {
             this.$vs.notify({
@@ -416,7 +406,6 @@ export default {
     this.merchant = this.$store.state.merchants.record;
     this.user = this.$store.state.auth.user;
     this.business = this.$store.state.businessSize;
-    console.log("business", this.business)
   }
 };
 </script>

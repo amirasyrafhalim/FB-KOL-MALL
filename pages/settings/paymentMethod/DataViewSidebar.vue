@@ -10,8 +10,17 @@
     v-model="isSidebarActiveLocal"
   >
     <div class="mt-6 flex items-center justify-between px-6">
-      <h4>{{ Object.entries(this.data).length === 0 ? "ADD" : "UPDATE" }} PAYMENT METHOD</h4>
-      <feather-icon icon="XIcon" @click.stop="isSidebarActiveLocal = false" class="cursor-pointer"></feather-icon>
+      <h4 v-if="merchant.payment_method_id != null">
+        EDIT PAYMENT METHOD
+      </h4>
+      <h4  v-if="merchant.payment_method_id == null">
+        ADD PAYMENT METHOD
+      </h4>
+      <feather-icon
+        icon="XIcon"
+        @click.stop="isSidebarActiveLocal = false"
+        class="cursor-pointer"
+      ></feather-icon>
     </div>
     <vs-divider class="mb-0"></vs-divider>
 
@@ -21,16 +30,30 @@
       :settings="settings"
       :key="$vs.rtl"
     >
-         <div class="p-6 py-2">
+      <div class="p-6 py-2">
         <span>Payment Method</span>
-        <v-select multiple :options="paymentMethodEnums" label="description" v-model="formModel.payment_method_id" @input="getPaymentMethodEnum($event)" class="w-full" name="item-name" />
+        <v-select
+          multiple
+          :options="paymentMethodEnums"
+          label="description"
+          v-model="formModel.payment_method_id"
+          @input="getPaymentMethodEnum($event)"
+          class="w-full"
+          name="item-name"
+        />
       </div>
-
     </component>
- 
+
     <div class="flex flex-wrap items-center p-6" slot="footer">
-      <vs-button class="mr-6" @click="validate" :disabled="!isFormValid">Submit</vs-button>
-      <vs-button type="border" color="danger" @click="isSidebarActiveLocal = false">Cancel</vs-button>
+      <vs-button class="mr-6" @click="validate" :disabled="!isFormValid"
+        >Submit</vs-button
+      >
+      <vs-button
+        type="border"
+        color="danger"
+        @click="isSidebarActiveLocal = false"
+        >Cancel</vs-button
+      >
     </div>
   </vs-sidebar>
 </template>
@@ -40,66 +63,78 @@ import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import map from "lodash/map";
 
 export default {
-      
   props: {
     isSidebarActive: {
       type: Boolean,
-      required: true,
+      required: true
     },
     data: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   components: {
-    VuePerfectScrollbar,
+    VuePerfectScrollbar
   },
   data() {
     return {
       dataStatus: "",
-        paymentMethodEnums: [],
-         formModel: {
+      paymentMethodEnums: [],
+      formModel: {
         payment_method_id: []
       },
       settings: {
         maxScrollbarLength: 60,
-        wheelSpeed: 0.6,
-      },
+        wheelSpeed: 0.6
+      }
     };
   },
 
   watch: {
-   async merchant(val) {
-     this.formModel.payment_method_id = []
-      console.log(this.data)
-     if (!val) return;
+    // async merchant(val) {
+    //   this.formModel.payment_method_id = [];
+    //   if (!val) return;
+    //   if (this.paymentMethodEnums.length > 0) {
+    //     await val.payment_method_id.forEach(data => {
+    //       this.formModel.payment_method_id.push(this.newPm[data]);
+    //     });
+    //   }
       
-      if(this.paymentMethodEnums.length > 0)
-      {
- await val.payment_method_id.forEach((data,key)=>{
-        this.formModel.payment_method_id.push(this.paymentMethodEnums[key]);
-      });
-      }
-    
-      // if (Object.entries(this.data).length === 0) {
-      //   this.initValues();
-      // } else {
-        // const {
-        //   payment_method_id,
-        // } = JSON.parse(JSON.stringify(val.payment_method_id));
-        // this.payment_method_id = payment_method_id;
+    // }
+      async merchant(val) {
+      this.formModel.payment_method_id = [];
+      if (!val) return;
+      if (this.paymentMethodEnums.length > 0) {
+        await val.payment_method_id.forEach((data, key) => {
+   
+          if (key == 0)
+          {
+            var a = 1;
+          }
+          if (key == 1){
+            var a = 2;
+          }
 
-      //   this.initValues();
-      // }
-    },
+          console.log('test', this.paymentMethodEnums)
+          this.formModel.payment_method_id.push(this.paymentMethodEnums[key]);
+        });
+      }
+    }
   },
   created() {
     this.fetchItem();
     this.getPaymentMethodEnum();
   },
   computed: {
-    merchant(){
-      return this.$store.state.merchants.record
+    // newPm() {
+    //   let newPm =[]
+    //   this.paymentMethodEnums.forEach(index => {
+    //     newPm[index.value] = {description : index.description, value: index.value};
+    //   });
+    //   return newPm;
+    // },
+    merchant() {
+      return this.$store.state.merchants.record;
     },
     isSidebarActiveLocal: {
       get() {
@@ -109,44 +144,50 @@ export default {
         if (!val) {
           this.$emit("closeSidebar");
         }
-      },
+      }
     },
     isFormValid() {
       return true;
     },
     scrollbarTag() {
       return this.$store.getters.scrollbarTag;
-    },
+    }
   },
 
   methods: {
-       async getPaymentMethodEnum(event) {
-         console.log("event",event)
+    async getPaymentMethodEnum(event) {
       try {
         const { data } = await this.$api.enums.paymentMethod();
         this.paymentMethodEnums = data;
       } catch (error) {
         console.error("[API Service] Get Payment Method Error:", error);
       }
+
     },
-      async fetchItem() {
+    async fetchItem() {
       await this.$store.dispatch(
         "merchants/fetchItem",
         this.$store.state.auth.user.merchant.id
       );
     },
-     async validate() {
-        var a= []
-         this.formModel.payment_method_id.forEach((element,id) => {
-           console.log(element)
-            a.push(element.value)
-        });
-        const obj = {
-            payment_method_id : a
-        }
-      if (this.formModel.payment_method_id != null) {
+    async validate() {
+
+     var a = [];
+      this.formModel.payment_method_id.forEach((element, id) => {
+        a.push(element.value);
+      });
+
+      const obj = {
+        payment_method_id: a
+      };
+     
+
+      if (a.length !== 0) {
         try {
-          let res = await this.$api.merchants.update(obj, this.$store.state.auth.user.merchant.id);
+          let res = await this.$api.merchants.update(
+            obj,
+            this.$store.state.auth.user.merchant.id
+          );
           if (res.http_code == 200) {
             this.$vs.notify({
               title: "Success!",
@@ -155,9 +196,8 @@ export default {
               position: "bottom-left"
             });
           }
-         this.fetchItem();
-         this.$emit("closeSidebar");
-
+          this.fetchItem();
+          this.$emit("closeSidebar");
         } catch (err) {
           if (err) {
             this.$vs.notify({
@@ -178,9 +218,8 @@ export default {
     },
     initValues() {
       this.payment_method_id = "";
-    },
+    }
   }
-  
 };
 </script>
 

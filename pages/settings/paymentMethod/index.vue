@@ -1,6 +1,6 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
-    <div v-if="merchant.payment_method_id == null ">
+    <div v-if="merchant.payment_method_id == null">
       <vx-card>
         <div>
           <div class="vx-col w-full">
@@ -55,8 +55,8 @@
           class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary"
           @click="addNewData"
         >
-          <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
-          <span class="ml-2 text-base text-primary">Add New</span>
+          <feather-icon icon="EditIcon" svgClasses="h-4 w-4" />
+          <span class="ml-2 text-base text-primary">Edit Payment</span>
         </div>
       </div>
 
@@ -68,7 +68,7 @@
         >
           <vx-card class="mb-base" v-if="item == 1">
             <td class="font-semibold ">Xenopay</td>
-                     <vs-divider class="pb-6"></vs-divider>
+            <vs-divider class="pb-6"></vs-divider>
             <div class="flex flex-col justify-center">
               <div class="mb-5 justify-center vx-row">
                 <div>
@@ -105,20 +105,25 @@
           </vx-card>
           <vx-card class="mb-base" v-if="item == 2">
             <td class="font-semibold">Offline</td>
-            <vs-divider ></vs-divider>
-            <div class=" flex items-center justify-center">
-              <vs-button
-                v-if="merchant.has_banks == false"
-                @click="popupActive2 = true"
-                color="primary"
-                type="filled"
-                size="large"
-                >Add Bank Information</vs-button
-              >
+            <vs-divider></vs-divider>
+            <div v-if="records.length === 0">
+              <div class="text-center mb-5">
+                <span
+                  >Fill in the required info correctly to ensure success
+                </span>
+                <span>receiving of payment.</span>
+              </div>
+              <div class="text-center">
+                <vs-button
+                  @click="popupActive2 = true"
+                  color="primary"
+                  type="filled"
+                  size="large"
+                  >Add Bank Information</vs-button
+                >
+              </div>
             </div>
-            <div
-              v-if="merchant.has_banks == true"
-            >
+            <div v-if="records.length !== 0">
               <div>
                 <table v-for="(data, i) in records" :key="i">
                   <tr>
@@ -130,10 +135,15 @@
                     <td class="pl-6 pb-6">{{ data.name }}</td>
                   </tr>
                   <tr>
-                    <td class="font-semibold">Account No.</td>
-                    <td class="pl-6">{{ data.account_no }}</td>
+                    <td class="font-semibold pb-6">Account No.</td>
+                    <td class="pl-6 pb-6">{{ data.account_no }}</td>
                   </tr>
                 </table>
+
+                <p style="color:red;font-size:11px;">
+                  *Please contact the customer service if you want to update
+                  your bank information..
+                </p>
               </div>
             </div>
           </vx-card>
@@ -305,8 +315,8 @@ export default {
           this.popupActive2 = false;
           this.$emit("closeSidebar");
         }
-        this.popupActive2 = false;
         this.fetchUser();
+        this.popupActive2 = false;
       } catch (err) {
         if (err) {
           this.handleApiErrors(err);
@@ -350,39 +360,15 @@ export default {
         parameters: id
       });
     },
-    deleteRecord: function(parameters) {
-      // /* Below two lines are just for demo purpose */
-      // this.showDeleteSuccess()
 
-      /* UnComment below lines for enabling true flow if deleting user */
-      this.$store
-        .dispatch(this.moduleName + "/deleteRecord", parameters)
-        .then(() => {
-          this.showDeleteSuccess();
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    },
-    showDeleteSuccess() {
-      this.$vs.notify({
-        color: "success",
-        title: "Product Deleted",
-        text: "The selected product was successfully deleted",
-        position: "bottom-left"
-      });
-    },
     editData(data) {
+
+      console.log(data)
       this.sidebarData = data;
       this.toggleDataSidebar(true);
     },
     toggleDataSidebar(val = false) {
       this.addNewDataSidebar = val;
-    },
-    getOrderStatusColor(status) {
-      if (status === "Active") return "success";
-      if (status === "Inactive") return "danger";
-      return "primary";
     }
   },
 

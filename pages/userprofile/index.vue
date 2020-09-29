@@ -35,7 +35,10 @@
                     <tr>
                       <td class="font-semibold pb-5">Phone</td>
                       <p class="pl-5 mb-5">
-
+                      <template
+                          v-if="user.phone_no != null && user.social != null"
+                          >{{ user.phone_no }}</template
+                        >
                         <template
                           v-if="user.phone_no != null && user.social == null"
                           >{{ user.phone_no }}</template
