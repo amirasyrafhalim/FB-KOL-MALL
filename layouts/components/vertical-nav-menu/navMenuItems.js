@@ -56,5 +56,11 @@ export default [
 				icon: 'SettingsIcon'
 			}
 		]
-	}
+	},
+	{
+		url: '/bot',
+		name: 'Bot Message',
+		slug: 'bot',
+		icon: 'MessageSquareIcon'
+	},
 ];

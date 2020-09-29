@@ -13,7 +13,7 @@
         slot="header"
         class="flex flex-wrap-reverse items-center flex-grow justify-between"
       >
-        <div
+        <div  
           class="flex flex-wrap-reverse items-center data-list-btn-container"
         ></div>
         <vs-dropdown
