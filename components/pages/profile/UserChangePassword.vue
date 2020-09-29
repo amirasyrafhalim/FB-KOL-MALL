@@ -97,6 +97,7 @@ export default {
           });
         }
         this.fetchUser();
+         this.$router.go();
       } catch (err) {
         if (err) {
             this.handleApiErrors(err);

@@ -6,7 +6,6 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
-
 <template>
   <div id="user-edit-tab-info" class="flex flex-col justify-between h-full">
     <div class="vx-row">
@@ -17,7 +16,6 @@
             label="Merchant Name"
             v-model="formModel1.name"
           />
-
           <vs-input
             class="w-full mt-4"
             label="Company"
@@ -25,7 +23,9 @@
           />
           <div class="mt-4">
             <label class="vs-input--label"
-              >Business Size (Monthly Revenue)</label
+              >{{
+                  $t("label.size")
+                }}</label
             >
             <vs-select
               class="w-full"
@@ -35,17 +35,15 @@
               <vs-select-item
                 :options="business"
                 :key="index"
-                :value="item.label"
-                :text="item.label"
+                :value="item.value"
+                :text="item.value"
                 v-for="(item, index) in business"
               />
             </vs-select>
-
             <span class="text-danger text-sm"></span>
           </div>
         </div>
       </div>
-
       <!-- Address Col -->
       <div class="vx-col w-full md:w-1/2 sm:w-1/2">
         <div class="mt-4">
@@ -90,8 +88,7 @@
             <div
               class="mt-4"
               v-if="
-                this.$store.state.auth.user.merchant.detail.postcode ==
-                  null
+                this.$store.state.auth.user.merchant.detail.postcode == null
               "
             >
               <label class="vs-input--label mt-4">Postcode</label>
@@ -100,21 +97,21 @@
                 class="w-full"
                 autocomplete
                 v-model="formModel.postcode_id"
+                @input-change="getPostcodes($event.target.value)"
               >
                 <vs-select-item
+                
                   :key="index"
                   :value="item.id"
                   :text="item.code"
                   v-for="(item, index) in postcodes"
-                  @input.native="getPostcodes($event)"
                 />
               </vs-select>
             </div>
             <div
               class="mt-4"
               v-if="
-                this.$store.state.auth.user.merchant.detail.postcode !=
-                  null
+                this.$store.state.auth.user.merchant.detail.postcode != null
               "
             >
               <label class="vs-input--label mt-4">Postcode</label>
@@ -125,13 +122,13 @@
                 class="w-full"
                 autocomplete
                 v-model="formModel.postcode_id"
+                @input-change="getPostcodes($event.target.value)"
               >
                 <vs-select-item
                   :key="index"
                   :value="item.id"
                   :text="item.code"
                   v-for="(item, index) in postcodes"
-                  @input.native="getPostcodes($event)"
                 />
               </vs-select>
             </div>
@@ -176,7 +173,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import vSelect from "vue-select";
 import { mapState } from "vuex";
@@ -191,13 +187,7 @@ export default {
       countries: [],
       states: [],
       postcodes: [],
-      business: [
-        { label: "0-5000" },
-        { label: "5000-10000" },
-        { label: "10000-35000" },
-        { label: "35000-50000" },
-        { label: "more than 50000" }
-      ],
+      business: "",
       formModel: {
         dataCompany: "",
         dataPhone: "",
@@ -209,7 +199,7 @@ export default {
         dataAddress: "",
         city: "",
         state_id: 0,
-        postcode_id: "",
+        postcode_id: 0,
         country_code: ""
       },
       formModel1: {
@@ -217,14 +207,34 @@ export default {
       }
     };
   },
-
+  watch:{
+    records:[{
+     handler:"handleRecords",
+     immediate:true,
+    }  
+    ]
+  },
   computed: {
     records() {
-      return this.$store.state.merchantDetails.record;
+      return this.$store.state.merchants.record;
     }
   },
-
   methods: {
+    handleRecords(newValue){
+      console.log("new value", newValue)
+    //   let detail = newValue.detail
+     this.formModel.dataCompany = newValue.detail && newValue.detail.company_name;
+    this.formModel1.name = newValue && newValue.name;
+    this.formModel.dataBusinessSize = newValue.detail && newValue.detail.business_size;
+    this.formModel.dataAddress = newValue.detail && newValue.detail.address;
+    this.formModel.city = newValue.detail && newValue.detail.city;
+    this.formModel.state_id =
+      newValue.detail && newValue.detail.state && newValue.detail.state.id;
+    this.formModel.country_code =
+     newValue.detail &&
+       newValue.detail.country &&
+       newValue.detail.country.code;
+    },
     async fetchMerchant() {
       await this.$store.dispatch(
         "merchants/fetchItem",
@@ -248,7 +258,6 @@ export default {
         console.error("[API Service] Get Postcodes Error:", error);
       }
     },
-
     async getStatesNew(event) {
       try {
         const { data } = await this.$api.dropdown.getAllState({
@@ -261,10 +270,8 @@ export default {
         console.error("[API Service] Get States Error:", error);
       }
     },
-
     async getStates(event) {
       try {
-        console.log("event", event);
         const { data } = await this.$api.dropdown.getAllState({
           countryCode: "MY",
           name
@@ -277,15 +284,15 @@ export default {
         console.error("[API Service] Get States Error:", error);
       }
     },
-
-    async getPostcodes(state_Id) {
+    async getPostcodes(code) {
       try {
         const { data } = await this.$api.dropdown.getAllPostcode(
           this.$helper.stringifyParams({
-            state_Id: state_Id
+            state_Id: this.formModel.state_id,
+            code: code
           })
         );
-        console.log("data", data);
+        this.postcodes = data
         this.postcodes = data;
       } catch (error) {
         console.error("[API Service] Get Postcodes Error:", error);
@@ -298,38 +305,42 @@ export default {
       this.formModel.dataBusinessSize = this.user.merchant.detail.business_size;
       this.formModel.dataAddress = this.user.merchant.detail.address;
       this.formModel.city = this.user.merchant.detail.city;
-      this.formModel.state_id = this.user.merchant.detail.state && this.user.merchant.detail.state.id;
-      this.formModel.postcode_id = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code;
-      this.formModel.country_code = this.user.merchant.detail.country && this.user.merchant.detail.country.code;
+      this.formModel.state_id =
+        this.user.merchant.detail.state && this.user.merchant.detail.state.id;
+      this.formModel.postcode_id =
+        this.user.merchant.detail.postcode &&
+        this.user.merchant.detail.postcode.code;
+      this.formModel.country_code =
+        this.user.merchant.detail.country &&
+        this.user.merchant.detail.country.code;
     },
     async validate() {
-        if (this.formModel.country_code == null)
-       {
-         var country = null;
+      if (this.formModel.country_code == null) {
+        var country = null;
       }
-         if (this.formModel.state_id == null)
-       {
-         var state = null;
+      if (this.formModel.state_id == null) {
+        var state = null;
       }
-   
-      if (this.formModel.postcode_id == "")
-       {
-        var postcode = this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.id;
+       if (this.formModel.postcode_id == null) {
+        var postcode = null;
       }
-     
-             if (this.formModel.country_code != "")
-        {
-        var country = this.formModel.country_code
-        }
-            if (this.formModel.state_id != "")
-        {
-        var state = this.formModel.state_id
-        }
-        if (this.formModel.postcode_id != ""){
+      if (this.formModel.postcode_id == "") {
+        var postcode =
+          this.user.merchant.detail.postcode &&
+          this.user.merchant.detail.postcode.id;
+      }
+      if (this.formModel.country_code != "") {
+        var country = this.formModel.country_code;
+      }
+      if (this.formModel.state_id != "") {
+        var state = this.formModel.state_id;
+      }
+      if (this.formModel.postcode_id != "") {
         var postcode = this.formModel.postcode_id;
-        }
-       
-      
+      }
+       if (this.formModel.postcode_id == (this.user.merchant && this.user.merchant.detail && this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.code)) {
+        var postcode = this.user.merchant && this.user.merchant.detail && this.user.merchant.detail.postcode && this.user.merchant.detail.postcode.id
+      }
       const obj = {
         name: this.formModel1.name,
         company_name: this.formModel.dataCompany,
@@ -338,11 +349,9 @@ export default {
         city: this.formModel.city,
         state_id: state,
         postcode_id: postcode,
-        country_code: country,
+        country_code: country
       };
-      if (
-        this.formModel.dataBusinessSize != null 
-      ) {
+      if (this.formModel.dataBusinessSize != null) {
         try {
           let res = await this.$api.merchants.update(
             obj,
@@ -352,7 +361,6 @@ export default {
             obj,
             this.user.merchant.detail.id
           );
-
           if (res.http_code == 200 && res1.http_code == 200) {
             this.$vs.notify({
               title: "Success!",
@@ -360,10 +368,11 @@ export default {
               color: "success",
               position: "bottom-left"
             });
-            // location.reload();
-            //           this.fetchMerchant();
-            // this.fetchMerchantDetails()
           }
+          this.fetchUser();
+          this.fetchMerchant();
+          this.fetchMerchantDetails();
+           this.$router.go();
         } catch (err) {
           if (err) {
             this.$vs.notify({
@@ -383,9 +392,6 @@ export default {
         });
     }
   },
-  // computed: {
-  //   ...mapState({ user: state => state.auth.user })
-  // },
   mounted() {
     this.formModel.dataCompany = this.user.merchant.detail.company_name;
     this.formModel1.name = this.user.merchant.name;
@@ -398,7 +404,6 @@ export default {
       this.user.merchant.detail.country &&
       this.user.merchant.detail.country.code;
   },
-
   created() {
     this.getStates = debounce(this.getStates, 500);
     this.getPostcodes = debounce(this.getPostcodes, 500);
@@ -410,6 +415,8 @@ export default {
     this.fetchMerchantDetails();
     this.merchant = this.$store.state.merchants.record;
     this.user = this.$store.state.auth.user;
+    this.business = this.$store.state.businessSize;
+    console.log("business", this.business)
   }
 };
 </script>
@@ -417,11 +424,9 @@ export default {
 .img-upload {
   margin-top: 2rem;
 }
-
 .con-img-upload {
   padding: 0;
 }
-
 .con-input-upload {
   width: 100%;
   margin: 0;

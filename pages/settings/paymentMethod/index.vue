@@ -1,6 +1,6 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
-    <div v-if="merchant.payment_method_id == null">
+    <div v-if="merchant.payment_method_id == null ">
       <vx-card>
         <div>
           <div class="vx-col w-full">
